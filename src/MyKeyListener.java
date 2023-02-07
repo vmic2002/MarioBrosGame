@@ -21,7 +21,7 @@ public class MyKeyListener implements KeyListener {
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-	
+		
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			if (mario.movingRight) {
@@ -41,8 +41,9 @@ public class MyKeyListener implements KeyListener {
 			mario.makeBig();
 		} else if (keyCode == KeyEvent.VK_1) {
 			mario.makeSmall();
+		} else if (keyCode == KeyEvent.VK_2) {
+			System.out.println(mario.movingLeft+"  "+mario.movingRight+"   WALKNG:"+mario.walkingRightOrLeft);
 		}
-
 	}
 
 	@Override
@@ -53,9 +54,12 @@ public class MyKeyListener implements KeyListener {
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			System.out.println("released right");
 			mario.movingRight = false;
+			mario.setToStanding(true);
+			
 		} else if (keyCode == KeyEvent.VK_LEFT){
 			System.out.println("released left");
 			mario.movingLeft = false;
+			mario.setToStanding(false);
 		}
 
 	}
