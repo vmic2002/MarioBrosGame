@@ -9,16 +9,32 @@ public class MyKeyListener implements KeyListener {
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+		int keyCode = e.getKeyCode();
+		System.out.println("KEY TYPPPPPPPED");
+		if (keyCode == KeyEvent.VK_UP) {
+			System.out.println("SHOULD JUMP HERE");
+		} 
+		System.out.println(mario.movingLeft+"     "+mario.movingRight);
+		System.out.println(mario.getX() + "       "+mario.getY());
+	
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+	
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
-			mario.move(10,  0);
+			if (mario.movingRight) {
+				return;
+			}
+			mario.move(true);
+			System.out.println("pressed move right");
 		} else if (keyCode == KeyEvent.VK_LEFT){
-			mario.move(-10, 0);	
+			if (mario.movingLeft) {
+				return;
+			}
+			mario.move(false);
+			System.out.println("pressed move left");
 		} else if (keyCode == KeyEvent.VK_UP) {
 			mario.jump();
 		} else if (keyCode == KeyEvent.VK_0) {
@@ -32,6 +48,15 @@ public class MyKeyListener implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+		//System.out.println("Key released");
+		int keyCode = e.getKeyCode();
+		if (keyCode == KeyEvent.VK_RIGHT) {
+			System.out.println("released right");
+			mario.movingRight = false;
+		} else if (keyCode == KeyEvent.VK_LEFT){
+			System.out.println("released left");
+			mario.movingLeft = false;
+		}
 
 	}
 

@@ -9,5 +9,4 @@ public class Level {
 	public int getNumber() {
 		return number;
 	}
-
 }

@@ -17,7 +17,8 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * and select size 320x320 in Preview
 	 * 
 	 * NEED TO CHANGE MUHSROOM PICTURE AND GET CORRECT BOUNDS
-	 * 
+	 * small mario has width, height of (160, 160) in pixels
+	 * big mario has width, height of (250 × 320) in pixels
 	 * 
 	 */
 	
@@ -47,13 +48,15 @@ public class MarioBrosGame extends GraphicsProgram {
 		
 		Mario mario = new Mario(smallMarioImage, bigMarioImage, this.getGCanvas());
 		
-		add(mario, 10, getHeight()-mario.getHeight());//FOR NOW
-		
-		
+		add(mario, 120, getHeight()-mario.getHeight());//FOR NOW
+				
 		addKeyListeners(new MyKeyListener(mario));
 		Mushroom mushroom = new Mushroom(marioMushroomImage, this.getGCanvas());
-		
-		add(mushroom, 600, getHeight()-mushroom.getHeight()+40);
+		Mushroom mushroom2 = new Mushroom(marioMushroomImage, this.getGCanvas());
+		Mushroom mushroom3 = new Mushroom(marioMushroomImage, this.getGCanvas());
+		add(mushroom, 600, getHeight()-mushroom.getHeight());
+		add(mushroom2, 800, getHeight()-mushroom.getHeight());
+		add(mushroom3, 0, getHeight()-mushroom.getHeight());
 		System.out.println(getHeight()+"    "+mario.getY());	
 	}
 }
