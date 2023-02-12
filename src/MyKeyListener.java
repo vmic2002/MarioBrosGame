@@ -54,12 +54,19 @@ public class MyKeyListener implements KeyListener {
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			System.out.println("released right");
 			mario.movingRight = false;
-			mario.setToStanding(true);
-			
+			if (mario.isJumping) {
+				mario.setToJumping(true);
+			} else {
+				mario.setToStanding(true);
+			}
 		} else if (keyCode == KeyEvent.VK_LEFT){
 			System.out.println("released left");
 			mario.movingLeft = false;
-			mario.setToStanding(false);
+			if (mario.isJumping) {
+				mario.setToJumping(false);
+			} else {
+				mario.setToStanding(false);
+			}
 		}
 
 	}

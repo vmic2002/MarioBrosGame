@@ -20,10 +20,16 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * small mario has width, height of (128, 160) in pixels
 	 * big mario has width, height of (250 × 320) in pixels
 	 * 
+	 * maybe need to make set Image function for mairo that will do like the makeBig
+	 * and makeSmall functions that recenter the images once they are changed 
+	 * 
+	 * 
+	 * maybe a Level object needs an additional attribute: a background that moves along when
+	 * mario walksq\
 	 */
 	
-	private static final int WIDTH = 1500;
-	private static final int HEIGHT = 1000;
+	private static final int WIDTH = 1000;
+	private static final int HEIGHT = 800;
 	private static final long serialVersionUID = 1L;
 
 
@@ -35,6 +41,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		String smallMarioRightImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightImage.png";
 		String smallMarioRightWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightWalkingImage.png";
 		String smallMarioLeftWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftWalkingImage.png";
+		String smallMarioLeftJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftJumpingImage.png";
+		String smallMarioRightJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightJumpingImage.png";
 		
 		String bigMarioImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioImage.png";
 		
@@ -44,7 +52,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage smallMarioRightImage = null;
 		BufferedImage smallMarioRightWalkingImage = null;
 		BufferedImage smallMarioLeftWalkingImage = null;
-		
+		BufferedImage smallMarioLeftJumpingImage = null;
+		BufferedImage smallMarioRightJumpingImage = null;
 		
 		BufferedImage bigMarioImage = null;
 		
@@ -54,7 +63,8 @@ public class MarioBrosGame extends GraphicsProgram {
 			smallMarioRightImage = ImageIO.read(new File(smallMarioRightImagePath));
 			smallMarioLeftWalkingImage = ImageIO.read(new File(smallMarioLeftWalkingImagePath));
 			smallMarioRightWalkingImage = ImageIO.read(new File(smallMarioRightWalkingImagePath));
-			
+			smallMarioLeftJumpingImage = ImageIO.read(new File(smallMarioLeftJumpingImagePath));
+			smallMarioRightJumpingImage = ImageIO.read(new File(smallMarioRightJumpingImagePath));
 			
 			bigMarioImage = ImageIO.read(new File(bigMarioImagePath));
 			marioMushroomImage = ImageIO.read(new File(marioMushroomImagePath));
@@ -63,7 +73,7 @@ public class MarioBrosGame extends GraphicsProgram {
 			e.printStackTrace();
 		}
 		
-		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage, smallMarioLeftWalkingImage, smallMarioRightWalkingImage, bigMarioImage, this.getGCanvas());
+		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage, smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage, bigMarioImage, this.getGCanvas());
 		
 		add(mario, 120, getHeight()-mario.getHeight());//FOR NOW
 				

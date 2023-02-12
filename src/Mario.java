@@ -10,13 +10,13 @@ public class Mario extends GImage {
 	private Image smallMarioRightImage;
 	private Image smallMarioLeftWalkingImage;
 	private Image smallMarioRightWalkingImage;
-
-
+	private Image smallMarioLeftJumpingImage;
+	private Image smallMarioRightJumpingImage;
 
 	private Image bigMarioImage;
 	private GCanvas canvas;
 	private boolean bigOrSmall = false;//true if mario is big
-	private boolean isJumping = false;//need to keep track of if mario is jumping or not
+	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
 
 	public boolean movingRight = false;
@@ -28,15 +28,19 @@ public class Mario extends GImage {
 	//needed for switching from walking sprite to standing sprite while mario walks
 	public boolean walkingRightOrLeft = false;//is true when mario is walking right or left (his leg should be out)
 	//is false when mario is standing right or left
+	
+	public boolean lookingRightOrLeft = true;//true when looking right and false when looking left
 
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
-			Image smallMarioRightWalkingImage, Image bigMarioImage, GCanvas canvas) {
+			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage, Image smallMarioRightJumpingImage, Image bigMarioImage, GCanvas canvas) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
 		this.smallMarioLeftWalkingImage = smallMarioLeftWalkingImage;
 		this.smallMarioRightWalkingImage = smallMarioRightWalkingImage;
-
+		this.smallMarioLeftJumpingImage = smallMarioLeftJumpingImage;
+		this.smallMarioRightJumpingImage = smallMarioRightJumpingImage;
+		
 		this.bigMarioImage = bigMarioImage;
 		this.canvas = canvas;
 	}
@@ -75,6 +79,8 @@ public class Mario extends GImage {
 		//System.out.println("JUMP not implemented");
 		//MORE COMPLICATED NEED TO DO THIS IN ANOTHER THREAD
 		//so mario can jump and go left/right concurrently
+		
+		
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -84,17 +90,26 @@ public class Mario extends GImage {
 				 * TODO
 				 * NEED TO CHECK WHETHER MARIO IS JUMPING ON A MUSHROOM OR TURTLE ETC
 				 */
+				
+				//look at comments in setToWalking func
+				/*
+				 * TODO NEED TO ADD JUMPING ANIMATION
+				 * instead of calling setToWalking
+				 * thomas's idea
+				 */
+				////if (movingRight) {
+					//setToWalking(true);
+				//} else if (movingLeft) {
+				//	setToWalking(false);
+				//}
+
 				if (isJumping) {
 					return;
 				}
-				//look at comments in setToWalking func
-				if (movingRight) {
-					setToWalking(true);
-				} else if (movingLeft) {
-					setToWalking(false);
-				}
-
 				isJumping = true;
+				
+				setToJumping(lookingRightOrLeft);
+				
 				for (int i=0; i<30; i++) {
 					move(0, -10);
 					try {
@@ -119,6 +134,9 @@ public class Mario extends GImage {
 						e.printStackTrace();
 					}
 				}
+				
+				lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite
+				
 				isJumping = false;
 
 			}
@@ -126,10 +144,19 @@ public class Mario extends GImage {
 		t1.start();
 		//System.out.println("ENd of jump method");
 	}
+	
+	public void setToJumping(boolean rightOrLeft) {
+		if (rightOrLeft) {
+			setImage(smallMarioRightJumpingImage);
+		} else {
+			setImage(smallMarioLeftJumpingImage);
+		}
+	}
+	
 
-	public void setToWalking(boolean rightOrLeft) {
+	/*public void setToWalking(boolean rightOrLeft) {
 		//func called in <<jump method>> if user is holding down right or left key
-
+//MIGHT BE USELESS SINCE MARIO HAS TO BE IN JUMPING SPRITE WHEN HE JUMPS
 		//if user holds down left or right key and jumps there is possibility
 		//that mario is in standing sprite since toggling is done
 		//this func to make mario be in walking sprite when jumping
@@ -147,7 +174,7 @@ public class Mario extends GImage {
 			}
 		}
 		walkingRightOrLeft = true;
-	}
+	}*/
 
 	public void setToStanding(boolean rightOrLeft) {
 		//function called in key released when mario stops walking his sprite must be standing
@@ -211,12 +238,14 @@ public class Mario extends GImage {
 			} else {
 				setImage(smallMarioRightImage);
 			}
+			lookingRightOrLeft = true;
 		} else {
 			if (bigOrSmall) {
 				//this.setImage(bigMarioLeftImage);
 			} else {
 				setImage(smallMarioLeftImage);
 			}
+			lookingRightOrLeft = false;
 		}
 	}
 
@@ -309,7 +338,7 @@ public class Mario extends GImage {
 			//so he is walking and needs to have his sprite toggle from walking to standing repeatedly
 			System.out.println("HEREREERERE");
 			toggleWalking(rightOrLeft);
-		}
+		} else if (isJumping) setToJumping(rightOrLeft);
 
 		//TODO NEED TO CHECK IF MARIO JUMPS INTO
 		//MYSTERY BOX OR OUT OF BOUNDS
