@@ -17,8 +17,8 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * and select size 320x320 in Preview
 	 * 
 	 * NEED TO CHANGE MUHSROOM PICTURE AND GET CORRECT BOUNDS
-	 * small mario has width, height of (128, 160) in pixels
-	 * big mario has width, height of (250 × 320) in pixels
+	 * small mario has height 160 pixels
+	 * big mario has height 320 pixels
 	 * 
 	 * maybe need to make set Image function for mairo that will do like the makeBig
 	 * and makeSmall functions that recenter the images once they are changed 
@@ -44,9 +44,14 @@ public class MarioBrosGame extends GraphicsProgram {
 		String smallMarioLeftJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftJumpingImage.png";
 		String smallMarioRightJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightJumpingImage.png";
 		
-		String bigMarioImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioImage.png";
+		String bigMarioLeftImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftImage.png";
+		String bigMarioRightImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightImage.png";
+		String bigMarioRightWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightWalkingImage.png";
+		String bigMarioLeftWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftWalkingImage.png";
+		String bigMarioLeftJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftJumpingImage.png";
+		String bigMarioRightJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightJumpingImage.png";
 		
-		String marioMushroomImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/marioMushroomImage.png";
+		String marioMushroomImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/mushroomImage.png";
 		
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
@@ -54,6 +59,15 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage smallMarioLeftWalkingImage = null;
 		BufferedImage smallMarioLeftJumpingImage = null;
 		BufferedImage smallMarioRightJumpingImage = null;
+		
+		
+		BufferedImage bigMarioLeftImage = null;
+		BufferedImage bigMarioRightImage = null;
+		BufferedImage bigMarioRightWalkingImage = null;
+		BufferedImage bigMarioLeftWalkingImage = null;
+		BufferedImage bigMarioLeftJumpingImage = null;
+		BufferedImage bigMarioRightJumpingImage = null;
+		
 		
 		BufferedImage bigMarioImage = null;
 		
@@ -66,14 +80,27 @@ public class MarioBrosGame extends GraphicsProgram {
 			smallMarioLeftJumpingImage = ImageIO.read(new File(smallMarioLeftJumpingImagePath));
 			smallMarioRightJumpingImage = ImageIO.read(new File(smallMarioRightJumpingImagePath));
 			
-			bigMarioImage = ImageIO.read(new File(bigMarioImagePath));
+			bigMarioLeftImage = ImageIO.read(new File(bigMarioLeftImagePath));
+			bigMarioRightImage = ImageIO.read(new File(bigMarioRightImagePath));
+			bigMarioLeftWalkingImage = ImageIO.read(new File(bigMarioLeftWalkingImagePath));
+			bigMarioRightWalkingImage = ImageIO.read(new File(bigMarioRightWalkingImagePath));
+			bigMarioLeftJumpingImage = ImageIO.read(new File(bigMarioLeftJumpingImagePath));
+			bigMarioRightJumpingImage = ImageIO.read(new File(bigMarioRightJumpingImagePath));
+			
+			
 			marioMushroomImage = ImageIO.read(new File(marioMushroomImagePath));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage, smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage, bigMarioImage, this.getGCanvas());
+		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
+				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
+				smallMarioRightJumpingImage, 
+				bigMarioLeftImage, bigMarioRightImage,
+				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage,
+				bigMarioRightJumpingImage,
+				this.getGCanvas());
 		
 		add(mario, 120, getHeight()-mario.getHeight());//FOR NOW
 				
@@ -81,9 +108,9 @@ public class MarioBrosGame extends GraphicsProgram {
 		Mushroom mushroom = new Mushroom(marioMushroomImage, this.getGCanvas());
 		Mushroom mushroom2 = new Mushroom(marioMushroomImage, this.getGCanvas());
 		Mushroom mushroom3 = new Mushroom(marioMushroomImage, this.getGCanvas());
-		////add(mushroom, 600, getHeight()-mushroom.getHeight());
-		//add(mushroom2, 800, getHeight()-mushroom.getHeight());
-		//add(mushroom3, 0, getHeight()-mushroom.getHeight());
+		add(mushroom, 600, getHeight()-mushroom.getHeight());
+		add(mushroom2, 800, getHeight()-mushroom.getHeight());
+		add(mushroom3, 0, getHeight()-mushroom.getHeight());
 		System.out.println(getHeight()+"    "+mario.getY());	
 	}
 }

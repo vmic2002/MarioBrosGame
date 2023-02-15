@@ -16,20 +16,33 @@ public class MyKeyListener implements KeyListener {
 		} 
 		System.out.println(mario.movingLeft+"     "+mario.movingRight);
 		System.out.println(mario.getX() + "       "+mario.getY());
-	
+
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		
+
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
+			if (mario.isJumping) {
+				mario.setToJumping(true);
+				System.out.println("rightSETTOTJUMPINGINGING");
+			} else {
+				//	mario.setToStanding(true);
+			}
 			if (mario.movingRight) {
+
 				return;
 			}
 			mario.move(true);
 			System.out.println("pressed move right");
 		} else if (keyCode == KeyEvent.VK_LEFT){
+			if (mario.isJumping) {
+				mario.setToJumping(false);
+				System.out.println("leftSETTOTJUMPINGINGING");
+			} else {
+				//	mario.setToStanding(false);
+			}
 			if (mario.movingLeft) {
 				return;
 			}
@@ -54,19 +67,11 @@ public class MyKeyListener implements KeyListener {
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			System.out.println("released right");
 			mario.movingRight = false;
-			if (mario.isJumping) {
-				mario.setToJumping(true);
-			} else {
-				mario.setToStanding(true);
-			}
+			if (!mario.isJumping) mario.setToStanding(true);
 		} else if (keyCode == KeyEvent.VK_LEFT){
 			System.out.println("released left");
 			mario.movingLeft = false;
-			if (mario.isJumping) {
-				mario.setToJumping(false);
-			} else {
-				mario.setToStanding(false);
-			}
+			if (!mario.isJumping) mario.setToStanding(false);
 		}
 
 	}

@@ -13,7 +13,13 @@ public class Mario extends GImage {
 	private Image smallMarioLeftJumpingImage;
 	private Image smallMarioRightJumpingImage;
 
-	private Image bigMarioImage;
+	private Image bigMarioLeftImage;
+	private Image bigMarioRightImage;
+	private Image bigMarioLeftWalkingImage;
+	private Image bigMarioRightWalkingImage;
+	private Image bigMarioLeftJumpingImage;
+	private Image bigMarioRightJumpingImage;
+
 	private GCanvas canvas;
 	private boolean bigOrSmall = false;//true if mario is big
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
@@ -28,11 +34,15 @@ public class Mario extends GImage {
 	//needed for switching from walking sprite to standing sprite while mario walks
 	public boolean walkingRightOrLeft = false;//is true when mario is walking right or left (his leg should be out)
 	//is false when mario is standing right or left
-	
+
 	public boolean lookingRightOrLeft = true;//true when looking right and false when looking left
 
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
-			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage, Image smallMarioRightJumpingImage, Image bigMarioImage, GCanvas canvas) {
+			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
+			Image smallMarioRightJumpingImage, Image bigMarioLeftImage,
+			Image bigMarioRightImage, Image bigMarioLeftWalkingImage, Image bigMarioRightWalkingImage,
+			Image bigMarioLeftJumpingImage, Image bigMarioRightJumpingImage,
+			GCanvas canvas) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
@@ -40,38 +50,58 @@ public class Mario extends GImage {
 		this.smallMarioRightWalkingImage = smallMarioRightWalkingImage;
 		this.smallMarioLeftJumpingImage = smallMarioLeftJumpingImage;
 		this.smallMarioRightJumpingImage = smallMarioRightJumpingImage;
-		
-		this.bigMarioImage = bigMarioImage;
+
+		this.bigMarioRightImage = bigMarioRightImage;
+		this.bigMarioLeftImage = bigMarioLeftImage;
+		this.bigMarioLeftWalkingImage = bigMarioLeftWalkingImage;
+		this.bigMarioRightWalkingImage = bigMarioRightWalkingImage;
+		this.bigMarioLeftJumpingImage = bigMarioLeftJumpingImage;
+		this.bigMarioRightJumpingImage = bigMarioRightJumpingImage;
+
 		this.canvas = canvas;
 	}
 
-	public void makeBig() {
+
+	public void setImageAndRelocate(Image newImage) {
+		//this function is called instead of setImage when mario changes from big to small
+		//or small to big since they have different heights they need to be readjusted
+		//when mario changes from walking to standing technically could also relocate because
+		//those sprites have slightly different widths, but it is negligible
 		double relativeY = this.getY()+ this.getHeight();
 		//need line above because big mario and small mario dont have the same height
 		//and so need to shift vertically Mario when going from small to big or vice versa
-		double smallWidth = this.getWidth();//returns width of smallMario (needed for horizontal shift)
-		this.setImage(bigMarioImage);
-		//now this.getHeight returns height of big mario != height of small mario
-
+		double previousWidth = this.getWidth();//(needed for horizontal shift)
+		setImage(newImage);
 		//X shift needed to keep big mario and small mario centered since their
 		//widths can differ
-		double xShift = (this.getWidth()-smallWidth)/2;
+		double xShift = (this.getWidth()-previousWidth)/2;
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());	
+	}
+
+
+	public void makeBig() {
+		if (lookingRightOrLeft) {
+			if (isJumping) {
+				//need to check if jumping because mario can jump in the air to 
+				//reach for the mushroom
+				setImageAndRelocate(bigMarioRightJumpingImage);
+			} else {
+				setImageAndRelocate(bigMarioRightImage);
+			}
+		} else {
+			if (isJumping) {
+				setImageAndRelocate(bigMarioLeftJumpingImage);
+			} else {
+				setImageAndRelocate(bigMarioLeftImage);
+			}
+		}
 		bigOrSmall = true;
 	}
 
 	public void makeSmall() {
-		double relativeY = this.getY()+ this.getHeight();
-		//need line above because big mario and small mario dont have the same height
-		//and so need to shift vertically Mario when going from small to big or vice versa
-		double bigWidth = this.getWidth();//returns width of bigMario (needed for horizontal shift)
-		this.setImage(smallMarioLeftImage);//TODO NOT CORRECT
-		//now this.getHeight returns height of small mario != height of big mario
+		//TODO NOT DONE
+		setImage(smallMarioLeftImage);
 
-		//X shift needed to keep big mario and small mario centered since their
-		//widths can differ
-		double xShift = (bigWidth-this.getWidth())/2;
-		this.setLocation(getX()+xShift, relativeY-this.getHeight());
 		bigOrSmall = false;
 	}
 
@@ -79,8 +109,8 @@ public class Mario extends GImage {
 		//System.out.println("JUMP not implemented");
 		//MORE COMPLICATED NEED TO DO THIS IN ANOTHER THREAD
 		//so mario can jump and go left/right concurrently
-		
-		
+
+
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -90,26 +120,14 @@ public class Mario extends GImage {
 				 * TODO
 				 * NEED TO CHECK WHETHER MARIO IS JUMPING ON A MUSHROOM OR TURTLE ETC
 				 */
-				
-				//look at comments in setToWalking func
-				/*
-				 * TODO NEED TO ADD JUMPING ANIMATION
-				 * instead of calling setToWalking
-				 * thomas's idea
-				 */
-				////if (movingRight) {
-					//setToWalking(true);
-				//} else if (movingLeft) {
-				//	setToWalking(false);
-				//}
 
 				if (isJumping) {
 					return;
 				}
 				isJumping = true;
-				
+
 				setToJumping(lookingRightOrLeft);
-				
+
 				for (int i=0; i<30; i++) {
 					move(0, -10);
 					try {
@@ -134,59 +152,42 @@ public class Mario extends GImage {
 						e.printStackTrace();
 					}
 				}
-				
-				lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite
-				
-				isJumping = false;
 
+				lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite
+				isJumping = false;
 			}
 		});  
 		t1.start();
 		//System.out.println("ENd of jump method");
 	}
-	
+
 	public void setToJumping(boolean rightOrLeft) {
 		if (rightOrLeft) {
-			setImage(smallMarioRightJumpingImage);
+			if (bigOrSmall) {
+				setImage(bigMarioRightJumpingImage);
+			} else {
+				setImage(smallMarioRightJumpingImage);
+			}
 		} else {
-			setImage(smallMarioLeftJumpingImage);
+			if (bigOrSmall) {
+				setImage(bigMarioLeftJumpingImage);
+			} else {
+				setImage(smallMarioLeftJumpingImage);
+			}
 		}
 	}
-	
-
-	/*public void setToWalking(boolean rightOrLeft) {
-		//func called in <<jump method>> if user is holding down right or left key
-//MIGHT BE USELESS SINCE MARIO HAS TO BE IN JUMPING SPRITE WHEN HE JUMPS
-		//if user holds down left or right key and jumps there is possibility
-		//that mario is in standing sprite since toggling is done
-		//this func to make mario be in walking sprite when jumping
-		if (rightOrLeft) {
-			if (bigOrSmall) {
-				//this.setImage(bigMarioRightWalkingImage);
-			} else {
-				setImage(smallMarioRightWalkingImage);
-			}
-		} else {
-			if (bigOrSmall) {
-				//this.setImage(bigMarioLeftWalkingImage);
-			} else {
-				setImage(smallMarioLeftWalkingImage);
-			}
-		}
-		walkingRightOrLeft = true;
-	}*/
 
 	public void setToStanding(boolean rightOrLeft) {
 		//function called in key released when mario stops walking his sprite must be standing
 		if (rightOrLeft) {
 			if (bigOrSmall) {
-				//this.setImage(bigMarioRightImage);
+				setImage(bigMarioRightImage);
 			} else {
 				setImage(smallMarioRightImage);
 			}
 		} else {
 			if (bigOrSmall) {
-				//this.setImage(bigMarioLeftImage);
+				setImage(bigMarioLeftImage);
 			} else {
 				setImage(smallMarioLeftImage);
 			}
@@ -195,18 +196,17 @@ public class Mario extends GImage {
 	}
 
 	public void toggleWalking(boolean rightOrLeft) {
-
 		if (rightOrLeft) {
 			if (walkingRightOrLeft) {
 				if (bigOrSmall) {
-					//this.setImage(bigMarioRightImage);
+					setImage(bigMarioRightImage);
 				} else {
 					setImage(smallMarioRightImage);
 				}
 				walkingRightOrLeft = false;
 			} else {
 				if (bigOrSmall) {
-					//this.setImage(bigMarioRightWalkingImage);
+					setImage(bigMarioRightWalkingImage);
 				} else {
 					setImage(smallMarioRightWalkingImage);
 				}
@@ -215,14 +215,14 @@ public class Mario extends GImage {
 		} else {
 			if (walkingRightOrLeft) {
 				if (bigOrSmall) {
-					//this.setImage(bigMarioLeftImage);
+					setImage(bigMarioLeftImage);
 				} else {
 					setImage(smallMarioLeftImage);
 				}
 				walkingRightOrLeft = false;
 			} else {
 				if (bigOrSmall) {
-					//this.setImage(bigMarioLeftWalkingImage);
+					setImage(bigMarioLeftWalkingImage);
 				} else {
 					setImage(smallMarioLeftWalkingImage);
 				}
@@ -234,19 +234,18 @@ public class Mario extends GImage {
 	public void lookInCorrectDirection(boolean rightOrLeft) {
 		if (rightOrLeft) {
 			if (bigOrSmall) {
-				//setImage(bigMarioRightImage);
+				setImage(bigMarioRightImage);
 			} else {
 				setImage(smallMarioRightImage);
 			}
-			lookingRightOrLeft = true;
 		} else {
 			if (bigOrSmall) {
-				//this.setImage(bigMarioLeftImage);
+				setImage(bigMarioLeftImage);
 			} else {
 				setImage(smallMarioLeftImage);
 			}
-			lookingRightOrLeft = false;
 		}
+		lookingRightOrLeft = rightOrLeft;
 	}
 
 
@@ -305,31 +304,19 @@ public class Mario extends GImage {
 		});  
 		t1.start();
 	}
-	
+
 	public void moveHelper(boolean rightOrLeft, boolean toggleWalking) {
 		//this function moves mario right or left once, is repeatedly called to move mario continuously
-		double newX = 0;
-		double dx = rightOrLeft?10:-10.0;//arbitrary dx to move mario not too much
-		if (dx < 0) {
-			newX = getX()+10;
-		} else {
-			newX = getX()+getWidth()-10;
-		}
-		//wait until mushroom image has slightly entered
-		//small mario image to make mario big (since there is whitespace on both sides of mushroom/mario)
-		GObject a = canvas.getElementAt(newX, getY()+getHeight()-10); 
-		if (a!=null) {
-			//a is mario since we are checking if mushroom image has entered mario image enough
-			//to turn small mario into big mario
-			//need to remove mario and check if mushroom is there
-			canvas.remove(a);
-			GObject b = canvas.getElementAt(newX, getY()+getHeight()-10);
-			if (b instanceof Mushroom) {
-				canvas.remove(b);
-				makeBig();
-			}
-			canvas.add(a);
 
+		//arbitrary dx of 10 to move mario not too much
+		double dx = rightOrLeft?10.0:-10;
+		double newX = rightOrLeft?getX()+getWidth()+dx:getX()-dx;
+
+
+		GObject a = canvas.getElementAt(newX, getY()+getHeight()-10); 
+		if (a!=null && a instanceof Mushroom) {
+			canvas.remove(a);
+			makeBig();
 		}
 		move(dx, 0);
 		if (!isJumping && toggleWalking) {			
