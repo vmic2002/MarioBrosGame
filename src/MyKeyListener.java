@@ -16,16 +16,12 @@ public class MyKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
-			if (mario.movingRight) {
-				return;
-			}
 			mario.move(true);
 		} else if (keyCode == KeyEvent.VK_LEFT){
-			if (mario.movingLeft) {
-				return;
-			}
 			mario.move(false);
-		} else if (keyCode == KeyEvent.VK_UP) {
+		} else if (keyCode == KeyEvent.VK_DOWN){
+			mario.setToCrouching();
+		}else if (keyCode == KeyEvent.VK_UP) {
 			mario.jump();
 		} else if (keyCode == KeyEvent.VK_1) {
 			mario.setToBig();
@@ -38,15 +34,21 @@ public class MyKeyListener implements KeyListener {
 																																																																																																															
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		//System.out.println("Key released");
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			mario.movingRight = false;
+			if (mario.isCrouching) {
+				return;
+			}
 			if (!mario.isJumping) mario.setToStanding(true);
 		} else if (keyCode == KeyEvent.VK_LEFT){
 			mario.movingLeft = false;
+			if (mario.isCrouching) {
+				return;
+			}
 			if (!mario.isJumping) mario.setToStanding(false);
+		} else if (keyCode == KeyEvent.VK_DOWN){
+			mario.stopCrouching();
 		}
 	}
 }
