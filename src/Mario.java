@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
@@ -174,10 +175,8 @@ public class Mario extends GImage {
 			public void run() {
 				//code in here runs in another thread since mario can go right or left while jumping
 				//has to be done concurrently
-				/*
-				 * TODO
-				 * NEED TO CHECK WHETHER MARIO IS JUMPING ON A MUSHROOM OR TURTLE ETC
-				 */
+		
+				int dy = 10;
 				if (isJumping) {
 					return;
 				}
@@ -185,36 +184,70 @@ public class Mario extends GImage {
 
 				setToJumping(lookingRightOrLeft);
 
-				for (int i=0; i<30; i++) {
-					move(0, -10);
+				for (int i=0; i<45; i++) {
+					/*
+					 * TODO
+					 * need to check above mario if he jumps into box or mushroom falls on him (fire flower would be impossible since they dont move)
+					 */
+					move(0, -dy);
 					try {
-						Thread.sleep(10);
+						Thread.sleep(7);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
 				try {
-					Thread.sleep(70);//PAUSE AT TOP OF JUMP
+					Thread.sleep(80);//PAUSE AT TOP OF JUMP
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				for (int i=0; i<30; i++) {
-					move(0, 10);
+				if (bigOrSmall) {
+					//if mario is not small then he doesn't stay in jumping sprite on the way down
+					//TODO need to add correct sprite for on the way down of a jump
+					lookInCorrectDirection(lookingRightOrLeft);
+				}
+				
+				for (int i=0; i<45; i++) {
+					//check for 3 points under mario (left middle and right)
+					Point[] arr = new Point[]{new Point(getX(),getY()+getHeight()+dy),
+							new Point(getX()+getWidth()/2, getY()+getHeight()+dy),
+							new Point(getX()+getWidth(), getY()+getHeight()+dy)};
+					ArrayList<GObject> o = checkAtPositions(arr);
+					System.out.println("JUMPING ON SOMETHING "+o.size());
+					for (GObject x : o) {
+						inContactWith(x);
+					}
+					move(0, dy);
 					try {
-						Thread.sleep(10);
+						Thread.sleep(7);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 				}
-
 				lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				isJumping = false;
 			}
 		});  
 		t1.start();
+	}
+
+
+
+	public ArrayList<GObject> checkAtPositions(Point[] points) {
+		//TODO takes list of positions to check at
+		//expects positions to not be in mario's frame, but right next to it
+		//returns list of object mario comes in contact with, returns empty list if none
+		ArrayList<GObject> result = new ArrayList<GObject>();
+		for (Point p : points) {
+			GObject a = canvas.getElementAt(p.x, p.y);
+			if (a!=null) {
+				result.add(a);
+			}
+		}
+		return result;
 	}
 
 	public void setToJumping(boolean rightOrLeft) {
@@ -320,6 +353,7 @@ public class Mario extends GImage {
 	}
 
 	public void lookInCorrectDirection(boolean rightOrLeft) {
+		//sets mario to standing position (not walking or sprinting or jumping)
 		if (rightOrLeft) {
 			if (bigOrSmall) {
 				if (isFire) {
@@ -400,20 +434,19 @@ public class Mario extends GImage {
 		//this function moves mario right or left once, is repeatedly called to move mario continuously
 
 		//arbitrary dx of 10 to move mario not too much
-		double dx = rightOrLeft?10.0:-10;
+		double dx = rightOrLeft?10.0:-10.0;
 		double newX = rightOrLeft?getX()+getWidth()+dx:getX()-dx;
 
-
-		GObject a = canvas.getElementAt(newX, getY()+getHeight()-10); 
-		if (a!=null) {
-			if (a instanceof Mushroom) {
-				canvas.remove(a);
-				if (!isFire) setToBig();//if mario is in flower mode, dont want mushroom to make him big
-			} else if (a instanceof FireFlower) {
-				canvas.remove(a);
-				setToFire();
-				return;
-			}
+		/*TODO
+		 * mario only checks if he walks into an object
+		 * if an object were to run into him, such as turtle or mushroom,
+		 * it would be in that object's move function that handling of such collision
+		 * would be done (mario doesn't check if something runs into him from behind for example)
+		 */
+		Point[] arr = new Point[]{new Point(newX, getY()+getHeight()-20)};
+		ArrayList<GObject> o = checkAtPositions(arr);
+		for (GObject x : o) {
+			inContactWith(x);
 		}
 		move(dx, 0);
 		if (!isJumping && toggleWalking) {			
@@ -421,16 +454,34 @@ public class Mario extends GImage {
 			//in the move function this means that mario is on the ground and moving
 			//so he is walking and needs to have his sprite toggle from walking to standing repeatedly
 			toggleWalking(rightOrLeft);
-		} else if (isJumping) setToJumping(rightOrLeft);
+		} else if (isJumping && !bigOrSmall) {
+			//!bigOrSmall because only small mario stays in jumping
+			//sprite entire time he is in the air
+			setToJumping(rightOrLeft);
+		}
 
-		//TODO NEED TO CHECK IF MARIO JUMPS INTO
-		//MYSTERY BOX OR OUT OF BOUNDS
-		//if mario touches mushroom he becomes big
+
+		//TODO NEED TO CHECK IF MARIO OUT OF BOUNDS
 		try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+	}
+
+	public void inContactWith(GObject o) {
+		//input o is object mario came into contact with
+		if (o instanceof Mario) {
+			System.out.println("ITSA ME MARIO");
+		} else if (o instanceof Mushroom) {
+			System.out.println("ITS MUSHROOM");
+			canvas.remove(o);
+			if (!isFire) setToBig();//if mario is in flower mode, dont want mushroom to make him big
+		} else if (o instanceof FireFlower) {
+			canvas.remove(o);
+			setToFire();
+
 		}
 	}
 

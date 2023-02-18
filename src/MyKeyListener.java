@@ -16,17 +16,11 @@ public class MyKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
-			if (mario.isJumping) {
-				mario.setToJumping(true);
-			} 
 			if (mario.movingRight) {
 				return;
 			}
 			mario.move(true);
 		} else if (keyCode == KeyEvent.VK_LEFT){
-			if (mario.isJumping) {
-				mario.setToJumping(false);
-			}
 			if (mario.movingLeft) {
 				return;
 			}
@@ -41,7 +35,7 @@ public class MyKeyListener implements KeyListener {
 			mario.setToFire();
 		}
 	}
-
+																																																																																																															
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
