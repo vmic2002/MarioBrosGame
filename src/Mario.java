@@ -20,16 +20,20 @@ public class Mario extends GImage {
 	private Image bigMarioRightWalkingImage;
 	private Image bigMarioLeftJumpingImage;
 	private Image bigMarioRightJumpingImage;
-
+	private Image bigMarioLeftJumpingDownImage;
+	private Image bigMarioRightJumpingDownImage;
+	
 	private Image bigMarioLeftFireImage;
 	private Image bigMarioRightFireImage;
 	private Image bigMarioLeftWalkingFireImage;
 	private Image bigMarioRightWalkingFireImage;
 	private Image bigMarioRightJumpingFireImage;
 	private Image bigMarioLeftJumpingFireImage;
-
+	private Image bigMarioLeftJumpingDownFireImage;
+	private Image bigMarioRightJumpingDownFireImage;
+	
 	private GCanvas canvas;
-	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode)
+	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
 
@@ -57,6 +61,8 @@ public class Mario extends GImage {
 			Image bigMarioLeftFireImage, Image bigMarioRightFireImage, 
 			Image bigMarioLeftWalkingFireImage, Image bigMarioRightWalkingFireImage,
 			Image bigMarioLeftJumpingFireImage, Image bigMarioRightJumpingFireImage,
+			Image bigMarioLeftJumpingDownImage, Image bigMarioRightJumpingDownImage,
+			Image bigMarioLeftJumpingDownFireImage, Image bigMarioRightJumpingDownFireImage, 
 			GCanvas canvas) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
@@ -72,13 +78,17 @@ public class Mario extends GImage {
 		this.bigMarioRightWalkingImage = bigMarioRightWalkingImage;
 		this.bigMarioLeftJumpingImage = bigMarioLeftJumpingImage;
 		this.bigMarioRightJumpingImage = bigMarioRightJumpingImage;
-
+		this.bigMarioLeftJumpingDownImage = bigMarioLeftJumpingDownImage;
+		this.bigMarioRightJumpingDownImage = bigMarioRightJumpingDownImage;
+		
 		this.bigMarioLeftFireImage = bigMarioLeftFireImage;
 		this.bigMarioRightFireImage = bigMarioRightFireImage;
 		this.bigMarioLeftWalkingFireImage = bigMarioLeftWalkingFireImage;
 		this.bigMarioRightWalkingFireImage = bigMarioRightWalkingFireImage;
 		this.bigMarioLeftJumpingFireImage = bigMarioLeftJumpingFireImage;
 		this.bigMarioRightJumpingFireImage = bigMarioRightJumpingFireImage;
+		this.bigMarioLeftJumpingDownFireImage = bigMarioLeftJumpingDownFireImage;
+		this.bigMarioRightJumpingDownFireImage = bigMarioRightJumpingDownFireImage;
 
 		this.canvas = canvas;
 	}
@@ -164,7 +174,7 @@ public class Mario extends GImage {
 				setImageAndRelocate(bigMarioLeftFireImage);
 			}
 		}
-		bigOrSmall = true;//if small mario takes flower he becomes flower mario (flower mario is also big)
+		bigOrSmall = true;//if small mario takes flower he becomes flower mario (flower mario is also big, cat as well)
 		isFire = true;
 		//walkingRightOrLeft = false;//maybe comment
 	}
@@ -175,7 +185,7 @@ public class Mario extends GImage {
 			public void run() {
 				//code in here runs in another thread since mario can go right or left while jumping
 				//has to be done concurrently
-		
+
 				int dy = 10;
 				if (isJumping) {
 					return;
@@ -197,6 +207,7 @@ public class Mario extends GImage {
 						e.printStackTrace();
 					}
 				}
+				
 				try {
 					Thread.sleep(80);//PAUSE AT TOP OF JUMP
 				} catch (InterruptedException e) {
@@ -205,10 +216,9 @@ public class Mario extends GImage {
 				}
 				if (bigOrSmall) {
 					//if mario is not small then he doesn't stay in jumping sprite on the way down
-					//TODO need to add correct sprite for on the way down of a jump
-					lookInCorrectDirection(lookingRightOrLeft);
+					setToJumpingDown(lookingRightOrLeft);
 				}
-				
+
 				for (int i=0; i<45; i++) {
 					//check for 3 points under mario (left middle and right)
 					Point[] arr = new Point[]{new Point(getX(),getY()+getHeight()+dy),
@@ -274,31 +284,24 @@ public class Mario extends GImage {
 		}
 	}
 
-	public void setToStanding(boolean rightOrLeft) {
-		//function called in key released when mario stops walking his sprite must be standing
+	public void setToJumpingDown(boolean rightOrLeft) {
+		//mario has different sprite for jumping on the way up or down (except small Mario)
 		if (rightOrLeft) {
-			if (bigOrSmall) {
-				if (isFire) {
-					setImage(bigMarioRightFireImage);
-				} else {
-					setImage(bigMarioRightImage);
-				}
+			if (isFire) {
+				setImage(bigMarioRightJumpingDownFireImage);
 			} else {
-				setImage(smallMarioRightImage);
+				setImage(bigMarioRightJumpingDownImage);
 			}
 		} else {
-			if (bigOrSmall) {
-				if (isFire) {
-					setImage(bigMarioLeftFireImage);
-				} else {
-					setImage(bigMarioLeftImage);
-				}
+			if (isFire) {
+				setImage(bigMarioLeftJumpingDownFireImage);
 			} else {
-				setImage(smallMarioLeftImage);
+				setImage(bigMarioLeftJumpingDownImage);
 			}
 		}
-		walkingRightOrLeft = false;
 	}
+
+	
 
 	public void toggleWalking(boolean rightOrLeft) {
 		if (rightOrLeft) {
@@ -351,6 +354,33 @@ public class Mario extends GImage {
 			}
 		}
 	}
+	
+	
+	public void setToStanding(boolean rightOrLeft) {
+		//function called in key released when mario stops walking his sprite must be standing
+		if (rightOrLeft) {
+			if (bigOrSmall) {
+				if (isFire) {
+					setImage(bigMarioRightFireImage);
+				} else {
+					setImage(bigMarioRightImage);
+				}
+			} else {
+				setImage(smallMarioRightImage);
+			}
+		} else {
+			if (bigOrSmall) {
+				if (isFire) {
+					setImage(bigMarioLeftFireImage);
+				} else {
+					setImage(bigMarioLeftImage);
+				}
+			} else {
+				setImage(smallMarioLeftImage);
+			}
+		}
+		walkingRightOrLeft = false;
+	}
 
 	public void lookInCorrectDirection(boolean rightOrLeft) {
 		//sets mario to standing position (not walking or sprinting or jumping)
@@ -375,7 +405,7 @@ public class Mario extends GImage {
 				setImage(smallMarioLeftImage);
 			}
 		}
-		lookingRightOrLeft = rightOrLeft;
+		//lookingRightOrLeft = rightOrLeft;
 	}
 
 
@@ -387,11 +417,24 @@ public class Mario extends GImage {
 		boolean b = false;
 		if (rightOrLeft) {
 			movingRight = true;
+			movingLeft = false;//prevents mario from bugging and trying to move both right and left at same time
 			b = true;
 		} else {
 			movingLeft = true;
+			movingRight = false;//prevents mario from bugging and trying to move both right and left at same time
 		}
-		lookInCorrectDirection(rightOrLeft);
+		lookingRightOrLeft = rightOrLeft;
+		if (!isJumping) {
+			lookInCorrectDirection(rightOrLeft);
+		} else if (isJumping && !bigOrSmall) {
+			//!bigOrSmall because only small mario stays in jumping
+			//sprite entire time he is in the air
+			setToJumping(rightOrLeft);
+		} else if (isJumping && bigOrSmall) {
+			//to be able to change directions in the air for big mario
+			//big mario (flower, cat, etc) has different sprite for up part of jump and down part
+			setToJumpingDown(rightOrLeft);
+		}
 		final boolean c = b;
 		Thread t1 = new Thread(new Runnable() {
 			@Override
@@ -447,17 +490,13 @@ public class Mario extends GImage {
 		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
 			inContactWith(x);
-		}
+		}	
 		move(dx, 0);
 		if (!isJumping && toggleWalking) {			
 			//!isJumping means that mario is on the ground and maybe moving
 			//in the move function this means that mario is on the ground and moving
 			//so he is walking and needs to have his sprite toggle from walking to standing repeatedly
 			toggleWalking(rightOrLeft);
-		} else if (isJumping && !bigOrSmall) {
-			//!bigOrSmall because only small mario stays in jumping
-			//sprite entire time he is in the air
-			setToJumping(rightOrLeft);
 		}
 
 
