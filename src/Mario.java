@@ -258,8 +258,9 @@ public class Mario extends GImage {
 				if (isJumping) {
 					return;
 				}
-				sound.playMarioJumpSound();
 				isJumping = true;
+				sound.playMarioJumpSound();
+				
 				wayUpOrWayDown = true;
 				if (!isCrouching) {
 					setToJumping(lookingRightOrLeft);
@@ -297,7 +298,6 @@ public class Mario extends GImage {
 							new Point(getX()+getWidth()/2, getY()+getHeight()+dy),
 							new Point(getX()+getWidth(), getY()+getHeight()+dy)};
 					ArrayList<GObject> o = checkAtPositions(arr);
-					System.out.println("JUMPING ON SOMETHING "+o.size());
 					for (GObject x : o) {
 						inContactWith(x);
 					}
@@ -607,7 +607,7 @@ public class Mario extends GImage {
 	public void inContactWith(GObject o) {
 		//input o is object mario came into contact with
 		if (o instanceof Mario) {
-			System.out.println("ITSA ME MARIO");
+			//System.out.println("ITSA ME MARIO");
 		} else if (o instanceof Mushroom) {
 			System.out.println("ITS MUSHROOM");
 			canvas.remove(o);
