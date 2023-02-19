@@ -37,6 +37,7 @@ public class Mario extends GImage {
 	private Image bigMarioRightCrouchingFireImage;
 
 	private GCanvas canvas;
+	private SoundController sound;
 	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
@@ -59,7 +60,7 @@ public class Mario extends GImage {
 	//is false when mario is standing right or left
 
 	public boolean lookingRightOrLeft = true;//true when looking right and false when looking left
-	public boolean isCrouching = false;
+	public boolean isCrouching = false; //true if mario is crouching false if not
 
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
@@ -73,7 +74,7 @@ public class Mario extends GImage {
 			Image bigMarioLeftJumpingDownFireImage, Image bigMarioRightJumpingDownFireImage, 
 			Image bigMarioLeftCrouchingImage, Image bigMarioRightCrouchingImage,
 			Image bigMarioLeftCrouchingFireImage, Image bigMarioRightCrouchingFireImage,
-			GCanvas canvas) {
+			GCanvas canvas, SoundController sound) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
@@ -105,6 +106,7 @@ public class Mario extends GImage {
 		this.bigMarioRightCrouchingFireImage = bigMarioRightCrouchingFireImage;
 
 		this.canvas = canvas;
+		this.sound = sound;
 	}
 
 
@@ -256,6 +258,7 @@ public class Mario extends GImage {
 				if (isJumping) {
 					return;
 				}
+				sound.playMarioJumpSound();
 				isJumping = true;
 				wayUpOrWayDown = true;
 				if (!isCrouching) {
@@ -609,9 +612,11 @@ public class Mario extends GImage {
 			System.out.println("ITS MUSHROOM");
 			canvas.remove(o);
 			if (!isFire) setToBig();//if mario is in flower mode, dont want mushroom to make him big
+			sound.playPowerUpSound();
 		} else if (o instanceof FireFlower) {
 			canvas.remove(o);
 			setToFire();
+			sound.playPowerUpSound();
 		}
 	}
 

@@ -138,6 +138,8 @@ public class MarioBrosGame extends GraphicsProgram {
 			e.printStackTrace();
 		}
 
+		SoundController sound = new SoundController();
+		
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, 
@@ -149,7 +151,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioLeftJumpingDownFireImage, bigMarioRightJumpingDownFireImage,
 				bigMarioLeftCrouchingImage, bigMarioRightCrouchingImage,
 				bigMarioLeftCrouchingFireImage, bigMarioRightCrouchingFireImage,
-				this.getGCanvas());
+				this.getGCanvas(), sound);
 
 		add(mario, getWidth(), getHeight()-mario.getHeight());//FOR NOW
 
@@ -163,7 +165,9 @@ public class MarioBrosGame extends GraphicsProgram {
 		add(mushroom3, 200, getHeight()-mushroom.getHeight());
 		add(flower, 400, getHeight()-flower.getHeight());
 		
-		while (true) {
+		
+	
+		/*while (true) {
 			add(mushroom, 600, getHeight()-mushroom.getHeight());
 			add(mushroom2, 800, getHeight()-mushroom.getHeight());
 			add(mushroom3, 0, getHeight()-mushroom.getHeight());
@@ -174,6 +178,6 @@ public class MarioBrosGame extends GraphicsProgram {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}
+		}*/
 	}
 }
