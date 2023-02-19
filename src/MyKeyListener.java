@@ -21,7 +21,9 @@ public class MyKeyListener implements KeyListener {
 			mario.move(false);
 		} else if (keyCode == KeyEvent.VK_DOWN){
 			mario.setToCrouching();
-		}else if (keyCode == KeyEvent.VK_UP) {
+		} else if (keyCode == KeyEvent.VK_F){
+			mario.shootFireBall();
+		} else if (keyCode == KeyEvent.VK_UP) {
 			mario.jump();
 		} else if (keyCode == KeyEvent.VK_1) {
 			mario.setToBig();

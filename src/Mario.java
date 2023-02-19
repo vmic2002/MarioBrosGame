@@ -35,6 +35,17 @@ public class Mario extends GImage {
 	private Image bigMarioRightJumpingDownFireImage;
 	private Image bigMarioLeftCrouchingFireImage;
 	private Image bigMarioRightCrouchingFireImage;
+	private Image bigMarioLeftFireShooting1Image;
+	private Image bigMarioLeftFireShooting2Image;
+	private Image bigMarioRightFireShooting1Image;
+	private Image bigMarioRightFireShooting2Image;
+	private Image bigMarioLeftJumpingFireShooting1Image;
+	private Image bigMarioLeftJumpingFireShooting2Image;
+	private Image bigMarioLeftJumpingFireShooting3Image;
+	private Image bigMarioRightJumpingFireShooting1Image;
+	private Image bigMarioRightJumpingFireShooting2Image;
+	private Image bigMarioRightJumpingFireShooting3Image;
+
 
 	private GCanvas canvas;
 	private SoundController sound;
@@ -62,6 +73,13 @@ public class Mario extends GImage {
 	public boolean lookingRightOrLeft = true;//true when looking right and false when looking left
 	public boolean isCrouching = false; //true if mario is crouching false if not
 
+	public enum SHOOT_FIRE_JUMPING {NOT_SHOOTING, STAGE1, STAGE2, STAGE3};
+	public enum SHOOT_FIRE_STANDING {NOT_SHOOTING, STAGE1, STAGE2};
+	SHOOT_FIRE_JUMPING shootFireJumping = SHOOT_FIRE_JUMPING .NOT_SHOOTING;
+	SHOOT_FIRE_STANDING shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
+	//enums above are used to determine what stage of shooting a fireball mario is in
+	//if jumping, there are 4 stages, one for not shooting
+	//if standing, there are 3, one for not shooting
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image bigMarioLeftImage,
@@ -74,6 +92,12 @@ public class Mario extends GImage {
 			Image bigMarioLeftJumpingDownFireImage, Image bigMarioRightJumpingDownFireImage, 
 			Image bigMarioLeftCrouchingImage, Image bigMarioRightCrouchingImage,
 			Image bigMarioLeftCrouchingFireImage, Image bigMarioRightCrouchingFireImage,
+			Image bigMarioLeftFireShooting1Image, Image bigMarioLeftFireShooting2Image,
+			Image bigMarioRightFireShooting1Image, Image bigMarioRightFireShooting2Image,
+			Image bigMarioLeftJumpingFireShooting1Image, Image bigMarioLeftJumpingFireShooting2Image,
+			Image bigMarioLeftJumpingFireShooting3Image,Image bigMarioRightJumpingFireShooting1Image,
+			Image bigMarioRightJumpingFireShooting2Image, Image bigMarioRightJumpingFireShooting3Image,
+
 			GCanvas canvas, SoundController sound) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
@@ -104,6 +128,17 @@ public class Mario extends GImage {
 		this.bigMarioRightJumpingDownFireImage = bigMarioRightJumpingDownFireImage;
 		this.bigMarioLeftCrouchingFireImage = bigMarioLeftCrouchingFireImage;
 		this.bigMarioRightCrouchingFireImage = bigMarioRightCrouchingFireImage;
+		this.bigMarioLeftFireShooting1Image = bigMarioLeftFireShooting1Image;
+		this.bigMarioLeftFireShooting2Image = bigMarioLeftFireShooting2Image;
+		this.bigMarioRightFireShooting1Image = bigMarioRightFireShooting1Image;
+		this.bigMarioRightFireShooting2Image = bigMarioRightFireShooting2Image;
+		this.bigMarioLeftJumpingFireShooting1Image = bigMarioLeftJumpingFireShooting1Image;
+		this.bigMarioLeftJumpingFireShooting2Image = bigMarioLeftJumpingFireShooting2Image;
+		this.bigMarioLeftJumpingFireShooting3Image = bigMarioLeftJumpingFireShooting3Image;
+		this.bigMarioRightJumpingFireShooting1Image = bigMarioRightJumpingFireShooting1Image;
+		this.bigMarioRightJumpingFireShooting2Image = bigMarioRightJumpingFireShooting2Image;
+		this.bigMarioRightJumpingFireShooting3Image = bigMarioRightJumpingFireShooting3Image;
+
 
 		this.canvas = canvas;
 		this.sound = sound;
@@ -219,6 +254,16 @@ public class Mario extends GImage {
 			//small mario cant crouch
 			return;
 		}
+		if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
+			//JUMPING AND SHOOTING
+			//mario doesn't crouch if shooting
+			return;
+		}
+		if (!isJumping && shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
+			//STANDING AND SHOOTING
+			//mario doesn't crouch if shooting
+			return;
+		}
 		if (!isJumping) {
 			//if mario is not jumping and crouches he must come to a stop
 			if (movingRight) {
@@ -258,9 +303,12 @@ public class Mario extends GImage {
 				if (isJumping) {
 					return;
 				}
+				if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
+					return;//mario doesnt jump if he is in the middle of shooting while standing
+				}
 				isJumping = true;
 				sound.playMarioJumpSound();
-				
+
 				wayUpOrWayDown = true;
 				if (!isCrouching) {
 					setToJumping(lookingRightOrLeft);
@@ -494,6 +542,7 @@ public class Mario extends GImage {
 			lookInDirectionCrouching(rightOrLeft);
 			if (!isJumping) return;//mario cant move if he is crouching and not jumping
 		}
+
 		boolean b = false;
 		if (rightOrLeft) {
 			movingRight = true;
@@ -505,7 +554,15 @@ public class Mario extends GImage {
 		}
 		lookingRightOrLeft = rightOrLeft;
 		if (!isJumping) {
-			lookInCorrectDirection(rightOrLeft);
+			if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
+				//to change direction while shooting fireball
+				//lookCorrectWayShootingFire(rightOrLeft);
+				//line above commented because even though it is technically correct,
+				//there is no point in changing direction if standing and shooting
+				//because mario starts walking right after so the change is not even noticeable
+			} else {
+				lookInCorrectDirection(rightOrLeft);
+			}
 		} else if (isJumping && !bigOrSmall) {
 			//!bigOrSmall because only small mario stays in jumping
 			//sprite entire time he is in the air
@@ -515,7 +572,10 @@ public class Mario extends GImage {
 			//big mario (flower, cat, etc) has different sprite for up part of jump and down part
 			if (isCrouching) {
 				lookInDirectionCrouching(rightOrLeft);
-			} else if (wayUpOrWayDown){
+			} else if (shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
+				//MOVING IN THE AIR WHILE SHOOTING FIRE BALL
+				lookCorrectWayShootingFire(rightOrLeft);
+			} else if(wayUpOrWayDown) {
 				setToJumping(rightOrLeft);
 			} else {
 				setToJumpingDown(rightOrLeft);
@@ -592,9 +652,6 @@ public class Mario extends GImage {
 			//so he is walking and needs to have his sprite toggle from walking to standing repeatedly
 			toggleWalking(rightOrLeft);
 		}
-
-
-
 		//TODO NEED TO CHECK IF MARIO OUT OF BOUNDS
 		try {
 			Thread.sleep(20);
@@ -618,6 +675,157 @@ public class Mario extends GImage {
 			setToFire();
 			sound.playPowerUpSound();
 		}
+	}
+
+	public void lookCorrectWayShootingFire(boolean rightOrLeft) {
+		//this func is called in move function to look in correct direction in
+		//the middle of shooting a fireball in the air
+		if (rightOrLeft) {
+			if (shootFireJumping==SHOOT_FIRE_JUMPING.STAGE1) {
+				setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
+			} else if (shootFireJumping==SHOOT_FIRE_JUMPING.STAGE2) {
+				setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
+			} else if (shootFireJumping==SHOOT_FIRE_JUMPING.STAGE3) {
+				setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
+			} else {
+				System.out.println("SHOULD NEVER HAPPEN1!!!!!!!!!");
+			}
+		} else {
+			if (shootFireJumping==SHOOT_FIRE_JUMPING.STAGE1) {
+				setImageAndRelocate(bigMarioLeftJumpingFireShooting1Image);
+			} else if (shootFireJumping==SHOOT_FIRE_JUMPING.STAGE2) {
+				setImageAndRelocate(bigMarioLeftJumpingFireShooting2Image);
+			} else if (shootFireJumping==SHOOT_FIRE_JUMPING.STAGE3) {
+				setImageAndRelocate(bigMarioLeftJumpingFireShooting3Image);
+			} else {
+				System.out.println("SHOULD NEVER HAPPEN2!!!!!!!!!");
+			}
+		}
+	}
+
+	public void shootFireBall() {
+		//shootFireJumping
+		//shootFireStanding
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				//code in here runs in another thread
+				//TODO bug where if jumping and shooting fireball, mario doesnt come all the way back down
+				//i think it is because of the concurency -> changing image and relocating it in one thread
+				//plus moving the image in another thread means there could maybe be a data race!!
+				//this bug should be fixed once mario's jump function doesnt only use two for loops to go up and down the same amount
+				//but a while loop so mario keeps on falling until he hits the ground. data race would no longer be a problem
+				
+				if (!isFire || isCrouching) return;//only fire mario can shoot fireballs, also mario cant shoot if crouching
+				if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
+					System.out.println("JUMPING AND SHOOTING");
+					return;//return if already shooting
+				}
+				if (!isJumping && shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
+					System.out.println("STANDING AND SHOOTING");
+					return;//return if already shooting
+				}
+
+				int pauseBetweenStages = 100;
+				sound.playFireballSound();
+				//TODO this function doesnt check if mario gets hit by turtle etc and
+				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
+				//TODO also need to actually shoot a fireball not just change sprites
+				//ENTERING STAGE1
+				boolean startedJumping = isJumping;
+				if (isJumping) {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftJumpingFireShooting1Image);
+					}
+					shootFireJumping = SHOOT_FIRE_JUMPING.STAGE1;
+				} else {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightFireShooting1Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftFireShooting1Image);
+					}
+					shootFireStanding = SHOOT_FIRE_STANDING.STAGE1;
+				}
+				try {
+					Thread.sleep(pauseBetweenStages);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				//ENTERING STAGE2 				
+				if (isJumping != startedJumping) {
+					//need to check if isJumping is different from startedJumping after every stage
+					//if they are different then mario was jumping, started shooting a fireball but
+					//landed before finishing shooting the fireball
+					//need to stop shooting fireball (return from function, set stage to not shooting) if that is the case
+					//if here than isJumping is false but startedJumping is true
+					//because mario cant jump if he is currently shooting and standing, so startedJumping must be true
+					shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+					return;
+				}
+				if (isJumping) {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftJumpingFireShooting2Image);
+					}
+					shootFireJumping = SHOOT_FIRE_JUMPING.STAGE2;
+				} else {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightFireShooting2Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftFireShooting2Image);
+					}
+					shootFireStanding = SHOOT_FIRE_STANDING.STAGE2;
+				}
+				try {
+					Thread.sleep(pauseBetweenStages);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (isJumping != startedJumping) {
+					//need to check if isJumping is different from startedJumping after every stage
+					//if they are different then mario was jumping, started shooting a fireball but
+					//landed before finishing shooting the fireball
+					//need to stop shooting fireball (return from function, set stage to not shooting) if that is the case
+					//if here than isJumping is false but startedJumping is true
+					//because mario cant jump if he is currently shooting and standing, so startedJumping must be true
+					shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+					return;
+				}
+				if (!isJumping) {
+					//if standing there is only 2 stages so now must go back to standing sprite
+					//done shooting fireball
+					lookInCorrectDirection(lookingRightOrLeft);
+					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
+					return;
+				}
+				//ENTERING STAGE3 for jumping
+				if (lookingRightOrLeft) {
+					setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
+				} else {
+					setImageAndRelocate(bigMarioLeftJumpingFireShooting3Image);
+				}
+				shootFireJumping = SHOOT_FIRE_JUMPING.STAGE3;
+				try {
+					Thread.sleep(pauseBetweenStages);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (isJumping) {
+					//if mario is still jumping after thread pause above
+					if (wayUpOrWayDown) {
+						setToJumping(lookingRightOrLeft);
+					} else {
+						setToJumpingDown(lookingRightOrLeft);
+					}
+				}
+				shootFireJumping= SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+
+			}
+		});  
+		t1.start();
 	}
 
 }
