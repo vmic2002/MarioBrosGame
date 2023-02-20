@@ -49,6 +49,7 @@ public class Mario extends GImage {
 
 	private GCanvas canvas;
 	private SoundController sound;
+	private FireBallFactory fireBallFactory;
 	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
@@ -98,7 +99,7 @@ public class Mario extends GImage {
 			Image bigMarioLeftJumpingFireShooting3Image,Image bigMarioRightJumpingFireShooting1Image,
 			Image bigMarioRightJumpingFireShooting2Image, Image bigMarioRightJumpingFireShooting3Image,
 
-			GCanvas canvas, SoundController sound) {
+			GCanvas canvas, SoundController sound, FireBallFactory fireBallFactory) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
@@ -142,6 +143,7 @@ public class Mario extends GImage {
 
 		this.canvas = canvas;
 		this.sound = sound;
+		this.fireBallFactory = fireBallFactory;
 	}
 
 
@@ -730,7 +732,10 @@ public class Mario extends GImage {
 				sound.playFireballSound();
 				//TODO this function doesnt check if mario gets hit by turtle etc and
 				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
-				//TODO also need to actually shoot a fireball not just change sprites
+				double x = lookingRightOrLeft?getX()+getWidth():getX()-10;
+				double y = getY()+0.4*getHeight();//might have to change
+				fireBallFactory.addFireBall(x, y, lookingRightOrLeft);
+				
 				//ENTERING STAGE1
 				boolean startedJumping = isJumping;
 				if (isJumping) {

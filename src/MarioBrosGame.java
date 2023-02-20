@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
@@ -26,7 +27,7 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * mario walks
 	 */
 
-	private static final int WIDTH = 2000;
+	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
 	private static final long serialVersionUID = 1L;
 
@@ -75,6 +76,12 @@ public class MarioBrosGame extends GraphicsProgram {
 		String bigMarioRightJumpingFireShooting3ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightJumpingFireShooting3Image.png";
 		String leftFireBall1ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/leftFireBall1.png";
 		String rightFireBall1ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/rightFireBall1.png";
+		String leftFireBall2ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/leftFireBall2.png";
+		String rightFireBall2ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/rightFireBall2.png";
+		String leftFireBall3ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/leftFireBall3.png";
+		String rightFireBall3ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/rightFireBall3.png";
+		String leftFireBall4ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/leftFireBall4.png";
+		String rightFireBall4ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/rightFireBall4.png";
 
 		String mushroomImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/mushroomImage.png";
 		String fireFlowerImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/fireFlowerImage.png";
@@ -121,6 +128,12 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage bigMarioRightJumpingFireShooting3Image = null;
 		BufferedImage leftFireBall1Image = null;
 		BufferedImage rightFireBall1Image = null;
+		BufferedImage leftFireBall2Image = null;
+		BufferedImage rightFireBall2Image = null;
+		BufferedImage leftFireBall3Image = null;
+		BufferedImage rightFireBall3Image = null;
+		BufferedImage leftFireBall4Image = null;
+		BufferedImage rightFireBall4Image = null;
 
 		BufferedImage mushroomImage = null;
 		BufferedImage fireFlowerImage = null;
@@ -165,9 +178,15 @@ public class MarioBrosGame extends GraphicsProgram {
 			bigMarioRightJumpingFireShooting3Image = ImageIO.read(new File(bigMarioRightJumpingFireShooting3ImagePath));;
 			leftFireBall1Image = ImageIO.read(new File(leftFireBall1ImagePath));
 			rightFireBall1Image = ImageIO.read(new File(rightFireBall1ImagePath));
+			leftFireBall2Image = ImageIO.read(new File(leftFireBall2ImagePath));
+			rightFireBall2Image = ImageIO.read(new File(rightFireBall2ImagePath));
+			leftFireBall3Image = ImageIO.read(new File(leftFireBall3ImagePath));
+			rightFireBall3Image = ImageIO.read(new File(rightFireBall3ImagePath));
+			leftFireBall4Image = ImageIO.read(new File(leftFireBall4ImagePath));
+			rightFireBall4Image = ImageIO.read(new File(rightFireBall4ImagePath));
 
 
-			mushroomImage = ImageIO.read(new File(mushroomImagePath));
+					mushroomImage = ImageIO.read(new File(mushroomImagePath));
 			fireFlowerImage = ImageIO.read(new File(fireFlowerImagePath));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -175,7 +194,11 @@ public class MarioBrosGame extends GraphicsProgram {
 		}
 
 		SoundController sound = new SoundController();
-		
+		FireBall.setObjects(this.getGCanvas(), leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
+				 rightFireBall2Image, leftFireBall3Image,
+				 rightFireBall3Image, leftFireBall4Image,
+				 rightFireBall4Image);
+		FireBallFactory fireBallFactory = new FireBallFactory(leftFireBall1Image, rightFireBall1Image, this.getGCanvas());
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, 
@@ -192,7 +215,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioLeftJumpingFireShooting1Image, bigMarioLeftJumpingFireShooting2Image,
 				bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
 				bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
-				this.getGCanvas(), sound);
+				this.getGCanvas(), sound, fireBallFactory);
 
 		add(mario, getWidth(), getHeight()-mario.getHeight());//FOR NOW
 

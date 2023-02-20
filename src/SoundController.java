@@ -45,7 +45,7 @@ public class SoundController {
 	}
 	
 	public void playFireballSound() {
-		//TODO need to call this function
+		//plays when mario shoots a fireball
 		playSound(fireBallSoundFile);
 	}
 	
