@@ -47,18 +47,40 @@ public class Mario extends GImage {
 	private Image bigMarioRightJumpingFireShooting3Image;
 
 
+	private Image bigMarioLeftCatImage;
+	private Image bigMarioRightCatImage;
+	private Image bigMarioLeftWakingCatImage;
+	private Image bigMarioRightWalkingCatImage;
+	private Image bigMarioLeftJumpingCatImage;
+	private Image bigMarioRightJumpingCatImage;
+	private Image bigMarioRightJumpingDownCatImage;
+	private Image bigMarioLeftJumpingDownCatImage;
+	private Image bigMarioLeftCrouchingCatImage;
+	private Image bigMarioRightCrouchingCatImage;
+	private Image bigMarioLeftJumpingCatTail1Image;
+	private Image bigMarioRightJumpingCatTail1Image;
+	private Image bigMarioLeftJumpingCatTail2Image;
+	private Image bigMarioRightJumpingCatTail2Image;
+	private Image bigMarioCatTail1Image;
+	private Image bigMarioLeftCatTail2Image;
+	private Image bigMarioRightCatTail2Image;
+	private Image bigMarioCatTail3Image;
+
+
+
 	private GCanvas canvas;
 	private SoundController sound;
 	private FireBallFactory fireBallFactory;
 	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
-	public boolean wayUpOrWayDown =  false;//if isJumping if false wayUpOrDown's value is meaningless
+	public boolean wayUpOrWayDown =  false;//if isJumping is false wayUpOrDown's value is meaningless
 	//if isJumping is true then if wayUpOrDown is true mario is on the way up
 	//if wayUpOrDown is false then mario is on the way down of a jump
 
 	public boolean isFire = false;//true if mario is in fire/flower mode
-	//design decision: small mario eating fire flower turns directly into fire mario, not just big mario
+	public boolean isCat = false;//true if mario is in cat mode
+	//design decision: small mario eating fire flower/leaf turns directly into fire/cat mario, not just big mario
 
 
 	public boolean movingRight = false;
@@ -81,6 +103,14 @@ public class Mario extends GImage {
 	//enums above are used to determine what stage of shooting a fireball mario is in
 	//if jumping, there are 4 stages, one for not shooting
 	//if standing, there are 3, one for not shooting
+
+	public enum SWING_TAIL_JUMPING {NOT_SWINGING, STAGE1, STAGE2, STAGE3};//stage 1 tail is parallel to ground, stage 2 tail is down, stage 3 back to parallel
+	public enum SWING_TAIL_STANDING {NOT_SWINGING, STAGE1, STAGE2, STAGE3};//stage 1 is looking at user, stage2 right/left, stage3 back to the user
+	SWING_TAIL_JUMPING swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
+	SWING_TAIL_STANDING swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
+	private static final int pauseInAir = 7;//lower number means faster jump (less long-pauses in jump function)
+	private int pauseGoingDown = pauseInAir;//this is changed while cat mario swings tail in the air so he is suspended in the air
+
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image bigMarioLeftImage,
@@ -98,6 +128,14 @@ public class Mario extends GImage {
 			Image bigMarioLeftJumpingFireShooting1Image, Image bigMarioLeftJumpingFireShooting2Image,
 			Image bigMarioLeftJumpingFireShooting3Image,Image bigMarioRightJumpingFireShooting1Image,
 			Image bigMarioRightJumpingFireShooting2Image, Image bigMarioRightJumpingFireShooting3Image,
+
+			Image bigMarioLeftCatImage, Image bigMarioRightCatImage, Image bigMarioLeftWakingCatImage, Image bigMarioRightWalkingCatImage,
+			Image bigMarioLeftJumpingCatImage, Image bigMarioRightJumpingCatImage, Image bigMarioRightJumpingDownCatImage,
+			Image bigMarioLeftJumpingDownCatImage, Image bigMarioLeftCrouchingCatImage, Image bigMarioRightCrouchingCatImage,
+			Image bigMarioLeftJumpingCatTail1Image, Image bigMarioRightJumpingCatTail1Image, Image bigMarioLeftJumpingCatTail2Image,
+			Image bigMarioRightJumpingCatTail2Image,
+			Image bigMarioCatTail1Image, Image bigMarioLeftCatTail2Image,
+			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image,
 
 			GCanvas canvas, SoundController sound, FireBallFactory fireBallFactory) {
 		super(smallMarioRightImage);
@@ -140,6 +178,24 @@ public class Mario extends GImage {
 		this.bigMarioRightJumpingFireShooting2Image = bigMarioRightJumpingFireShooting2Image;
 		this.bigMarioRightJumpingFireShooting3Image = bigMarioRightJumpingFireShooting3Image;
 
+		this.bigMarioLeftCatImage = bigMarioLeftCatImage;
+		this.bigMarioRightCatImage = bigMarioRightCatImage;
+		this.bigMarioLeftWakingCatImage = bigMarioLeftWakingCatImage;
+		this.bigMarioRightWalkingCatImage = bigMarioRightWalkingCatImage;
+		this.bigMarioLeftJumpingCatImage = bigMarioLeftJumpingCatImage;
+		this.bigMarioRightJumpingCatImage = bigMarioRightJumpingCatImage;
+		this.bigMarioRightJumpingDownCatImage = bigMarioRightJumpingDownCatImage;
+		this.bigMarioLeftJumpingDownCatImage = bigMarioLeftJumpingDownCatImage;
+		this.bigMarioLeftCrouchingCatImage = bigMarioLeftCrouchingCatImage;
+		this.bigMarioRightCrouchingCatImage = bigMarioRightCrouchingCatImage;
+		this.bigMarioLeftJumpingCatTail1Image = bigMarioLeftJumpingCatTail1Image;
+		this.bigMarioRightJumpingCatTail1Image = bigMarioRightJumpingCatTail1Image;
+		this.bigMarioLeftJumpingCatTail2Image = bigMarioLeftJumpingCatTail2Image;
+		this.bigMarioRightJumpingCatTail2Image = bigMarioRightJumpingCatTail2Image;
+		this.bigMarioCatTail1Image = bigMarioCatTail1Image;
+		this.bigMarioLeftCatTail2Image = bigMarioLeftCatTail2Image;
+		this.bigMarioRightCatTail2Image = bigMarioRightCatTail2Image;
+		this.bigMarioCatTail3Image = bigMarioCatTail3Image;
 
 		this.canvas = canvas;
 		this.sound = sound;
@@ -164,10 +220,32 @@ public class Mario extends GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());	
 	}
 
+	public void setToCat() {
+		if (isCat) return;
+		if (lookingRightOrLeft) {
+			if (isJumping) {
+				//need to check if jumping because mario can jump in the air to 
+				//reach for the leaf
+				setImageAndRelocate(bigMarioRightJumpingCatImage);
+			} else {
+				setImageAndRelocate(bigMarioRightCatImage);
+			}
+		} else {
+			if (isJumping) {
+				setImageAndRelocate(bigMarioLeftJumpingCatImage);
+			} else {
+				setImageAndRelocate(bigMarioLeftCatImage);
+			}
+		}
+		bigOrSmall = true;
+		isFire = false;
+		isCat = true;
+		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
+	}
 
 	public void setToBig() {
 		//can be called if mario eats mushroom to grow
-		//or if fire mario gets hit by something and goes back 
+		//or if fire mario or cat mario gets hit by something and goes back 
 		//to big mario
 		if (bigOrSmall && !isFire) return;
 		if (lookingRightOrLeft) {
@@ -187,6 +265,7 @@ public class Mario extends GImage {
 		}
 		bigOrSmall = true;
 		isFire = false;
+		isCat = false;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
 	}
 
@@ -210,6 +289,7 @@ public class Mario extends GImage {
 		}
 		bigOrSmall = false;
 		isFire = false;
+		isCat = false;
 		isCrouching = false;
 	}
 
@@ -231,6 +311,7 @@ public class Mario extends GImage {
 		}
 		bigOrSmall = true;//if small mario takes flower he becomes flower mario (flower mario is also big, cat as well)
 		isFire = true;
+		isCat = false;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
 	}
 
@@ -238,12 +319,16 @@ public class Mario extends GImage {
 		if (rightOrLeft) {
 			if (isFire) {
 				setImageAndRelocate(bigMarioRightCrouchingFireImage);
-			} else {
+			} else if (isCat){
+				setImageAndRelocate(bigMarioRightCrouchingCatImage);
+			} else { 
 				setImageAndRelocate(bigMarioRightCrouchingImage);
 			}
 		} else {
 			if (isFire) {
 				setImageAndRelocate(bigMarioLeftCrouchingFireImage);
+			} else if (isCat){
+				setImageAndRelocate(bigMarioLeftCrouchingCatImage);
 			} else {
 				setImageAndRelocate(bigMarioLeftCrouchingImage);
 			}
@@ -308,6 +393,9 @@ public class Mario extends GImage {
 				if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
 					return;//mario doesnt jump if he is in the middle of shooting while standing
 				}
+				if (swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) {
+					return;//mario doesnt jump if he is in the middle of swinging while standing
+				}
 				isJumping = true;
 				sound.playMarioJumpSound();
 
@@ -316,13 +404,17 @@ public class Mario extends GImage {
 					setToJumping(lookingRightOrLeft);
 				}
 				for (int i=0; i<45; i++) {
-					/*
-					 * TODO
-					 * need to check above mario if he jumps into box or mushroom falls on him (fire flower would be impossible since they dont move)
-					 */
+					// for 3 points over mario (left middle and right)
+					Point[] arr = new Point[]{new Point(getX(),getY()-dy),
+							new Point(getX()+getWidth()/2, getY()-dy),
+							new Point(getX()+getWidth(), getY()-dy)};
+					ArrayList<GObject> o = checkAtPositions(arr);
+					for (GObject x : o) {
+						inContactWith(x);
+					}
 					move(0, -dy);
 					try {
-						Thread.sleep(7);
+						Thread.sleep(pauseInAir);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -342,7 +434,8 @@ public class Mario extends GImage {
 				}
 
 
-				for (int i=0; i<45; i++) {
+				while (getY()+getHeight()+dy<=canvas.getHeight()) {
+					//TODO once levels will be made we dont want mario to go all the way down to the bottom of the screen
 					//check for 3 points under mario (left middle and right)
 					Point[] arr = new Point[]{new Point(getX(),getY()+getHeight()+dy),
 							new Point(getX()+getWidth()/2, getY()+getHeight()+dy),
@@ -353,7 +446,7 @@ public class Mario extends GImage {
 					}
 					move(0, dy);
 					try {
-						Thread.sleep(7);
+						Thread.sleep(pauseGoingDown);
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -389,6 +482,8 @@ public class Mario extends GImage {
 			if (bigOrSmall) {
 				if (isFire) {
 					setImageAndRelocate(bigMarioRightJumpingFireImage);
+				} else if (isCat){
+					setImageAndRelocate(bigMarioRightJumpingCatImage);
 				} else {
 					setImageAndRelocate(bigMarioRightJumpingImage);
 				}
@@ -399,6 +494,8 @@ public class Mario extends GImage {
 			if (bigOrSmall) {
 				if (isFire) {
 					setImageAndRelocate(bigMarioLeftJumpingFireImage);
+				} else if (isCat){
+					setImageAndRelocate(bigMarioLeftJumpingCatImage);
 				} else {
 					setImageAndRelocate(bigMarioLeftJumpingImage);
 				}
@@ -413,12 +510,16 @@ public class Mario extends GImage {
 		if (rightOrLeft) {
 			if (isFire) {
 				setImageAndRelocate(bigMarioRightJumpingDownFireImage);
+			} else if (isCat){
+				setImageAndRelocate(bigMarioRightJumpingDownCatImage);
 			} else {
 				setImageAndRelocate(bigMarioRightJumpingDownImage);
 			}
 		} else {
 			if (isFire) {
 				setImageAndRelocate(bigMarioLeftJumpingDownFireImage);
+			} else if (isCat){
+				setImageAndRelocate(bigMarioLeftJumpingDownCatImage);
 			} else {
 				setImageAndRelocate(bigMarioLeftJumpingDownImage);
 			}
@@ -433,6 +534,8 @@ public class Mario extends GImage {
 				if (bigOrSmall) {
 					if (isFire) {
 						setImage(bigMarioRightFireImage);
+					} else if (isCat){
+						setImage(bigMarioRightCatImage);
 					} else {
 						setImage(bigMarioRightImage);
 					}
@@ -444,6 +547,8 @@ public class Mario extends GImage {
 				if (bigOrSmall) {
 					if (isFire) {
 						setImage(bigMarioRightWalkingFireImage);
+					} else if (isCat){
+						setImage(bigMarioRightWalkingCatImage);
 					} else {
 						setImage(bigMarioRightWalkingImage);
 					}
@@ -457,6 +562,8 @@ public class Mario extends GImage {
 				if (bigOrSmall) {
 					if (isFire) {
 						setImage(bigMarioLeftFireImage);
+					} else if (isCat){
+						setImage(bigMarioLeftCatImage);
 					} else {
 						setImage(bigMarioLeftImage);
 					}
@@ -468,6 +575,8 @@ public class Mario extends GImage {
 				if (bigOrSmall) {
 					if (isFire) {
 						setImage(bigMarioLeftWalkingFireImage);
+					} else if (isCat){
+						setImage(bigMarioLeftWakingCatImage);
 					} else {
 						setImage(bigMarioLeftWalkingImage);
 					}
@@ -486,6 +595,8 @@ public class Mario extends GImage {
 			if (bigOrSmall) {
 				if (isFire) {
 					setImage(bigMarioRightFireImage);
+				} else if (isCat){
+					setImage(bigMarioRightCatImage);
 				} else {
 					setImage(bigMarioRightImage);
 				}
@@ -496,6 +607,8 @@ public class Mario extends GImage {
 			if (bigOrSmall) {
 				if (isFire) {
 					setImage(bigMarioLeftFireImage);
+				} else if (isCat){
+					setImage(bigMarioLeftCatImage);
 				} else {
 					setImage(bigMarioLeftImage);
 				}
@@ -512,6 +625,8 @@ public class Mario extends GImage {
 			if (bigOrSmall) {
 				if (isFire) {
 					setImageAndRelocate(bigMarioRightFireImage);
+				} else if (isCat) {
+					setImageAndRelocate(bigMarioRightCatImage);
 				} else {
 					setImageAndRelocate(bigMarioRightImage);
 				}
@@ -522,6 +637,8 @@ public class Mario extends GImage {
 			if (bigOrSmall) {
 				if (isFire) {
 					setImageAndRelocate(bigMarioLeftFireImage);
+				} else if (isCat){
+					setImageAndRelocate(bigMarioLeftCatImage);
 				} else {
 					setImageAndRelocate(bigMarioLeftImage);
 				}
@@ -539,6 +656,8 @@ public class Mario extends GImage {
 		//runs on different thread so mario can jump and move right/left concurrently
 		if (rightOrLeft && movingRight) return;
 		if (!rightOrLeft && movingLeft) return;
+		if (!isJumping && swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) return;//cant move if swinging tail and standing
+
 		if (isCrouching) {
 			lookingRightOrLeft = rightOrLeft;
 			lookInDirectionCrouching(rightOrLeft);
@@ -577,6 +696,8 @@ public class Mario extends GImage {
 			} else if (shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
 				//MOVING IN THE AIR WHILE SHOOTING FIRE BALL
 				lookCorrectWayShootingFire(rightOrLeft);
+			} else if (swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
+				lookCorrectWaySwingingTail(rightOrLeft);
 			} else if(wayUpOrWayDown) {
 				setToJumping(rightOrLeft);
 			} else {
@@ -641,6 +762,7 @@ public class Mario extends GImage {
 		 * it would be in that object's move function that handling of such collision
 		 * would be done (mario doesn't check if something runs into him from behind for example)
 		 */
+		//TODO instead of only checking one point to the right or left should check at least 3 points to the right or left
 		Point[] arr = new Point[]{new Point(newX, getY()+getHeight()-20)};
 		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
@@ -649,7 +771,6 @@ public class Mario extends GImage {
 		move(dx, 0);
 
 		if (!isJumping && toggleWalking) {			
-			//!isJumping means that mario is on the ground and maybe moving
 			//in the move function this means that mario is on the ground and moving
 			//so he is walking and needs to have his sprite toggle from walking to standing repeatedly
 			toggleWalking(rightOrLeft);
@@ -670,11 +791,16 @@ public class Mario extends GImage {
 		} else if (o instanceof Mushroom) {
 			System.out.println("ITS MUSHROOM");
 			canvas.remove(o);
-			if (!isFire) setToBig();//if mario is in flower mode, dont want mushroom to make him big
+			if (!isFire && !isCat) setToBig();//if mario is in flower mode or cat mode, dont want mushroom to make him big
 			sound.playPowerUpSound();
 		} else if (o instanceof FireFlower) {
 			canvas.remove(o);
 			setToFire();
+			sound.playPowerUpSound();
+		} else if (o instanceof Leaf) {
+			System.out.println("HIT LEEAFFF");
+			canvas.remove(o);
+			setToCat();
 			sound.playPowerUpSound();
 		}
 	}
@@ -705,9 +831,43 @@ public class Mario extends GImage {
 		}
 	}
 
+	public void lookCorrectWaySwingingTail(boolean rightOrLeft) {
+		//this func is called in move function to look in correct direction in
+		//the middle of swinging tail in the air
+		if (rightOrLeft) {
+			if (swingTailJumping==SWING_TAIL_JUMPING.STAGE1) {
+				setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE2) {
+				setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE3) {
+				setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+			} else {
+				System.out.println("SHOULD NEVER HAPPEN1!!!!!!!!!");
+			}
+		} else {
+			if (swingTailJumping==SWING_TAIL_JUMPING.STAGE1) {
+				setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE2) {
+				setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE3) {
+				setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+			} else {
+				System.out.println("SHOULD NEVER HAPPEN2!!!!!!!!!");
+			}
+		}
+	}
+
 	public void shootFireBall() {
-		//shootFireJumping
-		//shootFireStanding
+		if (!isFire || isCrouching) return;//only fire mario can shoot fireballs, also mario cant shoot if crouching
+		if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
+			//System.out.println("JUMPING AND SHOOTING");
+			return;//return if already shooting
+		}
+		if (!isJumping && shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
+			//System.out.println("STANDING AND SHOOTING");
+			return;//return if already shooting
+		}
+
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -717,16 +877,7 @@ public class Mario extends GImage {
 				//plus moving the image in another thread means there could maybe be a data race!!
 				//this bug should be fixed once mario's jump function doesnt only use two for loops to go up and down the same amount
 				//but a while loop so mario keeps on falling until he hits the ground. data race would no longer be a problem
-				
-				if (!isFire || isCrouching) return;//only fire mario can shoot fireballs, also mario cant shoot if crouching
-				if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
-					System.out.println("JUMPING AND SHOOTING");
-					return;//return if already shooting
-				}
-				if (!isJumping && shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
-					System.out.println("STANDING AND SHOOTING");
-					return;//return if already shooting
-				}
+
 
 				int pauseBetweenStages = 100;
 				sound.playFireballSound();
@@ -735,7 +886,7 @@ public class Mario extends GImage {
 				double x = lookingRightOrLeft?getX()+getWidth():getX()-10;
 				double y = getY()+0.4*getHeight();//might have to change
 				fireBallFactory.addFireBall(x, y, lookingRightOrLeft);
-				
+
 				//ENTERING STAGE1
 				boolean startedJumping = isJumping;
 				if (isJumping) {
@@ -829,6 +980,137 @@ public class Mario extends GImage {
 				shootFireJumping= SHOOT_FIRE_JUMPING.NOT_SHOOTING;
 
 			}
+		});  
+		t1.start();
+	}
+
+	public void swingTail() {
+		if (!isCat || isCrouching) return;//cant swing tail if crouching or not cat
+		if (!isJumping && (movingRight||movingLeft)) return;//cant swing if walking right or left
+		if (isJumping && swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
+			//System.out.println("JUMPING AND SWINGING");
+			return;//return if already swinging
+		}
+		if (!isJumping && swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) {
+			//System.out.println("STANDING AND SWINGING");
+			return;//return if already swinging
+		}
+
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("SWING TAILL");
+				int pauseBetweenStages = 70;
+				sound.playTailSound();
+				//TODO need to check if turtle etc or mushroom etc gets hit by tail using inContactWith() func
+				//ENTERING STAGE1
+				boolean startedJumping = isJumping;
+				if (isJumping) {
+					if (wayUpOrWayDown) {
+						//on the way up swinging the tail makes mario go up a bit more
+						System.out.println("SHOULD MOVE HIGHER");
+						move(0, -getHeight()/4);
+					} else {
+						//on the way down swinging the tail makes mario slow down in the air
+						pauseGoingDown = 120;
+						System.out.println("SHOULD MOVE DOWN SLOWER");
+
+					}
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+					}
+					swingTailJumping = SWING_TAIL_JUMPING.STAGE1;
+				} else { 
+					setImageAndRelocate(bigMarioCatTail1Image);
+					swingTailStanding = SWING_TAIL_STANDING.STAGE1;
+				}
+				try {
+					Thread.sleep(pauseBetweenStages);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (isJumping != startedJumping) {
+					//need to check if isJumping is different from startedJumping after every stage
+					//if they are different then mario was jumping, started swinging his tail but
+					//landed before finishing
+					//need to stop swinging tail (return from function, set stage to not swinging) if that is the case
+					//if here than isJumping is false but startedJumping is true
+					//because mario cant jump if he is currently swinging and standing, so startedJumping must be true
+					swingTailJumping =  SWING_TAIL_JUMPING.NOT_SWINGING;
+					pauseGoingDown = pauseInAir;
+					System.out.println("SAVeD PROBLEM88888888888888888888888");
+					return;
+				}
+				//ENTERING STAGE2
+				double dx = getWidth()/2;
+				if (isJumping) {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+					}
+					swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
+				} else { 
+					if (lookingRightOrLeft) {
+						move(dx, 0);
+						setImageAndRelocate(bigMarioLeftCatTail2Image);
+					} else {
+						move(-dx, 0);
+						setImageAndRelocate(bigMarioRightCatTail2Image);
+					}
+					swingTailStanding = SWING_TAIL_STANDING.STAGE2;
+				}
+				try {
+					Thread.sleep(pauseBetweenStages);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (isJumping != startedJumping) {
+					//need to check if isJumping is different from startedJumping after every stage
+					//if they are different then mario was jumping, started swinging his tail but
+					//landed before finishing
+					//need to stop swinging tail (return from function, set stage to not swinging) if that is the case
+					//if here than isJumping is false but startedJumping is true
+					//because mario cant jump if he is currently swinging and standing, so startedJumping must be true
+					swingTailJumping =  SWING_TAIL_JUMPING.NOT_SWINGING;
+					pauseGoingDown = pauseInAir;
+					System.out.println("SAVeD PROBLEM9999999999999999999");
+					return;
+				}
+				//ENTERING STAGE3
+				if (isJumping) {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+					} else {
+						setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+					}
+					swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
+				} else { 
+					if (lookingRightOrLeft) move(-dx, 0);
+					else move(dx, 0);
+					setImageAndRelocate(bigMarioCatTail3Image);
+					swingTailStanding = SWING_TAIL_STANDING.STAGE3;
+				}
+				try {
+					Thread.sleep(pauseBetweenStages);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				if (isJumping) {
+					if (wayUpOrWayDown) {
+						setToJumping(lookingRightOrLeft);
+					} else {
+						setToJumpingDown(lookingRightOrLeft);
+					}
+				} else {
+					lookInCorrectDirection(lookingRightOrLeft);
+				}
+				pauseGoingDown = pauseInAir;
+				swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
+				swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;				
+			}	
 		});  
 		t1.start();
 	}

@@ -10,7 +10,7 @@ public class SoundController {
 	private File itemOutOfBoxSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Item Box.wav");
 	private File fireBallSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Fireball.wav");
 	private File squishSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Squish.wav");
-	
+	private File tailSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/tail.wav");
 	public SoundController() {
 
 	}
@@ -47,6 +47,11 @@ public class SoundController {
 	public void playFireballSound() {
 		//plays when mario shoots a fireball
 		playSound(fireBallSoundFile);
+	}
+	
+	public void playTailSound() {
+		//plays when mario swings his tail
+		playSound(tailSoundFile);
 	}
 	
 	public void playSquishSound() {

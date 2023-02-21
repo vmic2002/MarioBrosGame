@@ -61,7 +61,7 @@ class FireBall extends GImage {
 	public void move() {
 		//this function moves a fireball its maximum distance or until
 		//it hits a flower or turtle while changing its images
-		while (gasLeft >0 && getY()+getHeight()+dy<canvas.getHeight()) {
+		while (gasLeft >0 && getY()+getHeight()+dy<=canvas.getHeight()) {
 			//if in this while loop then fireball is in the air,
 			//need to bring it down
 			//need to check the points to the left/right diagonal (p3), middle down (p2), and left/right in middle (p1)
@@ -116,6 +116,7 @@ class FireBall extends GImage {
 		//getY()-y is how much fireball needs to move in the y to stay on semi circle path
 		//however needs to be negated since positive getY()-y would mean moving up, which is negative y displacement
 		//for GCanvas
+		//TODO before moving need to make sure fireball doesnt come inContactWith() anything
 		move(dx,-(getY()-y));
 		if (getX()<5) canvas.remove(this); //bug when fireball goes to the left border of screen probably because
 		//of using % (mod) at beginning of function

@@ -22,15 +22,20 @@ public class MyKeyListener implements KeyListener {
 		} else if (keyCode == KeyEvent.VK_DOWN){
 			mario.setToCrouching();
 		} else if (keyCode == KeyEvent.VK_F){
-			mario.shootFireBall();
+			if (mario.isFire)
+				mario.shootFireBall();
+			else if (mario.isCat)	
+				mario.swingTail();
 		} else if (keyCode == KeyEvent.VK_UP) {
 			mario.jump();
 		} else if (keyCode == KeyEvent.VK_1) {
-			mario.setToBig();
-		} else if (keyCode == KeyEvent.VK_2) {
 			mario.setToSmall();
+		} else if (keyCode == KeyEvent.VK_2) {
+			mario.setToBig();
 		} else if (keyCode == KeyEvent.VK_3) {
 			mario.setToFire();
+		} else if (keyCode == KeyEvent.VK_4) {
+			mario.setToCat();
 		}
 	}
 																																																																																																															

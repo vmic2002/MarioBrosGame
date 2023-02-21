@@ -27,8 +27,8 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * mario walks
 	 */
 
-	private static final int WIDTH = 1200;
-	private static final int HEIGHT = 800;
+	private static final int WIDTH = 1400;
+	private static final int HEIGHT = 1000;
 	private static final long serialVersionUID = 1L;
 
 
@@ -83,8 +83,29 @@ public class MarioBrosGame extends GraphicsProgram {
 		String leftFireBall4ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/leftFireBall4.png";
 		String rightFireBall4ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/rightFireBall4.png";
 
+		String bigMarioLeftCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftCatImage.png";
+		String bigMarioRightCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightCatImage.png";
+		String bigMarioLeftWakingCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftWalkingCatImage.png";
+		String bigMarioRightWalkingCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightWalkingCatImage.png";
+		String bigMarioLeftJumpingCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftJumpingCatImage.png";
+		String bigMarioRightJumpingCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightJumpingCatImage.png";
+		String bigMarioRightJumpingDownCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightJumpingDownCatImage.png";
+		String bigMarioLeftJumpingDownCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftJumpingDownCatImage.png";
+		String bigMarioLeftCrouchingCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftCrouchingCatImage.png";
+		String bigMarioRightCrouchingCatImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightCrouchingCatImage.png";
+		String bigMarioLeftJumpingCatTail1ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftJumpingCatTail1Image.png";
+		String bigMarioRightJumpingCatTal1ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightJumpingCatTail1Image.png";
+		String bigMarioLeftJumpingCatTail2ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftJumpingCatTail2Image.png";
+		String bigMarioRightJumpingCatTail2ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightJumpingCatTail2Image.png";
+		String bigMarioCatTail1ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioTail1.png";
+		String bigMarioLeftCatTail2ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftTail2.png";
+		String bigMarioRightCatTail2ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightTail2.png";
+		String bigMarioCatTail3ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioTail3.png";
+		
 		String mushroomImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/mushroomImage.png";
 		String fireFlowerImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/fireFlowerImage.png";
+		String leftLeafImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/leftLeafImage.png";
+		String rightLeafImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/rightLeafImage.png";
 
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
@@ -135,8 +156,31 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage leftFireBall4Image = null;
 		BufferedImage rightFireBall4Image = null;
 
+		BufferedImage bigMarioLeftCatImage = null;
+		BufferedImage bigMarioRightCatImage = null;
+		BufferedImage bigMarioLeftWakingCatImage = null;
+		BufferedImage bigMarioRightWalkingCatImage = null;
+		BufferedImage bigMarioLeftJumpingCatImage = null;
+		BufferedImage bigMarioRightJumpingCatImage = null;
+		BufferedImage bigMarioRightJumpingDownCatImage = null;
+		BufferedImage bigMarioLeftJumpingDownCatImage = null;
+		BufferedImage bigMarioLeftCrouchingCatImage = null;
+		BufferedImage bigMarioRightCrouchingCatImage = null;
+		BufferedImage bigMarioLeftJumpingCatTail1Image = null;
+		BufferedImage bigMarioRightJumpingCatTal1Image = null;
+		BufferedImage bigMarioLeftJumpingCatTail2Image = null;
+		BufferedImage bigMarioRightJumpingCatTal2Image = null;
+		BufferedImage bigMarioCatTail1Image = null;
+		BufferedImage bigMarioLeftCatTail2Image= null;
+		BufferedImage bigMarioRightCatTail2Image= null;
+		BufferedImage bigMarioCatTail3Image = null;
+		
+		
+		
 		BufferedImage mushroomImage = null;
 		BufferedImage fireFlowerImage = null;
+		BufferedImage leftLeafImage = null;
+		BufferedImage rightLeafImage = null;
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
 			smallMarioRightImage = ImageIO.read(new File(smallMarioRightImagePath));
@@ -186,8 +230,31 @@ public class MarioBrosGame extends GraphicsProgram {
 			rightFireBall4Image = ImageIO.read(new File(rightFireBall4ImagePath));
 
 
-					mushroomImage = ImageIO.read(new File(mushroomImagePath));
+
+			bigMarioLeftCatImage = ImageIO.read(new File(bigMarioLeftCatImagePath));
+			bigMarioRightCatImage = ImageIO.read(new File(bigMarioRightCatImagePath));
+			bigMarioLeftWakingCatImage = ImageIO.read(new File(bigMarioLeftWakingCatImagePath));
+			bigMarioRightWalkingCatImage = ImageIO.read(new File(bigMarioRightWalkingCatImagePath));
+			bigMarioLeftJumpingCatImage = ImageIO.read(new File(bigMarioLeftJumpingCatImagePath));
+			bigMarioRightJumpingCatImage = ImageIO.read(new File(bigMarioRightJumpingCatImagePath));
+			bigMarioRightJumpingDownCatImage = ImageIO.read(new File(bigMarioRightJumpingDownCatImagePath));
+			bigMarioLeftJumpingDownCatImage = ImageIO.read(new File(bigMarioLeftJumpingDownCatImagePath));
+			bigMarioLeftCrouchingCatImage = ImageIO.read(new File(bigMarioLeftCrouchingCatImagePath));
+			bigMarioRightCrouchingCatImage = ImageIO.read(new File(bigMarioRightCrouchingCatImagePath));
+			bigMarioLeftJumpingCatTail1Image = ImageIO.read(new File(bigMarioLeftJumpingCatTail1ImagePath));
+			bigMarioRightJumpingCatTal1Image = ImageIO.read(new File(bigMarioRightJumpingCatTal1ImagePath));
+			bigMarioLeftJumpingCatTail2Image = ImageIO.read(new File(bigMarioLeftJumpingCatTail2ImagePath));
+			bigMarioRightJumpingCatTal2Image = ImageIO.read(new File(bigMarioRightJumpingCatTail2ImagePath));
+			bigMarioCatTail1Image = ImageIO.read(new File(bigMarioCatTail1ImagePath));
+			bigMarioLeftCatTail2Image = ImageIO.read(new File(bigMarioLeftCatTail2ImagePath)); 
+			bigMarioRightCatTail2Image = ImageIO.read(new File(bigMarioRightCatTail2ImagePath));
+			bigMarioCatTail3Image = ImageIO.read(new File(bigMarioCatTail3ImagePath));
+			
+			
+			mushroomImage = ImageIO.read(new File(mushroomImagePath));
 			fireFlowerImage = ImageIO.read(new File(fireFlowerImagePath));
+			leftLeafImage = ImageIO.read(new File(leftLeafImagePath));;
+			rightLeafImage = ImageIO.read(new File(rightLeafImagePath));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -195,18 +262,20 @@ public class MarioBrosGame extends GraphicsProgram {
 
 		SoundController sound = new SoundController();
 		FireBall.setObjects(this.getGCanvas(), leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
-				 rightFireBall2Image, leftFireBall3Image,
-				 rightFireBall3Image, leftFireBall4Image,
-				 rightFireBall4Image);
+				rightFireBall2Image, leftFireBall3Image,
+				rightFireBall3Image, leftFireBall4Image,
+				rightFireBall4Image);
 		FireBallFactory fireBallFactory = new FireBallFactory(leftFireBall1Image, rightFireBall1Image, this.getGCanvas());
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, 
+				
 				bigMarioLeftImage, bigMarioRightImage,
 				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage,
 				bigMarioRightJumpingImage, bigMarioLeftFireImage, bigMarioRightFireImage, bigMarioLeftWalkingFireImage
 				, bigMarioRightWalkingFireImage,bigMarioLeftJumpingFireImage, bigMarioRightJumpingFireImage,
 				bigMarioLeftJumpingDownImage, bigMarioRightJumpingDownImage,
+				
 				bigMarioLeftJumpingDownFireImage, bigMarioRightJumpingDownFireImage,
 				bigMarioLeftCrouchingImage, bigMarioRightCrouchingImage,
 				bigMarioLeftCrouchingFireImage, bigMarioRightCrouchingFireImage,
@@ -215,33 +284,44 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioLeftJumpingFireShooting1Image, bigMarioLeftJumpingFireShooting2Image,
 				bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
 				bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
+				
+				bigMarioLeftCatImage, bigMarioRightCatImage, bigMarioLeftWakingCatImage, bigMarioRightWalkingCatImage,
+				bigMarioLeftJumpingCatImage, bigMarioRightJumpingCatImage, bigMarioRightJumpingDownCatImage,
+				bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage, bigMarioRightCrouchingCatImage,
+				bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTal1Image, bigMarioLeftJumpingCatTail2Image,
+				bigMarioRightJumpingCatTal2Image,
+				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
+				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
+				
 				this.getGCanvas(), sound, fireBallFactory);
 
-		add(mario, getWidth(), getHeight()-mario.getHeight());//FOR NOW
+		add(mario, 0, getHeight()-mario.getHeight());//FOR NOW
 
 		addKeyListeners(new MyKeyListener(mario));
 		Mushroom mushroom = new Mushroom(mushroomImage, this.getGCanvas());
 		Mushroom mushroom2 = new Mushroom(mushroomImage, this.getGCanvas());
 		Mushroom mushroom3 = new Mushroom(mushroomImage, this.getGCanvas());
 		FireFlower flower = new FireFlower(fireFlowerImage);
-		add(mushroom, 600, getHeight()-mushroom.getHeight());
-		add(mushroom2, 800, getHeight()-mushroom.getHeight());
-		add(mushroom3, 200, getHeight()-mushroom.getHeight());
-		add(flower, 400, getHeight()-flower.getHeight());
+		Leaf leaf  = new Leaf(leftLeafImage, this.getGCanvas());
+		//add(mushroom, 600, getHeight()-mushroom.getHeight());
+		//add(mushroom2, 800, getHeight()-mushroom.getHeight());
+		//add(mushroom3, 200, getHeight()-mushroom.getHeight());
+		//add(flower, 400, getHeight()-flower.getHeight());
+		//add(leaf, 200, getHeight()-leaf.getHeight());
 
 
-
-		/*while (true) {
+		while (true) {
 			add(mushroom, 600, getHeight()-mushroom.getHeight());
 			add(mushroom2, 800, getHeight()-mushroom.getHeight());
-			add(mushroom3, 0, getHeight()-mushroom.getHeight());
+		//	add(mushroom3, 0, getHeight()-mushroom.getHeight());
 			add(flower, 400, getHeight()-flower.getHeight());
+			add(leaf, 200, getHeight()-leaf.getHeight());
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}*/
+		}
 	}
 }
