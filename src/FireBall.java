@@ -30,8 +30,8 @@ class FireBall extends GImage {
 	private int dx; //x speed
 	private int dy;//y speed
 	private int pauseTime = 10;//milliseconds pause in between each move function call
-	public FireBall(Image fireBallImage, boolean rightOrLeft) {
-		super(fireBallImage);
+	public FireBall(boolean rightOrLeft) {
+		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
 		dx = rightOrLeft?10:-10;
 		dy = 10;
@@ -40,7 +40,7 @@ class FireBall extends GImage {
 	}
 
 	public void changeToNextStage() {
-		//TODO changes fireball image from stage 1 to stage 2, 2->3, 3->4, 4->1
+		//changes fireball image from stage 1 to stage 2, 2->3, 3->4, 4->1
 		Image newImage;
 		if (fireBallStage == FIREBALL_STAGE.STAGE_1) {
 			newImage = rightOrLeft?rightFireBall2:leftFireBall2;
@@ -152,12 +152,11 @@ class FireBall extends GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());	
 	}
 
-	public static void setObjects(GCanvas canvasX, Image leftFireBall1X,
+	public static void setObjects(Image leftFireBall1X,
 			Image rightFireBall1X,Image leftFireBall2X,
 			Image rightFireBall2X,Image leftFireBall3X,
 			Image rightFireBall3X,Image leftFireBall4X,
-			Image rightFireBall4X) {
-		canvas = canvasX;
+			Image rightFireBall4X, GCanvas canvas1) {
 		leftFireBall1 = leftFireBall1X;
 		rightFireBall1 = rightFireBall1X;
 		leftFireBall2 = leftFireBall2X;
@@ -166,5 +165,6 @@ class FireBall extends GImage {
 		rightFireBall3 = rightFireBall3X;
 		leftFireBall4 = leftFireBall4X;
 		rightFireBall4 = rightFireBall4X;
+		canvas = canvas1;
 	}
 }

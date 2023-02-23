@@ -37,6 +37,7 @@ public class MyKeyListener implements KeyListener {
 		} else if (keyCode == KeyEvent.VK_4) {
 			mario.setToCat();
 		}
+		 
 	}
 																																																																																																															
 	@Override
