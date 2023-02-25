@@ -21,7 +21,7 @@ public class Factory {
 		t1.start();
 	}
 	
-	public void addMushroom(double x, double y, double mysteryBoxWidth) {
+	public Mushroom addMushroom(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		Mushroom mushroom = new Mushroom();
 		canvas.add(mushroom, x+(mysteryBoxWidth-mushroom.getWidth())/2, y-mushroom.getHeight());
@@ -32,9 +32,10 @@ public class Factory {
 			}
 		});  
 		t1.start();
+		return mushroom;
 	}
 	
-	public void addFireFlower(double x, double y, double mysteryBoxWidth) {
+	public FireFlower addFireFlower(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		FireFlower fireFlower = new FireFlower();
 		canvas.add(fireFlower, x+(mysteryBoxWidth-fireFlower.getWidth())/2, y-fireFlower.getHeight());
@@ -45,9 +46,10 @@ public class Factory {
 			}
 		});  
 		t1.start();
+		return fireFlower;
 	}
 	
-	public void addLeaf(double x, double y, double mysteryBoxWidth) {
+	public Leaf addLeaf(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		//System.out.println("ADdINF LEAF");
 		Leaf leaf = new Leaf();
@@ -59,6 +61,7 @@ public class Factory {
 			}
 		});  
 		t1.start();
+		return leaf;
 	}
 }
 //TODO also maybe if user holds fireball key then the fireball could charge until it is really big  

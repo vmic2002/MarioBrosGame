@@ -35,7 +35,7 @@ public class MarioBrosGame extends GraphicsProgram {
 	public void run() {
 		System.out.println("Hello, World!");
 
-		setSize(WIDTH,HEIGHT);
+		
 		String smallMarioLeftImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftImage.png";
 		String smallMarioRightImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightImage.png";
 		String smallMarioRightWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightWalkingImage.png";
@@ -112,6 +112,13 @@ public class MarioBrosGame extends GraphicsProgram {
 		String mysteryBox3ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/mysteryBox3.png";
 		String mysteryBox4ImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/mysteryBox4.png";
 		String mysteryBoxFinalImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/mysteryBoxFinal.png";
+		
+		String grassLeftTopImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/grassLeftTopImage.png";
+		String grassRightTopImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/grassRightTopImage.png";
+		String grassMidleTopImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/grassMiddleTopImage.png";
+		String grassLeftImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/grassLeftImage.png";
+		String grassRightImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/grassRightImage.png";
+		String grassMiddleImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/grassMiddleImage.png";
 		
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
@@ -194,6 +201,14 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage mysteryBox3Image = null;
 		BufferedImage mysteryBox4Image = null;
 		BufferedImage mysteryBoxFinalImage = null;
+		
+		BufferedImage grassLeftTopImage = null;
+		BufferedImage grassRightTopImage = null;
+		BufferedImage grassMidleTopImage = null;
+		BufferedImage grassLeftImage = null;
+		BufferedImage grassRightImage = null;
+		BufferedImage grassMiddleImage = null;
+		
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
 			smallMarioRightImage = ImageIO.read(new File(smallMarioRightImagePath));
@@ -274,10 +289,19 @@ public class MarioBrosGame extends GraphicsProgram {
 			mysteryBox3Image = ImageIO.read(new File(mysteryBox3ImagePath));
 			mysteryBox4Image = ImageIO.read(new File(mysteryBox4ImagePath));
 			mysteryBoxFinalImage = ImageIO.read(new File(mysteryBoxFinalImagePath));
+			
+			grassLeftTopImage = ImageIO.read(new File(grassLeftTopImagePath));
+			grassRightTopImage = ImageIO.read(new File(grassRightTopImagePath));
+			grassMidleTopImage = ImageIO.read(new File(grassMidleTopImagePath));
+			grassLeftImage = ImageIO.read(new File(grassLeftImagePath));
+			grassRightImage = ImageIO.read(new File(grassRightImagePath));
+			grassMiddleImage = ImageIO.read(new File(grassMiddleImagePath));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
+				grassRightImage,grassMiddleImage, this.getGCanvas());
 		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage, this.getGCanvas());
 		Mushroom.setObjects(mushroomImage, this.getGCanvas());
 		FireBall.setObjects(leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
@@ -318,45 +342,12 @@ public class MarioBrosGame extends GraphicsProgram {
 				
 				this.getGCanvas(), sound, factory);
 
+		setSize(WIDTH,HEIGHT);
 		add(mario, 0, getHeight()-3*mario.getHeight());//FOR NOW
 
 		addKeyListeners(new MyKeyListener(mario));
-		Mushroom mushroom = new Mushroom();
-		//Mushroom mushroom2 = new Mushroom();
-		////Mushroom mushroom3 = new Mushroom();
-		FireFlower flower = new FireFlower();
-		Leaf leaf  = new Leaf();
-		MysteryBox mysteryBox1 = new MysteryBox();
-		MysteryBox mysteryBox2 = new MysteryBox();
-		MysteryBox mysteryBox3 = new MysteryBox();
-		MysteryBox mysteryBox4 = new MysteryBox();
-		MysteryBox mysteryBox5 = new MysteryBox();
-		MysteryBox mysteryBox6 = new MysteryBox();
-		//add(mushroom, 600, getHeight()-mushroom.getHeight());
-		//add(mushroom2, 800, getHeight()-mushroom.getHeight());
-		//add(mushroom3, 200, getHeight()-mushroom.getHeight());
-		//add(flower, 400, getHeight()-flower.getHeight());
-		//add(leaf, 200, getHeight()-leaf.getHeight());
-		
-		add(mysteryBox2, 0,  getHeight()-mysteryBox1.getHeight()-20);//mysteryBox.getHeight()+100
-		add(mysteryBox3, mysteryBox3.getWidth(), getHeight()-mysteryBox1.getHeight()-20);//mysteryBox.getHeight()+100
-		add(mysteryBox4, 2*mysteryBox4.getWidth(), getHeight()-mysteryBox1.getHeight()-20);//mysteryBox.getHeight()+100
-		add(mysteryBox5, 3*mysteryBox4.getWidth(), getHeight()-mysteryBox1.getHeight()-20);//mysteryBox.getHeight()+100
-		add(mysteryBox6, 4*mysteryBox4.getWidth(), getHeight()-mysteryBox1.getHeight()-20);//mysteryBox.getHeight()+100
-		add(mysteryBox1, 3*mysteryBox4.getWidth(), getHeight()-3*mysteryBox1.getHeight()-20);//mysteryBox.getHeight()+100
-		/*while (true) {
-			add(mushroom, 600, getHeight()-mushroom.getHeight());
-			//add(mushroom2, 800, getHeight()-mushroom.getHeight());
-		//	add(mushroom3, 0, getHeight()-mushroom.getHeight());
-			add(flower, 400, getHeight()-flower.getHeight());
-			add(leaf, 200, getHeight()-leaf.getHeight());
-	
-			try {
-				Thread.sleep(10000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}*/
+		LevelController.playLevel1();
 	}
+	
+	
 }

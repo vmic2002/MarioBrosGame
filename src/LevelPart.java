@@ -1,15 +1,20 @@
+import java.util.ArrayList;
+
 import acm.graphics.GImage;
 
 public class LevelPart {
-	private int x,y;
-	private GImage image;
-	public LevelPart(GImage image, int x, int y) {
-		this.image = image;
+	private double x,y;
+	//x, y are the top left coordinate of leftmost and topmost image of the LevelPart
+	private ArrayList<GImage> part;
+	public LevelPart(ArrayList<GImage> part, double x, double y) {
+		this.part = part; 
 		this.x = x;
 		this.y = y;
 	}
 	public void move(double dx , double dy) {
-		image.move(dx, dy);
+		for (GImage image: part) {
+			image.move(dx, dy);
+		}
 		x += dx;
 		y += dy;
 	}

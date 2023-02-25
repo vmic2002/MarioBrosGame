@@ -7,64 +7,24 @@ import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 public class Mario extends GImage {
-	private Image smallMarioLeftImage;
-	private Image smallMarioRightImage;
-	private Image smallMarioLeftWalkingImage;
-	private Image smallMarioRightWalkingImage;
-	private Image smallMarioLeftJumpingImage;
-	private Image smallMarioRightJumpingImage;
-
-	private Image bigMarioLeftImage;
-	private Image bigMarioRightImage;
-	private Image bigMarioLeftWalkingImage;
-	private Image bigMarioRightWalkingImage;
-	private Image bigMarioLeftJumpingImage;
-	private Image bigMarioRightJumpingImage;
-	private Image bigMarioLeftJumpingDownImage;
-	private Image bigMarioRightJumpingDownImage;
-	private Image bigMarioLeftCrouchingImage;
-	private Image bigMarioRightCrouchingImage;
-
-	private Image bigMarioLeftFireImage;
-	private Image bigMarioRightFireImage;
-	private Image bigMarioLeftWalkingFireImage;
-	private Image bigMarioRightWalkingFireImage;
-	private Image bigMarioRightJumpingFireImage;
-	private Image bigMarioLeftJumpingFireImage;
-	private Image bigMarioLeftJumpingDownFireImage;
-	private Image bigMarioRightJumpingDownFireImage;
-	private Image bigMarioLeftCrouchingFireImage;
-	private Image bigMarioRightCrouchingFireImage;
-	private Image bigMarioLeftFireShooting1Image;
-	private Image bigMarioLeftFireShooting2Image;
-	private Image bigMarioRightFireShooting1Image;
-	private Image bigMarioRightFireShooting2Image;
-	private Image bigMarioLeftJumpingFireShooting1Image;
-	private Image bigMarioLeftJumpingFireShooting2Image;
-	private Image bigMarioLeftJumpingFireShooting3Image;
-	private Image bigMarioRightJumpingFireShooting1Image;
-	private Image bigMarioRightJumpingFireShooting2Image;
-	private Image bigMarioRightJumpingFireShooting3Image;
-
-
-	private Image bigMarioLeftCatImage;
-	private Image bigMarioRightCatImage;
-	private Image bigMarioLeftWakingCatImage;
-	private Image bigMarioRightWalkingCatImage;
-	private Image bigMarioLeftJumpingCatImage;
-	private Image bigMarioRightJumpingCatImage;
-	private Image bigMarioRightJumpingDownCatImage;
-	private Image bigMarioLeftJumpingDownCatImage;
-	private Image bigMarioLeftCrouchingCatImage;
-	private Image bigMarioRightCrouchingCatImage;
-	private Image bigMarioLeftJumpingCatTail1Image;
-	private Image bigMarioRightJumpingCatTail1Image;
-	private Image bigMarioLeftJumpingCatTail2Image;
-	private Image bigMarioRightJumpingCatTail2Image;
-	private Image bigMarioCatTail1Image;
-	private Image bigMarioLeftCatTail2Image;
-	private Image bigMarioRightCatTail2Image;
-	private Image bigMarioCatTail3Image;
+	private Image smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage,
+	smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage,
+	bigMarioLeftImage, bigMarioRightImage, bigMarioLeftWalkingImage, bigMarioRightWalkingImage,
+	bigMarioLeftJumpingImage, bigMarioRightJumpingImage, bigMarioLeftJumpingDownImage,
+	bigMarioRightJumpingDownImage, bigMarioLeftCrouchingImage, bigMarioRightCrouchingImage,
+	bigMarioLeftFireImage, bigMarioRightFireImage, bigMarioLeftWalkingFireImage,
+	bigMarioRightWalkingFireImage, bigMarioRightJumpingFireImage, bigMarioLeftJumpingFireImage,
+	bigMarioLeftJumpingDownFireImage, bigMarioRightJumpingDownFireImage, bigMarioLeftCrouchingFireImage,
+	bigMarioRightCrouchingFireImage, bigMarioLeftFireShooting1Image, bigMarioLeftFireShooting2Image,
+	bigMarioRightFireShooting1Image, bigMarioRightFireShooting2Image, bigMarioLeftJumpingFireShooting1Image,
+	bigMarioLeftJumpingFireShooting2Image, bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
+	bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
+	bigMarioLeftCatImage, bigMarioRightCatImage, bigMarioLeftWakingCatImage,
+	bigMarioRightWalkingCatImage, bigMarioLeftJumpingCatImage, bigMarioRightJumpingCatImage,
+	bigMarioRightJumpingDownCatImage, bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage,
+	bigMarioRightCrouchingCatImage, bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTail1Image,
+	bigMarioLeftJumpingCatTail2Image, bigMarioRightJumpingCatTail2Image,
+	bigMarioCatTail1Image, bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image;
 
 
 
@@ -111,11 +71,11 @@ public class Mario extends GImage {
 	private static final int pauseInAir = 7;//lower number means faster jump (less long-pauses in jump function)
 	private int pauseGoingDown = pauseInAir;//this is changed while cat mario swings tail in the air so he is suspended in the air
 
-	
-	public boolean hitBlockVertical = false;
-	public boolean hitBlockHorizontal = false;
-	//need a hitBlockVertical and hitBlockHorizontal because if mario is falling leaning against a block,
-	//hitBlockHorizontal will be true while hitBlockVertical should be false so mario keeps on falling
+
+	public boolean hitPlatformVertical = false;
+	public boolean hitPlatformHorizontal = false;
+	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
+	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image bigMarioLeftImage,
@@ -206,8 +166,37 @@ public class Mario extends GImage {
 		this.sound = sound;
 		this.factory = factory;
 	}
-
-
+	public void moveOnlyMario(double dx, double dy) {
+		//moves only mario, not the level
+		//used when mario swings his tail
+		super.move(dx, dy);
+	}
+	public void move(double dx, double dy) {
+		//moves mario or current level mario is playing depending on if
+		//mario goes too much to the corners of the screen
+		if (dx<0 && getX()>=getWidth()*3 || dx>0 && getX()<=canvas.getWidth()-getWidth()*4
+				|| dy>0 && getY()<=canvas.getHeight()-1*getHeight()
+				|| dy<0 &&	getY()>=getHeight()*1) {
+			if (dy>0 && LevelController.currLevel.yBaseLine>0) {
+				//see LevelController baseLine documentation
+				LevelController.currLevel.moveLevel(-dx, -dy);
+				return;
+			}
+			super.move(dx, dy);
+		} else {
+			if (dx<0 && LevelController.currLevel.xBaseLine==0) {
+				//mario can't move left if he is at the leftmost position in level
+				if (getX()+dx>=0) super.move(dx, dy);
+				return;
+			}
+			if (dx>0 && LevelController.currLevel.xBaseLine==canvas.getWidth()-LevelController.currLevel.width) {
+				//if xbaseline == canvas width-level width then mario is at right most portion of level
+				if (getX()+getWidth()+dx<=canvas.getWidth()) super.move(dx, dy);
+				return;
+			}
+			LevelController.currLevel.moveLevel(-dx, -dy);
+		}
+	}
 
 	public void setImageAndRelocate(Image newImage) {
 		//this function is called instead of setImage when mario changes from big to small
@@ -222,7 +211,7 @@ public class Mario extends GImage {
 		//X shift needed to keep big mario and small mario centered since their
 		//widths can differ
 		double xShift = (this.getWidth()-previousWidth)/2;
-		this.setLocation(getX()-xShift, relativeY-this.getHeight());	
+		this.setLocation(getX()-xShift, relativeY-this.getHeight());
 	}
 
 	public void setToCat() {
@@ -393,7 +382,7 @@ public class Mario extends GImage {
 
 				int dy = 10;
 				if (isJumping) {
-					
+
 					return;
 				}
 				if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
@@ -409,7 +398,7 @@ public class Mario extends GImage {
 				if (!isCrouching) {
 					setToJumping(lookingRightOrLeft);
 				}
-				for (int i=0; i<45; i++) {
+				for (int i=0; i<60; i++) {
 					// for 3 points over mario (left middle and right)
 					Point[] arr = new Point[]{new Point(getX()+10,getY()-dy),
 							new Point(getX()+getWidth()/2, getY()-dy),
@@ -419,16 +408,16 @@ public class Mario extends GImage {
 						inContactWith(x, false);
 					}
 					move(0, -dy);
-					if (hitBlockVertical) {
-						//if mario jumps into a Block, he needs to stop moving up
-						//and start moving down, making it look like the Block stopped him
-						hitBlockVertical = false;
+					if (hitPlatformVertical) {
+						//if mario jumps into a Platform, he needs to stop moving up
+						//and start moving down, making it look like the Platform stopped him
+						hitPlatformVertical = false;
 						break;
 					}
 					try {
 						Thread.sleep(pauseInAir);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
+						// TODO Auto-generated catch Platform
 						e.printStackTrace();
 					}
 				}
@@ -436,7 +425,7 @@ public class Mario extends GImage {
 				try {
 					Thread.sleep(80);//PAUSE AT TOP OF JUMP
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
+					// TODO Auto-generated catch Platform
 					e.printStackTrace();
 				}
 				wayUpOrWayDown = false;
@@ -463,16 +452,16 @@ public class Mario extends GImage {
 			checkUnder(dy);
 			move(0, dy);
 
-			if (hitBlockVertical) {
-				//if mario jumps onto a Block, he needs to stop moving down
-				hitBlockVertical = false;
+			if (hitPlatformVertical) {
+				//if mario jumps onto a Platform, he needs to stop moving down
+				hitPlatformVertical = false;
 				break;
 			}
 
 			try {
 				Thread.sleep(pauseGoingDown);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				// TODO Auto-generated catch Platform
 				e.printStackTrace();
 			}
 		}
@@ -480,7 +469,7 @@ public class Mario extends GImage {
 	}
 
 	public void checkUnder(int dy) {
-		//checks if mario is in contact with something under him (mushroom, block,...)
+		//checks if mario is in contact with something under him (mushroom, Platform,...)
 		//check for 2 points under mario (left and right)
 		//0.22 is value found to work best through testing
 		Point[] arr = new Point[]{new Point(getX()+0.22*getWidth(),getY()+getHeight()+dy),
@@ -785,7 +774,7 @@ public class Mario extends GImage {
 		//arbitrary dx of 10 to move mario not too much
 		double dx = rightOrLeft?10.0:-10.0;
 		double newX = rightOrLeft?getX()+getWidth()+dx:getX()+dx;//+dx cause dx is already negative
-		//TODO bug where fire mario can walk through Blocks if he is rapidly shooting fireballs!
+		//TODO bug where fire mario can walk through Platform if he is rapidly shooting fireballs!
 		/*TODO
 		 * mario only checks if he walks into an object
 		 * if an object were to run into him, such as turtle or mushroom,
@@ -802,10 +791,10 @@ public class Mario extends GImage {
 			inContactWith(x, true);
 		}	
 
-		if (!hitBlockHorizontal) {
+		if (!hitPlatformHorizontal) {
 			move(dx, 0);
 		} else {
-			hitBlockHorizontal = false;
+			hitPlatformHorizontal = false;
 		}
 		if (!isJumping && toggleWalking) {			
 			//in the move function this means that mario is on the ground and moving
@@ -814,16 +803,16 @@ public class Mario extends GImage {
 		}
 
 		if (!isJumping) {
-			//check if there is no block under mario in which case he should fall down
-			//if mario jumps on block then walks off it he is not jumping but should fall down
-			//until he hits a block or bottom of screen
-			//hitBlockVertical = false;
+			//check if there is no Platform under mario in which case he should fall down
+			//if mario jumps on Platform then walks off it he is not jumping but should fall down
+			//until he hits a Platform or bottom of screen
+			//hitPlatformVertical = false;
 			checkUnder(10);
 
-			if (!hitBlockVertical && getY()+getHeight()+10<=canvas.getHeight()) { 
-				//if mario is not on top of a block he needs to fall down 
+			if (!hitPlatformVertical && getY()+getHeight()+10<=canvas.getHeight()) { 
+				//if mario is not on top of a Platform he needs to fall down 
 				//(unless he is already at the bottom of the screen)
-				//System.out.println("NOT ON BLOCK SHOULD FALL");
+				//System.out.println("NOT ON Platform SHOULD FALL");
 				Thread t1 = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -837,17 +826,16 @@ public class Mario extends GImage {
 					}
 				});  
 				t1.start();
-				
+
 			} else {
-				//System.out.println("ON BLOCK OR at bottom of screen");
-				hitBlockVertical = false;
+				//System.out.println("ON Platform OR at bottom of screen");
+				hitPlatformVertical = false;
 			}
 		}
 		//TODO NEED TO CHECK IF MARIO OUT OF BOUNDS
 		try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -870,29 +858,35 @@ public class Mario extends GImage {
 			canvas.remove(o);
 			setToCat();
 			sound.playPowerUpSound();
-		} else if (o instanceof Block) {
-			//mario should halt, he cant move into a Block
-			//System.out.println("IN CONTAC WITH BLOCK");
-			if (horizontolOrVertical) hitBlockHorizontal = true;
-			if (!horizontolOrVertical) hitBlockVertical = true;
-			//System.out.println("HIT BLOCK");
+		} else if (o instanceof Platform) {
+			//mario should halt, he cant move into a Platform
+			//System.out.println("IN CONTAC WITH Platform");
+			if (horizontolOrVertical) hitPlatformHorizontal = true;
+			if (!horizontolOrVertical) hitPlatformVertical = true;
+			//System.out.println("HIT PLatform");
 			//System.out.println("MARIO BOUND: "+getX()+ " to "+(getX()+getWidth()));
-			//System.out.println("Block BOUND: "+o.getX()+ " to "+(o.getX()+o.getWidth()));
+			//System.out.println("Platform BOUND: "+o.getX()+ " to "+(o.getX()+o.getWidth()));
 
 			//System.out.println("MARIO Y BOUND: "+getY()+ " to "+(getY()+getHeight()));
-			//System.out.println("Block Y BOUND: "+o.getY()+ " to "+(o.getY()+o.getHeight()));
+			//System.out.println("Platform Y BOUND: "+o.getY()+ " to "+(o.getY()+o.getHeight()));
 			if (getY()!=o.getY()+o.getHeight()) {
-				//System.out.println("HIT BLOCK FROM SIDE"+ horizontolOrVertical);
+				//System.out.println("HIT Platform FROM SIDE"+ horizontolOrVertical);
 			} else {
-				System.out.println("HIT BLOCK FROM UNDER POWER UP APPEAR");
+				System.out.println("HIT Platform FROM UNDER POWER UP APPEAR");
 				if (o instanceof MysteryBox) {
 					//factory.addMushroom(o.getX(), o.getY(), o.getWidth());
 					//factory.addFireBall(x, y, lookingRightOrLeft);
 					if (!((MysteryBox) o).stateIsFinal()) {
 						sound.playItemOutOfBoxSound();
 						//factory.addLeaf(o.getX(), o.getY(), o.getWidth());
-						factory.addFireFlower(o.getX(), o.getY(), o.getWidth());
 						((MysteryBox) o).hitByMario();
+						if (Math.random()>0.66)
+							((MysteryBox) o).powerUp = factory.addFireFlower(o.getX(), o.getY(), o.getWidth());
+						else if (Math.random()>0.33)
+							((MysteryBox) o).powerUp = factory.addMushroom(o.getX(), o.getY(), o.getWidth());
+						else if (Math.random()>0)
+							((MysteryBox) o).powerUp = factory.addLeaf(o.getX(), o.getY(), o.getWidth());
+
 					}
 				}
 			}
@@ -978,7 +972,7 @@ public class Mario extends GImage {
 				factory.addFireBall(x, y, lookingRightOrLeft);
 
 				//ENTERING STAGE1
-				
+
 				if (isJumping) {
 					if (lookingRightOrLeft) {
 						setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
@@ -1011,7 +1005,7 @@ public class Mario extends GImage {
 					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
 					return;
 				}
-				
+
 				if (isJumping) {
 					if (lookingRightOrLeft) {
 						setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
@@ -1078,6 +1072,7 @@ public class Mario extends GImage {
 	}
 
 	public void swingTail() {
+		//TODO fix bug when spamming swingTail()
 		if (!isCat || isCrouching) return;//cant swing tail if crouching or not cat
 		if (!isJumping && (movingRight||movingLeft)) return;//cant swing if walking right or left
 		if (isJumping && swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
@@ -1146,10 +1141,10 @@ public class Mario extends GImage {
 					swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
 				} else { 
 					if (lookingRightOrLeft) {
-						move(dx, 0);
+						moveOnlyMario(dx, 0.0);
 						setImageAndRelocate(bigMarioLeftCatTail2Image);
 					} else {
-						move(-dx, 0);
+						moveOnlyMario(-dx, 0.0);
 						setImageAndRelocate(bigMarioRightCatTail2Image);
 					}
 					swingTailStanding = SWING_TAIL_STANDING.STAGE2;
@@ -1179,8 +1174,8 @@ public class Mario extends GImage {
 					}
 					swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
 				} else { 
-					if (lookingRightOrLeft) move(-dx, 0);
-					else move(dx, 0);
+					if (lookingRightOrLeft) moveOnlyMario(-dx, 0);
+					else moveOnlyMario(dx, 0);
 					setImageAndRelocate(bigMarioCatTail3Image);
 					swingTailStanding = SWING_TAIL_STANDING.STAGE3;
 				}

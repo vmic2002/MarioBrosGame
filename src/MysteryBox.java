@@ -1,8 +1,8 @@
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import java.awt.Image;
-public class MysteryBox extends Block {
-	//extends Block means that this is something mario would not be able
+public class MysteryBox extends Platform {
+	//extends Platform means that this is something mario would not be able
 	//to walk/jump into. if he does, it will halt him
 	private static GCanvas canvas;
 	private static Image mysteryBox1Image;
@@ -10,12 +10,21 @@ public class MysteryBox extends Block {
 	private static Image mysteryBox3Image;
 	private static Image mysteryBox4Image;
 	private static Image mysteryBoxFinalImage;
+	public GImage powerUp;//spawned power up
 	private enum MYSTERYBOX_STATE {STATE_1, STATE_2, STATE_3, STATE_4, FINAL};
 	MYSTERYBOX_STATE mysteryBoxState;
 
 	public MysteryBox() {
 		super(mysteryBox1Image);
 		mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
+	}
+	public void move(double dx, double dy) {
+		//when level moves the powerUp on mystery box needs to move with it
+		super.move(dx, dy);
+		if (mysteryBoxState==MYSTERYBOX_STATE.FINAL) {
+			powerUp.move(dx, dy);
+		}
+ 		//if not in final state then powerUp hasn't been created yet
 	}
 	public boolean stateIsFinal() {
 		return  mysteryBoxState == MYSTERYBOX_STATE.FINAL;
