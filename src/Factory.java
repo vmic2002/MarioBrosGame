@@ -28,7 +28,7 @@ public class Factory {
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
 				//code here runs concurrently
-				mushroom.move();
+				mushroom.move(mysteryBoxWidth);
 			}
 		});  
 		t1.start();

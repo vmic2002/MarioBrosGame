@@ -24,12 +24,13 @@ class FireBall extends GImage {
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
 	private static final int sizeOfHops = 300;//fireball hops once it moves on the ground
 	private static final int hopRadius = sizeOfHops/2;//width of semi circle (hop) is 2*R
+	private static int pauseTime = 10;//milliseconds pause in between each move function call
 	private boolean rightOrLeft;
 	private int frequencyChangeStage = frequencyChangeToNextStage;
 	private int gasLeft = maxDistance;//fireball moves until it has no more gas left (gasLeft == 0)
 	private int dx; //x speed
 	private int dy;//y speed
-	private int pauseTime = 10;//milliseconds pause in between each move function call
+	
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;

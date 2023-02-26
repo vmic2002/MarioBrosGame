@@ -21,7 +21,7 @@ public class MysteryBox extends Platform {
 	public void move(double dx, double dy) {
 		//when level moves the powerUp on mystery box needs to move with it
 		super.move(dx, dy);
-		if (mysteryBoxState==MYSTERYBOX_STATE.FINAL) {
+		if (mysteryBoxState==MYSTERYBOX_STATE.FINAL) {	
 			powerUp.move(dx, dy);
 		}
  		//if not in final state then powerUp hasn't been created yet

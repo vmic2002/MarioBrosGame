@@ -310,7 +310,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				rightFireBall4Image, this.getGCanvas());
 		FireFlower.setObjects(fireFlowerImage, this.getGCanvas());
 		Leaf.setObjects(rightLeafImage, leftLeafImage, this.getGCanvas());
-		SoundController sound = new SoundController();
+		//SoundController sound = new SoundController();
 		Factory factory = new Factory(this.getGCanvas());
 	
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
@@ -340,13 +340,14 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 				
-				this.getGCanvas(), sound, factory);
+				this.getGCanvas(), factory);
 
 		setSize(WIDTH,HEIGHT);
 		add(mario, 0, getHeight()-3*mario.getHeight());//FOR NOW
 
 		addKeyListeners(new MyKeyListener(mario));
-		LevelController.playLevel1();
+		//LevelController.playLevel1();
+		LevelController.playLevel2();
 	}
 	
 	

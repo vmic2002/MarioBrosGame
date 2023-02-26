@@ -4,7 +4,7 @@ public class Level {
 	private int number;
 	private ArrayList<LevelPart> levelParts;
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
-	//if baseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
+	//if yBaseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
 	public double xBaseLine;//if xBaseLine == 0 then mario is at leftmost spot in the level so can't move the level more left
 	//if xbaseline == canvas width-level width then mario is at right most portion of level
 	//private GImage background;
@@ -28,7 +28,7 @@ public class Level {
 		}
 		xBaseLine+=dx;
 		yBaseLine+=dy;
-		System.out.println("MOVING LEVEL "+dx+ " "+dy);
+		//System.out.println("MOVING LEVEL "+dx+ " "+dy);
 		//background.move(dx/2, dy/2);
 	}
 }

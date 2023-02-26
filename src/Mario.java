@@ -29,7 +29,7 @@ public class Mario extends GImage {
 
 
 	private GCanvas canvas;
-	private SoundController sound;
+	//private SoundController sound;
 	private Factory factory;
 	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
@@ -102,7 +102,7 @@ public class Mario extends GImage {
 			Image bigMarioCatTail1Image, Image bigMarioLeftCatTail2Image,
 			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image,
 
-			GCanvas canvas, SoundController sound, Factory factory) {
+			GCanvas canvas, Factory factory) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
@@ -163,7 +163,7 @@ public class Mario extends GImage {
 		this.bigMarioCatTail3Image = bigMarioCatTail3Image;
 
 		this.canvas = canvas;
-		this.sound = sound;
+		//this.sound = sound;
 		this.factory = factory;
 	}
 	public void moveOnlyMario(double dx, double dy) {
@@ -193,7 +193,7 @@ public class Mario extends GImage {
 				//if xbaseline == canvas width-level width then mario is at right most portion of level
 				if (getX()+getWidth()+dx<=canvas.getWidth()) super.move(dx, dy);
 				return;
-			}
+			}	
 			LevelController.currLevel.moveLevel(-dx, -dy);
 		}
 	}
@@ -392,7 +392,7 @@ public class Mario extends GImage {
 					return;//mario doesnt jump if he is in the middle of swinging while standing
 				}
 				isJumping = true;
-				sound.playMarioJumpSound();
+				SoundController.playMarioJumpSound();
 
 				wayUpOrWayDown = true;
 				if (!isCrouching) {
@@ -848,16 +848,16 @@ public class Mario extends GImage {
 			System.out.println("ITS MUSHROOM");
 			canvas.remove(o);
 			if (!isFire && !isCat) setToBig();//if mario is in flower mode or cat mode, dont want mushroom to make him big
-			sound.playPowerUpSound();
+			SoundController.playPowerUpSound();
 		} else if (o instanceof FireFlower) {
 			canvas.remove(o);
 			setToFire();
-			sound.playPowerUpSound();
+			SoundController.playPowerUpSound();
 		} else if (o instanceof Leaf) {
 			System.out.println("HIT LEEAFFF");
 			canvas.remove(o);
 			setToCat();
-			sound.playPowerUpSound();
+			SoundController.playPowerUpSound();
 		} else if (o instanceof Platform) {
 			//mario should halt, he cant move into a Platform
 			//System.out.println("IN CONTAC WITH Platform");
@@ -874,11 +874,8 @@ public class Mario extends GImage {
 			} else {
 				System.out.println("HIT Platform FROM UNDER POWER UP APPEAR");
 				if (o instanceof MysteryBox) {
-					//factory.addMushroom(o.getX(), o.getY(), o.getWidth());
-					//factory.addFireBall(x, y, lookingRightOrLeft);
 					if (!((MysteryBox) o).stateIsFinal()) {
-						sound.playItemOutOfBoxSound();
-						//factory.addLeaf(o.getX(), o.getY(), o.getWidth());
+						SoundController.playItemOutOfBoxSound();
 						((MysteryBox) o).hitByMario();
 						if (Math.random()>0.66)
 							((MysteryBox) o).powerUp = factory.addFireFlower(o.getX(), o.getY(), o.getWidth());
@@ -886,7 +883,6 @@ public class Mario extends GImage {
 							((MysteryBox) o).powerUp = factory.addMushroom(o.getX(), o.getY(), o.getWidth());
 						else if (Math.random()>0)
 							((MysteryBox) o).powerUp = factory.addLeaf(o.getX(), o.getY(), o.getWidth());
-
 					}
 				}
 			}
@@ -964,7 +960,7 @@ public class Mario extends GImage {
 				//code in here runs in another thread
 				boolean startedJumping = isJumping;
 				int pauseBetweenStages = 100;
-				sound.playFireballSound();
+				SoundController.playFireballSound();
 				//TODO this function doesnt check if mario gets hit by turtle etc and
 				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
 				double x = lookingRightOrLeft?getX()+getWidth():getX()-10;
@@ -1089,7 +1085,7 @@ public class Mario extends GImage {
 			public void run() {
 				System.out.println("SWING TAILL");
 				int pauseBetweenStages = 70;
-				sound.playTailSound();
+				SoundController.playTailSound();
 				//TODO need to check if turtle etc or mushroom etc gets hit by tail using inContactWith() func
 				//ENTERING STAGE1
 				boolean startedJumping = isJumping;

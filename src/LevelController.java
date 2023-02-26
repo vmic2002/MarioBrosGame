@@ -83,20 +83,20 @@ public class LevelController {
 		//to have white space in between level parts need to increment xCounter by width of whitespace
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
+		spawnMysteryBox(xCounter-200, 5, levelParts);
+		xCounter += 200; 
 		xCounter += spawnGrassMountain(xCounter, 4, 2, levelParts);
-		spawnMysteryBox(xCounter, 5, levelParts);
-		xCounter += 50; 
-		xCounter += spawnGrassMountain(xCounter, 4, 2, levelParts);
-		xCounter += 50; 
+		xCounter += 200; 
 		spawnMysteryBox(xCounter+100, 7, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 5, 4, levelParts);
-		xCounter += 50;
+		xCounter += 200;
 		spawnMysteryBox(xCounter+100, 9, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 8, 6, levelParts);
-		xCounter += 50; 
+		xCounter += 200; 
 		spawnMysteryBox(xCounter+100, 7, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 5, 4, levelParts);
-		xCounter += 50;
+		xCounter += 200;
 		spawnMysteryBox(xCounter+100, 5, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
 		xCounter += 200;
@@ -106,7 +106,20 @@ public class LevelController {
 	}
 
 	public static void playLevel2() {
-		Level level2 = new Level(2, null, 0);
+		double xCounter = 0.0;
+		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		xCounter+=200;
+		spawnMysteryBox(xCounter+200, 5, levelParts);
+//		spawnMysteryBox(xCounter+400, 5, levelParts);
+		spawnMysteryBox(xCounter+600, 5, levelParts);
+//		spawnMysteryBox(xCounter+800, 5, levelParts);
+		spawnMysteryBox(xCounter+1000, 5, levelParts);
+//		spawnMysteryBox(xCounter+1200, 5, levelParts);
+		spawnMysteryBox(xCounter+1400, 5, levelParts);
+		xCounter += spawnGrassMountain(xCounter, 12, 2, levelParts);
+		xCounter+=200;
+	
+		Level level2 = new Level(2, levelParts, xCounter);
 		currLevel = level2;//set currLevel
 	}
 
