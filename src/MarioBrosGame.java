@@ -344,7 +344,7 @@ public class MarioBrosGame extends GraphicsProgram {
 
 		setSize(WIDTH,HEIGHT);
 		add(mario, 0, getHeight()-3*mario.getHeight());//FOR NOW
-
+//TODO CLONING FROM GITHUB REPO DOESNT WORK BECAUSE LEVVELCONTROLLER.CLASS IS NOT IN REPO
 		addKeyListeners(new MyKeyListener(mario));
 		LevelController.playLevel1();
 		//LevelController.playLevel2();

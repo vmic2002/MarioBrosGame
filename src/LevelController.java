@@ -100,7 +100,6 @@ public class LevelController {
 		spawnMysteryBox(xCounter+100, 5, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
 		xCounter += 200;
-		
 		Level level1 = new Level(1, levelParts, xCounter);
 		currLevel = level1;//set currLevel
 	}
@@ -109,7 +108,7 @@ public class LevelController {
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		xCounter+=200;
-		spawnMysteryBox(xCounter+200, 5, levelParts);
+		spawnMysteryBox(xCounter+201, 5, levelParts);
 //		spawnMysteryBox(xCounter+400, 5, levelParts);
 		spawnMysteryBox(xCounter+650, 5, levelParts);
 //		spawnMysteryBox(xCounter+800, 5, levelParts);
