@@ -346,8 +346,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		add(mario, 0, getHeight()-3*mario.getHeight());//FOR NOW
 
 		addKeyListeners(new MyKeyListener(mario));
-		//LevelController.playLevel1();
-		LevelController.playLevel2();
+		LevelController.playLevel1();
+		//LevelController.playLevel2();
 	}
 	
 	

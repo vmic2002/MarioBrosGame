@@ -111,11 +111,11 @@ public class LevelController {
 		xCounter+=200;
 		spawnMysteryBox(xCounter+200, 5, levelParts);
 //		spawnMysteryBox(xCounter+400, 5, levelParts);
-		spawnMysteryBox(xCounter+600, 5, levelParts);
+		spawnMysteryBox(xCounter+650, 5, levelParts);
 //		spawnMysteryBox(xCounter+800, 5, levelParts);
-		spawnMysteryBox(xCounter+1000, 5, levelParts);
+		spawnMysteryBox(xCounter+1050, 5, levelParts);
 //		spawnMysteryBox(xCounter+1200, 5, levelParts);
-		spawnMysteryBox(xCounter+1400, 5, levelParts);
+		spawnMysteryBox(xCounter+1450, 5, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 12, 2, levelParts);
 		xCounter+=200;
 	
