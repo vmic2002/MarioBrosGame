@@ -13,6 +13,19 @@ This game is coded in Java using the Eclipse IDE and [Stanford's acm library](ht
 
 This is an ongoing project from Feb 5th, 2023 - Now
 
+## How to play the game on your computer
+1. Open up your Terminal App.
+2. Clone this repo by running:
+```bash
+git clone https://github.com/vmic2002/MarioBrosGame.git
+```
+3. Run
+```bash
+cd MarioBrosGame
+./playMarioGame.sh
+```
+The playMarioGame.sh file is a bash script that will run the MarioBrosGame from the command line.
+
 ## Quick preview
 This video was recorded on Feb 27th, 2023 after the 18th commit.
 
