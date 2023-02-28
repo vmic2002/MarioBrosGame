@@ -1,7 +1,7 @@
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import java.awt.Image;
-public class FireFlower extends GImage {
+public class FireFlower extends MovingObject {
 	//this class is helpful so we can do (obj instanceof FireFlower)
 	//easier for knowing if mario walks into flower
 	private static GCanvas canvas;

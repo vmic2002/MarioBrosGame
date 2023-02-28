@@ -310,7 +310,6 @@ public class MarioBrosGame extends GraphicsProgram {
 				rightFireBall4Image, this.getGCanvas());
 		FireFlower.setObjects(fireFlowerImage, this.getGCanvas());
 		Leaf.setObjects(rightLeafImage, leftLeafImage, this.getGCanvas());
-		//SoundController sound = new SoundController();
 		Factory factory = new Factory(this.getGCanvas());
 	
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
@@ -344,7 +343,7 @@ public class MarioBrosGame extends GraphicsProgram {
 
 		setSize(WIDTH,HEIGHT);
 		add(mario, 0, getHeight()-3*mario.getHeight());//FOR NOW
-//TODO CLONING FROM GITHUB REPO DOESNT WORK BECAUSE LEVVELCONTROLLER.CLASS IS NOT IN REPO
+//
 		addKeyListeners(new MyKeyListener(mario));
 		LevelController.playLevel1();
 		//LevelController.playLevel2();

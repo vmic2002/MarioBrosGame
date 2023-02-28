@@ -4,7 +4,7 @@ import acm.graphics.GObject;
 
 import java.awt.Image;
 import java.util.ArrayList;
-public class Mushroom extends GImage {
+public class Mushroom extends MovingObject {
 	private static GCanvas canvas;
 	private static Image mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
@@ -27,7 +27,7 @@ public class Mushroom extends GImage {
 		alive = true;
 	}
 
-	public void move(double mysteryBoxWidth) {
+	public void move() {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
 
 		//TODO there is bug where if mario jumps so high that the level moves up and down,

@@ -5,7 +5,7 @@ import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 
-class FireBall extends GImage {
+class FireBall extends MovingObject {
 	private static GCanvas canvas;
 	private static Image leftFireBall1;
 	private static Image rightFireBall1;

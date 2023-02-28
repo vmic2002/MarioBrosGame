@@ -832,7 +832,6 @@ public class Mario extends GImage {
 				hitPlatformVertical = false;
 			}
 		}
-		//TODO NEED TO CHECK IF MARIO OUT OF BOUNDS
 		try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
@@ -876,13 +875,17 @@ public class Mario extends GImage {
 				if (o instanceof MysteryBox) {
 					if (!((MysteryBox) o).stateIsFinal()) {
 						SoundController.playItemOutOfBoxSound();
+						double x  = o.getX();
+						double y = o.getY();						
 						((MysteryBox) o).hitByMario();
 						if (Math.random()>0.66)
-							((MysteryBox) o).powerUp = factory.addFireFlower(o.getX(), o.getY(), o.getWidth());
+							((MysteryBox) o).powerUp = factory.addFireFlower(x, y, o.getWidth());
 						else if (Math.random()>0.33)
-							((MysteryBox) o).powerUp = factory.addMushroom(o.getX(), o.getY(), o.getWidth());
-						else if (Math.random()>0)
-							((MysteryBox) o).powerUp = factory.addLeaf(o.getX(), o.getY(), o.getWidth());
+							((MysteryBox) o).powerUp = factory.addMushroom(x, y, o.getWidth());
+						else //if (Math.random()>0)
+							((MysteryBox) o).powerUp = factory.addLeaf(x, y, o.getWidth());
+						
+							
 					}
 				}
 			}

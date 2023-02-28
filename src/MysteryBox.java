@@ -22,9 +22,10 @@ public class MysteryBox extends Platform {
 		//when level moves the powerUp on mystery box needs to move with it
 		super.move(dx, dy);
 		if (mysteryBoxState==MYSTERYBOX_STATE.FINAL) {	
-			powerUp.move(dx, dy);
+
+			if (powerUp!=null) powerUp.move(dx, dy);
 		}
- 		//if not in final state then powerUp hasn't been created yet
+		//if not in final state then powerUp hasn't been created yet
 	}
 	public boolean stateIsFinal() {
 		return  mysteryBoxState == MYSTERYBOX_STATE.FINAL;
@@ -34,8 +35,32 @@ public class MysteryBox extends Platform {
 		//mushroom, coin, flower, leaf... is created by Factory object, not MysteryBox
 		setImage(mysteryBoxFinalImage);
 		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				double dy = -10;
+				move(dy);//move up
+				dy = -dy;
+				move(dy);//move down
+			}
+		});  
+		t1.start();
 	}
-	
+	public void moveOnlyBox(double dy) {
+		//called when only mystery box wants to move, not power up coming out of it
+		super.move(0, dy);
+	}
+	public void move(double dy) {
+		for (int i=0; i<10; i++) {
+			moveOnlyBox(dy);
+			try {
+				Thread.sleep(15);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static void setObjects(Image image1, Image image2, Image image3, Image image4, Image imageFinal, GCanvas canvas1) {
 		mysteryBox1Image = image1;
 		mysteryBox2Image = image2;
@@ -44,5 +69,5 @@ public class MysteryBox extends Platform {
 		mysteryBoxFinalImage = imageFinal;
 		canvas = canvas1;
 	}
-	
+
 }
