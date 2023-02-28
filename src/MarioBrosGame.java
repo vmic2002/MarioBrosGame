@@ -30,12 +30,11 @@ public class MarioBrosGame extends GraphicsProgram {
 	private static final int WIDTH = 1400;
 	private static final int HEIGHT = 1000;
 	private static final long serialVersionUID = 1L;
-
+	
 
 	public void run() {
 		System.out.println("Hello, World!");
 
-		
 		String smallMarioLeftImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftImage.png";
 		String smallMarioRightImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightImage.png";
 		String smallMarioRightWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightWalkingImage.png";
@@ -311,7 +310,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		FireFlower.setObjects(fireFlowerImage, this.getGCanvas());
 		Leaf.setObjects(rightLeafImage, leftLeafImage, this.getGCanvas());
 		Factory factory = new Factory(this.getGCanvas());
-	
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, 

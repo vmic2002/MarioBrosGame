@@ -22,7 +22,6 @@ public class MysteryBox extends Platform {
 		//when level moves the powerUp on mystery box needs to move with it
 		super.move(dx, dy);
 		if (mysteryBoxState==MYSTERYBOX_STATE.FINAL) {	
-
 			if (powerUp!=null) powerUp.move(dx, dy);
 		}
 		//if not in final state then powerUp hasn't been created yet
@@ -46,13 +45,10 @@ public class MysteryBox extends Platform {
 		});  
 		t1.start();
 	}
-	public void moveOnlyBox(double dy) {
-		//called when only mystery box wants to move, not power up coming out of it
-		super.move(0, dy);
-	}
+
 	public void move(double dy) {
 		for (int i=0; i<10; i++) {
-			moveOnlyBox(dy);
+			super.move(0, dy);
 			try {
 				Thread.sleep(15);
 			} catch (Exception e) {

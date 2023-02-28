@@ -884,7 +884,6 @@ public class Mario extends GImage {
 							((MysteryBox) o).powerUp = factory.addMushroom(x, y, o.getWidth());
 						else //if (Math.random()>0)
 							((MysteryBox) o).powerUp = factory.addLeaf(x, y, o.getWidth());
-						
 							
 					}
 				}
