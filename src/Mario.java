@@ -8,7 +8,7 @@ import acm.graphics.GObject;
 
 public class Mario extends GImage {
 	private Image smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage,
-	smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage,
+	smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage,
 	bigMarioLeftImage, bigMarioRightImage, bigMarioLeftWalkingImage, bigMarioRightWalkingImage,
 	bigMarioLeftJumpingImage, bigMarioRightJumpingImage, bigMarioLeftJumpingDownImage,
 	bigMarioRightJumpingDownImage, bigMarioLeftCrouchingImage, bigMarioRightCrouchingImage,
@@ -76,9 +76,12 @@ public class Mario extends GImage {
 	public boolean hitPlatformHorizontal = false;
 	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
 	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
+
+	public boolean isDead = false;//mario dies if he jumps into bottom of screen (not on platform)
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
-			Image smallMarioRightJumpingImage, Image bigMarioLeftImage,
+			Image smallMarioRightJumpingImage, Image marioDeadImage,
+			Image bigMarioLeftImage,
 			Image bigMarioRightImage, Image bigMarioLeftWalkingImage, Image bigMarioRightWalkingImage,
 			Image bigMarioLeftJumpingImage, Image bigMarioRightJumpingImage,
 			Image bigMarioLeftFireImage, Image bigMarioRightFireImage, 
@@ -110,6 +113,7 @@ public class Mario extends GImage {
 		this.smallMarioRightWalkingImage = smallMarioRightWalkingImage;
 		this.smallMarioLeftJumpingImage = smallMarioLeftJumpingImage;
 		this.smallMarioRightJumpingImage = smallMarioRightJumpingImage;
+		this.marioDeadImage = marioDeadImage;
 
 		this.bigMarioRightImage = bigMarioRightImage;
 		this.bigMarioLeftImage = bigMarioLeftImage;
@@ -174,9 +178,11 @@ public class Mario extends GImage {
 	public void move(double dx, double dy) {
 		//moves mario or current level mario is playing depending on if
 		//mario goes too much to the corners of the screen
-		if (dx<0 && getX()>=getWidth()*3 || dx>0 && getX()<=canvas.getWidth()-getWidth()*4
-				|| dy>0 && getY()<=canvas.getHeight()-1*getHeight()
-				|| dy<0 &&	getY()>=getHeight()*1) {
+		double n = 3;
+		//1/n of screen on each side mario cannot walk into because level will move
+		if (dx<0 && getX()>=(1/n)*canvas.getWidth() || dx>0 && getX()+getWidth()<=((n-1)/n)*canvas.getWidth()
+				|| dy>0 && getY()+getHeight()<=((n-1)/n)*canvas.getHeight()
+				|| dy<0 &&	getY()>=(1/n)*canvas.getHeight()) {
 			if (dy>0 && LevelController.currLevel.yBaseLine>0) {
 				//see LevelController baseLine documentation
 				LevelController.currLevel.moveLevel(-dx, -dy);
@@ -193,9 +199,47 @@ public class Mario extends GImage {
 				//if xbaseline == canvas width-level width then mario is at right most portion of level
 				if (getX()+getWidth()+dx<=canvas.getWidth()) super.move(dx, dy);
 				return;
-			}	
+			}
+			if (dy > 0 && LevelController.currLevel.yBaseLine==0) {
+				//mario touched bottom of screen 
+				if (getY()+getHeight()<=canvas.getHeight()) {
+					super.move(dx, dy);
+					return;
+				}
+				System.out.println("MARIO DEAD he touched bottom of screen");
+				marioDied();
+				return;
+			}
 			LevelController.currLevel.moveLevel(-dx, -dy);
 		}
+	}
+
+	public void marioDied() {
+		isDead = true;
+		movingRight = false;//in case user releases left/right keys right after mario dies
+		movingLeft = false;
+		SoundController.playMarioDeathSound();
+		setImageAndRelocate(marioDeadImage);
+		sendToFront();
+		try {
+			for (int i=0; i<60; i++) {
+				super.move(0,-10);
+				Thread.sleep(15);
+			}
+			Thread.sleep(150);
+			for (int i=0; i<60; i++) {
+				super.move(0,10);
+				Thread.sleep(15);
+			}
+			Thread.sleep(800);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		isDead = false;
+		setToSmall();//need to change mario from dead sprite to small sprite
+		lookingRightOrLeft = true;//mario should be looking right
+		lookInCorrectDirection(true);
+		LevelController.restartCurrentLevel(this);//when mario dies restart the level
 	}
 
 	public void setImageAndRelocate(Image newImage) {
@@ -215,6 +259,7 @@ public class Mario extends GImage {
 	}
 
 	public void setToCat() {
+		if (isDead) return;//can't change to cat if in dead sprite
 		if (isCat) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
@@ -238,6 +283,7 @@ public class Mario extends GImage {
 	}
 
 	public void setToBig() {
+		if (isDead) return;//can't change to big if in dead sprite
 		//can be called if mario eats mushroom to grow
 		//or if fire mario or cat mario gets hit by something and goes back 
 		//to big mario
@@ -264,6 +310,12 @@ public class Mario extends GImage {
 	}
 
 	public void setToSmall() {
+		if (isDead) {
+			return;
+			//TODO this part should only matter once there are turtles etc
+			//can't change to small if in dead sprite (like if turtle hits mario when he is in dead sprite)
+		}
+		
 		//can be called if big mario gets hit by something
 		if (!bigOrSmall) return;//return if mario already small
 		if (lookingRightOrLeft) {
@@ -288,6 +340,7 @@ public class Mario extends GImage {
 	}
 
 	public void setToFire() {
+		if (isDead) return; //cant change to fire sprite if in dead sprite
 		if (isFire) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
@@ -448,7 +501,8 @@ public class Mario extends GImage {
 
 	public void fall(int dy) {
 
-		while (getY()+getHeight()+dy<=canvas.getHeight()) {
+		//while (getY()+getHeight()+dy<=canvas.getHeight()) {
+		while (!hitPlatformVertical && !isDead) {//mario falls down until he hits a platform
 			checkUnder(dy);
 			move(0, dy);
 
@@ -884,7 +938,7 @@ public class Mario extends GImage {
 							((MysteryBox) o).powerUp = factory.addMushroom(x, y, o.getWidth());
 						else //if (Math.random()>0)
 							((MysteryBox) o).powerUp = factory.addLeaf(x, y, o.getWidth());
-							
+
 					}
 				}
 			}

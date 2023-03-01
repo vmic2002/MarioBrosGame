@@ -41,6 +41,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		String smallMarioLeftWalkingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftWalkingImage.png";
 		String smallMarioLeftJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioLeftJumpingImage.png";
 		String smallMarioRightJumpingImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/smallMarioRightJumpingImage.png";
+		String marioDeadImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/marioDeadImage.png";
 
 		String bigMarioLeftImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioLeftImage.png";
 		String bigMarioRightImagePath = "/Users/victormicha/eclipse-workspace/MarioBrosGame/Images/bigMarioRightImage.png";
@@ -125,7 +126,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage smallMarioLeftWalkingImage = null;
 		BufferedImage smallMarioLeftJumpingImage = null;
 		BufferedImage smallMarioRightJumpingImage = null;
-
+		BufferedImage marioDeadImage = null;
 
 
 		BufferedImage bigMarioLeftImage = null;
@@ -215,7 +216,8 @@ public class MarioBrosGame extends GraphicsProgram {
 			smallMarioRightWalkingImage = ImageIO.read(new File(smallMarioRightWalkingImagePath));
 			smallMarioLeftJumpingImage = ImageIO.read(new File(smallMarioLeftJumpingImagePath));
 			smallMarioRightJumpingImage = ImageIO.read(new File(smallMarioRightJumpingImagePath));
-
+			marioDeadImage = ImageIO.read(new File(marioDeadImagePath));
+			
 			bigMarioLeftImage = ImageIO.read(new File(bigMarioLeftImagePath));
 			bigMarioRightImage = ImageIO.read(new File(bigMarioRightImagePath));
 			bigMarioLeftWalkingImage = ImageIO.read(new File(bigMarioLeftWalkingImagePath));
@@ -312,7 +314,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		Factory factory = new Factory(this.getGCanvas());
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
-				smallMarioRightJumpingImage, 
+				smallMarioRightJumpingImage, marioDeadImage,
 				
 				bigMarioLeftImage, bigMarioRightImage,
 				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage,
@@ -338,13 +340,10 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 				
 				this.getGCanvas(), factory);
-
 		setSize(WIDTH,HEIGHT);
-		add(mario, 0, getHeight()-3*mario.getHeight());//FOR NOW
-//
 		addKeyListeners(new MyKeyListener(mario));
-		LevelController.playLevel1();
-		//LevelController.playLevel2();
+		LevelController.playLevel1(mario);
+		//LevelController.playLevel2(mario);
 	}
 	
 	

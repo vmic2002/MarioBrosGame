@@ -11,10 +11,8 @@ public class SoundController {
 	private static File fireBallSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Fireball.wav");
 	private static File squishSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Squish.wav");
 	private static File tailSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/tail.wav");
-	//public SoundController() {
-
-	//}
-
+	private static File deathSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Death.wav");
+	
 	private static void playSound(File f) {
 		try{
 			Clip clip = AudioSystem.getClip();
@@ -23,6 +21,11 @@ public class SoundController {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public static void playMarioDeathSound(){
+		//plays when mario dies
+		playSound(deathSoundFile);
 	}
 
 	public static void playMarioJumpSound(){

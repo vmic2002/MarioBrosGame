@@ -69,11 +69,11 @@ public class Mushroom extends MovingObject {
 			}
 			if (getX()+dx<=0||getX()+getWidth()+dx>=canvas.getWidth()) {
 				//for mushroom to bounce off edge of screen: (for testing)
-				dx = -dx;
-				rightOrLeft = !rightOrLeft;
+				//dx = -dx;
+				//rightOrLeft = !rightOrLeft;
 				//OR mushroom dies when touches edge of screen
-				//alive = false;
-				//break;
+				alive = false;
+				break;
 			}
 			double newX = rightOrLeft?getX()+getWidth()+10:getX()-10;
 			Point[] pointsSide = new Point[] {

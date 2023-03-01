@@ -3,7 +3,7 @@ import acm.graphics.GImage;
 import java.awt.Image;
 public class Factory {
 	private GCanvas canvas;
-
+	//TODO maybe make factory static
 	public Factory(GCanvas canvas) {
 		this.canvas = canvas;
 	}

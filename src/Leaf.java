@@ -40,7 +40,6 @@ public class Leaf extends MovingObject {
 	
 	 
 	public void move() {
-		//TODO leaf needs to fall down left and right
 		this.sendToFront();
 		for (int i=0; i<15; i++) {
 			move(0, -10);
