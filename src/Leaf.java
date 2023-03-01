@@ -23,6 +23,8 @@ public class Leaf extends MovingObject {
 		alive = true;
 		toggle = 0;
 	}
+	//TODO LEAF fix bug where power up that is still alive is removed from canvas
+	//when restarting level but when mario walks into it it still affects him, need to set them to not alive
 	
 	private void toggleState() {
 		//changes leaf from right to left or from left to right	

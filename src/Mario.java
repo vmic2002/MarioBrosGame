@@ -315,7 +315,7 @@ public class Mario extends GImage {
 			//TODO this part should only matter once there are turtles etc
 			//can't change to small if in dead sprite (like if turtle hits mario when he is in dead sprite)
 		}
-		
+
 		//can be called if big mario gets hit by something
 		if (!bigOrSmall) return;//return if mario already small
 		if (lookingRightOrLeft) {
@@ -1024,21 +1024,22 @@ public class Mario extends GImage {
 				factory.addFireBall(x, y, lookingRightOrLeft);
 
 				//ENTERING STAGE1
-
-				if (isJumping) {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
+				if (!isDead) {
+					if (isJumping) {
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
+						} else {
+							setImageAndRelocate(bigMarioLeftJumpingFireShooting1Image);
+						}
+						shootFireJumping = SHOOT_FIRE_JUMPING.STAGE1;
 					} else {
-						setImageAndRelocate(bigMarioLeftJumpingFireShooting1Image);
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightFireShooting1Image);
+						} else {
+							setImageAndRelocate(bigMarioLeftFireShooting1Image);
+						}
+						shootFireStanding = SHOOT_FIRE_STANDING.STAGE1;
 					}
-					shootFireJumping = SHOOT_FIRE_JUMPING.STAGE1;
-				} else {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightFireShooting1Image);
-					} else {
-						setImageAndRelocate(bigMarioLeftFireShooting1Image);
-					}
-					shootFireStanding = SHOOT_FIRE_STANDING.STAGE1;
 				}
 				try {
 					Thread.sleep(pauseBetweenStages);
@@ -1057,21 +1058,22 @@ public class Mario extends GImage {
 					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
 					return;
 				}
-
-				if (isJumping) {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
+				if (!isDead) {
+					if (isJumping) {
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
+						} else {
+							setImageAndRelocate(bigMarioLeftJumpingFireShooting2Image);
+						}
+						shootFireJumping = SHOOT_FIRE_JUMPING.STAGE2;
 					} else {
-						setImageAndRelocate(bigMarioLeftJumpingFireShooting2Image);
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightFireShooting2Image);
+						} else {
+							setImageAndRelocate(bigMarioLeftFireShooting2Image);
+						}
+						shootFireStanding = SHOOT_FIRE_STANDING.STAGE2;
 					}
-					shootFireJumping = SHOOT_FIRE_JUMPING.STAGE2;
-				} else {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightFireShooting2Image);
-					} else {
-						setImageAndRelocate(bigMarioLeftFireShooting2Image);
-					}
-					shootFireStanding = SHOOT_FIRE_STANDING.STAGE2;
 				}
 				try {
 					Thread.sleep(pauseBetweenStages);
@@ -1097,23 +1099,27 @@ public class Mario extends GImage {
 					return;
 				}
 				//ENTERING STAGE3 for jumping
-				if (lookingRightOrLeft) {
-					setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
-				} else {
-					setImageAndRelocate(bigMarioLeftJumpingFireShooting3Image);
+				if (!isDead) {
+					if (lookingRightOrLeft) {
+						setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
+					} else {
+						setImageAndRelocate(bigMarioLeftJumpingFireShooting3Image);
+					}
+					shootFireJumping = SHOOT_FIRE_JUMPING.STAGE3;
 				}
-				shootFireJumping = SHOOT_FIRE_JUMPING.STAGE3;
 				try {
 					Thread.sleep(pauseBetweenStages);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if (isJumping) {
-					//if mario is still jumping after thread pause above
-					if (wayUpOrWayDown) {
-						setToJumping(lookingRightOrLeft);
-					} else {
-						setToJumpingDown(lookingRightOrLeft);
+				if (!isDead) {
+					if (isJumping) {
+						//if mario is still jumping after thread pause above
+						if (wayUpOrWayDown) {
+							setToJumping(lookingRightOrLeft);
+						} else {
+							setToJumpingDown(lookingRightOrLeft);
+						}
 					}
 				}
 				shootFireJumping= SHOOT_FIRE_JUMPING.NOT_SHOOTING;
@@ -1145,26 +1151,28 @@ public class Mario extends GImage {
 				//TODO need to check if turtle etc or mushroom etc gets hit by tail using inContactWith() func
 				//ENTERING STAGE1
 				boolean startedJumping = isJumping;
-				if (isJumping) {
-					if (wayUpOrWayDown) {
-						//on the way up swinging the tail makes mario go up a bit more
-						System.out.println("SHOULD MOVE HIGHER");
-						move(0, -getHeight()/4);
-					} else {
-						//on the way down swinging the tail makes mario slow down in the air
-						pauseGoingDown = 120;
-						System.out.println("SHOULD MOVE DOWN SLOWER");
+				if (!isDead) {
+					if (isJumping) {
+						if (wayUpOrWayDown) {
+							//on the way up swinging the tail makes mario go up a bit more
+							System.out.println("SHOULD MOVE HIGHER");
+							move(0, -getHeight()/4);
+						} else {
+							//on the way down swinging the tail makes mario slow down in the air
+							pauseGoingDown = 120;
+							System.out.println("SHOULD MOVE DOWN SLOWER");
 
+						}
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+						} else {
+							setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+						}
+						swingTailJumping = SWING_TAIL_JUMPING.STAGE1;
+					} else { 
+						setImageAndRelocate(bigMarioCatTail1Image);
+						swingTailStanding = SWING_TAIL_STANDING.STAGE1;
 					}
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
-					} else {
-						setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
-					}
-					swingTailJumping = SWING_TAIL_JUMPING.STAGE1;
-				} else { 
-					setImageAndRelocate(bigMarioCatTail1Image);
-					swingTailStanding = SWING_TAIL_STANDING.STAGE1;
 				}
 				try {
 					Thread.sleep(pauseBetweenStages);
@@ -1184,22 +1192,24 @@ public class Mario extends GImage {
 				}
 				//ENTERING STAGE2
 				double dx = getWidth()/2;
-				if (isJumping) {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
-					} else {
-						setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+				if (!isDead) {
+					if (isJumping) {
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+						} else {
+							setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+						}
+						swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
+					} else { 
+						if (lookingRightOrLeft) {
+							moveOnlyMario(dx, 0.0);
+							setImageAndRelocate(bigMarioLeftCatTail2Image);
+						} else {
+							moveOnlyMario(-dx, 0.0);
+							setImageAndRelocate(bigMarioRightCatTail2Image);
+						}
+						swingTailStanding = SWING_TAIL_STANDING.STAGE2;
 					}
-					swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
-				} else { 
-					if (lookingRightOrLeft) {
-						moveOnlyMario(dx, 0.0);
-						setImageAndRelocate(bigMarioLeftCatTail2Image);
-					} else {
-						moveOnlyMario(-dx, 0.0);
-						setImageAndRelocate(bigMarioRightCatTail2Image);
-					}
-					swingTailStanding = SWING_TAIL_STANDING.STAGE2;
 				}
 				try {
 					Thread.sleep(pauseBetweenStages);
@@ -1218,32 +1228,36 @@ public class Mario extends GImage {
 					return;
 				}
 				//ENTERING STAGE3
-				if (isJumping) {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
-					} else {
-						setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+				if (!isDead) {
+					if (isJumping) {
+						if (lookingRightOrLeft) {
+							setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+						} else {
+							setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+						}
+						swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
+					} else { 
+						if (lookingRightOrLeft) moveOnlyMario(-dx, 0);
+						else moveOnlyMario(dx, 0);
+						setImageAndRelocate(bigMarioCatTail3Image);
+						swingTailStanding = SWING_TAIL_STANDING.STAGE3;
 					}
-					swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
-				} else { 
-					if (lookingRightOrLeft) moveOnlyMario(-dx, 0);
-					else moveOnlyMario(dx, 0);
-					setImageAndRelocate(bigMarioCatTail3Image);
-					swingTailStanding = SWING_TAIL_STANDING.STAGE3;
 				}
 				try {
 					Thread.sleep(pauseBetweenStages);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if (isJumping) {
-					if (wayUpOrWayDown) {
-						setToJumping(lookingRightOrLeft);
+				if (!isDead) {
+					if (isJumping) {
+						if (wayUpOrWayDown) {
+							setToJumping(lookingRightOrLeft);
+						} else {
+							setToJumpingDown(lookingRightOrLeft);
+						}
 					} else {
-						setToJumpingDown(lookingRightOrLeft);
+						lookInCorrectDirection(lookingRightOrLeft);
 					}
-				} else {
-					lookInCorrectDirection(lookingRightOrLeft);
 				}
 				pauseGoingDown = pauseInAir;
 				swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
