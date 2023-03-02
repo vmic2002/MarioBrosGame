@@ -7,9 +7,10 @@ import java.util.ArrayList;
 public abstract class MovingObject extends GImage {
 	//fireball, mushroom, fire flower, leaf, mario (turtle) extend MovingObject
 	public static GCanvas canvas;
-	
+	public boolean alive;
 	public MovingObject(Image arg0) {
 		super(arg0);
+		alive = true;
 	}
 	
 	public abstract void move();//called by factory class once added to canvas

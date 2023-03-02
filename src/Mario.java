@@ -69,7 +69,6 @@ public class Mario extends MovingObject {
 	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
 	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
 
-	public boolean isDead = false;//mario dies if he jumps into bottom of screen (not on platform)
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image marioDeadImage,
@@ -204,7 +203,7 @@ public class Mario extends MovingObject {
 	}
 
 	public void marioDied() {
-		isDead = true;
+		alive = false;
 		movingRight = false;//in case user releases left/right keys right after mario dies
 		movingLeft = false;
 		SoundController.playMarioDeathSound();
@@ -224,7 +223,7 @@ public class Mario extends MovingObject {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		isDead = false;
+		alive = true;
 		setToSmall();//need to change mario from dead sprite to small sprite
 		lookingRightOrLeft = true;//mario should be looking right
 		lookInCorrectDirection(true);
@@ -232,7 +231,6 @@ public class Mario extends MovingObject {
 	}
 
 	public void setToCat() {
-		if (isDead) return;//can't change to cat if in dead sprite
 		if (isCat) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
@@ -256,7 +254,6 @@ public class Mario extends MovingObject {
 	}
 
 	public void setToBig() {
-		if (isDead) return;//can't change to big if in dead sprite
 		//can be called if mario eats mushroom to grow
 		//or if fire mario or cat mario gets hit by something and goes back 
 		//to big mario
@@ -283,11 +280,6 @@ public class Mario extends MovingObject {
 	}
 
 	public void setToSmall() {
-		if (isDead) {
-			return;
-			//TODO this part should only matter once there are turtles etc
-			//can't change to small if in dead sprite (like if turtle hits mario when he is in dead sprite)
-		}
 		//can be called if big mario gets hit by something
 		if (!bigOrSmall) return;//return if mario already small
 		if (lookingRightOrLeft) {
@@ -312,7 +304,6 @@ public class Mario extends MovingObject {
 	}
 
 	public void setToFire() {
-		if (isDead) return; //cant change to fire sprite if in dead sprite
 		if (isFire) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
@@ -470,7 +461,7 @@ public class Mario extends MovingObject {
 	}
 
 	public void fall(int dy) {
-		while (!hitPlatformVertical && !isDead) {//mario falls down until he hits a platform
+		while (!hitPlatformVertical && alive) {//mario falls down until he hits a platform
 			checkUnder(dy);
 			move(0, dy);
 			if (hitPlatformVertical) {
@@ -835,6 +826,14 @@ public class Mario extends MovingObject {
 	@Override
 	public void inContactWith(GObject o, boolean horizontolOrVertical) {
 		//input o is object mario came into contact with
+		if (o instanceof MovingObject) {
+			if (!((MovingObject) o).alive) {
+				//if o is from a previous level that has been cleared from canvas
+				//but the (invisible) power ups still affect mario
+				System.out.println("RAN INTO DEAD OBJECT");
+				return;
+			}
+		}
 		if (o instanceof Mario) {
 			System.out.println("ITSA ME MARIO");
 		} else if (o instanceof Mushroom) {
@@ -881,6 +880,9 @@ public class Mario extends MovingObject {
 					}
 				}
 			}
+		}
+		if (o instanceof PowerUp) {
+			((PowerUp) o).alive = false;
 		}
 	}
 
@@ -959,7 +961,7 @@ public class Mario extends MovingObject {
 				double y = getY()+0.4*getHeight();//might have to change
 				Factory.addFireBall(x, y, lookingRightOrLeft);
 				//ENTERING STAGE1
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						if (lookingRightOrLeft) {
 							setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
@@ -993,7 +995,7 @@ public class Mario extends MovingObject {
 					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
 					return;
 				}
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						if (lookingRightOrLeft) {
 							setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
@@ -1034,7 +1036,7 @@ public class Mario extends MovingObject {
 					return;
 				}
 				//ENTERING STAGE3 for jumping
-				if (!isDead) {
+				if (alive) {
 					if (lookingRightOrLeft) {
 						setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
 					} else {
@@ -1047,7 +1049,7 @@ public class Mario extends MovingObject {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						//if mario is still jumping after thread pause above
 						if (wayUpOrWayDown) {
@@ -1084,7 +1086,7 @@ public class Mario extends MovingObject {
 				//TODO need to check if turtle etc or mushroom etc gets hit by tail using inContactWith() func
 				//ENTERING STAGE1
 				boolean startedJumping = isJumping;
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						if (wayUpOrWayDown) {
 							//on the way up swinging the tail makes mario go up a bit more
@@ -1124,7 +1126,7 @@ public class Mario extends MovingObject {
 				}
 				//ENTERING STAGE2
 				double dx = getWidth()/2;
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						if (lookingRightOrLeft) {
 							setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
@@ -1160,7 +1162,7 @@ public class Mario extends MovingObject {
 					return;
 				}
 				//ENTERING STAGE3
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						if (lookingRightOrLeft) {
 							setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
@@ -1180,7 +1182,7 @@ public class Mario extends MovingObject {
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-				if (!isDead) {
+				if (alive) {
 					if (isJumping) {
 						if (wayUpOrWayDown) {
 							setToJumping(lookingRightOrLeft);

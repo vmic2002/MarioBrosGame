@@ -4,7 +4,7 @@ import acm.graphics.GObject;
 
 import java.awt.Image;
 import java.util.ArrayList;
-public class Mushroom extends MovingObject {
+public class Mushroom extends PowerUp {
 	private static Image mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
@@ -14,7 +14,6 @@ public class Mushroom extends MovingObject {
 	private int dx;
 	private int dy;
 	private boolean rightOrLeft;
-	private boolean alive;//becomes false if mushroom runs into mario
 	private boolean previousPointWorked;
 	//previousPointWorked: for collision detection, multiple points are used, if one already worked, 
 	//no need to use the other ones 
@@ -23,7 +22,6 @@ public class Mushroom extends MovingObject {
 		rightOrLeft = Math.random()>0.5;
 		dx = rightOrLeft?DX:-DX;
 		dy = DY;
-		alive = true;
 	}
 	
 	@Override
@@ -33,7 +31,7 @@ public class Mushroom extends MovingObject {
 		//the mushroom moves weird (goes down into a platform or changes direction)
 		System.out.println("ADDED MUSHROOM");
 		boolean stillOnMysteryBox = true;
-		while (stillOnMysteryBox) {
+		while (alive && stillOnMysteryBox) {
 			double x = rightOrLeft?this.getX()-DX:this.getX()+this.getWidth()+DX;
 			//depending on if the mushroom goes right or left to glide of the mysterybox,
 			//there is only one point to check to know if the mushroom is still on the mystery box
@@ -113,6 +111,7 @@ public class Mushroom extends MovingObject {
 
 		}
 		canvas.remove(this);
+		alive = false;
 		System.out.println("END OF MOVE FOR MUSHROOM");
 	}
 
@@ -127,11 +126,18 @@ public class Mushroom extends MovingObject {
 	
 	@Override
 	public void inContactWith(GObject x, boolean sideOrBelow) {
+		if (!alive) {
+			System.out.println("DEAD MUSHROOM WAS GOING TO HIT MARIO");
+			return;
+		}
 		//sideOrBelow is true if in contact with something from the side
 		//and false if in contact with something from below
 		if (previousPointWorked) return;
 		previousPointWorked = true;
 		if (x instanceof Mario) {
+			if (!((Mario) x).alive) {
+				return;
+			}
 			canvas.remove(this);
 			SoundController.playPowerUpSound();
 			if (!((Mario) x).isCat && !((Mario) x).isFire){

@@ -21,8 +21,21 @@ public class LevelController {
 		grassMiddleImage = grassMiddleImage1;
 		canvas = canvas1;
 	}
-	
+
 	public static void restartCurrentLevel(Mario mario) {
+		for (LevelPart l : currLevel.levelParts) {
+			for (GImage i : l.part) {
+				if (i instanceof MysteryBox) {
+					if (((MysteryBox) i).powerUp!=null) {
+						((MysteryBox) i).powerUp.alive = false;
+						//this fixes bug where power up from previous level is removed from canvas
+						//but when restarting level when mario walks into it it still affects him
+						//System.out.println("power up dead");
+					}
+				}
+			}
+		}
+		canvas.removeAll();
 		if (currLevel.getNumber()==1) playLevel1(mario);
 		else if (currLevel.getNumber()==2) playLevel2(mario);
 	}
@@ -43,7 +56,7 @@ public class LevelController {
 				canvas.add(g1, x+i*g1.getWidth(), canvas.getHeight()-j*g1.getHeight());
 				images.add(g1);
 			}
-			
+
 		}
 		for (int i = 1; i<w-1; i++) {	
 			Platform g1 = new Platform(grassMiddleTopImage);
@@ -70,7 +83,7 @@ public class LevelController {
 		levelParts.add(new LevelPart(images, x, canvas.getHeight()-height*h ));
 		return w*g1.getWidth();
 	}
-	
+
 	public static double spawnMysteryBox(double x, double y, ArrayList<LevelPart> levelParts) {
 		ArrayList<GImage> images = new ArrayList<GImage>();
 		MysteryBox b = new MysteryBox();
@@ -80,22 +93,21 @@ public class LevelController {
 		return b.getWidth();
 	}
 
-	
-	
+
+
 	public static void playLevel1(Mario mario) {
 		//adds each GImage for each LevelPart to the canvas at their starting positions
 		//adds LevelParts from left to right so helpful to have xCounter to keep track of
 		//smallest left index where a new LevelPart could be spawned
 		//to have white space in between level parts need to increment xCounter by width of whitespace
-		canvas.removeAll();
 		canvas.add(mario, 0,canvas.getHeight()-3*mario.getHeight());
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
-		spawnMysteryBox(xCounter-200, 5, levelParts);
+		spawnMysteryBox(xCounter-150, 5, levelParts);
 		xCounter += 200; 
-		xCounter += spawnGrassMountain(xCounter, 4, 2, levelParts);
-		xCounter += 200; 
+		xCounter += spawnGrassMountain(xCounter, 2, 2, levelParts);
+		xCounter += 20; 
 		spawnMysteryBox(xCounter+100, 7, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 5, 4, levelParts);
 		xCounter += 200;
@@ -113,21 +125,20 @@ public class LevelController {
 	}
 
 	public static void playLevel2(Mario mario) {
-		canvas.removeAll();
 		canvas.add(mario, 0,canvas.getHeight()-3*mario.getHeight());
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		//xCounter+=200;
 		spawnMysteryBox(xCounter+201, 5, levelParts);
-//		spawnMysteryBox(xCounter+400, 5, levelParts);
+		//		spawnMysteryBox(xCounter+400, 5, levelParts);
 		spawnMysteryBox(xCounter+650, 5, levelParts);
-//		spawnMysteryBox(xCounter+800, 5, levelParts);
+		//		spawnMysteryBox(xCounter+800, 5, levelParts);
 		spawnMysteryBox(xCounter+1050, 5, levelParts);
-//		spawnMysteryBox(xCounter+1200, 5, levelParts);
+		//		spawnMysteryBox(xCounter+1200, 5, levelParts);
 		spawnMysteryBox(xCounter+1450, 5, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 12, 2, levelParts);
 		xCounter+=200;
-	
+
 		Level level2 = new Level(2, levelParts, xCounter);
 		currLevel = level2;//set currLevel
 	}

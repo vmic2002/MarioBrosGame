@@ -4,7 +4,7 @@ import acm.graphics.GObject;
 
 import java.awt.Image;
 import java.util.ArrayList;
-public class Leaf extends MovingObject {
+public class Leaf extends PowerUp {
 	private static Image leftLeafImage, rightLeafImage;
 	private static double DX = 8;
 	private static double DY = 6;
@@ -13,17 +13,13 @@ public class Leaf extends MovingObject {
 	private boolean rightOrLeft;
 	private double dx, dy;
 	private int toggle;
-	private boolean alive;
 	public Leaf(boolean rightOrLeft) {
 		super(rightOrLeft?rightLeafImage:leftLeafImage);
 		this.rightOrLeft = rightOrLeft;
 		dx = rightOrLeft?DX:-DX;
 		dy = DY;
-		alive = true;
 		toggle = 0;
 	}
-	//TODO LEAF fix bug where power up that is still alive is removed from canvas
-	//when restarting level but when mario walks into it it still affects him, need to set them to not alive
 
 	private void toggleState() {
 		//changes leaf from right to left or from left to right	
@@ -42,7 +38,7 @@ public class Leaf extends MovingObject {
 	@Override
 	public void move() {
 		this.sendToFront();
-		for (int i=0; i<15; i++) {
+		for (int i=0; i<15 && alive; i++) {
 			move(0, -10);
 			try {
 				Thread.sleep(15);
@@ -89,9 +85,17 @@ public class Leaf extends MovingObject {
 
 	@Override
 	public void inContactWith(GObject x, boolean b) {
+		if (!alive) {
+			System.out.println("DEAD LEAF WAS GOING TO HIT MARIO");
+			return;
+		}
 		if (x instanceof Mario) {
+			if (!((Mario) x).alive) {
+				return;
+			}
 			canvas.remove(this);
 			alive = false;
+
 			((Mario) x).setToCat();
 			SoundController.playPowerUpSound();
 		} else {

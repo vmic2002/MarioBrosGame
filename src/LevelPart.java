@@ -5,7 +5,7 @@ import acm.graphics.GImage;
 public class LevelPart {
 	private double x,y;
 	//x, y are the top left coordinate of leftmost and topmost image of the LevelPart
-	private ArrayList<GImage> part;
+	public ArrayList<GImage> part;
 	public LevelPart(ArrayList<GImage> part, double x, double y) {
 		this.part = part; 
 		this.x = x;

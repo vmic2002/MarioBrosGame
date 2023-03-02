@@ -102,6 +102,7 @@ class FireBall extends MovingObject {
 		}
 		System.out.println("NO MORE GAS FOR FIREBALL");
 		canvas.remove(this);
+		alive = false;
 	}
 	
 	private void hop() {
@@ -128,7 +129,7 @@ class FireBall extends MovingObject {
 		//also if runs into platform
 				//if (x instanceof Turtle)
 				//if (x!=null) System.out.println("FIREBALL RAN INTO SOMETHING");
-		
+		//will need to set alive = false when fire ball runs into flower, turtle, side of platform
 	}
 
 	public static void setObjects(Image leftFireBall1X,

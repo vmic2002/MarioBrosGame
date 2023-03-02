@@ -9,7 +9,7 @@ public class MysteryBox extends Platform {
 	private static Image mysteryBox3Image;
 	private static Image mysteryBox4Image;
 	private static Image mysteryBoxFinalImage;
-	public GImage powerUp;//spawned power up
+	public PowerUp powerUp;//spawned power up
 	private enum MYSTERYBOX_STATE {STATE_1, STATE_2, STATE_3, STATE_4, FINAL};
 	MYSTERYBOX_STATE mysteryBoxState;
 

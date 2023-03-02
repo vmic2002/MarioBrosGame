@@ -3,7 +3,7 @@ import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 import java.awt.Image;
-public class FireFlower extends MovingObject {
+public class FireFlower extends PowerUp {
 	private static Image fireFlowerImage;
 	public FireFlower() {
 		super(fireFlowerImage);
