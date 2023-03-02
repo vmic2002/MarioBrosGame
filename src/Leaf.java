@@ -5,13 +5,12 @@ import acm.graphics.GObject;
 import java.awt.Image;
 import java.util.ArrayList;
 public class Leaf extends MovingObject {
-	private static GCanvas canvas;
 	private static Image leftLeafImage, rightLeafImage;
-	private boolean rightOrLeft;
 	private static double DX = 8;
 	private static double DY = 6;
 	private static int pauseTime = 35;
 	private static int toggleCounter = 15;//every <toggleCounter> times leaf moves it toggles direction
+	private boolean rightOrLeft;
 	private double dx, dy;
 	private int toggle;
 	private boolean alive;
@@ -25,7 +24,7 @@ public class Leaf extends MovingObject {
 	}
 	//TODO LEAF fix bug where power up that is still alive is removed from canvas
 	//when restarting level but when mario walks into it it still affects him, need to set them to not alive
-	
+
 	private void toggleState() {
 		//changes leaf from right to left or from left to right	
 		Image newImage = rightOrLeft?leftLeafImage:rightLeafImage;
@@ -39,8 +38,8 @@ public class Leaf extends MovingObject {
 			e.printStackTrace();
 		}
 	}
-	
-	 
+
+	@Override
 	public void move() {
 		this.sendToFront();
 		for (int i=0; i<15; i++) {
@@ -75,54 +74,33 @@ public class Leaf extends MovingObject {
 					new Point(newX, getY()+getWidth()/2),
 					new Point(newX, getY()+getWidth()+dy),
 					new Point(getX()+getWidth()/2, getY()+getHeight()+dy)
-					};
-			ArrayList<GObject> oList = checkAtPositions(points);
+			};
+			ArrayList<GObject> oList = checkAtPositions(points, canvas);
 			for (GObject o : oList) {
-				inContactWith(o);
+				inContactWith(o, false);
+				//for leaf it doesnt matter if it comes into contact with something
+				//from the sides or vertically
 			}
 		}
 		alive = false;
 		canvas.remove(this);
 		System.out.println("LEAF DEAD");
 	}
-	
-	private void inContactWith(GObject x) {
+
+	@Override
+	public void inContactWith(GObject x, boolean b) {
 		if (x instanceof Mario) {
 			canvas.remove(this);
 			alive = false;
 			((Mario) x).setToCat();
 			SoundController.playPowerUpSound();
 		} else {
-			System.out.println("LEAF ONLY CHANGES WHEN in contact with mario");
+			//System.out.println("LEAF ONLY CHANGES WHEN in contact with mario");
 		}
 	}
-	
-	public ArrayList<GObject> checkAtPositions(Point[] points) {
-		//THIS FUNCTION IS ALREADY IN MARIO.java
-		//TODO consider making a class for edge detection so dont have to copy checkAtPositions in multiple classes
-		ArrayList<GObject> result = new ArrayList<GObject>();
-		for (Point p : points) {
-			GObject a = canvas.getElementAt(p.x, p.y);
-			if (a!=null) {
-				result.add(a);
-			}
-		}
-		return result;
-	}
-	
 
-	public void setImageAndRelocate(Image newImage) {
-		//THIS FUNC IS ALREADY IN MARIO.java
-		double relativeY = this.getY()+ this.getHeight();
-		double previousWidth = this.getWidth();
-		super.setImage(newImage);
-		double xShift = (this.getWidth()-previousWidth)/2;
-		this.setLocation(getX()-xShift, relativeY-this.getHeight());	
-	}
-	
-	public static void setObjects(Image rightLeafImage1, Image leftLeafImage1, GCanvas canvas1) {
+	public static void setObjects(Image rightLeafImage1, Image leftLeafImage1) {
 		rightLeafImage = rightLeafImage1;
 		leftLeafImage = leftLeafImage1;
-		canvas = canvas1;
 	}
 }

@@ -6,7 +6,7 @@ import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 
-public class Mario extends GImage {
+public class Mario extends MovingObject {
 	private Image smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage,
 	smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage,
 	bigMarioLeftImage, bigMarioRightImage, bigMarioLeftWalkingImage, bigMarioRightWalkingImage,
@@ -26,11 +26,6 @@ public class Mario extends GImage {
 	bigMarioLeftJumpingCatTail2Image, bigMarioRightJumpingCatTail2Image,
 	bigMarioCatTail1Image, bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image;
 
-
-
-	private GCanvas canvas;
-	//private SoundController sound;
-	private Factory factory;
 	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
@@ -42,12 +37,10 @@ public class Mario extends GImage {
 	public boolean isCat = false;//true if mario is in cat mode
 	//design decision: small mario eating fire flower/leaf turns directly into fire/cat mario, not just big mario
 
-
 	public boolean movingRight = false;
 	public boolean movingLeft = false;
 	//need this bools to support concurrency for jumping and moving right/left at the same time
 	//movingRight, movingLeft are true if right,left key are pressed down respectively
-
 
 	//needed for switching from walking sprite to standing sprite while mario walks
 	public boolean walkingRightOrLeft = false;//is true when mario is walking right or left (his leg should be out)
@@ -71,7 +64,6 @@ public class Mario extends GImage {
 	private static final int pauseInAir = 7;//lower number means faster jump (less long-pauses in jump function)
 	private int pauseGoingDown = pauseInAir;//this is changed while cat mario swings tail in the air so he is suspended in the air
 
-
 	public boolean hitPlatformVertical = false;
 	public boolean hitPlatformHorizontal = false;
 	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
@@ -81,9 +73,10 @@ public class Mario extends GImage {
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image marioDeadImage,
-			Image bigMarioLeftImage,
-			Image bigMarioRightImage, Image bigMarioLeftWalkingImage, Image bigMarioRightWalkingImage,
-			Image bigMarioLeftJumpingImage, Image bigMarioRightJumpingImage,
+
+			Image bigMarioLeftImage, Image bigMarioRightImage, Image bigMarioLeftWalkingImage, 
+			Image bigMarioRightWalkingImage, Image bigMarioLeftJumpingImage, Image bigMarioRightJumpingImage,
+
 			Image bigMarioLeftFireImage, Image bigMarioRightFireImage, 
 			Image bigMarioLeftWalkingFireImage, Image bigMarioRightWalkingFireImage,
 			Image bigMarioLeftJumpingFireImage, Image bigMarioRightJumpingFireImage,
@@ -103,9 +96,7 @@ public class Mario extends GImage {
 			Image bigMarioLeftJumpingCatTail1Image, Image bigMarioRightJumpingCatTail1Image, Image bigMarioLeftJumpingCatTail2Image,
 			Image bigMarioRightJumpingCatTail2Image,
 			Image bigMarioCatTail1Image, Image bigMarioLeftCatTail2Image,
-			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image,
-
-			GCanvas canvas, Factory factory) {
+			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
@@ -165,16 +156,14 @@ public class Mario extends GImage {
 		this.bigMarioLeftCatTail2Image = bigMarioLeftCatTail2Image;
 		this.bigMarioRightCatTail2Image = bigMarioRightCatTail2Image;
 		this.bigMarioCatTail3Image = bigMarioCatTail3Image;
-
-		this.canvas = canvas;
-		//this.sound = sound;
-		this.factory = factory;
 	}
+
 	public void moveOnlyMario(double dx, double dy) {
 		//moves only mario, not the level
 		//used when mario swings his tail
 		super.move(dx, dy);
 	}
+
 	public void move(double dx, double dy) {
 		//moves mario or current level mario is playing depending on if
 		//mario goes too much to the corners of the screen
@@ -242,22 +231,6 @@ public class Mario extends GImage {
 		LevelController.restartCurrentLevel(this);//when mario dies restart the level
 	}
 
-	public void setImageAndRelocate(Image newImage) {
-		//this function is called instead of setImage when mario changes from big to small
-		//or small to big since they have different heights they need to be readjusted
-		//when mario changes from walking to standing technically could also relocate because
-		//those sprites have slightly different widths, but it is negligible
-		double relativeY = this.getY()+ this.getHeight();
-		//need line above because big mario and small mario dont have the same height
-		//and so need to shift vertically Mario when going from small to big or vice versa
-		double previousWidth = this.getWidth();//(needed for horizontal shift)
-		super.setImage(newImage);
-		//X shift needed to keep big mario and small mario centered since their
-		//widths can differ
-		double xShift = (this.getWidth()-previousWidth)/2;
-		this.setLocation(getX()-xShift, relativeY-this.getHeight());
-	}
-
 	public void setToCat() {
 		if (isDead) return;//can't change to cat if in dead sprite
 		if (isCat) return;
@@ -315,7 +288,6 @@ public class Mario extends GImage {
 			//TODO this part should only matter once there are turtles etc
 			//can't change to small if in dead sprite (like if turtle hits mario when he is in dead sprite)
 		}
-
 		//can be called if big mario gets hit by something
 		if (!bigOrSmall) return;//return if mario already small
 		if (lookingRightOrLeft) {
@@ -456,7 +428,7 @@ public class Mario extends GImage {
 					Point[] arr = new Point[]{new Point(getX()+10,getY()-dy),
 							new Point(getX()+getWidth()/2, getY()-dy),
 							new Point(getX()+getWidth()-10, getY()-dy)};
-					ArrayList<GObject> o = checkAtPositions(arr);
+					ArrayList<GObject> o = checkAtPositions(arr, canvas);
 					for (GObject x : o) {
 						inContactWith(x, false);
 					}
@@ -486,9 +458,7 @@ public class Mario extends GImage {
 					//if mario is not small then he doesn't stay in jumping sprite on the way down
 					setToJumpingDown(lookingRightOrLeft);
 				}
-
 				fall(dy);
-
 				if (!isCrouching) {
 					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				}
@@ -500,18 +470,14 @@ public class Mario extends GImage {
 	}
 
 	public void fall(int dy) {
-
-		//while (getY()+getHeight()+dy<=canvas.getHeight()) {
 		while (!hitPlatformVertical && !isDead) {//mario falls down until he hits a platform
 			checkUnder(dy);
 			move(0, dy);
-
 			if (hitPlatformVertical) {
 				//if mario jumps onto a Platform, he needs to stop moving down
 				hitPlatformVertical = false;
 				break;
 			}
-
 			try {
 				Thread.sleep(pauseGoingDown);
 			} catch (InterruptedException e) {
@@ -519,7 +485,6 @@ public class Mario extends GImage {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	public void checkUnder(int dy) {
@@ -528,26 +493,10 @@ public class Mario extends GImage {
 		//0.22 is value found to work best through testing
 		Point[] arr = new Point[]{new Point(getX()+0.22*getWidth(),getY()+getHeight()+dy),
 				new Point(getX()+getWidth()-0.22*getWidth(), getY()+getHeight()+dy)};
-		ArrayList<GObject> o = checkAtPositions(arr);
+		ArrayList<GObject> o = checkAtPositions(arr, canvas);
 		for (GObject x : o) {
 			inContactWith(x, false);
 		}
-	}
-
-
-
-	public ArrayList<GObject> checkAtPositions(Point[] points) {
-		//takes list of positions to check at
-		//expects positions to not be in mario's frame, but right next to it
-		//returns list of object mario comes in contact with, returns empty list if none
-		ArrayList<GObject> result = new ArrayList<GObject>();
-		for (Point p : points) {
-			GObject a = canvas.getElementAt(p.x, p.y);
-			if (a!=null) {
-				result.add(a);
-			}
-		}
-		return result;
 	}
 
 	public void setToJumping(boolean rightOrLeft) {
@@ -598,8 +547,6 @@ public class Mario extends GImage {
 			}
 		}
 	}
-
-
 
 	public void toggleWalking(boolean rightOrLeft) {
 		if (rightOrLeft) {
@@ -661,7 +608,6 @@ public class Mario extends GImage {
 		}
 	}
 
-
 	public void setToStanding(boolean rightOrLeft) {
 		//function called in key released when mario stops walking his sprite must be standing
 		if (rightOrLeft) {
@@ -722,7 +668,6 @@ public class Mario extends GImage {
 		//lookingRightOrLeft = rightOrLeft;
 	}
 
-
 	public void move(boolean rightOrLeft) {
 		//rightOrLeft is true for moving right and false for moving left
 		//this function is used to move mario right and left using the right and left arrows
@@ -730,13 +675,11 @@ public class Mario extends GImage {
 		if (rightOrLeft && movingRight) return;
 		if (!rightOrLeft && movingLeft) return;
 		if (!isJumping && swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) return;//cant move if swinging tail and standing
-
 		if (isCrouching) {
 			lookingRightOrLeft = rightOrLeft;
 			lookInDirectionCrouching(rightOrLeft);
 			if (!isJumping) return;//mario cant move if he is crouching and not jumping
 		}
-
 		boolean b = false;
 		if (rightOrLeft) {
 			movingRight = true;
@@ -809,7 +752,6 @@ public class Mario extends GImage {
 						}
 					}
 				}
-
 			}
 		});  
 		t1.start();
@@ -840,11 +782,10 @@ public class Mario extends GImage {
 		for (int i = 1; i<n; i++) {
 			arr[i-1] = new Point(newX, getY()+((double) i)/n*getHeight());
 		}
-		ArrayList<GObject> o = checkAtPositions(arr);
+		ArrayList<GObject> o = checkAtPositions(arr, canvas);
 		for (GObject x : o) {
 			inContactWith(x, true);
-		}	
-
+		}
 		if (!hitPlatformHorizontal) {
 			move(dx, 0);
 		} else {
@@ -855,7 +796,6 @@ public class Mario extends GImage {
 			//so he is walking and needs to have his sprite toggle from walking to standing repeatedly
 			toggleWalking(rightOrLeft);
 		}
-
 		if (!isJumping) {
 			//check if there is no Platform under mario in which case he should fall down
 			//if mario jumps on Platform then walks off it he is not jumping but should fall down
@@ -880,7 +820,6 @@ public class Mario extends GImage {
 					}
 				});  
 				t1.start();
-
 			} else {
 				//System.out.println("ON Platform OR at bottom of screen");
 				hitPlatformVertical = false;
@@ -893,6 +832,7 @@ public class Mario extends GImage {
 		}
 	}
 
+	@Override
 	public void inContactWith(GObject o, boolean horizontolOrVertical) {
 		//input o is object mario came into contact with
 		if (o instanceof Mario) {
@@ -933,19 +873,16 @@ public class Mario extends GImage {
 						double y = o.getY();						
 						((MysteryBox) o).hitByMario();
 						if (Math.random()>0.66)
-							((MysteryBox) o).powerUp = factory.addFireFlower(x, y, o.getWidth());
+							((MysteryBox) o).powerUp = Factory.addFireFlower(x, y, o.getWidth());
 						else if (Math.random()>0.33)
-							((MysteryBox) o).powerUp = factory.addMushroom(x, y, o.getWidth());
+							((MysteryBox) o).powerUp = Factory.addMushroom(x, y, o.getWidth());
 						else //if (Math.random()>0)
-							((MysteryBox) o).powerUp = factory.addLeaf(x, y, o.getWidth());
-
+							((MysteryBox) o).powerUp = Factory.addLeaf(x, y, o.getWidth());
 					}
 				}
 			}
 		}
 	}
-
-
 
 	public void lookCorrectWayShootingFire(boolean rightOrLeft) {
 		//this func is called in move function to look in correct direction in
@@ -1009,7 +946,6 @@ public class Mario extends GImage {
 			//System.out.println("STANDING AND SHOOTING");
 			return;//return if already shooting
 		}
-
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1021,8 +957,7 @@ public class Mario extends GImage {
 				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
 				double x = lookingRightOrLeft?getX()+getWidth():getX()-10;
 				double y = getY()+0.4*getHeight();//might have to change
-				factory.addFireBall(x, y, lookingRightOrLeft);
-
+				Factory.addFireBall(x, y, lookingRightOrLeft);
 				//ENTERING STAGE1
 				if (!isDead) {
 					if (isJumping) {
@@ -1123,7 +1058,6 @@ public class Mario extends GImage {
 					}
 				}
 				shootFireJumping= SHOOT_FIRE_JUMPING.NOT_SHOOTING;
-
 			}
 		});  
 		t1.start();
@@ -1141,7 +1075,6 @@ public class Mario extends GImage {
 			//System.out.println("STANDING AND SWINGING");
 			return;//return if already swinging
 		}
-
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1161,7 +1094,6 @@ public class Mario extends GImage {
 							//on the way down swinging the tail makes mario slow down in the air
 							pauseGoingDown = 120;
 							System.out.println("SHOULD MOVE DOWN SLOWER");
-
 						}
 						if (lookingRightOrLeft) {
 							setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
@@ -1266,5 +1198,9 @@ public class Mario extends GImage {
 		});  
 		t1.start();
 	}
-
+	
+	@Override
+	public void move() {
+		// this is for leaf, mushroom, etc not for mario
+	}
 }

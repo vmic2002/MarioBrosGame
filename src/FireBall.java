@@ -6,7 +6,6 @@ import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 class FireBall extends MovingObject {
-	private static GCanvas canvas;
 	private static Image leftFireBall1;
 	private static Image rightFireBall1;
 	private static Image leftFireBall2;
@@ -15,16 +14,14 @@ class FireBall extends MovingObject {
 	private static Image rightFireBall3;
 	private static Image leftFireBall4;
 	private static Image rightFireBall4;
-
-	private enum FIREBALL_STAGE {STAGE_1, STAGE_2, STAGE_3, STAGE_4};
-	FIREBALL_STAGE fireBallStage;
-
 	private static final int maxDistance = 1000;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
 	private static final int sizeOfHops = 300;//fireball hops once it moves on the ground
 	private static final int hopRadius = sizeOfHops/2;//width of semi circle (hop) is 2*R
 	private static int pauseTime = 10;//milliseconds pause in between each move function call
+	private enum FIREBALL_STAGE {STAGE_1, STAGE_2, STAGE_3, STAGE_4};
+	FIREBALL_STAGE fireBallStage;
 	private boolean rightOrLeft;
 	private int frequencyChangeStage = frequencyChangeToNextStage;
 	private int gasLeft = maxDistance;//fireball moves until it has no more gas left (gasLeft == 0)
@@ -58,7 +55,8 @@ class FireBall extends MovingObject {
 		}
 		setImageAndRelocate(newImage);
 	}
-
+	
+	@Override
 	public void move() {
 		//this function moves a fireball its maximum distance or until
 		//it hits a flower or turtle while changing its images
@@ -70,9 +68,9 @@ class FireBall extends MovingObject {
 			Point p2 = new Point(getX()+getWidth()/2, getY()+getHeight()+dy);//point needs to be checked for both going right or left
 			Point p3 = rightOrLeft?new Point(getX()+getWidth()+dx, getY()+getHeight()+dy):new Point(getX()-dx, getY()+getHeight()+dy);
 			Point[] arr = new Point[]{p1,p2,p3};
-			ArrayList<GObject> o = checkAtPositions(arr);
+			ArrayList<GObject> o = checkAtPositions(arr, canvas);
 			for (GObject x : o) {
-				inContactWith(x);
+				inContactWith(x, false);
 			}
 			if (frequencyChangeStage==0) {
 				changeToNextStage();
@@ -123,41 +121,21 @@ class FireBall extends MovingObject {
 		//of using % (mod) at beginning of function
 		gasLeft -= Math.abs(dx);
 	}
-
-	private void inContactWith(GObject x) {
+	
+	@Override
+	public void inContactWith(GObject x, boolean horizontalOrVertical) {
 		//TODO fireball needs to check if it runs into a flower, turtle, etc and kills it
-		//if (x instanceof Turtle)
-		//if (x!=null) System.out.println("FIREBALL RAN INTO SOMETHING");
-	}
-
-	public ArrayList<GObject> checkAtPositions(Point[] points) {
-		//THIS FUNCTION IS ALREADY IN MARIO.java
-		//expects positions to not be in mario's frame, but right next to it
-		//returns list of object mario comes in contact with, returns empty list if none
-		ArrayList<GObject> result = new ArrayList<GObject>();
-		for (Point p : points) {
-			GObject a = canvas.getElementAt(p.x, p.y);
-			if (a!=null) {
-				result.add(a);
-			}
-		}
-		return result;
-	}
-
-	public void setImageAndRelocate(Image newImage) {
-		//THIS FUNC IS ALREADY IN MARIO.java
-		double relativeY = this.getY()+ this.getHeight();
-		double previousWidth = this.getWidth();
-		super.setImage(newImage);
-		double xShift = (this.getWidth()-previousWidth)/2;
-		this.setLocation(getX()-xShift, relativeY-this.getHeight());	
+		//also if runs into platform
+				//if (x instanceof Turtle)
+				//if (x!=null) System.out.println("FIREBALL RAN INTO SOMETHING");
+		
 	}
 
 	public static void setObjects(Image leftFireBall1X,
 			Image rightFireBall1X,Image leftFireBall2X,
 			Image rightFireBall2X,Image leftFireBall3X,
 			Image rightFireBall3X,Image leftFireBall4X,
-			Image rightFireBall4X, GCanvas canvas1) {
+			Image rightFireBall4X) {
 		leftFireBall1 = leftFireBall1X;
 		rightFireBall1 = rightFireBall1X;
 		leftFireBall2 = leftFireBall2X;
@@ -166,6 +144,5 @@ class FireBall extends MovingObject {
 		rightFireBall3 = rightFireBall3X;
 		leftFireBall4 = leftFireBall4X;
 		rightFireBall4 = rightFireBall4X;
-		canvas = canvas1;
 	}
 }

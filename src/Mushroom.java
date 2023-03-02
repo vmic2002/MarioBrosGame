@@ -5,7 +5,6 @@ import acm.graphics.GObject;
 import java.awt.Image;
 import java.util.ArrayList;
 public class Mushroom extends MovingObject {
-	private static GCanvas canvas;
 	private static Image mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
@@ -26,14 +25,12 @@ public class Mushroom extends MovingObject {
 		dy = DY;
 		alive = true;
 	}
-
+	
+	@Override
 	public void move() {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
-
 		//TODO there is bug where if mario jumps so high that the level moves up and down,
 		//the mushroom moves weird (goes down into a platform or changes direction)
-
-
 		System.out.println("ADDED MUSHROOM");
 		boolean stillOnMysteryBox = true;
 		while (stillOnMysteryBox) {
@@ -59,7 +56,6 @@ public class Mushroom extends MovingObject {
 		System.out.println("MUSHROOM NO LONGER ON MYSTERYBOX");
 		//by now mushroom is no longer on mysterybox
 		//need to make it fall until it hits mario or platform
-		//while ( {
 		while (alive) {			
 			if (getY()+getHeight()>=canvas.getHeight()+LevelController.currLevel.yBaseLine){
 				//mushroom keeps on moving until mario eats it
@@ -95,7 +91,7 @@ public class Mushroom extends MovingObject {
 			} else {
 				move(dx, dy);
 				previousPointWorked = false;
-				ArrayList<GObject> o1 = checkAtPositions(pointsSide);
+				ArrayList<GObject> o1 = checkAtPositions(pointsSide, canvas);
 				for (GObject x : o1) {
 					inContactWith(x, true);
 				}
@@ -104,7 +100,7 @@ public class Mushroom extends MovingObject {
 					break;
 				}
 				previousPointWorked = false;
-				ArrayList<GObject> o2 = checkAtPositions(pointsBelow);
+				ArrayList<GObject> o2 = checkAtPositions(pointsBelow, canvas);
 				for (GObject x : o2) {
 					inContactWith(x, false);
 				}
@@ -128,8 +124,9 @@ public class Mushroom extends MovingObject {
 		}
 		return true;
 	}
-
-	private void inContactWith(GObject x, boolean sideOrBelow) {
+	
+	@Override
+	public void inContactWith(GObject x, boolean sideOrBelow) {
 		//sideOrBelow is true if in contact with something from the side
 		//and false if in contact with something from below
 		if (previousPointWorked) return;
@@ -156,29 +153,12 @@ public class Mushroom extends MovingObject {
 				dy = 0;
 				System.out.println("SET DY TO 0");
 			}
-
 		}
-		//TODO need to create class PowerUp which Mushroom, leaf, FireFlower would extends PowerUp
-		//once PowerUp class exists, could do x instanceof PowerUp, if this is true then powerups
-		//could change directions etc (for example if two mushrooms run into each other they should
+		//TODO could change directions etc (for example if two mushrooms run into each other they should
 		//"bounce off" and change directions 
 	}
 
-	public ArrayList<GObject> checkAtPositions(Point[] points) {
-		//THIS FUNCTION IS ALREADY IN MARIO.java
-		//TODO consider making a class for edge detection so dont have to copy checkAtPositions in multiple classes
-		ArrayList<GObject> result = new ArrayList<GObject>();
-		for (Point p : points) {
-			GObject a = canvas.getElementAt(p.x, p.y);
-			if (a!=null) {
-				result.add(a);
-			}
-		}
-		return result;
-	}
-
-	public static void setObjects(Image mushroomImage1, GCanvas canvas1) {
+	public static void setObjects(Image mushroomImage1) {
 		mushroomImage = mushroomImage1;
-		canvas = canvas1;
 	}
 }

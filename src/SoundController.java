@@ -3,7 +3,7 @@ import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
-public class SoundController {
+public abstract class SoundController {
 	private static File jumpSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Mario Jump.wav");
 	private static File powerUpSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Powerup.wav");
 	private static File marioGetsHitSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Transformation.wav");

@@ -18,5 +18,4 @@ public class LevelPart {
 		x += dx;
 		y += dy;
 	}
-	
 }
