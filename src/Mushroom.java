@@ -112,7 +112,7 @@ public class Mushroom extends PowerUp {
 		}
 		canvas.remove(this);
 		alive = false;
-		System.out.println("END OF MOVE FOR MUSHROOM");
+		System.out.println("END OF MOVE FOR MUSHROOM (DEAD)");
 	}
 
 	private boolean nothingUnder(Point[] pointsBelow) {
@@ -134,18 +134,7 @@ public class Mushroom extends PowerUp {
 		//and false if in contact with something from below
 		if (previousPointWorked) return;
 		previousPointWorked = true;
-		if (x instanceof Mario) {
-			if (!((Mario) x).alive) {
-				return;
-			}
-			canvas.remove(this);
-			SoundController.playPowerUpSound();
-			if (!((Mario) x).isCat && !((Mario) x).isFire){
-				((Mario) x).setToBig();
-			}
-			alive = false;
-			System.out.println("MUSHROOM HIT MARIO");
-		} else if (x instanceof Platform) {
+		if (x instanceof Platform) {
 			//if sideOrBelow then mushroom is in contact with a platform from the side,
 			//so it should change its horizontal direction
 			//if !sideOrBelow then mushroom is in contact with a platform from below,
@@ -159,7 +148,18 @@ public class Mushroom extends PowerUp {
 				dy = 0;
 				System.out.println("SET DY TO 0");
 			}
-		}
+		} else if (x instanceof Mario) {
+			if (!((Mario) x).alive) {
+				return;
+			}
+			canvas.remove(this);
+			SoundController.playPowerUpSound();
+			if (!((Mario) x).isCat && !((Mario) x).isFire){
+				((Mario) x).setToBig();
+			}
+			alive = false;
+			System.out.println("MUSHROOM HIT MARIO");
+		} 
 		//TODO could change directions etc (for example if two mushrooms run into each other they should
 		//"bounce off" and change directions 
 	}

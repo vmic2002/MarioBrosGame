@@ -21,8 +21,9 @@ public class LevelController {
 		grassMiddleImage = grassMiddleImage1;
 		canvas = canvas1;
 	}
-
+	
 	public static void restartCurrentLevel(Mario mario) {
+		System.out.println("Setting all power ups from previous level to DEAD");
 		for (LevelPart l : currLevel.levelParts) {
 			for (GImage i : l.part) {
 				if (i instanceof MysteryBox) {
@@ -30,7 +31,7 @@ public class LevelController {
 						((MysteryBox) i).powerUp.alive = false;
 						//this fixes bug where power up from previous level is removed from canvas
 						//but when restarting level when mario walks into it it still affects him
-						//System.out.println("power up dead");
+						System.out.println("power up dead");
 					}
 				}
 			}

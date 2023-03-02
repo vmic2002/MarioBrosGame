@@ -80,7 +80,7 @@ public class Leaf extends PowerUp {
 		}
 		alive = false;
 		canvas.remove(this);
-		System.out.println("LEAF DEAD");
+		System.out.println("end of move function for LEAF (DEAD)");
 	}
 
 	@Override
