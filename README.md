@@ -24,7 +24,9 @@ git clone https://github.com/vmic2002/MarioBrosGame.git
 cd MarioBrosGame
 ./playMarioGame.sh
 ```
-The playMarioGame.sh file is a bash script that will run the MarioBrosGame from the command line.
+The *playMarioGame.sh* file is a bash script that will run MarioBrosGame from the command line using the *.class* files in the *bin* directory and *acm.jar*.
+
+Use the arrow keys to move and `F` to shoot fire balls or swing Mario's tail.
 
 ## Quick preview
 This video was recorded on Feb 27th, 2023 after the 18th commit.
