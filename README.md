@@ -14,6 +14,7 @@ This game is coded in Java using the Eclipse IDE and [Stanford's acm library](ht
 This is an ongoing project from Feb 5th, 2023 - Now
 
 ## How to play the game on your computer
+*might not work on windows*
 1. Open up your Terminal App.
 2. Clone this repo by running:
 ```bash
