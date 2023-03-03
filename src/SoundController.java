@@ -4,14 +4,28 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public abstract class SoundController {
-	private static File jumpSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Mario Jump.wav");
-	private static File powerUpSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Powerup.wav");
-	private static File marioGetsHitSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Transformation.wav");
-	private static File itemOutOfBoxSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Item Box.wav");
-	private static File fireBallSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Fireball.wav");
-	private static File squishSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Squish.wav");
-	private static File tailSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/tail.wav");
-	private static File deathSoundFile = new File("/Users/victormicha/eclipse-workspace/MarioBrosGame/SoundEffects/Death.wav");
+	private static String prefix;
+	//when running from command line, prefix = "../"
+	//when running from eclipse, prefix = ""
+	private static File jumpSoundFile;
+	private static File powerUpSoundFile;
+	private static File marioGetsHitSoundFile;
+	private static File itemOutOfBoxSoundFile;
+	private static File fireBallSoundFile;
+	private static File squishSoundFile;
+	private static File tailSoundFile;
+	private static File deathSoundFile;
+	public static void setPrefix(String s) {
+		prefix = s;
+		jumpSoundFile = new File(prefix+"SoundEffects/Mario Jump.wav");
+		powerUpSoundFile = new File(prefix+"SoundEffects/Powerup.wav");
+		marioGetsHitSoundFile = new File(prefix+"SoundEffects/Transformation.wav");
+		itemOutOfBoxSoundFile = new File(prefix+"SoundEffects/Item Box.wav");
+		fireBallSoundFile = new File(prefix+"SoundEffects/Fireball.wav");
+		squishSoundFile = new File(prefix+"SoundEffects/Squish.wav");
+		tailSoundFile = new File(prefix+"SoundEffects/tail.wav");
+		deathSoundFile = new File(prefix+"SoundEffects/Death.wav");
+	}
 	
 	private static void playSound(File f) {
 		try{
