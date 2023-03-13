@@ -20,15 +20,36 @@ public class Level {
 	public int getNumber() {
 		return number;
 	}
-	public void moveLevel(double dx, double dy) {
-		//TODO this function works but does not scale when a level is long
-		//need to only move the level parts that are visible on screen
-		for (LevelPart l : levelParts) {
-			l.move(dx, dy);
+	public void removeFireBall(FireBall f) {
+		for (LevelPart p: levelParts) {
+			if (p.part.get(0) instanceof FireBall) {
+				//System.out.println("REMOVING FIREBALL FROM LEVEL");
+				//once fireball dies (out of gas, runs into platform from the side, runs into turtle etc,)
+				//there is no need to keep it in level parts
+				levelParts.remove(p);
+				return;
+			}
 		}
-		xBaseLine+=dx;
-		yBaseLine+=dy;
-		//System.out.println("MOVING LEVEL "+dx+ " "+dy);
-		//background.move(dx/2, dy/2);
+	}
+	public void moveLevel(double dx, double dy) {
+		//TODO this function works but does not scale when a level is long need to only move the level parts that are visible on screen
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				for (int i=0; i<levelParts.size(); i++) {
+					levelParts.get(i).move(dx, dy);
+				}
+				xBaseLine+=dx;
+				yBaseLine+=dy;
+			}
+		});  
+		t1.start();
+	}
+
+	public void addNewLevelPart(GImage i) {
+		//to add power ups or fireballs to level
+		ArrayList<GImage> l = new ArrayList<GImage>();
+		l.add(i);
+		levelParts.add(new LevelPart(l));
 	}
 }

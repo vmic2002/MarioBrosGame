@@ -174,6 +174,7 @@ public class Mario extends MovingObject {
 			if (dy>0 && LevelController.currLevel.yBaseLine>0) {
 				//see LevelController baseLine documentation
 				LevelController.currLevel.moveLevel(-dx, -dy);
+				//System.out.println("XXXXX");
 				return;
 			}
 			super.move(dx, dy);
@@ -199,6 +200,7 @@ public class Mario extends MovingObject {
 				return;
 			}
 			LevelController.currLevel.moveLevel(-dx, -dy);
+			//System.out.println("YYYYY");
 		}
 	}
 
@@ -871,15 +873,22 @@ public class Mario extends MovingObject {
 						double x  = o.getX();
 						double y = o.getY();						
 						((MysteryBox) o).hitByMario();
+						GImage newLevelPart;
 						if (Math.random()>0.66)
-							((MysteryBox) o).powerUp = Factory.addFireFlower(x, y, o.getWidth());
+							newLevelPart = Factory.addFireFlower(x, y, o.getWidth());
 						else if (Math.random()>0.33)
-							((MysteryBox) o).powerUp = Factory.addMushroom(x, y, o.getWidth());
-						else //if (Math.random()>0)
-							((MysteryBox) o).powerUp = Factory.addLeaf(x, y, o.getWidth());
+							newLevelPart  = Factory.addMushroom(x, y, o.getWidth());
+						else
+							newLevelPart = Factory.addLeaf(x, y, o.getWidth());
+						LevelController.currLevel.addNewLevelPart(newLevelPart);
 					}
 				}
 			}
+		} else if (o instanceof FireBall) {
+			System.out.println("MARIO RAN/JUMPed INTO A FIREBALL");
+			canvas.remove(o);
+			((FireBall) o).alive = false;
+			LevelController.currLevel.removeFireBall((FireBall) o);
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
@@ -957,7 +966,7 @@ public class Mario extends MovingObject {
 				SoundController.playFireballSound();
 				//TODO this function doesnt check if mario gets hit by turtle etc and
 				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
-				double x = lookingRightOrLeft?getX()+getWidth():getX()-10;
+				double x = lookingRightOrLeft?getX()+getWidth()+50:getX()-100;
 				double y = getY()+0.4*getHeight();//might have to change
 				Factory.addFireBall(x, y, lookingRightOrLeft);
 				//ENTERING STAGE1
@@ -1200,7 +1209,7 @@ public class Mario extends MovingObject {
 		});  
 		t1.start();
 	}
-	
+
 	@Override
 	public void move() {
 		// this is for leaf, mushroom, etc not for mario

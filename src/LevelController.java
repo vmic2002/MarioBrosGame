@@ -21,18 +21,17 @@ public class LevelController {
 		grassMiddleImage = grassMiddleImage1;
 		canvas = canvas1;
 	}
-	
+
 	public static void restartCurrentLevel(Mario mario) {
 		System.out.println("Setting all power ups from previous level to DEAD");
 		for (LevelPart l : currLevel.levelParts) {
-			for (GImage i : l.part) {
-				if (i instanceof MysteryBox) {
-					if (((MysteryBox) i).powerUp!=null) {
-						((MysteryBox) i).powerUp.alive = false;
+			for (GImage image : l.part) {
+				if (image instanceof MovingObject) {
+					((MovingObject) image).alive = false;
 						//this fixes bug where power up from previous level is removed from canvas
 						//but when restarting level when mario walks into it it still affects him
-						System.out.println("power up dead");
-					}
+						//or dead fireball to kill turtles etc
+						System.out.println("pow`er up/fireball dead");
 				}
 			}
 		}
@@ -81,7 +80,7 @@ public class LevelController {
 		canvas.add(g2, x, canvas.getHeight()-h*g1.getHeight());
 		images.add(g2);
 		double height = g1.getHeight();
-		levelParts.add(new LevelPart(images, x, canvas.getHeight()-height*h ));
+		levelParts.add(new LevelPart(images));
 		return w*g1.getWidth();
 	}
 
@@ -90,11 +89,9 @@ public class LevelController {
 		MysteryBox b = new MysteryBox();
 		canvas.add(b, x, canvas.getHeight()-y*b.getHeight());
 		images.add(b);
-		levelParts.add(new LevelPart(images, x, canvas.getHeight()-y*b.getHeight()));
+		levelParts.add(new LevelPart(images));
 		return b.getWidth();
 	}
-
-
 
 	public static void playLevel1(Mario mario) {
 		//adds each GImage for each LevelPart to the canvas at their starting positions

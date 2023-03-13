@@ -299,6 +299,7 @@ public class MarioBrosGame extends GraphicsProgram {
 			grassMiddleImage = ImageIO.read(new File(grassMiddleImagePath));
 		} catch (IOException e) {
 			e.printStackTrace();
+			System.exit(1);
 		}
 		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, this.getGCanvas());

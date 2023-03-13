@@ -9,7 +9,6 @@ public class MysteryBox extends Platform {
 	private static Image mysteryBox3Image;
 	private static Image mysteryBox4Image;
 	private static Image mysteryBoxFinalImage;
-	public PowerUp powerUp;//spawned power up
 	private enum MYSTERYBOX_STATE {STATE_1, STATE_2, STATE_3, STATE_4, FINAL};
 	MYSTERYBOX_STATE mysteryBoxState;
 
@@ -17,14 +16,7 @@ public class MysteryBox extends Platform {
 		super(mysteryBox1Image);
 		mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
 	}
-	public void move(double dx, double dy) {
-		//when level moves the powerUp on mystery box needs to move with it
-		super.move(dx, dy);
-		if (mysteryBoxState==MYSTERYBOX_STATE.FINAL) {	
-			if (powerUp!=null) powerUp.move(dx, dy);
-		}
-		//if not in final state then powerUp hasn't been created yet
-	}
+	
 	public boolean stateIsFinal() {
 		return  mysteryBoxState == MYSTERYBOX_STATE.FINAL;
 	}

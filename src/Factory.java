@@ -1,6 +1,5 @@
 import acm.graphics.GCanvas;
-import acm.graphics.GImage;
-import java.awt.Image;
+
 public abstract class Factory {
 	private static GCanvas canvas;
 	
@@ -44,6 +43,7 @@ public abstract class Factory {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
+		LevelController.currLevel.addNewLevelPart(fireBall);
 		addMovingObject(fireBall);
 	}
 
