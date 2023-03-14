@@ -9,8 +9,9 @@ public class LevelController {
 	//level depending on how close to the edges of the screen he is
 	private static Image grassLeftTopImage, grassRightTopImage, 
 	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage,
-	pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
-	pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage;
+	pipeUpTopLeftImage, pipeUpTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
+	pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
+	pipeDownTopLeftImage, pipeDownTopRightImage;
 	private static GCanvas canvas;
 	public static Level currLevel;//only one currLevel mario is playing at a time
 	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
@@ -94,17 +95,84 @@ public class LevelController {
 		Platform g2 = new Platform(grassLeftTopImage);
 		canvas.add(g2, x, canvas.getHeight()-h*g1.getHeight());
 		images.add(g2);
-		double height = g1.getHeight();
+		//double height = g1.getHeight();
 		levelParts.add(new LevelPart(images));
 		return w*g1.getWidth();
 	}
 	
-	public static double spawnTopPipe(double x, double y, ArrayList<LevelPart> levelParts) {
-		return 0.0;
+	/***
+	 * This function spawns a pipe facing up (mario can go down into)
+	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
+	 * @param x coordinate of top left Image
+	 * @param h height in number of images from top to bottom (expected >=2)
+	 * @param transportable true if pipe allows mario to go into it and transport him
+	 * @returns width of entire LevelPart
+	 */
+	public static double spawnUpPipe(double x, double h, boolean transportable, ArrayList<LevelPart> levelParts) {
+		//TODO FIX BUG WHERE UP PIPE DOESNT RETURN CORRECT WIDTH, XCOUNTER FOR LEVEL IS INCREMENTED PROPERLY
+		//SO MARIO CAN WALK PAST THE END OF THE LEVEL
+		//loophope around this problem: dont do xCounter += spawnUpPipe
+		//do : spawnUpPipe(); xCounter+=200;
+		if (h<2) h=2;
+		ArrayList<GImage> images = new ArrayList<GImage>();	
+		for (int i=1; i<h; i++) {
+			Platform middleLeft = new Platform(pipeUpMiddleLeftImage);
+			canvas.add(middleLeft, x, canvas.getHeight()-middleLeft.getHeight()*i);
+			images.add(middleLeft);
+			Platform middleRight = new Platform(pipeUpMiddleRightImage);
+			canvas.add(middleRight, x+middleLeft.getWidth(), canvas.getHeight()-middleRight.getHeight()*i);
+			images.add(middleRight);
+		}
+		
+		Platform topLeft = transportable?new PipePart(pipeUpTopLeftImage, null):new Platform(pipeUpTopLeftImage);
+		Platform topRight = transportable?new PipePart(pipeUpTopRightImage, null):new Platform(pipeUpTopRightImage);
+		
+		Platform middleRight = new Platform(pipeUpMiddleRightImage);
+		double dx = topLeft.getWidth()-middleRight.getWidth();
+		//dx is to offset the top part so it sits in middle of pipe
+		canvas.add(topLeft, x-dx, canvas.getHeight()-h*topLeft.getHeight());
+		images.add(topLeft);
+		canvas.add(topRight, x-dx+topLeft.getWidth(), canvas.getHeight()-h*topRight.getHeight());
+		images.add(topRight);
+		
+		levelParts.add(new LevelPart(images));
+		return 2.0*middleRight.getWidth();//width is always 2 images
 	}
 	
-	public static double spawnBottomPipe(double x, double y, ArrayList<LevelPart> levelParts) {
-		return 0.0;
+	
+	/***
+	 * This function spawns a pipe facing down (mario can jump into)
+	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
+	 * @param x coordinate of top left Image
+	 * @param h height in number of images from top to bottom (expected >=2)
+	 * @param transportable true if pipe allows mario to go into it and transport him
+	 * @returns width of entire LevelPart
+	 */
+	public static double spawnDownPipe(double x, double h, boolean transportable, ArrayList<LevelPart> levelParts) {
+		if (h<2) h=2;
+		ArrayList<GImage> images = new ArrayList<GImage>();	
+		for (int i=0; i<h-1; i++) {
+			Platform middleLeft = new Platform(pipeDownMiddleLeftImage);
+			canvas.add(middleLeft, x, middleLeft.getHeight()*i);
+			images.add(middleLeft);
+			Platform middleRight = new Platform(pipeDownMiddleRightImage);
+			canvas.add(middleRight, x+middleLeft.getWidth(), middleRight.getHeight()*i);
+			images.add(middleRight);
+		}
+		
+		Platform topLeft = transportable?new PipePart(pipeDownTopLeftImage, null):new Platform(pipeDownTopLeftImage);
+		Platform topRight = transportable?new PipePart(pipeDownTopRightImage, null):new Platform(pipeDownTopRightImage);
+		
+		Platform middleRight = new Platform(pipeDownMiddleRightImage);
+		double dx = topLeft.getWidth()-middleRight.getWidth();
+		//dx is to offset the top part so it sits in middle of pipe
+		canvas.add(topLeft, x-dx, (h-1)*topLeft.getHeight());
+		images.add(topLeft);
+		canvas.add(topRight, x-dx+topLeft.getWidth(), (h-1)*topRight.getHeight());
+		images.add(topRight);
+		
+		levelParts.add(new LevelPart(images));
+		return 2.0*topLeft.getWidth();//width is always 2 images
 	}
 
 	public static double spawnMysteryBox(double x, double y, ArrayList<LevelPart> levelParts) {
@@ -121,17 +189,23 @@ public class LevelController {
 		//adds LevelParts from left to right so helpful to have xCounter to keep track of
 		//smallest left index where a new LevelPart could be spawned
 		//to have white space in between level parts need to increment xCounter by width of whitespace
-		canvas.add(mario, 0,canvas.getHeight()-3*mario.getHeight());
+		
+		canvas.add(mario, 0,canvas.getHeight()-6*mario.getHeight());
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
-		spawnMysteryBox(xCounter-150, 5, levelParts);
+		spawnMysteryBox(xCounter-350, 5, levelParts);
+		spawnDownPipe(xCounter+200, 2, false, levelParts);
 		xCounter += 200; 
+		spawnUpPipe(xCounter, 2, true, levelParts);
+		xCounter += 400;
 		xCounter += spawnGrassMountain(xCounter, 2, 2, levelParts);
 		xCounter += 20; 
 		spawnMysteryBox(xCounter+100, 7, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 5, 4, levelParts);
-		xCounter += 200;
+		xCounter += 50;
+		spawnUpPipe(xCounter, 4, true, levelParts);
+		xCounter += 500;
 		spawnMysteryBox(xCounter+100, 9, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 8, 6, levelParts);
 		xCounter += 200; 
@@ -140,9 +214,11 @@ public class LevelController {
 		xCounter += 200;
 		spawnMysteryBox(xCounter+100, 5, levelParts);
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
-		xCounter += 200;
+		//xCounter += 200;
 		Level level1 = new Level(1, levelParts, xCounter);
 		currLevel = level1;//set currLevel
+		
+		mario.fall(10);
 	}
 
 	public static void playLevel2(Mario mario) {
