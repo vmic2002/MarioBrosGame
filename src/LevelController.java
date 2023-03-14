@@ -8,17 +8,32 @@ public class LevelController {
 	//spawns a level and sets currLevel so mario can have access to it and move
 	//level depending on how close to the edges of the screen he is
 	private static Image grassLeftTopImage, grassRightTopImage, 
-	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage;
+	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage,
+	pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
+	pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage;
 	private static GCanvas canvas;
 	public static Level currLevel;//only one currLevel mario is playing at a time
 	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
-			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1, GCanvas canvas1) {
+			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
+			Image pipeUpTopLeftImage1, Image pipeUpTopRightImage1, Image pipeDownMiddleLeftImage1, Image pipeDownMiddleRightImage1,
+			Image pipeDownTopLeftImage1, Image pipeDownTopRightImage1, Image pipeUpMiddleLeftImage1, Image pipeUpMiddleRightImage1,
+			GCanvas canvas1) {
 		grassLeftTopImage = grassLeftTopImage1;
 		grassRightTopImage = grassRightTopImage1;
 		grassMiddleTopImage = grassMiddleTopImage1;
 		grassLeftImage = grassLeftImage1;
 		grassRightImage = grassRightImage1;
 		grassMiddleImage = grassMiddleImage1;
+		
+		pipeUpTopLeftImage = pipeUpTopLeftImage1;
+		pipeUpTopRightImage = pipeUpTopRightImage1;
+		pipeDownMiddleLeftImage = pipeDownMiddleLeftImage1;
+		pipeDownMiddleRightImage = pipeDownMiddleRightImage1;
+		pipeDownTopLeftImage = pipeDownTopLeftImage1;
+		pipeDownTopRightImage = pipeDownTopRightImage1;
+		pipeUpMiddleLeftImage = pipeUpMiddleLeftImage1;
+		pipeUpMiddleRightImage = pipeUpMiddleRightImage1;
+		
 		canvas = canvas1;
 	}
 
@@ -82,6 +97,14 @@ public class LevelController {
 		double height = g1.getHeight();
 		levelParts.add(new LevelPart(images));
 		return w*g1.getWidth();
+	}
+	
+	public static double spawnTopPipe(double x, double y, ArrayList<LevelPart> levelParts) {
+		return 0.0;
+	}
+	
+	public static double spawnBottomPipe(double x, double y, ArrayList<LevelPart> levelParts) {
+		return 0.0;
 	}
 
 	public static double spawnMysteryBox(double x, double y, ArrayList<LevelPart> levelParts) {
