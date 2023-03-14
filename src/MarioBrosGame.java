@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.awt.BorderLayout;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -6,11 +7,12 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 
 import acm.graphics.*;
 import acm.program.GraphicsProgram;
 
-public class MarioBrosGame extends GraphicsProgram {
+public class MarioBrosGame {//extends GraphicsProgram {
 
 	/*General comments for Mario Game:
 	 * 
@@ -25,7 +27,17 @@ public class MarioBrosGame extends GraphicsProgram {
 	private static final int WIDTH = 1400;
 	private static final int HEIGHT = 1000;
 
-	public void run() {
+	//public void run() {
+	@SuppressWarnings("deprecation")
+	public static void main(String[] args) {
+		GCanvas canvas = new GCanvas();
+		canvas.setSize(WIDTH, HEIGHT);
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(BorderLayout.CENTER, canvas);
+        frame.setSize(WIDTH,HEIGHT);
+        frame.show();
+		
+		
 		System.out.println("Hello, World!");
 		//when running from command line:
 		//image path is ../Images/*.png since program is run from bin directory
@@ -302,8 +314,8 @@ public class MarioBrosGame extends GraphicsProgram {
 			System.exit(1);
 		}
 		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
-				grassRightImage,grassMiddleImage, this.getGCanvas());
-		MovingObject.setCanvas(this.getGCanvas());
+				grassRightImage,grassMiddleImage, canvas);
+		MovingObject.setCanvas(canvas);
 		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage);
 		Mushroom.setObjects(mushroomImage);
 		FireBall.setObjects(leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
@@ -312,7 +324,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				rightFireBall4Image);
 		FireFlower.setObjects(fireFlowerImage);
 		Leaf.setObjects(rightLeafImage, leftLeafImage);
-		Factory.setCanvas(this.getGCanvas());
+		Factory.setCanvas(canvas);
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, marioDeadImage,
@@ -339,8 +351,8 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightJumpingCatTal2Image,
 				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image);
-		setSize(WIDTH,HEIGHT);
-		addKeyListeners(new MyKeyListener(mario));
+		
+		canvas.addKeyListener(new MyKeyListener(mario));
 		LevelController.playLevel1(mario);
 		//LevelController.playLevel2(mario);
 	}
