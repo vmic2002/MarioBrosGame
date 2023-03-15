@@ -24,7 +24,8 @@ public class Mario extends MovingObject {
 	bigMarioRightJumpingDownCatImage, bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage,
 	bigMarioRightCrouchingCatImage, bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTail1Image,
 	bigMarioLeftJumpingCatTail2Image, bigMarioRightJumpingCatTail2Image,
-	bigMarioCatTail1Image, bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image;
+	bigMarioCatTail1Image, bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image,
+	smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage;
 
 	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
@@ -68,6 +69,7 @@ public class Mario extends MovingObject {
 	public boolean hitPlatformHorizontal = false;
 	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
 	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
+	public boolean goingIntoPipe = false;
 
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
@@ -95,7 +97,8 @@ public class Mario extends MovingObject {
 			Image bigMarioLeftJumpingCatTail1Image, Image bigMarioRightJumpingCatTail1Image, Image bigMarioLeftJumpingCatTail2Image,
 			Image bigMarioRightJumpingCatTail2Image,
 			Image bigMarioCatTail1Image, Image bigMarioLeftCatTail2Image,
-			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image) {
+			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image,
+			Image smallMarioPipeImage, Image bigMarioPipeImage, Image fireMarioPipeImage) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
@@ -155,6 +158,10 @@ public class Mario extends MovingObject {
 		this.bigMarioLeftCatTail2Image = bigMarioLeftCatTail2Image;
 		this.bigMarioRightCatTail2Image = bigMarioRightCatTail2Image;
 		this.bigMarioCatTail3Image = bigMarioCatTail3Image;
+
+		this.smallMarioPipeImage = smallMarioPipeImage;
+		this.bigMarioPipeImage = bigMarioPipeImage;
+		this.fireMarioPipeImage = fireMarioPipeImage;
 	}
 
 	public void moveOnlyMario(double dx, double dy) {
@@ -226,10 +233,11 @@ public class Mario extends MovingObject {
 			e.printStackTrace();
 		}
 		alive = true;
+		goingIntoPipe = false;
 		setToSmall();//need to change mario from dead sprite to small sprite
 		lookingRightOrLeft = true;//mario should be looking right
 		lookInCorrectDirection(true);
-		LevelController.restartCurrentLevel(this);//when mario dies restart the level
+		LevelController.restartCurrentLevel();//when mario dies restart the level
 	}
 
 	public void setToCat() {
@@ -349,8 +357,12 @@ public class Mario extends MovingObject {
 
 	public void setToCrouching() {
 		//called when down array key pressed
+
+
+
 		if (!bigOrSmall || isCrouching) {
-			//small mario cant crouch
+			//small mario cant crouch but can still go into pipe
+			checkCanGoDownIntoPipe();
 			return;
 		}
 		if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
@@ -377,6 +389,62 @@ public class Mario extends MovingObject {
 		}
 		lookInDirectionCrouching(lookingRightOrLeft);
 		isCrouching = true;
+		checkCanGoDownIntoPipe();
+
+	}
+
+	public void checkCanGoDownIntoPipe() {
+		//need to check if mario is on top of a PipePart
+		if (goingIntoPipe) return;
+		if (!isJumping) {
+			GObject o = canvas.getElementAt(getX()+getWidth()/2, getY()+getHeight()+20);
+			if (o!=null && o instanceof PipePart) {
+				Thread t1 = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						System.out.println("MARIO SHOULD GO INTO PIPE "+((PipePart) o).subLevelID);
+						goingIntoPipe=true;//to disable user from moving mario as he is going down
+						//setting movingRight/Left to false in case mario
+						//is moving while crouching on a pipe
+						movingRight = false;
+						movingLeft = false;
+						SoundController.playMarioGoesIntoPipeSound();
+						setToPipe();
+						//TODO need to recenter mario
+						try {
+							double x = 15.0;
+							double dy = getHeight()/x;
+							for (int i=0; i<x; i++) {
+								Thread.sleep(40);
+								moveOnlyMario(0, dy);
+							}
+						} catch(Exception e) {
+							e.printStackTrace();
+						}
+						System.out.println("MARIO CAN MOVE AGAIN");
+						goingIntoPipe = false;
+						isCrouching = false;
+						lookInCorrectDirection(lookingRightOrLeft);
+						LevelController.playLevel(((PipePart) o).subLevelID);
+					}
+				});  
+				t1.start();
+			}
+		}
+	}
+
+	public void setToPipe() {
+		if (!bigOrSmall) {
+			setImageAndRelocate(smallMarioPipeImage);
+		} else if (isFire) {
+			setImageAndRelocate(fireMarioPipeImage);
+		} else if (isCat){
+			setImageAndRelocate(bigMarioCatTail1Image);
+			//CAT MARIO'S PIPE SPRITE is the same as when he swings his tail
+			//and faces user
+		} else { 
+			setImageAndRelocate(bigMarioPipeImage);
+		}
 	}
 
 	public void stopCrouching() {
@@ -435,15 +503,12 @@ public class Mario extends MovingObject {
 					try {
 						Thread.sleep(pauseInAir);
 					} catch (InterruptedException e) {
-						// TODO Auto-generated catch Platform
 						e.printStackTrace();
 					}
 				}
-
 				try {
 					Thread.sleep(80);//PAUSE AT TOP OF JUMP
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch Platform
 					e.printStackTrace();
 				}
 				wayUpOrWayDown = false;
@@ -474,7 +539,6 @@ public class Mario extends MovingObject {
 			try {
 				Thread.sleep(pauseGoingDown);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch Platform
 				e.printStackTrace();
 			}
 		}

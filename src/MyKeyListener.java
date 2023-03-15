@@ -15,6 +15,7 @@ public class MyKeyListener implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		if (!mario.alive) return;
+		if (mario.goingIntoPipe) return;
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			mario.move(true);
@@ -43,6 +44,7 @@ public class MyKeyListener implements KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (!mario.alive) return;
+		if (mario.goingIntoPipe) return;
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			mario.movingRight = false;

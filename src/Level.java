@@ -1,7 +1,7 @@
 import acm.graphics.GImage;
 import java.util.ArrayList;
 public class Level {
-	private int number;
+	private String id;
 	public ArrayList<LevelPart> levelParts;
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
 	//if yBaseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
@@ -9,16 +9,16 @@ public class Level {
 	//if xbaseline == canvas width-level width then mario is at right most portion of level
 	//private GImage background;
 	public double width;
-	public Level(int number, ArrayList<LevelPart> levelParts, double width){//, GImage background) {
-		this.number = number;
+	public Level(String id, ArrayList<LevelPart> levelParts, double width){//, GImage background) {
+		this.id = id;
 		this.levelParts = levelParts;
 		yBaseLine = 0;
 		xBaseLine = 0;
 		this.width = width;
 		//this.background = background;
 	}
-	public int getNumber() {
-		return number;
+	public String getID() {
+		return id;
 	}
 	public void removeFireBall(FireBall f) {
 		for (LevelPart p: levelParts) {

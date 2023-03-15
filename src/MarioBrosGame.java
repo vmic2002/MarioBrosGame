@@ -130,6 +130,11 @@ public class MarioBrosGame extends GraphicsProgram {
 		String pipeUpMiddleLeftImagePath = prefix+"Images/pipeUpMiddleLeft.png";
 		String pipeUpMiddleRightImagePath = prefix+"Images/pipeUpMiddleRight.png";
 		
+		
+		String smallMarioPipeImagePath = prefix+"Images/smallMarioPipe.png";
+		String bigMarioPipeImagePath = prefix+"Images/bigMarioPipe.png";
+		String fireMarioPipeImagePath = prefix+"Images/fireMarioPipe.png";
+		
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
 		BufferedImage smallMarioRightWalkingImage = null;
@@ -227,6 +232,11 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage pipeDownTopRightImage = null;
 		BufferedImage pipeUpMiddleLeftImage = null;
 		BufferedImage pipeUpMiddleRightImage = null;
+		
+		BufferedImage smallMarioPipeImage = null;
+		BufferedImage bigMarioPipeImage = null;
+		BufferedImage fireMarioPipeImage = null;
+		
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -325,15 +335,14 @@ public class MarioBrosGame extends GraphicsProgram {
 			pipeDownTopRightImage = ImageIO.read(new File(pipeDownTopRightImagePath));
 			pipeUpMiddleLeftImage = ImageIO.read(new File(pipeUpMiddleLeftImagePath));
 			pipeUpMiddleRightImage = ImageIO.read(new File(pipeUpMiddleRightImagePath));
+			
+			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
+			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
+			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
-				grassRightImage,grassMiddleImage, 
-				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
-				pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
-				this.getGCanvas());
 		MovingObject.setCanvas(this.getGCanvas());
 		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage);
 		Mushroom.setObjects(mushroomImage);
@@ -369,11 +378,19 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTal1Image, bigMarioLeftJumpingCatTail2Image,
 				bigMarioRightJumpingCatTal2Image,
 				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
-				bigMarioRightCatTail2Image, bigMarioCatTail3Image);
+				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
+				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
+				);
+		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
+				grassRightImage,grassMiddleImage, 
+				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
+				pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
+				mario,
+				this.getGCanvas());
 		setSize(WIDTH,HEIGHT);
 		addKeyListeners(new MyKeyListener(mario));
-		LevelController.playLevel1(mario);
-		//LevelController.playLevel2(mario);
+		LevelController.playLevel1();
+		//LevelController.playLevel2();
 	}
 
 

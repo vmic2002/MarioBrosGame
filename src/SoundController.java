@@ -15,6 +15,7 @@ public abstract class SoundController {
 	private static File squishSoundFile;
 	private static File tailSoundFile;
 	private static File deathSoundFile;
+	private static File pipeSoundFile;
 	public static void setPrefix(String s) {
 		prefix = s;
 		jumpSoundFile = new File(prefix+"SoundEffects/Mario Jump.wav");
@@ -25,6 +26,7 @@ public abstract class SoundController {
 		squishSoundFile = new File(prefix+"SoundEffects/Squish.wav");
 		tailSoundFile = new File(prefix+"SoundEffects/tail.wav");
 		deathSoundFile = new File(prefix+"SoundEffects/Death.wav");
+		pipeSoundFile = new File(prefix+"SoundEffects/Pipe.wav");
 	}
 	
 	private static void playSound(File f) {
@@ -35,6 +37,11 @@ public abstract class SoundController {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public static void playMarioGoesIntoPipeSound(){
+		//plays when mario goes into pipe
+		playSound(pipeSoundFile);
 	}
 	
 	public static void playMarioDeathSound(){

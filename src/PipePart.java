@@ -16,10 +16,10 @@ public class PipePart extends Platform{
 	//that will allow him to go into or not
 	//if mario goes into pipe, a new sub-level should be spawned
 	//PipePart needs to keep track of which sub-level should be loaded when mario goes into it
-	Level subLevel;
-	public PipePart(Image arg0, Level l) {
+	String subLevelID;
+	public PipePart(Image arg0, String l) {
 		super(arg0);
-		subLevel = l;
+		subLevelID = l;
 		// TODO Auto-generated constructor stub
 	}
 
