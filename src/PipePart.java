@@ -20,7 +20,6 @@ public class PipePart extends Platform{
 	public PipePart(Image arg0, String l) {
 		super(arg0);
 		subLevelID = l;
-		// TODO Auto-generated constructor stub
 	}
 
 }

@@ -144,8 +144,8 @@ public class LevelController {
 			images.add(middleRight);
 		}
 
-		Platform topLeft = transportable?new PipePart(pipeUpTopLeftImage, subLevelID):new Platform(pipeUpTopLeftImage);
-		Platform topRight = transportable?new PipePart(pipeUpTopRightImage, subLevelID):new Platform(pipeUpTopRightImage);
+		Platform topLeft = transportable?new LeftPipePart(pipeUpTopLeftImage, subLevelID):new Platform(pipeUpTopLeftImage);
+		Platform topRight = transportable?new RightPipePart(pipeUpTopRightImage, subLevelID):new Platform(pipeUpTopRightImage);
 
 		Platform middleRight = new Platform(pipeUpMiddleRightImage);
 		double dx = topLeft.getWidth()-middleRight.getWidth();
@@ -168,8 +168,7 @@ public class LevelController {
 	 * @param transportable true if pipe allows mario to go into it and transport him
 	 * @returns width of entire LevelPart
 	 */
-	public static double spawnDownPipe(double x, double h, boolean transportable, ArrayList<LevelPart> levelParts) {
-		//TODO FOR NOW mario can only go into pipes below him by crouching, cant go into pipes above him by jumping
+	public static double spawnDownPipe(double x, double h, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
 		if (h<2) h=2;
 		ArrayList<GImage> images = new ArrayList<GImage>();	
 		for (int i=0; i<h-1; i++) {
@@ -181,8 +180,8 @@ public class LevelController {
 			images.add(middleRight);
 		}
 
-		Platform topLeft = transportable?new PipePart(pipeDownTopLeftImage, null):new Platform(pipeDownTopLeftImage);
-		Platform topRight = transportable?new PipePart(pipeDownTopRightImage, null):new Platform(pipeDownTopRightImage);
+		Platform topLeft = transportable?new LeftPipePart(pipeDownTopLeftImage, subLevelID):new Platform(pipeDownTopLeftImage);
+		Platform topRight = transportable?new RightPipePart(pipeDownTopRightImage, subLevelID):new Platform(pipeDownTopRightImage);
 
 		Platform middleRight = new Platform(pipeDownMiddleRightImage);
 		double dx = topLeft.getWidth()-middleRight.getWidth();
@@ -216,7 +215,7 @@ public class LevelController {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
 		spawnMysteryBox(xCounter-350, 5, levelParts);
-		spawnDownPipe(xCounter+200, 2, false, levelParts);
+		spawnDownPipe(xCounter+200, 2, true, "2", levelParts);
 		xCounter += 200; 
 		spawnUpPipe(xCounter, 2, true, "1a", levelParts);
 		//level 1a will be spawned if mario goes into this pipe
@@ -241,7 +240,7 @@ public class LevelController {
 		Level level1 = new Level("1", levelParts, xCounter);
 		currLevel = level1;//set currLevel
 
-		mario.fall(10);
+		mario.fall(5);
 	}
 
 	public static void playLevel2() {
@@ -262,7 +261,7 @@ public class LevelController {
 
 		Level level2 = new Level("2", levelParts, xCounter);
 		currLevel = level2;//set currLevel
-		mario.fall(10);
+		mario.fall(5);
 	}
 
 	public static void playLevel1a() {
@@ -277,7 +276,7 @@ public class LevelController {
 		Level level1a = new Level("1a", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
 
-		mario.fall(10);
+		mario.fall(5);
 	}
 
 

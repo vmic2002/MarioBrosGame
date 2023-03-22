@@ -402,30 +402,8 @@ public class Mario extends MovingObject {
 				Thread t1 = new Thread(new Runnable() {
 					@Override
 					public void run() {
-						System.out.println("MARIO SHOULD GO INTO PIPE "+((PipePart) o).subLevelID);
-						goingIntoPipe=true;//to disable user from moving mario as he is going down
-						//setting movingRight/Left to false in case mario
-						//is moving while crouching on a pipe
-						movingRight = false;
-						movingLeft = false;
-						SoundController.playMarioGoesIntoPipeSound();
-						setToPipe();
-						//TODO need to recenter mario
-						try {
-							double x = 15.0;
-							double dy = getHeight()/x;
-							for (int i=0; i<x; i++) {
-								Thread.sleep(40);
-								moveOnlyMario(0, dy);
-							}
-						} catch(Exception e) {
-							e.printStackTrace();
-						}
-						System.out.println("MARIO CAN MOVE AGAIN");
-						goingIntoPipe = false;
-						isCrouching = false;
-						lookInCorrectDirection(lookingRightOrLeft);
-						LevelController.playLevel(((PipePart) o).subLevelID);
+						System.out.println("MARIO GOES DOWN INTO PIPE "+((PipePart) o).subLevelID);
+						goIntoPipe(false, (PipePart) o);
 					}
 				});  
 				t1.start();
@@ -492,24 +470,33 @@ public class Mario extends MovingObject {
 					ArrayList<GObject> o = checkAtPositions(arr, canvas);
 					for (GObject x : o) {
 						inContactWith(x, false);
+						if (hitPlatformVertical) {
+							//if mario jumps into a Platform, he needs to stop moving up
+							//and start moving down, making it look like the Platform stopped him
+							move(0, -dy);
+							break;
+						}
 					}
-					move(0, -dy);
 					if (hitPlatformVertical) {
-						//if mario jumps into a Platform, he needs to stop moving up
-						//and start moving down, making it look like the Platform stopped him
 						hitPlatformVertical = false;
 						break;
 					}
+					move(0, -dy);
 					try {
 						Thread.sleep(pauseInAir);
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 				}
+
 				try {
 					Thread.sleep(80);//PAUSE AT TOP OF JUMP
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+				}
+				if (goingIntoPipe) {
+					isJumping = false;
+					return;//in case mario jumps into a pipe he shouldnt fall back down
 				}
 				wayUpOrWayDown = false;
 				if (bigOrSmall && !isCrouching) {
@@ -927,11 +914,16 @@ public class Mario extends MovingObject {
 
 			//System.out.println("MARIO Y BOUND: "+getY()+ " to "+(getY()+getHeight()));
 			//System.out.println("Platform Y BOUND: "+o.getY()+ " to "+(o.getY()+o.getHeight()));
-			if (getY()!=o.getY()+o.getHeight()) {
+			if (wayUpOrWayDown && !horizontolOrVertical) {
+				//System.out.println("HIT Platform FROM UNDER!!!!!!");
+
+				//if (getY()!=o.getY()+o.getHeight()) {
 				//System.out.println("HIT Platform FROM SIDE"+ horizontolOrVertical);
-			} else {
-				System.out.println("HIT Platform FROM UNDER POWER UP APPEAR");
+				//} else {
+				//	System.out.println("HIT Platform FROM UNDER");
 				if (o instanceof MysteryBox) {
+					System.out.println("MARIO HIT MYSTERYBOX FROM UNDER");
+					if (getY()!=o.getY()+o.getHeight()) return;
 					if (!((MysteryBox) o).stateIsFinal()) {
 						SoundController.playItemOutOfBoxSound();
 						double x  = o.getX();
@@ -946,7 +938,24 @@ public class Mario extends MovingObject {
 							newLevelPart = Factory.addLeaf(x, y, o.getWidth());
 						LevelController.currLevel.addNewLevelPart(newLevelPart);
 					}
+				} else if (o instanceof PipePart) {
+					//mario jumped into a pipe part, need to make him go into pipe
+
+					if (goingIntoPipe) return;
+					Thread t1 = new Thread(new Runnable() {
+						@Override
+						public void run() {
+							System.out.println("MARIO JUMP INTO PIPE "+((PipePart) o).subLevelID);
+							goIntoPipe(true, (PipePart) o);
+						}
+					});  
+					t1.start();
+
+
+				} else if (o instanceof Platform) {
+					System.out.println("MARIO JUMPED INTO PLATFORM");
 				}
+				//	}
 			}
 		} else if (o instanceof FireBall) {
 			System.out.println("MARIO RAN/JUMPed INTO A FIREBALL");
@@ -957,6 +966,50 @@ public class Mario extends MovingObject {
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
 		}
+
+	}
+
+	public void goIntoPipe(boolean upOrDown, PipePart o) {
+		goingIntoPipe=true;//to disable user from moving mario as he is going into pipe
+		//setting movingRight/Left to false in case mario
+		//is moving while going into a pipe
+		movingRight = false;
+		movingLeft = false;
+
+		SoundController.playMarioGoesIntoPipeSound();
+		setToPipe();
+
+		double centerXPipe = o instanceof LeftPipePart?o.getX()+o.getWidth():o.getX(); 
+		double marioNewX = centerXPipe-getWidth()/2; //to recenter mario so he goes into the center of the pipe
+		
+		double dx = getX()<marioNewX?10.0:-10.0;
+		while (Math.abs(getX()-marioNewX)>20) {
+			//to move mario to center of pipe
+			moveOnlyMario(dx, 0);
+			try {
+				Thread.sleep(20);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		this.setLocation(marioNewX, this.getY());
+		try {
+			double x = 15.0;
+			double dy = getHeight()/x;
+			if (upOrDown) dy = -dy;
+			for (int i=0; i<x; i++) {
+				Thread.sleep(40);
+				moveOnlyMario(0, dy);
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		System.out.println("MARIO CAN MOVE AGAIN");
+		goingIntoPipe = false;
+
+		if (!upOrDown) isCrouching = false;
+		lookInCorrectDirection(lookingRightOrLeft);
+		LevelController.playLevel(o.subLevelID);
 	}
 
 	public void lookCorrectWayShootingFire(boolean rightOrLeft) {

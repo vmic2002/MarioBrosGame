@@ -33,6 +33,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		//when running from eclipse, prefix = ""
 		//before pushing to github make sure prefix = "../"
 		String prefix = "../";
+		//String prefix = "";
 		SoundController.setPrefix(prefix);
 
 		String smallMarioLeftImagePath = prefix+"Images/smallMarioLeftImage.png";
