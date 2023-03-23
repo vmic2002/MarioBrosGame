@@ -144,8 +144,8 @@ public class LevelController {
 			images.add(middleRight);
 		}
 
-		Platform topLeft = transportable?new LeftPipePart(pipeUpTopLeftImage, subLevelID):new Platform(pipeUpTopLeftImage);
-		Platform topRight = transportable?new RightPipePart(pipeUpTopRightImage, subLevelID):new Platform(pipeUpTopRightImage);
+		Platform topLeft = transportable?new LeftPipePart(pipeUpTopLeftImage, subLevelID, true):new Platform(pipeUpTopLeftImage);
+		Platform topRight = transportable?new RightPipePart(pipeUpTopRightImage, subLevelID, true):new Platform(pipeUpTopRightImage);
 
 		Platform middleRight = new Platform(pipeUpMiddleRightImage);
 		double dx = topLeft.getWidth()-middleRight.getWidth();
@@ -180,8 +180,8 @@ public class LevelController {
 			images.add(middleRight);
 		}
 
-		Platform topLeft = transportable?new LeftPipePart(pipeDownTopLeftImage, subLevelID):new Platform(pipeDownTopLeftImage);
-		Platform topRight = transportable?new RightPipePart(pipeDownTopRightImage, subLevelID):new Platform(pipeDownTopRightImage);
+		Platform topLeft = transportable?new LeftPipePart(pipeDownTopLeftImage, subLevelID, false):new Platform(pipeDownTopLeftImage);
+		Platform topRight = transportable?new RightPipePart(pipeDownTopRightImage, subLevelID, false):new Platform(pipeDownTopRightImage);
 
 		Platform middleRight = new Platform(pipeDownMiddleRightImage);
 		double dx = topLeft.getWidth()-middleRight.getWidth();

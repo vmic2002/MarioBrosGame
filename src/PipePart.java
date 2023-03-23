@@ -16,10 +16,16 @@ public class PipePart extends Platform{
 	//that will allow him to go into or not
 	//if mario goes into pipe, a new sub-level should be spawned
 	//PipePart needs to keep track of which sub-level should be loaded when mario goes into it
+	
+	
+	//to fix bug where mario jumps into an up pipe instead of down pipe
+	//need pipe part to keep track of if they are up or down pipe
+	
+	boolean upOrDownPipe;
 	String subLevelID;
-	public PipePart(Image arg0, String l) {
+	public PipePart(Image arg0, String subLevelID, boolean upOrDownPipe) {
 		super(arg0);
-		subLevelID = l;
+		this.subLevelID = subLevelID;
+		this.upOrDownPipe = upOrDownPipe;
 	}
-
 }

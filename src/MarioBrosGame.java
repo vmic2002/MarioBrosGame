@@ -1,4 +1,5 @@
 import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,6 +27,10 @@ public class MarioBrosGame extends GraphicsProgram {
 	private static final int HEIGHT = 1000;
 
 	public void run() {
+		float[] hsb = new float[3];
+		Color.RGBtoHSB(0, 120, 255, hsb);
+		Color c = new Color(hsb[0], hsb[1], hsb[2]);
+		this.getGCanvas().setBackground(c);
 		System.out.println("Hello, World!");
 		//when running from command line:
 		//image path is ../Images/*.png since program is run from bin directory
@@ -35,7 +40,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		String prefix = "../";
 		//String prefix = "";
 		SoundController.setPrefix(prefix);
-
+		
 		String smallMarioLeftImagePath = prefix+"Images/smallMarioLeftImage.png";
 		String smallMarioRightImagePath = prefix+"Images/smallMarioRightImage.png";
 		String smallMarioRightWalkingImagePath = prefix+"Images/smallMarioRightWalkingImage.png";

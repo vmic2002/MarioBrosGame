@@ -37,8 +37,8 @@ class FireBall extends MovingObject {
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
-		dx = rightOrLeft?5:-5;
-		dy = 5;
+		dx = rightOrLeft?8:-8;
+		dy = 8;
 		fireBallStage = FIREBALL_STAGE.STAGE_1;
 		fallingOrHopping = true;
 		//rightOrLeft parameter determines if fireball is moving right or left

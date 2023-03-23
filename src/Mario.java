@@ -398,7 +398,7 @@ public class Mario extends MovingObject {
 		if (goingIntoPipe) return;
 		if (!isJumping) {
 			GObject o = canvas.getElementAt(getX()+getWidth()/2, getY()+getHeight()+20);
-			if (o!=null && o instanceof PipePart) {
+			if (o!=null && o instanceof PipePart && ((PipePart) o).upOrDownPipe) {
 				Thread t1 = new Thread(new Runnable() {
 					@Override
 					public void run() {
@@ -923,7 +923,7 @@ public class Mario extends MovingObject {
 				//	System.out.println("HIT Platform FROM UNDER");
 				if (o instanceof MysteryBox) {
 					System.out.println("MARIO HIT MYSTERYBOX FROM UNDER");
-					if (getY()!=o.getY()+o.getHeight()) return;
+					if (Math.abs(getY()-o.getY()-o.getHeight())>20) return;
 					if (!((MysteryBox) o).stateIsFinal()) {
 						SoundController.playItemOutOfBoxSound();
 						double x  = o.getX();
@@ -940,8 +940,18 @@ public class Mario extends MovingObject {
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe
-
+					
+					
+					if (isCrouching) {
+						System.out.println("MARIO CANT JUMP INTO PIPE IF HE IS CROUCHING");
+						return;
+					}
+					if (((PipePart) o).upOrDownPipe) {
+						System.out.println("mario tries jumping into an up pipe instead of down pipe");
+						return;
+					}
 					if (goingIntoPipe) return;
+
 					Thread t1 = new Thread(new Runnable() {
 						@Override
 						public void run() {
@@ -981,7 +991,7 @@ public class Mario extends MovingObject {
 
 		double centerXPipe = o instanceof LeftPipePart?o.getX()+o.getWidth():o.getX(); 
 		double marioNewX = centerXPipe-getWidth()/2; //to recenter mario so he goes into the center of the pipe
-		
+
 		double dx = getX()<marioNewX?10.0:-10.0;
 		while (Math.abs(getX()-marioNewX)>20) {
 			//to move mario to center of pipe
