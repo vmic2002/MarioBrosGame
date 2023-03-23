@@ -39,107 +39,112 @@ public class MarioBrosGame extends GraphicsProgram {
 		//before pushing to github make sure prefix = "../"
 		String prefix = "../";
 		//String prefix = "";
+		
+		String imageDirectory = "Images";
+		//String imageDirectory = "ScaledImages";
+		
+		
 		SoundController.setPrefix(prefix);
 		
-		String smallMarioLeftImagePath = prefix+"Images/smallMarioLeftImage.png";
-		String smallMarioRightImagePath = prefix+"Images/smallMarioRightImage.png";
-		String smallMarioRightWalkingImagePath = prefix+"Images/smallMarioRightWalkingImage.png";
-		String smallMarioLeftWalkingImagePath = prefix+"Images/smallMarioLeftWalkingImage.png";
-		String smallMarioLeftJumpingImagePath = prefix+"Images/smallMarioLeftJumpingImage.png";
-		String smallMarioRightJumpingImagePath = prefix+"Images/smallMarioRightJumpingImage.png";
-		String marioDeadImagePath = prefix+"Images/marioDeadImage.png";
+		String smallMarioLeftImagePath = prefix+imageDirectory+"/smallMarioLeftImage.png";
+		String smallMarioRightImagePath = prefix+imageDirectory+"/smallMarioRightImage.png";
+		String smallMarioRightWalkingImagePath = prefix+imageDirectory+"/smallMarioRightWalkingImage.png";
+		String smallMarioLeftWalkingImagePath = prefix+imageDirectory+"/smallMarioLeftWalkingImage.png";
+		String smallMarioLeftJumpingImagePath = prefix+imageDirectory+"/smallMarioLeftJumpingImage.png";
+		String smallMarioRightJumpingImagePath = prefix+imageDirectory+"/smallMarioRightJumpingImage.png";
+		String marioDeadImagePath = prefix+imageDirectory+"/marioDeadImage.png";
 
-		String bigMarioLeftImagePath = prefix+"Images/bigMarioLeftImage.png";
-		String bigMarioRightImagePath = prefix+"Images/bigMarioRightImage.png";
-		String bigMarioRightWalkingImagePath = prefix+"Images/bigMarioRightWalkingImage.png";
-		String bigMarioLeftWalkingImagePath = prefix+"Images/bigMarioLeftWalkingImage.png";
-		String bigMarioLeftJumpingImagePath = prefix+"Images/bigMarioLeftJumpingImage.png";
-		String bigMarioRightJumpingImagePath = prefix+"Images/bigMarioRightJumpingImage.png";
-		String bigMarioLeftJumpingDownImagePath = prefix+"Images/bigMarioLeftJumpingDownImage.png";
-		String bigMarioRightJumpingDownImagePath = prefix+"Images/bigMarioRightJumpingDownImage.png";
-		String bigMarioLeftCrouchingImagePath = prefix+"Images/bigMarioLeftCrouchingImage.png";
-		String bigMarioRightCrouchingImagePath = prefix+"Images/bigMarioRightCrouchingImage.png";
+		String bigMarioLeftImagePath = prefix+imageDirectory+"/bigMarioLeftImage.png";
+		String bigMarioRightImagePath = prefix+imageDirectory+"/bigMarioRightImage.png";
+		String bigMarioRightWalkingImagePath = prefix+imageDirectory+"/bigMarioRightWalkingImage.png";
+		String bigMarioLeftWalkingImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingImage.png";
+		String bigMarioLeftJumpingImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingImage.png";
+		String bigMarioRightJumpingImagePath = prefix+imageDirectory+"/bigMarioRightJumpingImage.png";
+		String bigMarioLeftJumpingDownImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingDownImage.png";
+		String bigMarioRightJumpingDownImagePath = prefix+imageDirectory+"/bigMarioRightJumpingDownImage.png";
+		String bigMarioLeftCrouchingImagePath = prefix+imageDirectory+"/bigMarioLeftCrouchingImage.png";
+		String bigMarioRightCrouchingImagePath = prefix+imageDirectory+"/bigMarioRightCrouchingImage.png";
 
-		String bigMarioLeftFireImagePath = prefix+"Images/bigMarioLeftFireImage.png";
-		String bigMarioRightFireImagePath = prefix+"Images/bigMarioRightFireImage.png";
-		String bigMarioLeftWakingFireImagePath = prefix+"Images/bigMarioLeftWalkingFireImage.png";
-		String bigMarioRightWalkingFireImagePath = prefix+"Images/bigMarioRightWalkingFireImage.png";
-		String bigMarioLeftJumpingFireImagePath = prefix+"Images/bigMarioLeftJumpingFireImage.png";
-		String bigMarioRightJumpingFireImagePath = prefix+"Images/bigMarioRightJumpingFireImage.png";
-		String bigMarioLeftJumpingDownFireImagePath = prefix+"Images/bigMarioLeftJumpingDownFireImage.png";
-		String bigMarioRightJumpingDownFireImagePath = prefix+"Images/bigMarioRightJumpingDownFireImage.png";
-		String bigMarioLeftCrouchingFireImagePath = prefix+"Images/bigMarioLeftCrouchingFireImage.png";
-		String bigMarioRightCrouchingFireImagePath = prefix+"Images/bigMarioRightCrouchingFireImage.png";
-		String bigMarioLeftFireShooting1ImagePath = prefix+"Images/bigMarioLeftFireShooting1Image.png";
-		String bigMarioLeftFireShooting2ImagePath = prefix+"Images/bigMarioLeftFireShooting2Image.png";
-		String bigMarioRightFireShooting1ImagePath = prefix+"Images/bigMarioRightFireShooting1Image.png";
-		String bigMarioRightFireShooting2ImagePath = prefix+"Images/bigMarioRightFireShooting2Image.png";
-		String bigMarioLeftJumpingFireShooting1ImagePath = prefix+"Images/bigMarioLeftJumpingFireShooting1Image.png";
-		String bigMarioLeftJumpingFireShooting2ImagePath = prefix+"Images/bigMarioLeftJumpingFireShooting2Image.png";
-		String bigMarioLeftJumpingFireShooting3ImagePath = prefix+"Images/bigMarioLeftJumpingFireShooting3Image.png";
-		String bigMarioRightJumpingFireShooting1ImagePath = prefix+"Images/bigMarioRightJumpingFireShooting1Image.png";
-		String bigMarioRightJumpingFireShooting2ImagePath = prefix+"Images/bigMarioRightJumpingFireShooting2Image.png";
-		String bigMarioRightJumpingFireShooting3ImagePath = prefix+"Images/bigMarioRightJumpingFireShooting3Image.png";
-		String leftFireBall1ImagePath = prefix+"Images/leftFireBall1.png";
-		String rightFireBall1ImagePath = prefix+"Images/rightFireBall1.png";
-		String leftFireBall2ImagePath = prefix+"Images/leftFireBall2.png";
-		String rightFireBall2ImagePath = prefix+"Images/rightFireBall2.png";
-		String leftFireBall3ImagePath = prefix+"Images/leftFireBall3.png";
-		String rightFireBall3ImagePath = prefix+"Images/rightFireBall3.png";
-		String leftFireBall4ImagePath = prefix+"Images/leftFireBall4.png";
-		String rightFireBall4ImagePath = prefix+"Images/rightFireBall4.png";
+		String bigMarioLeftFireImagePath = prefix+imageDirectory+"/bigMarioLeftFireImage.png";
+		String bigMarioRightFireImagePath = prefix+imageDirectory+"/bigMarioRightFireImage.png";
+		String bigMarioLeftWakingFireImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingFireImage.png";
+		String bigMarioRightWalkingFireImagePath = prefix+imageDirectory+"/bigMarioRightWalkingFireImage.png";
+		String bigMarioLeftJumpingFireImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingFireImage.png";
+		String bigMarioRightJumpingFireImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireImage.png";
+		String bigMarioLeftJumpingDownFireImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingDownFireImage.png";
+		String bigMarioRightJumpingDownFireImagePath = prefix+imageDirectory+"/bigMarioRightJumpingDownFireImage.png";
+		String bigMarioLeftCrouchingFireImagePath = prefix+imageDirectory+"/bigMarioLeftCrouchingFireImage.png";
+		String bigMarioRightCrouchingFireImagePath = prefix+imageDirectory+"/bigMarioRightCrouchingFireImage.png";
+		String bigMarioLeftFireShooting1ImagePath = prefix+imageDirectory+"/bigMarioLeftFireShooting1Image.png";
+		String bigMarioLeftFireShooting2ImagePath = prefix+imageDirectory+"/bigMarioLeftFireShooting2Image.png";
+		String bigMarioRightFireShooting1ImagePath = prefix+imageDirectory+"/bigMarioRightFireShooting1Image.png";
+		String bigMarioRightFireShooting2ImagePath = prefix+imageDirectory+"/bigMarioRightFireShooting2Image.png";
+		String bigMarioLeftJumpingFireShooting1ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingFireShooting1Image.png";
+		String bigMarioLeftJumpingFireShooting2ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingFireShooting2Image.png";
+		String bigMarioLeftJumpingFireShooting3ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingFireShooting3Image.png";
+		String bigMarioRightJumpingFireShooting1ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireShooting1Image.png";
+		String bigMarioRightJumpingFireShooting2ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireShooting2Image.png";
+		String bigMarioRightJumpingFireShooting3ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireShooting3Image.png";
+		String leftFireBall1ImagePath = prefix+imageDirectory+"/leftFireBall1.png";
+		String rightFireBall1ImagePath = prefix+imageDirectory+"/rightFireBall1.png";
+		String leftFireBall2ImagePath = prefix+imageDirectory+"/leftFireBall2.png";
+		String rightFireBall2ImagePath = prefix+imageDirectory+"/rightFireBall2.png";
+		String leftFireBall3ImagePath = prefix+imageDirectory+"/leftFireBall3.png";
+		String rightFireBall3ImagePath = prefix+imageDirectory+"/rightFireBall3.png";
+		String leftFireBall4ImagePath = prefix+imageDirectory+"/leftFireBall4.png";
+		String rightFireBall4ImagePath = prefix+imageDirectory+"/rightFireBall4.png";
 
-		String bigMarioLeftCatImagePath = prefix+"Images/bigMarioLeftCatImage.png";
-		String bigMarioRightCatImagePath = prefix+"Images/bigMarioRightCatImage.png";
-		String bigMarioLeftWakingCatImagePath = prefix+"Images/bigMarioLeftWalkingCatImage.png";
-		String bigMarioRightWalkingCatImagePath = prefix+"Images/bigMarioRightWalkingCatImage.png";
-		String bigMarioLeftJumpingCatImagePath = prefix+"Images/bigMarioLeftJumpingCatImage.png";
-		String bigMarioRightJumpingCatImagePath = prefix+"Images/bigMarioRightJumpingCatImage.png";
-		String bigMarioRightJumpingDownCatImagePath = prefix+"Images/bigMarioRightJumpingDownCatImage.png";
-		String bigMarioLeftJumpingDownCatImagePath = prefix+"Images/bigMarioLeftJumpingDownCatImage.png";
-		String bigMarioLeftCrouchingCatImagePath = prefix+"Images/bigMarioLeftCrouchingCatImage.png";
-		String bigMarioRightCrouchingCatImagePath = prefix+"Images/bigMarioRightCrouchingCatImage.png";
-		String bigMarioLeftJumpingCatTail1ImagePath = prefix+"Images/bigMarioLeftJumpingCatTail1Image.png";
-		String bigMarioRightJumpingCatTal1ImagePath = prefix+"Images/bigMarioRightJumpingCatTail1Image.png";
-		String bigMarioLeftJumpingCatTail2ImagePath = prefix+"Images/bigMarioLeftJumpingCatTail2Image.png";
-		String bigMarioRightJumpingCatTail2ImagePath = prefix+"Images/bigMarioRightJumpingCatTail2Image.png";
-		String bigMarioCatTail1ImagePath = prefix+"Images/bigMarioTail1.png";
-		String bigMarioLeftCatTail2ImagePath = prefix+"Images/bigMarioLeftTail2.png";
-		String bigMarioRightCatTail2ImagePath = prefix+"Images/bigMarioRightTail2.png";
-		String bigMarioCatTail3ImagePath = prefix+"Images/bigMarioTail3.png";
+		String bigMarioLeftCatImagePath = prefix+imageDirectory+"/bigMarioLeftCatImage.png";
+		String bigMarioRightCatImagePath = prefix+imageDirectory+"/bigMarioRightCatImage.png";
+		String bigMarioLeftWakingCatImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingCatImage.png";
+		String bigMarioRightWalkingCatImagePath = prefix+imageDirectory+"/bigMarioRightWalkingCatImage.png";
+		String bigMarioLeftJumpingCatImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingCatImage.png";
+		String bigMarioRightJumpingCatImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatImage.png";
+		String bigMarioRightJumpingDownCatImagePath = prefix+imageDirectory+"/bigMarioRightJumpingDownCatImage.png";
+		String bigMarioLeftJumpingDownCatImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingDownCatImage.png";
+		String bigMarioLeftCrouchingCatImagePath = prefix+imageDirectory+"/bigMarioLeftCrouchingCatImage.png";
+		String bigMarioRightCrouchingCatImagePath = prefix+imageDirectory+"/bigMarioRightCrouchingCatImage.png";
+		String bigMarioLeftJumpingCatTail1ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingCatTail1Image.png";
+		String bigMarioRightJumpingCatTal1ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatTail1Image.png";
+		String bigMarioLeftJumpingCatTail2ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingCatTail2Image.png";
+		String bigMarioRightJumpingCatTail2ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatTail2Image.png";
+		String bigMarioCatTail1ImagePath = prefix+imageDirectory+"/bigMarioTail1.png";
+		String bigMarioLeftCatTail2ImagePath = prefix+imageDirectory+"/bigMarioLeftTail2.png";
+		String bigMarioRightCatTail2ImagePath = prefix+imageDirectory+"/bigMarioRightTail2.png";
+		String bigMarioCatTail3ImagePath = prefix+imageDirectory+"/bigMarioTail3.png";
 
-		String mushroomImagePath = prefix+"Images/mushroomImage.png";
-		String fireFlowerImagePath = prefix+"Images/fireFlowerImage.png";
-		String leftLeafImagePath = prefix+"Images/leftLeafImage.png";
-		String rightLeafImagePath = prefix+"Images/rightLeafImage.png";
+		String mushroomImagePath = prefix+imageDirectory+"/mushroomImage.png";
+		String fireFlowerImagePath = prefix+imageDirectory+"/fireFlowerImage.png";
+		String leftLeafImagePath = prefix+imageDirectory+"/leftLeafImage.png";
+		String rightLeafImagePath = prefix+imageDirectory+"/rightLeafImage.png";
 
-		String mysteryBox1ImagePath = prefix+"Images/mysteryBox1.png";
-		String mysteryBox2ImagePath = prefix+"Images/mysteryBox2.png";
-		String mysteryBox3ImagePath = prefix+"Images/mysteryBox3.png";
-		String mysteryBox4ImagePath = prefix+"Images/mysteryBox4.png";
-		String mysteryBoxFinalImagePath = prefix+"Images/mysteryBoxFinal.png";
+		String mysteryBox1ImagePath = prefix+imageDirectory+"/mysteryBox1.png";
+		String mysteryBox2ImagePath = prefix+imageDirectory+"/mysteryBox2.png";
+		String mysteryBox3ImagePath = prefix+imageDirectory+"/mysteryBox3.png";
+		String mysteryBox4ImagePath = prefix+imageDirectory+"/mysteryBox4.png";
+		String mysteryBoxFinalImagePath = prefix+imageDirectory+"/mysteryBoxFinal.png";
 
-		String grassLeftTopImagePath = prefix+"Images/grassLeftTopImage.png";
-		String grassRightTopImagePath = prefix+"Images/grassRightTopImage.png";
-		String grassMidleTopImagePath = prefix+"Images/grassMiddleTopImage.png";
-		String grassLeftImagePath = prefix+"Images/grassLeftImage.png";
-		String grassRightImagePath = prefix+"Images/grassRightImage.png";
-		String grassMiddleImagePath = prefix+"Images/grassMiddleImage.png";
+		String grassLeftTopImagePath = prefix+imageDirectory+"/grassLeftTopImage.png";
+		String grassRightTopImagePath = prefix+imageDirectory+"/grassRightTopImage.png";
+		String grassMidleTopImagePath = prefix+imageDirectory+"/grassMiddleTopImage.png";
+		String grassLeftImagePath = prefix+imageDirectory+"/grassLeftImage.png";
+		String grassRightImagePath = prefix+imageDirectory+"/grassRightImage.png";
+		String grassMiddleImagePath = prefix+imageDirectory+"/grassMiddleImage.png";
 		
 		
-		String pipeUpTopLeftImagePath = prefix+"Images/pipeUpTopLeft.png";
-		String pipeUpTopRightImagePath = prefix+"Images/pipeUpTopRight.png";
-		String pipeDownMiddleLeftImagePath = prefix+"Images/pipeDownMiddleLeft.png";
-		String pipeDownMiddleRightImagePath = prefix+"Images/pipeDownMiddleRight.png";
-		String pipeDownTopLeftImagePath = prefix+"Images/pipeDownTopLeft.png";
-		String pipeDownTopRightImagePath = prefix+"Images/pipeDownTopRight.png";
-		String pipeUpMiddleLeftImagePath = prefix+"Images/pipeUpMiddleLeft.png";
-		String pipeUpMiddleRightImagePath = prefix+"Images/pipeUpMiddleRight.png";
+		String pipeUpTopLeftImagePath = prefix+imageDirectory+"/pipeUpTopLeft.png";
+		String pipeUpTopRightImagePath = prefix+imageDirectory+"/pipeUpTopRight.png";
+		String pipeDownMiddleLeftImagePath = prefix+imageDirectory+"/pipeDownMiddleLeft.png";
+		String pipeDownMiddleRightImagePath = prefix+imageDirectory+"/pipeDownMiddleRight.png";
+		String pipeDownTopLeftImagePath = prefix+imageDirectory+"/pipeDownTopLeft.png";
+		String pipeDownTopRightImagePath = prefix+imageDirectory+"/pipeDownTopRight.png";
+		String pipeUpMiddleLeftImagePath = prefix+imageDirectory+"/pipeUpMiddleLeft.png";
+		String pipeUpMiddleRightImagePath = prefix+imageDirectory+"/pipeUpMiddleRight.png";
 		
 		
-		String smallMarioPipeImagePath = prefix+"Images/smallMarioPipe.png";
-		String bigMarioPipeImagePath = prefix+"Images/bigMarioPipe.png";
-		String fireMarioPipeImagePath = prefix+"Images/fireMarioPipe.png";
+		String smallMarioPipeImagePath = prefix+imageDirectory+"/smallMarioPipe.png";
+		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
+		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
 		
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
@@ -349,16 +354,6 @@ public class MarioBrosGame extends GraphicsProgram {
 			e.printStackTrace();
 			System.exit(1);
 		}
-		MovingObject.setCanvas(this.getGCanvas());
-		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage);
-		Mushroom.setObjects(mushroomImage);
-		FireBall.setObjects(leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
-				rightFireBall2Image, leftFireBall3Image,
-				rightFireBall3Image, leftFireBall4Image,
-				rightFireBall4Image);
-		FireFlower.setObjects(fireFlowerImage);
-		Leaf.setObjects(rightLeafImage, leftLeafImage);
-		Factory.setCanvas(this.getGCanvas());
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, marioDeadImage,
@@ -387,6 +382,17 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
+		MovingObject.setCanvas(this.getGCanvas(), mario.moveDx);
+		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage);
+		Mushroom.setObjects(mushroomImage);
+		FireBall.setObjects(leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
+				rightFireBall2Image, leftFireBall3Image,
+				rightFireBall3Image, leftFireBall4Image,
+				rightFireBall4Image);
+		FireFlower.setObjects(fireFlowerImage);
+		Leaf.setObjects(rightLeafImage, leftLeafImage);
+		Factory.setCanvas(this.getGCanvas());
+		
 		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, 
 				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,

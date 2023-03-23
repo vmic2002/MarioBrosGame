@@ -8,11 +8,11 @@ public class Mushroom extends PowerUp {
 	private static Image mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
-	private static final int DY = 10;
-	private static final int DX = 7;
+	private static final double DY = MovingObject.moveDx;
+	private static final double DX = MovingObject.moveDx*0.7;
 	private static final int pauseTime = 10;
-	private int dx;
-	private int dy;
+	private double dx;
+	private double dy;
 	private boolean rightOrLeft;
 	private boolean previousPointWorked;
 	//previousPointWorked: for collision detection, multiple points are used, if one already worked, 
@@ -29,7 +29,15 @@ public class Mushroom extends PowerUp {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
 		//TODO there is bug where if mario jumps so high that the level moves up and down,
 		//the mushroom moves weird (goes down into a platform or changes direction)
+		try {
+			Thread.sleep(600);
+			//to wait for mysterybox to stop moving up/down
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		System.out.println("ADDED MUSHROOM");
+		
 		boolean stillOnMysteryBox = true;
 		while (alive && stillOnMysteryBox) {
 			double x = rightOrLeft?this.getX()-DX:this.getX()+this.getWidth()+DX;

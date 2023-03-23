@@ -8,6 +8,9 @@ public abstract class MovingObject extends GImage {
 	//fireball, mushroom, fire flower, leaf, mario (turtle) extend MovingObject
 	public static GCanvas canvas;
 	public boolean alive;
+	public static double moveDx;
+	//moveDx is to ensure that the movement of images is scaled proportionally
+	//depending on their size
 	public MovingObject(Image arg0) {
 		super(arg0);
 		alive = true;
@@ -45,7 +48,8 @@ public abstract class MovingObject extends GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());
 	}
 	
-	public static void setCanvas(GCanvas canvas1) {
+	public static void setCanvas(GCanvas canvas1, double moveDx1) {
 		canvas = canvas1;
+		moveDx = moveDx1;
 	}
 }

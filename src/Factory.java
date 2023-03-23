@@ -22,10 +22,10 @@ public abstract class Factory {
 		//so it looks like power up is coming out of mysteryBox
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
-				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y-50);
+				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
-					powerUp.move(0, -5);
+					powerUp.move(0, -MovingObject.moveDx/2.0);
 					try {
 						Thread.sleep(15);
 					} catch (Exception e) {

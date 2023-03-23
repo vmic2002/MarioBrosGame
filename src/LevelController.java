@@ -15,6 +15,7 @@ public class LevelController {
 	private static GCanvas canvas;
 	public static Level currLevel;//only one currLevel mario is playing at a time
 	public static Mario mario;
+	public static double space;
 	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
 			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
 			Image pipeUpTopLeftImage1, Image pipeUpTopRightImage1, Image pipeDownMiddleLeftImage1, Image pipeDownMiddleRightImage1,
@@ -38,6 +39,7 @@ public class LevelController {
 		pipeUpMiddleRightImage = pipeUpMiddleRightImage1;
 		mario = mario1;
 		canvas = canvas1;
+		space = mario.moveDx*10.0;
 	}
 
 	public static void endCurrentLevel() {
@@ -210,11 +212,22 @@ public class LevelController {
 		//smallest left index where a new LevelPart could be spawned
 		//to have white space in between level parts need to increment xCounter by width of whitespace
 
-		canvas.add(mario, 0, canvas.getHeight()-4*mario.getHeight());
+		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
-		spawnMysteryBox(xCounter-350, 5, levelParts);
+		xCounter += 3.0*space;
+		spawnMysteryBox(xCounter+2.0*space, 6, levelParts);
+		xCounter += spawnGrassMountain(xCounter, 4, 3, levelParts);
+		xCounter += 2.0*space;
+		spawnUpPipe(xCounter, 4, true, "1a", levelParts);
+		xCounter += spawnDownPipe(xCounter, 3, true, "2", levelParts);
+		xCounter += 2.0*space;
+	
+		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
+		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
+		spawnMysteryBox(xCounter-2.0*space, 6, levelParts);
+		/*spawnMysteryBox(xCounter-350, 5, levelParts);
 		spawnDownPipe(xCounter+200, 2, true, "2", levelParts);
 		xCounter += 200; 
 		spawnUpPipe(xCounter, 2, true, "1a", levelParts);
@@ -235,7 +248,7 @@ public class LevelController {
 		xCounter += spawnGrassMountain(xCounter, 5, 4, levelParts);
 		xCounter += 200;
 		spawnMysteryBox(xCounter+100, 5, levelParts);
-		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
+		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);*/
 		//xCounter += 200;
 		Level level1 = new Level("1", levelParts, xCounter);
 		currLevel = level1;//set currLevel
@@ -244,35 +257,37 @@ public class LevelController {
 	}
 
 	public static void playLevel2() {
-		canvas.add(mario, 0, canvas.getHeight()-4*mario.getHeight());
+		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		//xCounter+=200;
-		spawnMysteryBox(xCounter+201, 5, levelParts);
+		xCounter += spawnGrassMountain(xCounter, 20, 2, levelParts);
+		spawnMysteryBox(2.0*space, 5, levelParts);
 		//		spawnMysteryBox(xCounter+400, 5, levelParts);
-		spawnMysteryBox(xCounter+600, 5, levelParts);
+		spawnMysteryBox(4.0*space, 5, levelParts);
 		//		spawnMysteryBox(xCounter+800, 5, levelParts);
-		spawnMysteryBox(xCounter+1250, 5, levelParts);
+		spawnMysteryBox(6.0*space, 5, levelParts);
 		//		spawnMysteryBox(xCounter+1200, 5, levelParts);
-		spawnMysteryBox(xCounter+1750, 5, levelParts);
-		xCounter += spawnGrassMountain(xCounter, 14, 2, levelParts);
+		spawnMysteryBox(8.0*space, 5, levelParts);
+		//xCounter += 2.0*space;
 		spawnUpPipe(xCounter, 5, true, "1", levelParts);
-		xCounter += 500;
-
+		xCounter += spawnDownPipe(xCounter, 3, true, "2", levelParts);
+		//xCounter += 3.0*space;
+		//xCounter += 2.0*space;
 		Level level2 = new Level("2", levelParts, xCounter);
 		currLevel = level2;//set currLevel
 		mario.fall(5);
 	}
 
 	public static void playLevel1a() {
-		canvas.add(mario, 0, canvas.getHeight()-4*mario.getHeight());
+		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		double xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		xCounter += spawnGrassMountain(xCounter, 8, 2, levelParts);
+		xCounter += spawnGrassMountain(xCounter, 20, 3, levelParts);
 		spawnUpPipe(xCounter, 2, true, "1a", levelParts);
-		xCounter += 400;
+		xCounter += 3.0*space;
 		spawnUpPipe(xCounter, 4, true, "1", levelParts);
-		xCounter += 400;
+		xCounter += spawnDownPipe(xCounter, 3, true, "2", levelParts);
 		Level level1a = new Level("1a", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
 

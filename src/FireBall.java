@@ -19,7 +19,7 @@ class FireBall extends MovingObject {
 	private static final int maxDistance = 5000;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
-	private static final double sizeOfHops = 200;//fireball hops once it moves on the ground
+	private static final double sizeOfHops = MovingObject.moveDx*20;//fireball hops once it moves on the ground
 	private static final double hopRadius = sizeOfHops/2;//width of semi circle (hop) is 2*R
 	private static int pauseTime = 10;//milliseconds pause in between each move function call
 	private enum FIREBALL_STAGE {STAGE_1, STAGE_2, STAGE_3, STAGE_4};
@@ -27,8 +27,8 @@ class FireBall extends MovingObject {
 	private boolean rightOrLeft;
 	private int frequencyChangeStage = frequencyChangeToNextStage;
 	private int gasLeft = maxDistance;//fireball moves until it has no more gas left (gasLeft == 0)
-	private int dx; //x speed
-	private int dy;//y speed
+	private double dx; //x speed
+	private double dy;//y speed
 	private boolean fallingOrHopping;//fireball is either falling or "hopping" once it falls on a platform
 	public double hoppingY; //y coordinate height of line on which fireball hopps on
 	//hoppingY needs to be moved up/down when the level moves. this is done in LevelPart.java
@@ -37,8 +37,8 @@ class FireBall extends MovingObject {
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
-		dx = rightOrLeft?8:-8;
-		dy = 8;
+		dx = rightOrLeft?MovingObject.moveDx*0.8:-MovingObject.moveDx*0.8;
+		dy = Math.abs(dx);
 		fireBallStage = FIREBALL_STAGE.STAGE_1;
 		fallingOrHopping = true;
 		//rightOrLeft parameter determines if fireball is moving right or left

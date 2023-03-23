@@ -28,7 +28,7 @@ public class MysteryBox extends Platform {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				double dy = -10;
+				double dy = -MovingObject.moveDx;
 				move(dy);//move up
 				dy = -dy;
 				move(dy);//move down
@@ -41,7 +41,7 @@ public class MysteryBox extends Platform {
 		for (int i=0; i<10; i++) {
 			super.move(0, dy);
 			try {
-				Thread.sleep(15);
+				Thread.sleep(30);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

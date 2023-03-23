@@ -70,7 +70,8 @@ public class Mario extends MovingObject {
 	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
 	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
 	public boolean goingIntoPipe = false;
-
+	public double fallDy;
+	public double moveDx;
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image marioDeadImage,
@@ -106,6 +107,8 @@ public class Mario extends MovingObject {
 		this.smallMarioRightWalkingImage = smallMarioRightWalkingImage;
 		this.smallMarioLeftJumpingImage = smallMarioLeftJumpingImage;
 		this.smallMarioRightJumpingImage = smallMarioRightJumpingImage;
+		fallDy = smallMarioLeftImage.getHeight(canvas)/16.0;
+		moveDx = 1.5*fallDy;
 		this.marioDeadImage = marioDeadImage;
 
 		this.bigMarioRightImage = bigMarioRightImage;
@@ -220,12 +223,12 @@ public class Mario extends MovingObject {
 		sendToFront();
 		try {
 			for (int i=0; i<60; i++) {
-				super.move(0,-10);
+				super.move(0,-fallDy);
 				Thread.sleep(15);
 			}
 			Thread.sleep(150);
 			for (int i=0; i<60; i++) {
-				super.move(0,10);
+				super.move(0,fallDy);
 				Thread.sleep(15);
 			}
 			Thread.sleep(800);
@@ -444,7 +447,8 @@ public class Mario extends MovingObject {
 				//code in here runs in another thread since mario can go right or left while jumping
 				//has to be done concurrently
 
-				int dy = 10;
+				//int dy = 10;
+				
 				if (isJumping) {
 
 					return;
@@ -464,16 +468,16 @@ public class Mario extends MovingObject {
 				}
 				for (int i=0; i<60; i++) {
 					// for 3 points over mario (left middle and right)
-					Point[] arr = new Point[]{new Point(getX()+10,getY()-dy),
-							new Point(getX()+getWidth()/2, getY()-dy),
-							new Point(getX()+getWidth()-10, getY()-dy)};
+					Point[] arr = new Point[]{new Point(getX()+10,getY()-fallDy),
+							new Point(getX()+getWidth()/2, getY()-fallDy),
+							new Point(getX()+getWidth()-10, getY()-fallDy)};
 					ArrayList<GObject> o = checkAtPositions(arr, canvas);
 					for (GObject x : o) {
 						inContactWith(x, false);
 						if (hitPlatformVertical) {
 							//if mario jumps into a Platform, he needs to stop moving up
 							//and start moving down, making it look like the Platform stopped him
-							move(0, -dy);
+							move(0, -fallDy);
 							break;
 						}
 					}
@@ -481,7 +485,7 @@ public class Mario extends MovingObject {
 						hitPlatformVertical = false;
 						break;
 					}
-					move(0, -dy);
+					move(0, -fallDy);
 					try {
 						Thread.sleep(pauseInAir);
 					} catch (InterruptedException e) {
@@ -503,7 +507,7 @@ public class Mario extends MovingObject {
 					//if mario is not small then he doesn't stay in jumping sprite on the way down
 					setToJumpingDown(lookingRightOrLeft);
 				}
-				fall(dy);
+				fall(fallDy);
 				if (!isCrouching) {
 					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				}
@@ -514,7 +518,7 @@ public class Mario extends MovingObject {
 		t1.start();
 	}
 
-	public void fall(int dy) {
+	public void fall(double dy) {
 		while (!hitPlatformVertical && alive) {//mario falls down until he hits a platform
 			checkUnder(dy);
 			move(0, dy);
@@ -531,7 +535,7 @@ public class Mario extends MovingObject {
 		}
 	}
 
-	public void checkUnder(int dy) {
+	public void checkUnder(double dy) {
 		//checks if mario is in contact with something under him (mushroom, Platform,...)
 		//check for 2 points under mario (left and right)
 		//0.22 is value found to work best through testing
@@ -812,7 +816,7 @@ public class Mario extends MovingObject {
 			return;
 		}
 		//arbitrary dx of 10 to move mario not too much
-		double dx = rightOrLeft?10.0:-10.0;
+		double dx = rightOrLeft?moveDx:-moveDx;
 		double newX = rightOrLeft?getX()+getWidth()+dx:getX()+dx;//+dx cause dx is already negative
 		//TODO bug where fire mario can walk through Platform if he is rapidly shooting fireballs!
 		/*TODO
@@ -857,7 +861,7 @@ public class Mario extends MovingObject {
 						if (bigOrSmall) setToJumpingDown(rightOrLeft);
 						else setToJumping(rightOrLeft);
 						isJumping = true;
-						fall(10);
+						fall(fallDy);
 						lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 						isJumping = false;
 						//System.out.println("DONE FALLING");
@@ -940,7 +944,7 @@ public class Mario extends MovingObject {
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe
-					
+					//TODO fix bug where mario jumps into pipe while swining tail easy to fix 
 					
 					if (isCrouching) {
 						System.out.println("MARIO CANT JUMP INTO PIPE IF HE IS CROUCHING");
@@ -992,7 +996,7 @@ public class Mario extends MovingObject {
 		double centerXPipe = o instanceof LeftPipePart?o.getX()+o.getWidth():o.getX(); 
 		double marioNewX = centerXPipe-getWidth()/2; //to recenter mario so he goes into the center of the pipe
 
-		double dx = getX()<marioNewX?10.0:-10.0;
+		double dx = getX()<marioNewX?moveDx:-moveDx;
 		while (Math.abs(getX()-marioNewX)>20) {
 			//to move mario to center of pipe
 			moveOnlyMario(dx, 0);
