@@ -119,7 +119,7 @@ public class LevelController {
 	}
 
 	/***
-	 * This function spawns a pipe facing up (mario can go down into)
+	 * This function spawns a pipe facing up (mario can go down into) from the bottom of the screen
 	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
 	 * xCounter is x coordinate of top left Image
 	 * @param h height in number of images from top to bottom (expected >=2)
@@ -161,9 +161,10 @@ public class LevelController {
 
 
 	/***
-	 * This function spawns a pipe facing down (mario can jump into)
+	 * This function spawns a pipe facing down (mario can jump into) from the top of the screen
 	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
 	 * xCounter is x coordinate of top left Image
+	 *
 	 * @param h height in number of images from top to bottom (expected >=2)
 	 * @param transportable true if pipe allows mario to go into it and transport him
 	 */
@@ -208,8 +209,15 @@ public class LevelController {
 	}
 
 	//this function adds white space to level by increasing xCounter without adding any images
-	public static void addWhiteSpace(double numSpaces) {
+	public static void spawnWhiteSpace(double numSpaces) {
 		xCounter += numSpaces*space;
+	}
+	
+	//spawns a down pipe on top of an up pipe, xCounter is modified only once
+	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, double hDown, String subLevelIDDown, ArrayList<LevelPart> levelParts) {
+		double width = spawnUpPipe(hUp, subLevelIDUp.length()>0, subLevelIDUp, levelParts);
+		xCounter -= width;//so that down pipe is on top of up pipe
+		spawnDownPipe(hDown, subLevelIDDown.length()>0, subLevelIDDown, levelParts);
 	}
 	
 	public static void playLevel1() {
@@ -223,17 +231,17 @@ public class LevelController {
 		xCounter = 0.0;//need to re initialize xCounter to 0 at the beginning of each level
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(8, 2, levelParts);
-		addWhiteSpace(3);
+		spawnWhiteSpace(3);
 		spawnMysteryBox(xCounter+2.0*space, 6, levelParts);
 		spawnGrassMountain(4, 3, levelParts);
-		addWhiteSpace(2);
+		spawnWhiteSpace(2);
 		spawnUpPipe(4, true, "1a", levelParts);
 		spawnDownPipe(3, true, "2", levelParts);
-		addWhiteSpace(2);
+		spawnWhiteSpace(2);
 		spawnGrassMountain(8, 2, levelParts);
 		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
 		spawnMysteryBox(xCounter-2.0*space, 6, levelParts);
-		addWhiteSpace(2);
+		spawnWhiteSpace(2);
 		Level level1 = new Level("1", levelParts, xCounter);
 		currLevel = level1;//set currLevel
 		mario.fall(5);
@@ -248,9 +256,7 @@ public class LevelController {
 		spawnMysteryBox(4.0*space, 5, levelParts);
 		spawnMysteryBox(6.0*space, 5, levelParts);
 		spawnMysteryBox(8.0*space, 5, levelParts);
-		double width = spawnUpPipe(5, true, "1", levelParts);
-		xCounter -= width;//so that down pipe is on top of up pipe
-		spawnDownPipe(3, true, "2", levelParts);
+		spawnUpAndDownPipes(5, "1", 3, "2", levelParts);
 		Level level2 = new Level("2", levelParts, xCounter);
 		currLevel = level2;//set currLevel
 		mario.fall(5);
@@ -262,10 +268,8 @@ public class LevelController {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(20, 3, levelParts);
 		spawnUpPipe(2, true, "1a", levelParts);
-		addWhiteSpace(3);
-		double width = spawnUpPipe(4, true, "1", levelParts);
-		xCounter -= width;//so that down pipe is on top of up pipe
-		spawnDownPipe(3, true, "2", levelParts);
+		spawnWhiteSpace(3);
+		spawnUpAndDownPipes(4, "1", 3, "2", levelParts);
 		Level level1a = new Level("1a", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
 		mario.fall(5);
