@@ -30,7 +30,7 @@ public class Mushroom extends PowerUp {
 		//TODO there is bug where if mario jumps so high that the level moves up and down,
 		//the mushroom moves weird (goes down into a platform or changes direction)
 		try {
-			Thread.sleep(600);
+			Thread.sleep(250);
 			//to wait for mysterybox to stop moving up/down
 		} catch (Exception e) {
 			e.printStackTrace();

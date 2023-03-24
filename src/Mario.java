@@ -1097,7 +1097,7 @@ public class Mario extends MovingObject {
 				SoundController.playFireballSound();
 				//TODO this function doesnt check if mario gets hit by turtle etc and
 				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
-				double x = lookingRightOrLeft?getX()+getWidth()+50:getX()-100;
+				double x = lookingRightOrLeft?getX()+getWidth()+moveDx*2:getX()-moveDx*6;
 				double y = getY()+0.4*getHeight();//might have to change
 				Factory.addFireBall(x, y, lookingRightOrLeft);
 				//ENTERING STAGE1

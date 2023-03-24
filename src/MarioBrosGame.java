@@ -21,6 +21,10 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * 
 	 * small mario has height 160 pixels
 	 * big mario has height 320 pixels
+	 * 
+	 * TODO possible idea mario could have laser eyes (mario or firemario
+	 * pictures edited to a different color.) mario would be able to move while shooting his laser eyes
+	 * since the arrows will be needed to control where the laser beam goes
 	 */
 
 	private static final int WIDTH = 1400;
