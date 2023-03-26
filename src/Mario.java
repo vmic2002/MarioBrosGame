@@ -944,7 +944,7 @@ public class Mario extends MovingObject {
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe
-					//TODO fix bug where mario jumps into pipe while swining tail easy to fix 
+					//TODO fix bug where mario jumps into pipe while swinging tail/shooting fireball easy to fix 
 					
 					if (isCrouching) {
 						System.out.println("MARIO CANT JUMP INTO PIPE IF HE IS CROUCHING");

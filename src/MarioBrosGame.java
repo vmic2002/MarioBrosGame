@@ -43,13 +43,13 @@ public class MarioBrosGame extends GraphicsProgram {
 		//before pushing to github make sure prefix = "../"
 		String prefix = "../";
 		//String prefix = "";
-		
+
 		String imageDirectory = "Images";
 		//String imageDirectory = "ScaledImages";
-		
-		
+
+
 		SoundController.setPrefix(prefix);
-		
+
 		String smallMarioLeftImagePath = prefix+imageDirectory+"/smallMarioLeftImage.png";
 		String smallMarioRightImagePath = prefix+imageDirectory+"/smallMarioRightImage.png";
 		String smallMarioRightWalkingImagePath = prefix+imageDirectory+"/smallMarioRightWalkingImage.png";
@@ -134,8 +134,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		String grassLeftImagePath = prefix+imageDirectory+"/grassLeftImage.png";
 		String grassRightImagePath = prefix+imageDirectory+"/grassRightImage.png";
 		String grassMiddleImagePath = prefix+imageDirectory+"/grassMiddleImage.png";
-		
-		
+
+
 		String pipeUpTopLeftImagePath = prefix+imageDirectory+"/pipeUpTopLeft.png";
 		String pipeUpTopRightImagePath = prefix+imageDirectory+"/pipeUpTopRight.png";
 		String pipeDownMiddleLeftImagePath = prefix+imageDirectory+"/pipeDownMiddleLeft.png";
@@ -144,12 +144,12 @@ public class MarioBrosGame extends GraphicsProgram {
 		String pipeDownTopRightImagePath = prefix+imageDirectory+"/pipeDownTopRight.png";
 		String pipeUpMiddleLeftImagePath = prefix+imageDirectory+"/pipeUpMiddleLeft.png";
 		String pipeUpMiddleRightImagePath = prefix+imageDirectory+"/pipeUpMiddleRight.png";
-		
-		
+
+
 		String smallMarioPipeImagePath = prefix+imageDirectory+"/smallMarioPipe.png";
 		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
 		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
-		
+
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
 		BufferedImage smallMarioRightWalkingImage = null;
@@ -238,7 +238,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage grassLeftImage = null;
 		BufferedImage grassRightImage = null;
 		BufferedImage grassMiddleImage = null;
-		
+
 		BufferedImage pipeUpTopLeftImage = null;
 		BufferedImage pipeUpTopRightImage = null;
 		BufferedImage pipeDownMiddleLeftImage = null;
@@ -247,11 +247,11 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage pipeDownTopRightImage = null;
 		BufferedImage pipeUpMiddleLeftImage = null;
 		BufferedImage pipeUpMiddleRightImage = null;
-		
+
 		BufferedImage smallMarioPipeImage = null;
 		BufferedImage bigMarioPipeImage = null;
 		BufferedImage fireMarioPipeImage = null;
-		
+
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -341,7 +341,7 @@ public class MarioBrosGame extends GraphicsProgram {
 			grassLeftImage = ImageIO.read(new File(grassLeftImagePath));
 			grassRightImage = ImageIO.read(new File(grassRightImagePath));
 			grassMiddleImage = ImageIO.read(new File(grassMiddleImagePath));
-			
+
 			pipeUpTopLeftImage = ImageIO.read(new File(pipeUpTopLeftImagePath));
 			pipeUpTopRightImage = ImageIO.read(new File(pipeUpTopRightImagePath));
 			pipeDownMiddleLeftImage = ImageIO.read(new File(pipeDownMiddleLeftImagePath));
@@ -350,7 +350,7 @@ public class MarioBrosGame extends GraphicsProgram {
 			pipeDownTopRightImage = ImageIO.read(new File(pipeDownTopRightImagePath));
 			pipeUpMiddleLeftImage = ImageIO.read(new File(pipeUpMiddleLeftImagePath));
 			pipeUpMiddleRightImage = ImageIO.read(new File(pipeUpMiddleRightImagePath));
-			
+
 			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
 			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
 			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));
@@ -396,7 +396,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		FireFlower.setObjects(fireFlowerImage);
 		Leaf.setObjects(rightLeafImage, leftLeafImage);
 		Factory.setCanvas(this.getGCanvas());
-		
+
 		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, 
 				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
