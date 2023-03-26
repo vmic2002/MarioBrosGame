@@ -62,10 +62,14 @@ public class MysteryBox extends Platform {
 		return  mysteryBoxState == MYSTERYBOX_STATE.FINAL;
 	}
 	
+	public void setToFinalState() {
+		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
+	}
+	
 	public void hitByMario() {
 		//mushroom, coin, flower, leaf... is created by Factory object, not MysteryBox
 		setImage(mysteryBoxFinalImage);
-		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
+		setToFinalState();
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {

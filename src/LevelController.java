@@ -44,7 +44,9 @@ public class LevelController {
 
 	public static void endCurrentLevel() {
 		//sets all moving objects of currLevel to dead
-		System.out.println("Setting all power ups from previous level to DEAD");
+		//sets all mysteryboxs to final state (so the thread that changes
+		//its state doesnt change picture of mysterybox from previous level)
+		System.out.println("ENDING CURR LEVEL");
 		for (LevelPart l : currLevel.levelParts) {
 			for (GImage image : l.part) {
 				if (image instanceof MovingObject) {
@@ -53,9 +55,13 @@ public class LevelController {
 					//but when restarting level when mario walks into it it still affects him
 					//or dead fireball to kill turtles etc
 					System.out.println("pow`er up/fireball dead");
+				} else if (image instanceof MysteryBox) {
+					((MysteryBox) image).setToFinalState();
+					System.out.println("mysterybox set to final state");
 				}
 			}
 		}
+		System.out.println("CURR LEVEL ENDED");
 	}
 
 	public static void restartCurrentLevel() {
