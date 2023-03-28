@@ -176,6 +176,14 @@ class FireBall extends MovingObject {
 				hoppingX = getX();
 				System.out.println("fireball fall on platform starts hopping");
 			}
+		} else if (x instanceof BadGuy) {
+			//fireball could have been shot by mario or shooting flower
+			//a shooting flower can kill another if mario stands behind the one getting shot at
+			if (!((BadGuy) x).alive) return;
+			//TODO could add sound of bad guy dying
+			((BadGuy) x).alive = false;
+			x.setVisible(false);
+			alive = false;
 		}
 	}
 

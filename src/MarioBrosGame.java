@@ -150,6 +150,25 @@ public class MarioBrosGame extends GraphicsProgram {
 		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
 		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
 
+		String shootingFlowerLeftDownClosedImagePath = prefix+imageDirectory+"/shootingFlowerLeftDownClosed.png";
+		String shootingFlowerLeftDownOpenImagePath = prefix+imageDirectory+"/shootingFlowerLeftDownOpen.png";
+		String shootingFlowerLeftUpClosedImagePath = prefix+imageDirectory+"/shootingFlowerLeftUpClosed.png";
+		String shootingFlowerLeftUpOpenImagePath = prefix+imageDirectory+"/shootingFlowerLeftUpOpen.png";
+		String shootingFlowerRightDownClosedImagePath = prefix+imageDirectory+"/shootingFlowerRightDownClosed.png";
+		String shootingFlowerRightDownOpenImagePath = prefix+imageDirectory+"/shootingFlowerRightDownOpen.png";
+		String shootingFlowerRightUpClosedImagePath = prefix+imageDirectory+"/shootingFlowerRightUpClosed.png";
+		String shootingFlowerRightUpOpenImagePath = prefix+imageDirectory+"/shootingFlowerRightUpOpen.png";
+
+		String downShootingFlowerLeftDownClosedImagePath = prefix+imageDirectory+"/DOWNshootingFlowerLeftDownClosed.png";
+		String downShootingFlowerLeftDownOpenImagePath = prefix+imageDirectory+"/DOWNshootingFlowerLeftDownOpen.png";
+		String downShootingFlowerLeftUpClosedImagePath = prefix+imageDirectory+"/DOWNshootingFlowerLeftUpClosed.png";
+		String downShootingFlowerLeftUpOpenImagePath = prefix+imageDirectory+"/DOWNshootingFlowerLeftUpOpen.png";
+		String downShootingFlowerRightDownClosedImagePath = prefix+imageDirectory+"/DOWNshootingFlowerRightDownClosed.png";
+		String downShootingFlowerRightDownOpenImagePath = prefix+imageDirectory+"/DOWNshootingFlowerRightDownOpen.png";
+		String downShootingFlowerRightUpClosedImagePath = prefix+imageDirectory+"/DOWNshootingFlowerRightUpClosed.png";
+		String downShootingFlowerRightUpOpenImagePath = prefix+imageDirectory+"/DOWNshootingFlowerRightUpOpen.png";
+
+		
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
 		BufferedImage smallMarioRightWalkingImage = null;
@@ -252,6 +271,23 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage bigMarioPipeImage = null;
 		BufferedImage fireMarioPipeImage = null;
 
+		BufferedImage shootingFlowerLeftDownClosedImage = null; 
+		BufferedImage shootingFlowerLeftDownOpenImage = null;
+		BufferedImage shootingFlowerLeftUpClosedImage = null;
+		BufferedImage shootingFlowerLeftUpOpenImage = null;
+		BufferedImage shootingFlowerRightDownClosedImage = null; 
+		BufferedImage shootingFlowerRightDownOpenImage = null;
+		BufferedImage shootingFlowerRightUpClosedImage = null;
+		BufferedImage shootingFlowerRightUpOpenImage = null;
+
+		BufferedImage downShootingFlowerLeftDownClosedImage = null; 
+		BufferedImage downShootingFlowerLeftDownOpenImage = null;
+		BufferedImage downShootingFlowerLeftUpClosedImage = null;
+		BufferedImage downShootingFlowerLeftUpOpenImage = null;
+		BufferedImage downShootingFlowerRightDownClosedImage = null; 
+		BufferedImage downShootingFlowerRightDownOpenImage = null;
+		BufferedImage downShootingFlowerRightUpClosedImage = null;
+		BufferedImage downShootingFlowerRightUpOpenImage = null;
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -354,6 +390,26 @@ public class MarioBrosGame extends GraphicsProgram {
 			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
 			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
 			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));
+
+			shootingFlowerLeftDownClosedImage = ImageIO.read(new File(shootingFlowerLeftDownClosedImagePath)); 
+			shootingFlowerLeftDownOpenImage = ImageIO.read(new File(shootingFlowerLeftDownOpenImagePath));
+			shootingFlowerLeftUpClosedImage = ImageIO.read(new File(shootingFlowerLeftUpClosedImagePath));
+			shootingFlowerLeftUpOpenImage = ImageIO.read(new File(shootingFlowerLeftUpOpenImagePath));
+			shootingFlowerRightDownClosedImage = ImageIO.read(new File(shootingFlowerRightDownClosedImagePath));
+			shootingFlowerRightDownOpenImage = ImageIO.read(new File(shootingFlowerRightDownOpenImagePath));
+			shootingFlowerRightUpClosedImage = ImageIO.read(new File(shootingFlowerRightUpClosedImagePath));
+			shootingFlowerRightUpOpenImage = ImageIO.read(new File(shootingFlowerRightUpOpenImagePath));
+
+			downShootingFlowerLeftDownClosedImage = ImageIO.read(new File(downShootingFlowerLeftDownClosedImagePath)); 
+			downShootingFlowerLeftDownOpenImage = ImageIO.read(new File(downShootingFlowerLeftDownOpenImagePath));
+			downShootingFlowerLeftUpClosedImage = ImageIO.read(new File(downShootingFlowerLeftUpClosedImagePath));
+			downShootingFlowerLeftUpOpenImage = ImageIO.read(new File(downShootingFlowerLeftUpOpenImagePath));
+			downShootingFlowerRightDownClosedImage = ImageIO.read(new File(downShootingFlowerRightDownClosedImagePath));
+			downShootingFlowerRightDownOpenImage = ImageIO.read(new File(downShootingFlowerRightDownOpenImagePath));
+			downShootingFlowerRightUpClosedImage = ImageIO.read(new File(downShootingFlowerRightUpClosedImagePath));
+			downShootingFlowerRightUpOpenImage = ImageIO.read(new File(downShootingFlowerRightUpOpenImagePath));
+
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -387,6 +443,14 @@ public class MarioBrosGame extends GraphicsProgram {
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
 		MovingObject.setCanvas(this.getGCanvas(), mario.moveDx);
+		UpShootingFlower.setObjects(shootingFlowerLeftDownClosedImage, shootingFlowerLeftDownOpenImage,
+				shootingFlowerLeftUpClosedImage, shootingFlowerLeftUpOpenImage,
+				shootingFlowerRightDownClosedImage, shootingFlowerRightDownOpenImage,
+				shootingFlowerRightUpClosedImage, shootingFlowerRightUpOpenImage);
+		DownShootingFlower.setObjects(downShootingFlowerLeftDownClosedImage, downShootingFlowerLeftDownOpenImage,
+				downShootingFlowerLeftUpClosedImage, downShootingFlowerLeftUpOpenImage,
+				downShootingFlowerRightDownClosedImage, downShootingFlowerRightDownOpenImage,
+				downShootingFlowerRightUpClosedImage, downShootingFlowerRightUpOpenImage);
 		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage);
 		Mushroom.setObjects(mushroomImage);
 		FireBall.setObjects(leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,

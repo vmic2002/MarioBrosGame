@@ -17,6 +17,8 @@ public class LevelController {
 	public static Mario mario;
 	public static double space;
 	public static double xCounter;//used for adding images to a level and keeping track of the level's width
+	public enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
+	//up/down pipe can have no flower coming out of it, a shooting flower, or a biting flower
 	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
 			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
 			Image pipeUpTopLeftImage1, Image pipeUpTopRightImage1, Image pipeDownMiddleLeftImage1, Image pipeDownMiddleRightImage1,
@@ -132,7 +134,7 @@ public class LevelController {
 	 * @param transportable true if pipe allows mario to go into it and transport him
 	 * 
 	 */
-	public static double spawnUpPipe(double h, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
+	public static double spawnUpPipe(double h, FLOWER_TYPE flowerType, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
 		//TODO FIX BUG WHERE UP PIPE DOESNT RETURN CORRECT WIDTH, XCOUNTER FOR LEVEL IS INCREMENTED PROPERLY
 		//SO MARIO CAN WALK PAST THE END OF THE LEVEL
 		//loophope around this problem: dont do xCounter += spawnUpPipe
@@ -147,6 +149,8 @@ public class LevelController {
 			canvas.add(middleRight, xCounter+middleLeft.getWidth(), canvas.getHeight()-middleRight.getHeight()*i);
 			images.add(middleRight);
 		}
+		
+		
 
 		Platform topLeft = transportable?new LeftPipePart(pipeUpTopLeftImage, subLevelID, true):new Platform(pipeUpTopLeftImage);
 		Platform topRight = transportable?new RightPipePart(pipeUpTopRightImage, subLevelID, true):new Platform(pipeUpTopRightImage);
@@ -158,7 +162,17 @@ public class LevelController {
 		images.add(topLeft);
 		canvas.add(topRight, xCounter-dx+topLeft.getWidth(), canvas.getHeight()-h*topRight.getHeight());
 		images.add(topRight);
-
+		
+		if (flowerType == FLOWER_TYPE.SHOOTING) {
+			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
+			ShootingFlower flower = new UpShootingFlower();
+			double width = flower.getWidth();
+			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY());
+			flower.sendToBack();
+			images.add(flower);
+			flower.move();
+		}
+		
 		levelParts.add(new LevelPart(images));
 		double width = 2.0*middleRight.getWidth(); 
 		xCounter += width;//width is always 2 images
@@ -174,7 +188,7 @@ public class LevelController {
 	 * @param h height in number of images from top to bottom (expected >=2)
 	 * @param transportable true if pipe allows mario to go into it and transport him
 	 */
-	public static double spawnDownPipe(double h, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
+	public static double spawnDownPipe(double h, FLOWER_TYPE flowerType, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
 		if (h<2) h=2;
 		ArrayList<GImage> images = new ArrayList<GImage>();	
 		for (int i=0; i<h-1; i++) {
@@ -196,6 +210,17 @@ public class LevelController {
 		images.add(topLeft);
 		canvas.add(topRight, xCounter-dx+topLeft.getWidth(), (h-1)*topRight.getHeight());
 		images.add(topRight);
+		
+		if (flowerType == FLOWER_TYPE.SHOOTING) {
+			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
+			ShootingFlower flower = new DownShootingFlower();
+			double width = flower.getWidth();
+			double height = flower.getHeight();
+			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY()+topLeft.getHeight()-height);
+			flower.sendToBack();
+			images.add(flower);
+			flower.move();
+		}
 
 		levelParts.add(new LevelPart(images));
 		double width = 2.0*topLeft.getWidth();
@@ -221,9 +246,9 @@ public class LevelController {
 	
 	//spawns a down pipe on top of an up pipe, xCounter is modified only once
 	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, double hDown, String subLevelIDDown, ArrayList<LevelPart> levelParts) {
-		double width = spawnUpPipe(hUp, subLevelIDUp.length()>0, subLevelIDUp, levelParts);
+		double width = spawnUpPipe(hUp, FLOWER_TYPE.NO_FLOWER, subLevelIDUp.length()>0, subLevelIDUp, levelParts);
 		xCounter -= width;//so that down pipe is on top of up pipe
-		spawnDownPipe(hDown, subLevelIDDown.length()>0, subLevelIDDown, levelParts);
+		spawnDownPipe(hDown, FLOWER_TYPE.NO_FLOWER, subLevelIDDown.length()>0, subLevelIDDown, levelParts);
 	}
 	
 	public static void playLevel1() {
@@ -241,8 +266,8 @@ public class LevelController {
 		spawnMysteryBox(xCounter+2.0*space, 6, levelParts);
 		spawnGrassMountain(4, 3, levelParts);
 		spawnWhiteSpace(2);
-		spawnUpPipe(4, true, "1a", levelParts);
-		spawnDownPipe(3, true, "2", levelParts);
+		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, true, "1a", levelParts);
+		spawnDownPipe(3, FLOWER_TYPE.SHOOTING, true, "2", levelParts);
 		spawnWhiteSpace(2);
 		spawnGrassMountain(8, 2, levelParts);
 		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
@@ -273,7 +298,7 @@ public class LevelController {
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(20, 3, levelParts);
-		spawnUpPipe(2, true, "1a", levelParts);
+		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, true, "1a", levelParts);
 		spawnWhiteSpace(3);
 		spawnUpAndDownPipes(4, "1", 3, "2", levelParts);
 		Level level1a = new Level("1a", levelParts, xCounter);

@@ -32,7 +32,7 @@ public class MysteryBox extends Platform {
 		} else if (mysteryBoxState == MYSTERYBOX_STATE.STATE_3) {
 			newImage = mysteryBox4Image;
 			mysteryBoxState = MYSTERYBOX_STATE.STATE_4;
-		}else {//if (mysteryBoxState == MYSTERYBOX_STATE.STATE_4) {
+		} else {//if (mysteryBoxState == MYSTERYBOX_STATE.STATE_4) {
 			newImage = mysteryBox1Image;
 			mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
 		}

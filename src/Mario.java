@@ -72,6 +72,13 @@ public class Mario extends MovingObject {
 	public boolean goingIntoPipe = false;
 	public double fallDy;
 	public double moveDx;
+	public boolean flashing = false;//true when mario is hit by BadGuy and becomes false after mario stops flashing
+	//while mario is flashing he cannot die from a bad guy, but he can still die by falling to bottom of screen
+	public static int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
+	public static int numTimesToggleVisibility = 12;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
+	public static int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
+	
+
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image marioDeadImage,
@@ -231,7 +238,7 @@ public class Mario extends MovingObject {
 				super.move(0,fallDy);
 				Thread.sleep(15);
 			}
-			Thread.sleep(800);
+			Thread.sleep(600);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -263,6 +270,8 @@ public class Mario extends MovingObject {
 		bigOrSmall = true;
 		isFire = false;
 		isCat = true;
+		swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
+		swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
 	}
 
@@ -270,7 +279,7 @@ public class Mario extends MovingObject {
 		//can be called if mario eats mushroom to grow
 		//or if fire mario or cat mario gets hit by something and goes back 
 		//to big mario
-		if (bigOrSmall && !isFire) return;
+		if (bigOrSmall && !isFire && !isCat) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
 				//need to check if jumping because mario can jump in the air to 
@@ -335,6 +344,8 @@ public class Mario extends MovingObject {
 		bigOrSmall = true;//if small mario takes flower he becomes flower mario (flower mario is also big, cat as well)
 		isFire = true;
 		isCat = false;
+		shootFireJumping = SHOOT_FIRE_JUMPING .NOT_SHOOTING;
+		shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
 	}
 
@@ -448,7 +459,7 @@ public class Mario extends MovingObject {
 				//has to be done concurrently
 
 				//int dy = 10;
-				
+
 				if (isJumping) {
 
 					return;
@@ -945,7 +956,7 @@ public class Mario extends MovingObject {
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe
 					//TODO fix bug where mario jumps into pipe while swinging tail/shooting fireball easy to fix 
-					
+
 					if (isCrouching) {
 						System.out.println("MARIO CANT JUMP INTO PIPE IF HE IS CROUCHING");
 						return;
@@ -976,14 +987,61 @@ public class Mario extends MovingObject {
 			canvas.remove(o);
 			((FireBall) o).alive = false;
 			LevelController.currLevel.removeFireBall((FireBall) o);
+		} else if (o instanceof BadGuy) {
+			//make mario smaller when he hits a BadGuy (turtle, flower etc)
+			//also play sound
+			//TODO fix bug when mario falls or jumps (vertically) on a badguy he doesnt change to dead mario sprite
+			marioHit();
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
 		}
 
 	}
+	
+	public void marioHit() {
+		if (flashing) {
+			return;
+		}
+		flashing = true;
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Mario hit by a BadGuy");
+				if (!bigOrSmall) {
+					marioDied();
+					flashing = false;
+					return;
+				}
+				SoundController.playMarioHitSound();
+				if (isFire || isCat) setToBig();
+				else if (bigOrSmall) setToSmall();
+				flash();
+			}
+		});  
+		t1.start();
+	}
+
+	public void flash() {
+		//flashingInterval
+		//flashingTime
+		try {
+			for (int i=0; i<numTimesToggleVisibility; i++) {
+				if (!alive) {
+					setVisible(true);
+					return;//if mario gets hit (is flashing) and then falls to bottom of screen he shouldnt flash anymore
+				}
+				setVisible(!isVisible());
+				Thread.sleep(flashingInterval);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		flashing = false;
+	}
 
 	public void goIntoPipe(boolean upOrDown, PipePart o) {
+		if (!alive) return;
 		goingIntoPipe=true;//to disable user from moving mario as he is going into pipe
 		//setting movingRight/Left to false in case mario
 		//is moving while going into a pipe

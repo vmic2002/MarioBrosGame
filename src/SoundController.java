@@ -59,8 +59,7 @@ public abstract class SoundController {
 		playSound(powerUpSoundFile);
 	}
 	public static void playMarioHitSound(){
-		//plays when mario gets hit by something and becomes smaller or loses flower or cat etc
-		//TODO need to call this function
+		//plays when mario gets hit by BadGuy and becomes smaller or loses flower or cat etc
 		playSound(marioGetsHitSoundFile);
 	}
 	public static void playItemOutOfBoxSound() {
