@@ -49,7 +49,9 @@ public class LevelController {
 		//sets all mysteryboxs to final state (so the thread that changes
 		//its state doesnt change picture of mysterybox from previous level)
 		System.out.println("ENDING CURR LEVEL");
-		for (LevelPart l : currLevel.levelParts) {
+		//for (LevelPart l : currLevel.levelParts) {
+		for (int i=0; i<currLevel.levelParts.size(); i++) {
+			LevelPart l = currLevel.levelParts.get(i);
 			for (GImage image : l.part) {
 				if (image instanceof MovingObject) {
 					((MovingObject) image).alive = false;
@@ -149,8 +151,8 @@ public class LevelController {
 			canvas.add(middleRight, xCounter+middleLeft.getWidth(), canvas.getHeight()-middleRight.getHeight()*i);
 			images.add(middleRight);
 		}
-		
-		
+
+
 
 		Platform topLeft = transportable?new LeftPipePart(pipeUpTopLeftImage, subLevelID, true):new Platform(pipeUpTopLeftImage);
 		Platform topRight = transportable?new RightPipePart(pipeUpTopRightImage, subLevelID, true):new Platform(pipeUpTopRightImage);
@@ -162,7 +164,7 @@ public class LevelController {
 		images.add(topLeft);
 		canvas.add(topRight, xCounter-dx+topLeft.getWidth(), canvas.getHeight()-h*topRight.getHeight());
 		images.add(topRight);
-		
+
 		if (flowerType == FLOWER_TYPE.SHOOTING) {
 			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
 			ShootingFlower flower = new UpShootingFlower();
@@ -172,7 +174,7 @@ public class LevelController {
 			images.add(flower);
 			flower.move();
 		}
-		
+
 		levelParts.add(new LevelPart(images));
 		double width = 2.0*middleRight.getWidth(); 
 		xCounter += width;//width is always 2 images
@@ -210,7 +212,7 @@ public class LevelController {
 		images.add(topLeft);
 		canvas.add(topRight, xCounter-dx+topLeft.getWidth(), (h-1)*topRight.getHeight());
 		images.add(topRight);
-		
+
 		if (flowerType == FLOWER_TYPE.SHOOTING) {
 			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
 			ShootingFlower flower = new DownShootingFlower();
@@ -243,14 +245,14 @@ public class LevelController {
 	public static void spawnWhiteSpace(double numSpaces) {
 		xCounter += numSpaces*space;
 	}
-	
+
 	//spawns a down pipe on top of an up pipe, xCounter is modified only once
 	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, double hDown, String subLevelIDDown, ArrayList<LevelPart> levelParts) {
 		double width = spawnUpPipe(hUp, FLOWER_TYPE.NO_FLOWER, subLevelIDUp.length()>0, subLevelIDUp, levelParts);
 		xCounter -= width;//so that down pipe is on top of up pipe
 		spawnDownPipe(hDown, FLOWER_TYPE.NO_FLOWER, subLevelIDDown.length()>0, subLevelIDDown, levelParts);
 	}
-	
+
 	public static void playLevel1() {
 		//adds each GImage for each LevelPart to the canvas at their starting positions
 		//adds LevelParts from left to right so helpful to have xCounter to keep track of

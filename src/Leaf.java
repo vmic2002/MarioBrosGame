@@ -6,8 +6,8 @@ import java.awt.Image;
 import java.util.ArrayList;
 public class Leaf extends PowerUp {
 	private static Image leftLeafImage, rightLeafImage;
-	private static double DX = MovingObject.moveDx*0.8;
-	private static double DY = MovingObject.moveDx*0.6;
+	private static double DX = mario.moveDx*0.8;
+	private static double DY = mario.moveDx*0.6;
 	private static int pauseTime = 35;
 	private static int toggleCounter = 14;//every <toggleCounter> times leaf moves it toggles direction
 	private boolean rightOrLeft;
@@ -39,7 +39,7 @@ public class Leaf extends PowerUp {
 	public void move() {
 		this.sendToFront();
 		for (int i=0; i<15 && alive; i++) {
-			move(0, -MovingObject.moveDx);
+			move(0, -mario.moveDx);
 			try {
 				Thread.sleep(15);
 			} catch (Exception e) {

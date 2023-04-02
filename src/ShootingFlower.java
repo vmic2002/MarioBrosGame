@@ -17,14 +17,53 @@ public abstract class ShootingFlower extends BadGuy {
 		else dy = DY;//(this instanceof DownShootingFlower)
 		numMoves = (int) (getHeight()/DY);
 	}
+	
+	public abstract void lookDownClosedMouth(boolean rightOrLeft);
+	public abstract void lookDownOpenMouth(boolean rightOrLeft);
+	public abstract void lookUpClosedMouth(boolean rightOrLeft);
+	public abstract void lookUpOpenMouth(boolean rightOrLeft);
 
+	public void openMouth(boolean upOrDown, boolean rightOrLeft) {
+		if (upOrDown) lookUpOpenMouth(rightOrLeft);
+		else lookDownOpenMouth(rightOrLeft);
+	}
+	public void closeMouth(boolean upOrDown, boolean rightOrLeft) {
+		if (upOrDown) lookUpClosedMouth(rightOrLeft);
+		else lookDownClosedMouth(rightOrLeft);
+	}
 	public abstract Point[] getPoints();
+
+	public void shootMario() {
+		//flower needs to locate mario and shoot fireball at him (in a straight line)
+		boolean rightOrLeft;
+		boolean upOrDown = mario.getY()<getY()+MovingObject.moveDx;
+		if (mario.getX()<getX()) {
+			rightOrLeft = false;
+		} else {
+			rightOrLeft = true;
+		}
+		//need to make shooting flower look towards mario with a closed mouth
+		closeMouth(upOrDown, rightOrLeft);
+		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
+		//need to open the mouth of the shooting flower
+		openMouth(upOrDown, rightOrLeft);
+		double fireBallX = rightOrLeft?getX()+getWidth()+MovingObject.moveDx*1.0:getX()-MovingObject.moveDx*5.0;
+		double fireBallY = (this instanceof DownShootingFlower)?getY()+getHeight()-(upOrDown?9.0:1.0)*MovingObject.moveDx:
+			getY()+(upOrDown?0.0:5.0)*MovingObject.moveDx;
+		if (!alive) {
+			closeMouth(upOrDown, rightOrLeft);
+			return;
+		};
+		Factory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft);
+		//factory calls the fireball function to move the fireball towards mario (in a straight line)
+		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
+		closeMouth(upOrDown, rightOrLeft);		
+	}
 
 	public void move() {
 		//shootingflower.move() is called when shootingflower is added to levelParts
 		//this func makes the flower move out of the pipe, shoot a fireball at mario,
 		//and come back into the pipe depending on if is a up/down shootingflower
-		//TODO make shooting flower shoot at mario
 		System.out.println("In move function for shooting flower");
 		Thread t1 = new Thread(new Runnable() {
 			@Override
@@ -41,7 +80,9 @@ public abstract class ShootingFlower extends BadGuy {
 							Thread.sleep(40);
 						}
 						Thread.sleep(500);
-						//this is where flower needs to locate mario and shoot fireball at him
+						if (!alive) break;
+						shootMario();
+						if (!alive) break;
 						for (int i=0; i<numMoves; i++) {
 							ArrayList<GObject> o1 = checkAtPositions(getPoints(), canvas);
 							for (GObject x : o1) {
@@ -59,6 +100,6 @@ public abstract class ShootingFlower extends BadGuy {
 			}
 		});  
 		t1.start();
-
+		System.out.println("SHOOTING FLOWER DEAD");
 	}
 }

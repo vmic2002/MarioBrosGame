@@ -442,7 +442,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
-		MovingObject.setCanvas(this.getGCanvas(), mario.moveDx);
+		MovingObject.setCanvas(this.getGCanvas(), mario);
 		UpShootingFlower.setObjects(shootingFlowerLeftDownClosedImage, shootingFlowerLeftDownOpenImage,
 				shootingFlowerLeftUpClosedImage, shootingFlowerLeftUpOpenImage,
 				shootingFlowerRightDownClosedImage, shootingFlowerRightDownOpenImage,

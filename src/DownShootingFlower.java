@@ -18,6 +18,26 @@ public class DownShootingFlower extends ShootingFlower{
 				new Point(getX()+getWidth(), getY()+getHeight()+dy)};
 	}
 
+	@Override
+	public void lookDownClosedMouth(boolean rightOrLeft) {
+		setImageAndRelocate(rightOrLeft?downShootingFlowerRightUpClosedImage:downShootingFlowerLeftUpClosedImage);
+	}
+
+	@Override
+	public void lookDownOpenMouth(boolean rightOrLeft) {
+		setImageAndRelocate(rightOrLeft?downShootingFlowerRightUpOpenImage:downShootingFlowerLeftUpOpenImage);
+	}
+
+	@Override
+	public void lookUpClosedMouth(boolean rightOrLeft) {
+		setImageAndRelocate(rightOrLeft?downShootingFlowerRightDownClosedImage:downShootingFlowerLeftDownClosedImage);
+	}
+
+	@Override
+	public void lookUpOpenMouth(boolean rightOrLeft) {
+		setImageAndRelocate(rightOrLeft?downShootingFlowerRightDownOpenImage:downShootingFlowerLeftDownOpenImage);
+	}
+
 	public static void setObjects(Image downShootingFlowerLeftDownClosedImage1, Image downShootingFlowerLeftDownOpenImage1,
 			Image downShootingFlowerLeftUpClosedImage1, Image downShootingFlowerLeftUpOpenImage1,
 			Image downShootingFlowerRightDownClosedImage1, Image downShootingFlowerRightDownOpenImage1,

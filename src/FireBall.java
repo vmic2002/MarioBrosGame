@@ -8,18 +8,11 @@ import acm.graphics.GObject;
 class FireBall extends MovingObject {
 	//TODO fix bug where fireball moves weirdly when the level is moving (sometimes it moves too much when mario jumps/walks close to edges)
 	//TODO bug could be due to fireball being added/removed from levelParts while level is being moved (levelParts being looped through)
-	private static Image leftFireBall1;
-	private static Image rightFireBall1;
-	private static Image leftFireBall2;
-	private static Image rightFireBall2;
-	private static Image leftFireBall3;
-	private static Image rightFireBall3;
-	private static Image leftFireBall4;
-	private static Image rightFireBall4;
-	private static final int maxDistance = 5000;//max distance until it disappears
+	private static Image leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
+	private static final int maxDistance = canvas.getWidth()*2;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
-	private static final double sizeOfHops = MovingObject.moveDx*20;//fireball hops once it moves on the ground
+	private static final double sizeOfHops = mario.moveDx*20;//fireball hops once it moves on the ground
 	private static final double hopRadius = sizeOfHops/2;//width of semi circle (hop) is 2*R
 	private static int pauseTime = 10;//milliseconds pause in between each move function call
 	private enum FIREBALL_STAGE {STAGE_1, STAGE_2, STAGE_3, STAGE_4};
@@ -34,14 +27,73 @@ class FireBall extends MovingObject {
 	//hoppingY needs to be moved up/down when the level moves. this is done in LevelPart.java
 	public double hoppingX;//x coordinate to keep track of where fireball started bouncing
 	//helpful for using  Math.abs(getX()-hoppingX)%sizeOfHops; for hopping
+
+	public double speedFactor = 2.0;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
-		dx = rightOrLeft?MovingObject.moveDx*0.8:-MovingObject.moveDx*0.8;
+		dx = rightOrLeft?MovingObject.moveDx*1.1:-MovingObject.moveDx*1.1;
 		dy = Math.abs(dx);
 		fireBallStage = FIREBALL_STAGE.STAGE_1;
 		fallingOrHopping = true;
 		//rightOrLeft parameter determines if fireball is moving right or left
+	}
+
+	public void shootAtMario() {
+		//called when a ShootingFlower shoot a fireball at mario
+		//fireball needs to go to in a straight path to mario or until it hits a platform and dies
+		double finalX = mario.getX()+mario.getWidth()/2;
+		double finalY = mario.getY()+mario.getHeight()/2;
+		//divde dx and dy by lenght of (dx,dy) vector to obtain the unit vector
+		double dx = finalX-getX();
+		double dy = finalY-getY();
+		double vectorLength = Math.sqrt(dx*dx+dy*dy);
+		dx /= vectorLength;
+		dy /= vectorLength;
+		//now (dx, dy) is unit vector. multiply by speedFactor to change the speed
+		dx *= speedFactor;
+		dy *= speedFactor;
+		double gasUsagePerMove = Math.sqrt(dx*dx+dy*dy);
+		while (gasLeft >0 && alive) {
+			try {Thread.sleep(pauseTime);} catch (Exception e) {e.printStackTrace();}
+			Point p1  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()):new Point(getX()+dx,getY()+getHeight());
+			Point p2  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()/2):new Point(getX()+dx,getY()+getHeight()/2);
+			Point p3  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()):new Point(getX()+dx,getY());
+			Point[] arr = new Point[]{p1, p2};
+			ArrayList<GObject> o = checkAtPositions(arr, canvas);
+			
+			for (GObject x : o) {
+				if (x instanceof Mario) {
+					if (!alive) break;
+					System.out.println("Shooting Flower hit mario with fireball!");
+					((Mario) x).marioHit();
+					alive = false;
+					break;
+				} else if (x instanceof FireBall) {
+					if (((FireBall) x).alive) {
+						((FireBall) x).alive = false;
+						alive = false;
+						break;
+					}
+				} else if (x instanceof Platform) {
+					alive = false;
+					break;
+				}
+			}
+			if (!alive) break;
+			move(dx, dy);
+
+			gasLeft -= gasUsagePerMove;
+			if (frequencyChangeStage==0) {
+				changeToNextStage();
+				frequencyChangeStage = frequencyChangeToNextStage;
+			}
+			frequencyChangeStage--;
+		}
+		canvas.remove(this);
+		alive = false;
+		LevelController.currLevel.removeFireBall(this);
+		System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
 	}
 
 	public void changeToNextStage() {
@@ -83,9 +135,8 @@ class FireBall extends MovingObject {
 		//this function moves a fireball its maximum distance or until
 		//it hits a flower, platform, turtle while changing its images
 		while (gasLeft >0 && alive) {
-			//if in this while loop then fireball is in the air,
-			//need to bring it down
-			
+			//if in this while loop then fireball is falling or hopping
+
 			Point p1  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()):new Point(getX()+dx,getY()+getHeight());
 			//Point p3 = rightOrLeft?new Point(getX()+getWidth()+dx, getY()+getHeight()+dy):new Point(getX()-dx, getY()+getHeight()+dy);
 
@@ -95,21 +146,21 @@ class FireBall extends MovingObject {
 				inContactWith(x, true);
 			}
 			if (!alive) break;
-	
+
 			if (!fallingOrHopping)
 				checkIfShouldFall();//to check if hopping fireball should start falling
-			
+
 			Point below1 = new Point(getX()+getWidth()/2, getY()+getHeight()+dy);
 			Point below2 = new Point(getX()+getWidth(), getY()+getHeight()+dy);
 			Point below3 = new Point(getX(), getY()+getHeight()+dy);
-			
+
 			Point[] arr1 = new Point[]{below1, below2, below3};
 			ArrayList<GObject> o1 = checkAtPositions(arr1, canvas);
 			for (GObject x : o1) {
 				inContactWith(x, false);
 			}
 			if (!alive) break;
-			
+
 			if (frequencyChangeStage==0) {
 				changeToNextStage();
 				frequencyChangeStage = frequencyChangeToNextStage;
@@ -131,7 +182,6 @@ class FireBall extends MovingObject {
 		canvas.remove(this);
 		alive = false;
 		LevelController.currLevel.removeFireBall(this);
-
 	}
 
 	private void hop() {
@@ -150,8 +200,6 @@ class FireBall extends MovingObject {
 
 	@Override
 	public void inContactWith(GObject x, boolean horizontalOrVertical) {
-		//TODO fireball needs to check if it runs into a flower, turtle, MARIO etc and kills it
-
 		//if (x instanceof Turtle)
 		//if (x!=null) System.out.println("FIREBALL RAN INTO SOMETHING");
 		//will need to set alive = false when fire ball runs into flower, turtle, side of platform
@@ -163,7 +211,7 @@ class FireBall extends MovingObject {
 			//Luigi should extend Mario
 			return;
 		}
-		
+
 		if (horizontalOrVertical && x instanceof Platform) {
 			//fireball dies if it runs into a platform from the side
 			alive = false;
@@ -183,6 +231,11 @@ class FireBall extends MovingObject {
 			//TODO could add sound of bad guy dying
 			((BadGuy) x).alive = false;
 			x.setVisible(false);
+			alive = false;
+		} else if (x instanceof FireBall) {
+			//if fireball shot from mario runs into another fireball then they both die
+			if (!((FireBall) x).alive) return;
+			((FireBall) x).alive = false;
 			alive = false;
 		}
 	}

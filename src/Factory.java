@@ -39,6 +39,19 @@ public abstract class Factory {
 		t1.start();
 	}
 
+	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft) {
+		//called when flower in pipe shoots a fireball at mario
+		FireBall fireBall = new FireBall(rightOrLeft);
+		canvas.add(fireBall, x, y);
+		LevelController.currLevel.addNewLevelPart(fireBall);
+		Thread t1 = new Thread(new Runnable() {
+			public void run() {
+				fireBall.shootAtMario();
+			}
+		});
+		t1.start();
+	}
+	
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);

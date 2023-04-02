@@ -7,8 +7,10 @@ import java.util.ArrayList;
 public abstract class MovingObject extends GImage {
 	//fireball, mushroom, fire flower, leaf, mario (turtle) extend MovingObject
 	public static GCanvas canvas;
-	public boolean alive;
 	public static double moveDx;
+	public static Mario mario;
+	public boolean alive;
+	
 	//moveDx is to ensure that the movement of images is scaled proportionally
 	//depending on their size
 	public MovingObject(Image arg0) {
@@ -48,8 +50,9 @@ public abstract class MovingObject extends GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());
 	}
 	
-	public static void setCanvas(GCanvas canvas1, double moveDx1) {
+	public static void setCanvas(GCanvas canvas1, Mario mario1) {
 		canvas = canvas1;
-		moveDx = moveDx1;
+		moveDx = mario1.moveDx;
+		mario = mario1;
 	}
 }
