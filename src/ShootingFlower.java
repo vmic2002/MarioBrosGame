@@ -11,13 +11,16 @@ public abstract class ShootingFlower extends BadGuy {
 	private static final double DY = 10.0;
 	private int numMoves;
 	public double dy;
-	public ShootingFlower(Image arg0) {
+	public int timeOffset;
+	//timeOffset is so that not all flowers in a level come in/out of pipe at the same time
+	public ShootingFlower(Image arg0, int timeOffset) {
 		super(arg0);
 		if (this instanceof UpShootingFlower) dy = -DY;
 		else dy = DY;//(this instanceof DownShootingFlower)
 		numMoves = (int) (getHeight()/DY);
+		this.timeOffset = timeOffset;
 	}
-	
+
 	public abstract void lookDownClosedMouth(boolean rightOrLeft);
 	public abstract void lookDownOpenMouth(boolean rightOrLeft);
 	public abstract void lookUpClosedMouth(boolean rightOrLeft);
@@ -63,11 +66,12 @@ public abstract class ShootingFlower extends BadGuy {
 	public void move() {
 		//shootingflower.move() is called when shootingflower is added to levelParts
 		//this func makes the flower move out of the pipe, shoot a fireball at mario,
-		//and come back into the pipe depending on if is a up/down shootingflower
+		//and come back into the pipe depending on if is a up/down shootingflower		
 		System.out.println("In move function for shooting flower");
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
+				try {Thread.sleep(timeOffset);}catch (Exception e) {e.printStackTrace();}
 				while (alive) {
 					try {
 						for (int i=0; i<numMoves; i++) {
@@ -97,9 +101,9 @@ public abstract class ShootingFlower extends BadGuy {
 						e.printStackTrace();
 					}
 				}
+				System.out.println("SHOOTING FLOWER DEAD");
 			}
 		});  
-		t1.start();
-		System.out.println("SHOOTING FLOWER DEAD");
+		t1.start();		
 	}
 }

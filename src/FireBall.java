@@ -9,7 +9,7 @@ class FireBall extends MovingObject {
 	//TODO fix bug where fireball moves weirdly when the level is moving (sometimes it moves too much when mario jumps/walks close to edges)
 	//TODO bug could be due to fireball being added/removed from levelParts while level is being moved (levelParts being looped through)
 	private static Image leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
-	private static final int maxDistance = canvas.getWidth()*2;//max distance until it disappears
+	private static final int maxDistance = canvas.getWidth()*3;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
 	private static final double sizeOfHops = mario.moveDx*20;//fireball hops once it moves on the ground
@@ -43,7 +43,7 @@ class FireBall extends MovingObject {
 		//called when a ShootingFlower shoot a fireball at mario
 		//fireball needs to go to in a straight path to mario or until it hits a platform and dies
 		double finalX = mario.getX()+mario.getWidth()/2;
-		double finalY = mario.getY()+mario.getHeight()/2;
+		double finalY = mario.getY()+mario.getHeight()/4;//aim for the head so that ducking will save mario
 		//divde dx and dy by lenght of (dx,dy) vector to obtain the unit vector
 		double dx = finalX-getX();
 		double dy = finalY-getY();

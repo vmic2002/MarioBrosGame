@@ -129,14 +129,25 @@ public class LevelController {
 	}
 
 	/***
+	 *
+	 * @param h height in number of images from top to bottom (expected >=2)
+	 * @param subLevelID is non empty if pipe allows mario to go into it and transport him
+	 * 
+	 */
+
+
+	/***
 	 * This function spawns a pipe facing up (mario can go down into) from the bottom of the screen
 	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
 	 * xCounter is x coordinate of top left Image
 	 * @param h height in number of images from top to bottom (expected >=2)
-	 * @param transportable true if pipe allows mario to go into it and transport him
-	 * 
+	 * @param flowerType type of flower coming in/out of pipe (could be NO_FLOWER)
+	 * @param timeOffset to coordinate some flowers to come in/out at the same time (if they have the same timeOffset)
+	 * @param subLevelID is non empty if pipe allows mario to go into it and transport him
+	 * @param levelParts to add every image to the currLevel
+	 * @return width of pipe
 	 */
-	public static double spawnUpPipe(double h, FLOWER_TYPE flowerType, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
+	public static double spawnUpPipe(double h, FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
 		//TODO FIX BUG WHERE UP PIPE DOESNT RETURN CORRECT WIDTH, XCOUNTER FOR LEVEL IS INCREMENTED PROPERLY
 		//SO MARIO CAN WALK PAST THE END OF THE LEVEL
 		//loophope around this problem: dont do xCounter += spawnUpPipe
@@ -154,8 +165,8 @@ public class LevelController {
 
 
 
-		Platform topLeft = transportable?new LeftPipePart(pipeUpTopLeftImage, subLevelID, true):new Platform(pipeUpTopLeftImage);
-		Platform topRight = transportable?new RightPipePart(pipeUpTopRightImage, subLevelID, true):new Platform(pipeUpTopRightImage);
+		Platform topLeft = subLevelID.length()>0?new LeftPipePart(pipeUpTopLeftImage, subLevelID, true):new Platform(pipeUpTopLeftImage);
+		Platform topRight = subLevelID.length()>0?new RightPipePart(pipeUpTopRightImage, subLevelID, true):new Platform(pipeUpTopRightImage);
 
 		Platform middleRight = new Platform(pipeUpMiddleRightImage);
 		double dx = topLeft.getWidth()-middleRight.getWidth();
@@ -167,7 +178,7 @@ public class LevelController {
 
 		if (flowerType == FLOWER_TYPE.SHOOTING) {
 			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			ShootingFlower flower = new UpShootingFlower();
+			ShootingFlower flower = new UpShootingFlower(timeOffset);
 			double width = flower.getWidth();
 			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY());
 			flower.sendToBack();
@@ -186,11 +197,14 @@ public class LevelController {
 	 * This function spawns a pipe facing down (mario can jump into) from the top of the screen
 	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
 	 * xCounter is x coordinate of top left Image
-	 *
 	 * @param h height in number of images from top to bottom (expected >=2)
-	 * @param transportable true if pipe allows mario to go into it and transport him
+	 * @param flowerType type of flower coming in/out of pipe (could be NO_FLOWER)
+	 * @param timeOffset to coordinate some flowers to come in/out at the same time (if they have the same timeOffset)
+	 * @param subLevelID is non empty if pipe allows mario to go into it and transport him
+	 * @param levelParts to add every image to the currLevel
+	 * @return width of pipe
 	 */
-	public static double spawnDownPipe(double h, FLOWER_TYPE flowerType, boolean transportable, String subLevelID, ArrayList<LevelPart> levelParts) {
+	public static double spawnDownPipe(double h, FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
 		if (h<2) h=2;
 		ArrayList<GImage> images = new ArrayList<GImage>();	
 		for (int i=0; i<h-1; i++) {
@@ -202,8 +216,8 @@ public class LevelController {
 			images.add(middleRight);
 		}
 
-		Platform topLeft = transportable?new LeftPipePart(pipeDownTopLeftImage, subLevelID, false):new Platform(pipeDownTopLeftImage);
-		Platform topRight = transportable?new RightPipePart(pipeDownTopRightImage, subLevelID, false):new Platform(pipeDownTopRightImage);
+		Platform topLeft = subLevelID.length()>0?new LeftPipePart(pipeDownTopLeftImage, subLevelID, false):new Platform(pipeDownTopLeftImage);
+		Platform topRight = subLevelID.length()>0?new RightPipePart(pipeDownTopRightImage, subLevelID, false):new Platform(pipeDownTopRightImage);
 
 		Platform middleRight = new Platform(pipeDownMiddleRightImage);
 		double dx = topLeft.getWidth()-middleRight.getWidth();
@@ -215,7 +229,7 @@ public class LevelController {
 
 		if (flowerType == FLOWER_TYPE.SHOOTING) {
 			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			ShootingFlower flower = new DownShootingFlower();
+			ShootingFlower flower = new DownShootingFlower(timeOffset);
 			double width = flower.getWidth();
 			double height = flower.getHeight();
 			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY()+topLeft.getHeight()-height);
@@ -247,10 +261,11 @@ public class LevelController {
 	}
 
 	//spawns a down pipe on top of an up pipe, xCounter is modified only once
+	//both pipes dont have flowers that come out of them
 	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, double hDown, String subLevelIDDown, ArrayList<LevelPart> levelParts) {
-		double width = spawnUpPipe(hUp, FLOWER_TYPE.NO_FLOWER, subLevelIDUp.length()>0, subLevelIDUp, levelParts);
+		double width = spawnDownPipe(hDown, FLOWER_TYPE.NO_FLOWER, 0, subLevelIDDown, levelParts);
 		xCounter -= width;//so that down pipe is on top of up pipe
-		spawnDownPipe(hDown, FLOWER_TYPE.NO_FLOWER, subLevelIDDown.length()>0, subLevelIDDown, levelParts);
+		spawnUpPipe(hUp, FLOWER_TYPE.NO_FLOWER, 0, subLevelIDUp, levelParts);
 	}
 
 	public static void playLevel1() {
@@ -268,8 +283,9 @@ public class LevelController {
 		spawnMysteryBox(xCounter+2.0*space, 6, levelParts);
 		spawnGrassMountain(4, 3, levelParts);
 		spawnWhiteSpace(2);
-		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, true, "1a", levelParts);
-		spawnDownPipe(3, FLOWER_TYPE.SHOOTING, true, "2", levelParts);
+		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "1a", levelParts);
+		spawnDownPipe(3, FLOWER_TYPE.SHOOTING, 50, "", levelParts);
+		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "2", levelParts);
 		spawnWhiteSpace(2);
 		spawnGrassMountain(8, 2, levelParts);
 		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
@@ -284,12 +300,31 @@ public class LevelController {
 		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(20, 2, levelParts);
+		spawnGrassMountain(4, 2, levelParts);
 		spawnMysteryBox(2.0*space, 5, levelParts);
-		spawnMysteryBox(4.0*space, 5, levelParts);
-		spawnMysteryBox(6.0*space, 5, levelParts);
-		spawnMysteryBox(8.0*space, 5, levelParts);
-		spawnUpAndDownPipes(5, "1", 3, "2", levelParts);
+		spawnWhiteSpace(2);
+		double xCounterTemp = xCounter;
+		for (int i=0; i<3; i++) {
+			spawnUpPipe(2, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
+			spawnWhiteSpace(2);
+			spawnGrassMountain(3, 2, levelParts);
+			spawnWhiteSpace(2);
+		}
+		xCounter -= xCounter-xCounterTemp;
+		for (int i=0; i<5; i++) {
+			spawnWhiteSpace(3);
+			spawnDownPipe(3, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
+		}
+		spawnWhiteSpace(2);
+		xCounterTemp = xCounter;
+		for (int i=0; i<4; i++) {
+			spawnWhiteSpace(2);
+			spawnDownPipe(2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", levelParts);
+		}
+		xCounter -= xCounter-xCounterTemp;
+		spawnGrassMountain(17, 2, levelParts);
+		spawnUpAndDownPipes(4, "1", 4, "2", levelParts);
+		spawnWhiteSpace(1);
 		Level level2 = new Level("2", levelParts, xCounter);
 		currLevel = level2;//set currLevel
 		mario.fall(5);
@@ -300,7 +335,7 @@ public class LevelController {
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(20, 3, levelParts);
-		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, true, "1a", levelParts);
+		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		spawnWhiteSpace(3);
 		spawnUpAndDownPipes(4, "1", 3, "2", levelParts);
 		Level level1a = new Level("1a", levelParts, xCounter);

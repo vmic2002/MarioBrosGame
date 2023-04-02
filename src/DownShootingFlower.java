@@ -8,8 +8,8 @@ public class DownShootingFlower extends ShootingFlower{
 	downShootingFlowerLeftUpClosedImage, downShootingFlowerLeftUpOpenImage,
 	downShootingFlowerRightDownClosedImage, downShootingFlowerRightDownOpenImage,
 	downShootingFlowerRightUpClosedImage, downShootingFlowerRightUpOpenImage;
-	public DownShootingFlower() {
-		super(downShootingFlowerLeftDownClosedImage);
+	public DownShootingFlower(int timeOffset) {
+		super(downShootingFlowerLeftDownClosedImage, timeOffset);
 	}
 	public Point[] getPoints() {
 		return new Point[] {
