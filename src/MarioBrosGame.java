@@ -469,7 +469,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				this.getGCanvas());
 		setSize(WIDTH,HEIGHT);
 		addKeyListeners(new MyKeyListener(mario));
-		//LevelController.playLevel1();
+		//LevelController.playLevel1a();
 		LevelController.playLevel2();
 	}
 

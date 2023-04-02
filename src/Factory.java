@@ -22,6 +22,7 @@ public abstract class Factory {
 		//so it looks like power up is coming out of mysteryBox
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
+				LevelController.currLevel.addLevelPartDynamically(powerUp);
 				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
@@ -43,7 +44,7 @@ public abstract class Factory {
 		//called when flower in pipe shoots a fireball at mario
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		LevelController.currLevel.addNewLevelPart(fireBall);
+		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
 				fireBall.shootAtMario();
@@ -56,29 +57,29 @@ public abstract class Factory {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		LevelController.currLevel.addNewLevelPart(fireBall);
+		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		addMovingObject(fireBall);
 	}
 
-	public static Mushroom addMushroom(double x, double y, double mysteryBoxWidth) {
+	public static void addMushroom(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		Mushroom mushroom = new Mushroom();
 		addPowerUp(x, y, mysteryBoxWidth, mushroom);
-		return mushroom;
+		//return mushroom;
 	}
 
-	public static FireFlower addFireFlower(double x, double y, double mysteryBoxWidth) {
+	public static void addFireFlower(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		FireFlower fireFlower = new FireFlower();
 		addPowerUp(x, y, mysteryBoxWidth, fireFlower);
-		return fireFlower;
+		//return fireFlower;
 	}
 
-	public static Leaf addLeaf(double x, double y, double mysteryBoxWidth) {
+	public static void addLeaf(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		Leaf leaf = new Leaf(Math.random()>0.5);
 		addPowerUp(x, y, mysteryBoxWidth, leaf);
-		return leaf;
+		//return leaf;
 	}
 }
 //TODO also maybe if user holds fireball key then the fireball could charge until it is really big  

@@ -28,7 +28,7 @@ class FireBall extends MovingObject {
 	public double hoppingX;//x coordinate to keep track of where fireball started bouncing
 	//helpful for using  Math.abs(getX()-hoppingX)%sizeOfHops; for hopping
 
-	public double speedFactor = 2.0;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
+	public double speedFactor = 3.5;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
@@ -93,6 +93,9 @@ class FireBall extends MovingObject {
 		canvas.remove(this);
 		alive = false;
 		LevelController.currLevel.removeFireBall(this);
+		//TODO if levelcontroller ends the current level and sets all fireballs to alive=false,
+		//no need to remove fireball from currlevel
+		//this is already "fixed" by if p!=null in removeFireBall
 		System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
 	}
 

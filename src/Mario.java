@@ -948,14 +948,12 @@ public class Mario extends MovingObject {
 						double x  = o.getX();
 						double y = o.getY();						
 						((MysteryBox) o).hitByMario();
-						GImage newLevelPart;
 						if (Math.random()>0.66)
-							newLevelPart = Factory.addFireFlower(x, y, o.getWidth());
+							Factory.addFireFlower(x, y, o.getWidth());
 						else if (Math.random()>0.33)
-							newLevelPart  = Factory.addMushroom(x, y, o.getWidth());
+							Factory.addMushroom(x, y, o.getWidth());
 						else
-							newLevelPart = Factory.addLeaf(x, y, o.getWidth());
-						LevelController.currLevel.addNewLevelPart(newLevelPart);
+							Factory.addLeaf(x, y, o.getWidth());
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe

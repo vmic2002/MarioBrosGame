@@ -12,7 +12,6 @@ public class LevelPart {
 			if (image instanceof FireBall) {
 				((FireBall) image).hoppingX+=dx;
 				((FireBall) image).hoppingY+=dy;
-
 			}
 		}
 	}

@@ -55,16 +55,28 @@ public class LevelController {
 			for (GImage image : l.part) {
 				if (image instanceof MovingObject) {
 					((MovingObject) image).alive = false;
+					//to set all ShootingFlower (which are added to levelParts) to alive=false
+				} else if (image instanceof MysteryBox) {
+					((MysteryBox) image).setToFinalState();
+					//to set all MysteryBox (which are added to levelParts) to final state
+					System.out.println("mysterybox set to final state");
+				}
+			}
+		} 
+		
+		for (int i=0; i<currLevel.dynamicLevelParts.size(); i++) {
+			LevelPart l = currLevel.dynamicLevelParts.get(i);
+			for (GImage image : l.part) {
+				if (image instanceof MovingObject) {
+					((MovingObject) image).alive = false;
 					//this fixes bug where power up from previous level is removed from canvas
 					//but when restarting level when mario walks into it it still affects him
 					//or dead fireball to kill turtles etc
 					System.out.println("pow`er up/fireball dead");
-				} else if (image instanceof MysteryBox) {
-					((MysteryBox) image).setToFinalState();
-					System.out.println("mysterybox set to final state");
 				}
 			}
 		}
+		
 		System.out.println("CURR LEVEL ENDED");
 	}
 
@@ -73,6 +85,7 @@ public class LevelController {
 	}
 
 	public static void playLevel(String subLevelID) {
+		System.out.println("STARTING LEVEL "+subLevelID);
 		endCurrentLevel();
 		canvas.removeAll();
 		if (subLevelID.equals("1a")) playLevel1a();
