@@ -7,12 +7,6 @@ public class LevelPart {
 		this.part = part; 
 	}
 	public void move(double dx , double dy) {
-		for (GImage image: part) {
-			image.move(dx, dy);
-			if (image instanceof FireBall) {
-				((FireBall) image).hoppingX+=dx;
-				((FireBall) image).hoppingY+=dy;
-			}
-		}
+		for (GImage image: part) image.move(dx, dy);		
 	}
 }

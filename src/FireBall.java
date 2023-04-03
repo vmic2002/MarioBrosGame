@@ -5,7 +5,7 @@ import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 import acm.graphics.GObject;
 
-class FireBall extends MovingObject {
+class FireBall extends MovingObject implements Dynamic {
 	//TODO fix bug where fireball moves weirdly when the level is moving (sometimes it moves too much when mario jumps/walks close to edges)
 	//TODO bug could be due to fireball being added/removed from levelParts while level is being moved (levelParts being looped through)
 	private static Image leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
@@ -29,6 +29,7 @@ class FireBall extends MovingObject {
 	//helpful for using  Math.abs(getX()-hoppingX)%sizeOfHops; for hopping
 
 	public double speedFactor = 3.5;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
+	private long id;//to add/remove from dynamicLevelParts
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
@@ -42,8 +43,8 @@ class FireBall extends MovingObject {
 	public void shootAtMario() {
 		//called when a ShootingFlower shoot a fireball at mario
 		//fireball needs to go to in a straight path to mario or until it hits a platform and dies
-		double finalX = mario.getX()+mario.getWidth()/2;
-		double finalY = mario.getY()+mario.getHeight()/4;//aim for the head so that ducking will save mario
+		double finalX = mario.getX()+mario.getWidth()/2.0;
+		double finalY = mario.getY()+mario.getHeight()/8.0;//aim for the head so that ducking will save mario
 		//divde dx and dy by lenght of (dx,dy) vector to obtain the unit vector
 		double dx = finalX-getX();
 		double dy = finalY-getY();
@@ -92,10 +93,9 @@ class FireBall extends MovingObject {
 		}
 		canvas.remove(this);
 		alive = false;
-		LevelController.currLevel.removeFireBall(this);
+		LevelController.currLevel.removeDynamic(this);
 		//TODO if levelcontroller ends the current level and sets all fireballs to alive=false,
 		//no need to remove fireball from currlevel
-		//this is already "fixed" by if p!=null in removeFireBall
 		System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
 	}
 
@@ -184,7 +184,7 @@ class FireBall extends MovingObject {
 		System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);
 		canvas.remove(this);
 		alive = false;
-		LevelController.currLevel.removeFireBall(this);
+		LevelController.currLevel.removeDynamic(this);
 	}
 
 	private void hop() {
@@ -256,5 +256,15 @@ class FireBall extends MovingObject {
 		rightFireBall3 = rightFireBall3X;
 		leftFireBall4 = leftFireBall4X;
 		rightFireBall4 = rightFireBall4X;
+	}
+
+	@Override
+	public void setID(long id) {
+		this.id = id;
+	}
+
+	@Override
+	public long getID() {
+		return id;
 	}
 }

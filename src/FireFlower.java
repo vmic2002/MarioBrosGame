@@ -22,4 +22,14 @@ public class FireFlower extends PowerUp {
 	public void inContactWith(GObject x, boolean b) {
 		//not really needed since fire flower does not move
 	}
+
+	@Override
+	public void setID(long id) {
+		this.id = id;
+	}
+
+	@Override
+	public long getID() {
+		return id;
+	}
 }

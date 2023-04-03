@@ -1,6 +1,8 @@
 import acm.graphics.GCanvas;
 
 public abstract class Factory {
+	//this class spawns MovingObjects that are added to dynamicLevelParts
+	//dynamically while a level is being played and calls their move function
 	private static GCanvas canvas;
 	
 	public static void setCanvas(GCanvas canvas1) {

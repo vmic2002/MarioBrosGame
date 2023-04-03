@@ -240,6 +240,10 @@ public class Mario extends MovingObject {
 				Thread.sleep(15);
 				maxTimeFallDown -= 15;
 			}
+			while (maxTimeFallDown>0) {
+				Thread.sleep(15);
+				maxTimeFallDown -= 15;
+			}
 			//Thread.sleep(600);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -993,7 +997,7 @@ public class Mario extends MovingObject {
 			System.out.println("MARIO RAN/JUMPed INTO A FIREBALL");
 			canvas.remove(o);
 			((FireBall) o).alive = false;
-			LevelController.currLevel.removeFireBall((FireBall) o);
+			//LevelController.currLevel.removeDynamic((FireBall) o);
 			marioHit();
 		} else if (o instanceof BadGuy) {
 			//make mario smaller when he hits a BadGuy (turtle, flower etc)
@@ -1003,6 +1007,7 @@ public class Mario extends MovingObject {
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
+			LevelController.currLevel.removeDynamic((PowerUp) o);//mostly for FireFlower since every other power up would call this function after their alive field is set to false
 		}
 	}
 

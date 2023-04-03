@@ -63,20 +63,24 @@ public class LevelController {
 				}
 			}
 		} 
-		
-		for (int i=0; i<currLevel.dynamicLevelParts.size(); i++) {
-			LevelPart l = currLevel.dynamicLevelParts.get(i);
-			for (GImage image : l.part) {
-				if (image instanceof MovingObject) {
-					((MovingObject) image).alive = false;
-					//this fixes bug where power up from previous level is removed from canvas
-					//but when restarting level when mario walks into it it still affects him
-					//or dead fireball to kill turtles etc
-					System.out.println("pow`er up/fireball dead");
-				}
+
+		try {
+			for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
+					for (GImage image : l.part) {
+						if (image instanceof MovingObject) {
+							((MovingObject) image).alive = false;
+							//this fixes bug where power up from previous level is removed from canvas
+							//but when restarting level when mario walks into it it still affects him
+							//or dead fireball to kill turtles etc
+							System.out.println("pow`er up/fireball dead");
+						}
+					}
 			}
+		} catch(Exception e) {
+			System.out.println("Error occured when ending current level and looping through dynamic level parts");
+			e.printStackTrace();
+			System.exit(1);
 		}
-		
 		System.out.println("CURR LEVEL ENDED");
 	}
 
