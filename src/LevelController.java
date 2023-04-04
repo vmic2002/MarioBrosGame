@@ -41,7 +41,7 @@ public class LevelController {
 		pipeUpMiddleRightImage = pipeUpMiddleRightImage1;
 		mario = mario1;
 		canvas = canvas1;
-		space = mario.moveDx*10.0;
+		space = mario.scalingFactor*10.0;
 	}
 
 	public static void endCurrentLevel() {

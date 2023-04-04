@@ -13,6 +13,7 @@ public abstract class ShootingFlower extends BadGuy {
 	public double dy;
 	public int timeOffset;
 	//timeOffset is so that not all flowers in a level come in/out of pipe at the same time
+	//TODO bug that timeOffset doesnt actually coordinate shooting flowers because only flowers on screen shoot at mario so the other ones have same effect as changing their timeOffset
 	public ShootingFlower(Image arg0, int timeOffset) {
 		super(arg0);
 		if (this instanceof UpShootingFlower) dy = -DY;

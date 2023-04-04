@@ -27,7 +27,7 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * since the arrows will be needed to control where the laser beam goes
 	 */
 
-	private static final int WIDTH = 1400;
+	private static final int WIDTH = 1700;
 	private static final int HEIGHT = 1000;
 
 	public void run() {

@@ -71,7 +71,8 @@ public class Mario extends MovingObject {
 	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
 	public boolean goingIntoPipe = false;
 	public double fallDy;
-	public double moveDx;
+	private double moveDx;
+	public double scalingFactor;//determined by size of images (like moveDx and fallDy)
 	public boolean flashing = false;//true when mario is hit by BadGuy and becomes false after mario stops flashing
 	//while mario is flashing he cannot die from a bad guy, but he can still die by falling to bottom of screen
 	public static int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
@@ -115,7 +116,8 @@ public class Mario extends MovingObject {
 		this.smallMarioLeftJumpingImage = smallMarioLeftJumpingImage;
 		this.smallMarioRightJumpingImage = smallMarioRightJumpingImage;
 		fallDy = smallMarioLeftImage.getHeight(canvas)/16.0;
-		moveDx = 1.5*fallDy;
+		scalingFactor = 1.5*fallDy;
+		moveDx = 2.0*fallDy;
 		this.marioDeadImage = marioDeadImage;
 
 		this.bigMarioRightImage = bigMarioRightImage;
@@ -527,7 +529,7 @@ public class Mario extends MovingObject {
 					setToJumpingDown(lookingRightOrLeft);
 				}
 				fall(fallDy);
-				if (!isCrouching) {
+				if (!isCrouching && alive) {
 					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				}
 				isJumping = false;
@@ -1002,7 +1004,6 @@ public class Mario extends MovingObject {
 		} else if (o instanceof BadGuy) {
 			//make mario smaller when he hits a BadGuy (turtle, flower etc)
 			//also play sound
-			//TODO fix bug when mario falls or jumps (vertically) on a badguy he doesnt change to dead mario sprite
 			marioHit();
 		}
 		if (o instanceof PowerUp) {

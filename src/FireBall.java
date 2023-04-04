@@ -12,7 +12,7 @@ class FireBall extends MovingObject implements Dynamic {
 	private static final int maxDistance = canvas.getWidth()*3;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
-	private static final double sizeOfHops = mario.moveDx*20;//fireball hops once it moves on the ground
+	private static final double sizeOfHops = mario.scalingFactor*20;//fireball hops once it moves on the ground
 	private static final double hopRadius = sizeOfHops/2;//width of semi circle (hop) is 2*R
 	private static int pauseTime = 10;//milliseconds pause in between each move function call
 	private enum FIREBALL_STAGE {STAGE_1, STAGE_2, STAGE_3, STAGE_4};

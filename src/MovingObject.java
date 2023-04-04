@@ -52,7 +52,7 @@ public abstract class MovingObject extends GImage {
 	
 	public static void setCanvas(GCanvas canvas1, Mario mario1) {
 		canvas = canvas1;
-		moveDx = mario1.moveDx;
+		moveDx = mario1.scalingFactor;
 		mario = mario1;
 	}
 }
