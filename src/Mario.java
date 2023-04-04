@@ -77,7 +77,7 @@ public class Mario extends MovingObject {
 	public static int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
 	public static int numTimesToggleVisibility = 12;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
-
+	private static int maxHeightOfJump = 75;//max num times move function is called on way up of jump (move(0, -fallDy)
 
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
@@ -484,7 +484,7 @@ public class Mario extends MovingObject {
 				if (!isCrouching) {
 					setToJumping(lookingRightOrLeft);
 				}
-				for (int i=0; i<60; i++) {
+				for (int i=0; i<maxHeightOfJump && wayUpOrWayDown; i++) {
 					// for 3 points over mario (left middle and right)
 					Point[] arr = new Point[]{new Point(getX()+10,getY()-fallDy),
 							new Point(getX()+getWidth()/2, getY()-fallDy),

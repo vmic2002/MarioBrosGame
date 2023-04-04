@@ -60,6 +60,8 @@ public class MyKeyListener implements KeyListener {
 			if (!mario.isJumping) mario.setToStanding(false);
 		} else if (keyCode == KeyEvent.VK_DOWN){
 			mario.stopCrouching();
-		}
+		} else if (keyCode == KeyEvent.VK_UP) {
+			mario.wayUpOrWayDown = false;
+		} 
 	}
 }
