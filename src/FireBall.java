@@ -49,20 +49,23 @@ class FireBall extends MovingObject implements Dynamic {
 		double dx = finalX-getX();
 		double dy = finalY-getY();
 		double vectorLength = Math.sqrt(dx*dx+dy*dy);
+		
+
 		dx /= vectorLength;
 		dy /= vectorLength;
 		//now (dx, dy) is unit vector. multiply by speedFactor to change the speed
 		dx *= speedFactor;
 		dy *= speedFactor;
 		double gasUsagePerMove = Math.sqrt(dx*dx+dy*dy);
-		while (gasLeft >0 && alive) {
+
+		while (alive && gasLeft >0) {
 			try {Thread.sleep(pauseTime);} catch (Exception e) {e.printStackTrace();}
 			Point p1  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()):new Point(getX()+dx,getY()+getHeight());
 			Point p2  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()/2):new Point(getX()+dx,getY()+getHeight()/2);
 			Point p3  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()):new Point(getX()+dx,getY());
 			Point[] arr = new Point[]{p1, p2};
 			ArrayList<GObject> o = checkAtPositions(arr, canvas);
-			
+
 			for (GObject x : o) {
 				if (x instanceof Mario) {
 					if (!alive) break;
@@ -91,9 +94,7 @@ class FireBall extends MovingObject implements Dynamic {
 			}
 			frequencyChangeStage--;
 		}
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		kill();
 		//TODO if levelcontroller ends the current level and sets all fireballs to alive=false,
 		//no need to remove fireball from currlevel
 		System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
@@ -182,6 +183,10 @@ class FireBall extends MovingObject implements Dynamic {
 			}
 		}
 		System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);
+		kill();
+	}
+
+	public void kill() {
 		canvas.remove(this);
 		alive = false;
 		LevelController.currLevel.removeDynamic(this);

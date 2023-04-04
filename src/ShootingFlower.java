@@ -39,6 +39,7 @@ public abstract class ShootingFlower extends BadGuy {
 	public void shootMario() {
 		//flower needs to locate mario and shoot fireball at him (in a straight line)
 		//TODO could add sound when shooting flower shoot fireball at mario
+		if  (Math.abs(getX()-mario.getX())>canvas.getWidth()*1) {return;}//only flowers on screen shoot at mario
 		boolean rightOrLeft;
 		boolean upOrDown = mario.getY()<getY()+MovingObject.moveDx;
 		if (mario.getX()<getX()) {

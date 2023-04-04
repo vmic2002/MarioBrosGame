@@ -7,7 +7,7 @@ public class Level {
 	public final ArrayList<LevelPart> levelParts;//for levelParts added at level creation time, when playLevelX() is called
 	//levelParts is never modified after the playLevelX() function
 	public HashMap<Long, DynamicLevelPart> dynamicLevelParts;//buffer for level parts that need to be added dynamically (while playing level) to level parts (fireballs and powerups for example)
-	public static AtomicLong ID_GENERATOR = new AtomicLong();
+	public static AtomicLong ID_GENERATOR = new AtomicLong();//Atomic for concurrency
 	
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
 	//if yBaseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
@@ -37,7 +37,9 @@ public class Level {
 			return;
 		}
 		dynamicLevelParts.remove(f.getID());
-		System.out.println("Successfully removed "+f.getID()+" from dynmiacLevelParts");		
+		System.out.println("Successfully removed "+f.getID()+" from dynmiacLevelParts");
+		System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
+		//TODO bug where dynamic level parts is -1 at some point, maybe concurrency bug
 	}
 
 	public void moveLevel(double dx, double dy) {
@@ -76,5 +78,6 @@ public class Level {
 		dynamicLevelParts.put(newID, new DynamicLevelPart(l, newID));
 		((Dynamic) i).setID(newID);
 		System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
+		System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 	}
 }
