@@ -491,7 +491,7 @@ public class Mario extends MovingObject {
 					Point[] arr = new Point[]{new Point(getX()+10,getY()-fallDy),
 							new Point(getX()+getWidth()/2, getY()-fallDy),
 							new Point(getX()+getWidth()-10, getY()-fallDy)};
-					ArrayList<GObject> o = checkAtPositions(arr, canvas);
+					ArrayList<GObject> o = checkAtPositions(arr);
 					for (GObject x : o) {
 						inContactWith(x, false);
 						if (hitPlatformVertical) {
@@ -562,7 +562,7 @@ public class Mario extends MovingObject {
 		//0.22 is value found to work best through testing
 		Point[] arr = new Point[]{new Point(getX()+0.22*getWidth(),getY()+getHeight()+dy),
 				new Point(getX()+getWidth()-0.22*getWidth(), getY()+getHeight()+dy)};
-		ArrayList<GObject> o = checkAtPositions(arr, canvas);
+		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
 			inContactWith(x, false);
 		}
@@ -851,7 +851,7 @@ public class Mario extends MovingObject {
 		for (int i = 1; i<n; i++) {
 			arr[i-1] = new Point(newX, getY()+((double) i)/n*getHeight());
 		}
-		ArrayList<GObject> o = checkAtPositions(arr, canvas);
+		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
 			inContactWith(x, true);
 		}
@@ -1296,7 +1296,17 @@ public class Mario extends MovingObject {
 				System.out.println("SWING TAILL");
 				int pauseBetweenStages = 70;
 				SoundController.playTailSound();
-				//TODO need to check if turtle etc or mushroom etc gets hit by tail using inContactWith() func
+				if (!isJumping) {
+					double newX =  lookingRightOrLeft?getX()+getWidth()+2*moveDx:getX()-2*moveDx;
+					GObject a = canvas.getElementAt(newX, getY()+getHeight()*0.7);
+					if (a!=null && a instanceof BadGuy) {		
+						//Cat mario just swung tail at bad guy
+						//kill bad guy
+						System.out.println("CAT MARIO JUST KILLED BADGUY WITH TAIL");
+						//TODO COULD PLAY SOUND FOR KILLING WITH TAIL
+						((BadGuy) a).kill();
+					}								
+				}
 				//ENTERING STAGE1
 				boolean startedJumping = isJumping;
 				if (alive) {

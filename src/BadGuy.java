@@ -17,4 +17,12 @@ public abstract class BadGuy extends MovingObject {
 			((Mario) x).marioHit();
 		}
 	}
+	
+	public void kill() {
+		//called when mario (or anything) kills the bad guy
+		//TODO not really todo just a note. if a badguy is indestructible
+		//TODO then he could override this kill() function to do nothing (therefore the bad guy is unkillable)
+		this.alive = false;
+		canvas.remove(this);
+	}
 }

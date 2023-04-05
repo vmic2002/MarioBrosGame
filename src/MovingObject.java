@@ -22,7 +22,7 @@ public abstract class MovingObject extends GImage {
 
 	public abstract void inContactWith(GObject x, boolean horizontalOrVertical);
 
-	public ArrayList<GObject> checkAtPositions(Point[] points, GCanvas canvas) {
+	public ArrayList<GObject> checkAtPositions(Point[] points) {
 		ArrayList<GObject> result = new ArrayList<GObject>();
 		for (Point p : points) {
 			GObject a = canvas.getElementAt(p.x, p.y);

@@ -71,7 +71,7 @@ public class Leaf extends PowerUp {
 					new Point(newX, getY()+getWidth()+dy),
 					new Point(getX()+getWidth()/2, getY()+getHeight()+dy)
 			};
-			ArrayList<GObject> oList = checkAtPositions(points, canvas);
+			ArrayList<GObject> oList = checkAtPositions(points);
 			for (GObject o : oList) {
 				inContactWith(o, false);
 				//for leaf it doesnt matter if it comes into contact with something

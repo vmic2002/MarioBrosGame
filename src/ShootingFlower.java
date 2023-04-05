@@ -78,7 +78,7 @@ public abstract class ShootingFlower extends BadGuy {
 				while (alive) {
 					try {
 						for (int i=0; i<numMoves; i++) {
-							ArrayList<GObject> o1 = checkAtPositions(getPoints(), canvas);
+							ArrayList<GObject> o1 = checkAtPositions(getPoints());
 							for (GObject x : o1) {
 								inContactWith(x, false);
 							}
@@ -91,7 +91,7 @@ public abstract class ShootingFlower extends BadGuy {
 						shootMario();
 						if (!alive) break;
 						for (int i=0; i<numMoves; i++) {
-							ArrayList<GObject> o1 = checkAtPositions(getPoints(), canvas);
+							ArrayList<GObject> o1 = checkAtPositions(getPoints());
 							for (GObject x : o1) {
 								inContactWith(x, false);
 							}

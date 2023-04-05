@@ -97,7 +97,7 @@ public class Mushroom extends PowerUp {
 			} else {
 				move(dx, dy);
 				previousPointWorked = false;
-				ArrayList<GObject> o1 = checkAtPositions(pointsSide, canvas);
+				ArrayList<GObject> o1 = checkAtPositions(pointsSide);
 				for (GObject x : o1) {
 					inContactWith(x, true);
 				}
@@ -106,7 +106,7 @@ public class Mushroom extends PowerUp {
 					break;
 				}
 				previousPointWorked = false;
-				ArrayList<GObject> o2 = checkAtPositions(pointsBelow, canvas);
+				ArrayList<GObject> o2 = checkAtPositions(pointsBelow);
 				for (GObject x : o2) {
 					inContactWith(x, false);
 				}

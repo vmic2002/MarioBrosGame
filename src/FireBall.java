@@ -64,7 +64,7 @@ class FireBall extends MovingObject implements Dynamic {
 			Point p2  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()/2):new Point(getX()+dx,getY()+getHeight()/2);
 			Point p3  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()):new Point(getX()+dx,getY());
 			Point[] arr = new Point[]{p1, p2};
-			ArrayList<GObject> o = checkAtPositions(arr, canvas);
+			ArrayList<GObject> o = checkAtPositions(arr);
 
 			for (GObject x : o) {
 				if (x instanceof Mario) {
@@ -136,6 +136,7 @@ class FireBall extends MovingObject implements Dynamic {
 
 	@Override
 	public void move() {
+		//called when mario shoots a fireball
 		//this function moves a fireball its maximum distance or until
 		//it hits a flower, platform, turtle while changing its images
 		while (gasLeft >0 && alive) {
@@ -145,7 +146,7 @@ class FireBall extends MovingObject implements Dynamic {
 			//Point p3 = rightOrLeft?new Point(getX()+getWidth()+dx, getY()+getHeight()+dy):new Point(getX()-dx, getY()+getHeight()+dy);
 
 			Point[] arr = new Point[]{p1};
-			ArrayList<GObject> o = checkAtPositions(arr, canvas);
+			ArrayList<GObject> o = checkAtPositions(arr);
 			for (GObject x : o) {
 				inContactWith(x, true);
 			}
@@ -159,7 +160,7 @@ class FireBall extends MovingObject implements Dynamic {
 			Point below3 = new Point(getX(), getY()+getHeight()+dy);
 
 			Point[] arr1 = new Point[]{below1, below2, below3};
-			ArrayList<GObject> o1 = checkAtPositions(arr1, canvas);
+			ArrayList<GObject> o1 = checkAtPositions(arr1);
 			for (GObject x : o1) {
 				inContactWith(x, false);
 			}
@@ -237,8 +238,9 @@ class FireBall extends MovingObject implements Dynamic {
 			//a shooting flower can kill another if mario stands behind the one getting shot at
 			if (!((BadGuy) x).alive) return;
 			//TODO could add sound of bad guy dying
-			((BadGuy) x).alive = false;
-			x.setVisible(false);
+			//((BadGuy) x).alive = false;
+			//x.setVisible(false);
+			((BadGuy) x).kill();
 			alive = false;
 		} else if (x instanceof FireBall) {
 			//if fireball shot from mario runs into another fireball then they both die
