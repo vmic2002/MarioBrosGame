@@ -104,6 +104,8 @@ public abstract class ShootingFlower extends BadGuy {
 						e.printStackTrace();
 					}
 				}
+				//alive is set to false by level controller when starting new level
+				kill();
 				System.out.println("SHOOTING FLOWER DEAD");
 			}
 		});  

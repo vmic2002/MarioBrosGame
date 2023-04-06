@@ -18,6 +18,7 @@ public class LevelController {
 	public static double space;
 	public static double xCounter;//used for adding images to a level and keeping track of the level's width
 	public enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
+	public enum TURTLE_TYPE {NO_TURTLE, RED, GREEN};
 	//up/down pipe can have no flower coming out of it, a shooting flower, or a biting flower
 	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
 			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
@@ -55,7 +56,7 @@ public class LevelController {
 			for (GImage image : l.part) {
 				if (image instanceof MovingObject) {
 					((MovingObject) image).alive = false;
-					//to set all ShootingFlower (which are added to levelParts) to alive=false
+					//to set all BadGuys (which are added to levelParts) to alive=false
 				} else if (image instanceof MysteryBox) {
 					((MysteryBox) image).setToFinalState();
 					//to set all MysteryBox (which are added to levelParts) to final state
@@ -107,7 +108,7 @@ public class LevelController {
 	 * @param h height in number of images from top to bottom (expected >=2)
 
 	 */
-	public static double spawnGrassMountain(double w, double h, ArrayList<LevelPart> levelParts) {
+	public static double spawnGrassMountain(double w, double h, TURTLE_TYPE type, ArrayList<LevelPart> levelParts) {
 		ArrayList<GImage> images = new ArrayList<GImage>();
 		for (int i = 1; i<w-1; i++) {
 			for (int j = 1; j<h; j++) {
@@ -115,7 +116,6 @@ public class LevelController {
 				canvas.add(g1, xCounter+i*g1.getWidth(), canvas.getHeight()-j*g1.getHeight());
 				images.add(g1);
 			}
-
 		}
 		for (int i = 1; i<w-1; i++) {	
 			Platform g1 = new Platform(grassMiddleTopImage);
@@ -139,9 +139,18 @@ public class LevelController {
 		canvas.add(g2, xCounter, canvas.getHeight()-h*g1.getHeight());
 		images.add(g2);
 		//double height = g1.getHeight();
-		levelParts.add(new LevelPart(images));
 		double width = w*g1.getWidth(); 
+		
+		if (type == TURTLE_TYPE.RED) {
+			//TODO need to do green turtles too
+			RedTurtle turtle = new RedTurtle(width);
+			canvas.add(turtle, xCounter, canvas.getHeight()-g1.getHeight()*h-turtle.getHeight());
+			images.add(turtle);
+			turtle.move();
+		}
 		xCounter += width;
+		levelParts.add(new LevelPart(images));
+		
 		return width;
 	}
 
@@ -295,16 +304,16 @@ public class LevelController {
 		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;//need to re initialize xCounter to 0 at the beginning of each level
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(8, 2, levelParts);
+		spawnGrassMountain(8, 2, TURTLE_TYPE.RED, levelParts);
 		spawnWhiteSpace(3);
 		spawnMysteryBox(xCounter+2.0*space, 6, levelParts);
-		spawnGrassMountain(4, 3, levelParts);
+		spawnGrassMountain(4, 3, TURTLE_TYPE.RED, levelParts);
 		spawnWhiteSpace(2);
 		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "1a", levelParts);
 		spawnDownPipe(3, FLOWER_TYPE.SHOOTING, 50, "", levelParts);
 		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "2", levelParts);
 		spawnWhiteSpace(2);
-		spawnGrassMountain(8, 2, levelParts);
+		spawnGrassMountain(8, 2, TURTLE_TYPE.RED, levelParts);
 		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
 		spawnMysteryBox(xCounter-2.0*space, 6, levelParts);
 		spawnWhiteSpace(2);
@@ -317,14 +326,14 @@ public class LevelController {
 		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(4, 2, levelParts);
+		spawnGrassMountain(4, 2, TURTLE_TYPE.RED, levelParts);
 		spawnMysteryBox(2.0*space, 5, levelParts);
 		spawnWhiteSpace(2);
 		double xCounterTemp = xCounter;
 		for (int i=0; i<3; i++) {
 			spawnUpPipe(2, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
 			spawnWhiteSpace(2);
-			spawnGrassMountain(3, 2, levelParts);
+			spawnGrassMountain(3, 2, TURTLE_TYPE.RED, levelParts);
 			spawnWhiteSpace(2);
 		}
 		xCounter -= xCounter-xCounterTemp;
@@ -339,7 +348,7 @@ public class LevelController {
 			spawnDownPipe(2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", levelParts);
 		}
 		xCounter -= xCounter-xCounterTemp;
-		spawnGrassMountain(17, 2, levelParts);
+		spawnGrassMountain(17, 2, TURTLE_TYPE.RED, levelParts);
 		spawnUpAndDownPipes(4, "1", 4, "2", levelParts);
 		spawnWhiteSpace(1);
 		Level level2 = new Level("2", levelParts, xCounter);
@@ -351,7 +360,7 @@ public class LevelController {
 		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(20, 3, levelParts);
+		spawnGrassMountain(20, 3, TURTLE_TYPE.RED, levelParts);
 		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		spawnWhiteSpace(3);
 		spawnUpAndDownPipes(4, "1", 3, "2", levelParts);

@@ -7,6 +7,11 @@ import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 public class Mario extends MovingObject {
+	/*
+	 * Idea for Mario time dilating Mario the time slows down
+	 * modify the global variables that govern the speed of that object
+	 *
+	 */
 	private Image smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage,
 	smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage,
 	bigMarioLeftImage, bigMarioRightImage, bigMarioLeftWalkingImage, bigMarioRightWalkingImage,

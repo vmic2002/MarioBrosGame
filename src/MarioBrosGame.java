@@ -27,7 +27,7 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * since the arrows will be needed to control where the laser beam goes
 	 */
 
-	private static final int WIDTH = 1700;
+	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 1000;
 
 	public void run() {
@@ -168,7 +168,16 @@ public class MarioBrosGame extends GraphicsProgram {
 		String downShootingFlowerRightUpClosedImagePath = prefix+imageDirectory+"/DOWNshootingFlowerRightUpClosed.png";
 		String downShootingFlowerRightUpOpenImagePath = prefix+imageDirectory+"/DOWNshootingFlowerRightUpOpen.png";
 
-		
+		String redTurtleSpinning1ImagePath = prefix+imageDirectory+"/redTurtleSpinning1.png";
+		String redTurtleSpinning2ImagePath = prefix+imageDirectory+"/redTurtleSpinning2.png";
+		String redTurtleSpinning3ImagePath = prefix+imageDirectory+"/redTurtleSpinning3.png";
+		String redTurtleSpinning4ImagePath = prefix+imageDirectory+"/redTurtleSpinning4.png";
+		String redTurtleStandingLeftImagePath = prefix+imageDirectory+"/redTurtleStandingLeft.png";
+		String redTurtleStandingRightImagePath = prefix+imageDirectory+"/redTurtleStandingRight.png";
+		String redTurtleWalkingLeftImagePath = prefix+imageDirectory+"/redTurtleWalkingLeft.png";
+		String redTurtleWalkingRightImagePath = prefix+imageDirectory+"/redTurtleWalkingRight.png";
+
+
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
 		BufferedImage smallMarioRightWalkingImage = null;
@@ -288,6 +297,17 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage downShootingFlowerRightDownOpenImage = null;
 		BufferedImage downShootingFlowerRightUpClosedImage = null;
 		BufferedImage downShootingFlowerRightUpOpenImage = null;
+
+		BufferedImage redTurtleSpinning1Image = null;
+		BufferedImage redTurtleSpinning2Image = null;
+		BufferedImage redTurtleSpinning3Image = null;
+		BufferedImage redTurtleSpinning4Image = null;
+		BufferedImage redTurtleStandingLeftImage = null;
+		BufferedImage redTurtleStandingRightImage = null;
+		BufferedImage redTurtleWalkingLeftImage = null;
+		BufferedImage redTurtleWalkingRightImage = null;
+
+
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -409,7 +429,17 @@ public class MarioBrosGame extends GraphicsProgram {
 			downShootingFlowerRightUpClosedImage = ImageIO.read(new File(downShootingFlowerRightUpClosedImagePath));
 			downShootingFlowerRightUpOpenImage = ImageIO.read(new File(downShootingFlowerRightUpOpenImagePath));
 
-			
+
+			redTurtleSpinning1Image = ImageIO.read(new File(redTurtleSpinning1ImagePath));
+			redTurtleSpinning2Image = ImageIO.read(new File(redTurtleSpinning2ImagePath));
+			redTurtleSpinning3Image = ImageIO.read(new File(redTurtleSpinning3ImagePath));
+			redTurtleSpinning4Image = ImageIO.read(new File(redTurtleSpinning4ImagePath));
+			redTurtleStandingLeftImage = ImageIO.read(new File(redTurtleStandingLeftImagePath));
+			redTurtleStandingRightImage = ImageIO.read(new File(redTurtleStandingRightImagePath));
+			redTurtleWalkingLeftImage = ImageIO.read(new File(redTurtleWalkingLeftImagePath));
+			redTurtleWalkingRightImage = ImageIO.read(new File(redTurtleWalkingRightImagePath));
+
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -443,6 +473,9 @@ public class MarioBrosGame extends GraphicsProgram {
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
 		MovingObject.setCanvas(this.getGCanvas(), mario);
+		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
+				redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,
+				redTurtleStandingRightImage, redTurtleWalkingLeftImage, redTurtleWalkingRightImage);
 		UpShootingFlower.setObjects(shootingFlowerLeftDownClosedImage, shootingFlowerLeftDownOpenImage,
 				shootingFlowerLeftUpClosedImage, shootingFlowerLeftUpOpenImage,
 				shootingFlowerRightDownClosedImage, shootingFlowerRightDownOpenImage,
@@ -469,8 +502,8 @@ public class MarioBrosGame extends GraphicsProgram {
 				this.getGCanvas());
 		setSize(WIDTH,HEIGHT);
 		addKeyListeners(new MyKeyListener(mario));
-		//LevelController.playLevel1a();
-		LevelController.playLevel2();
+		LevelController.playLevel1();
+		//LevelController.playLevel2();
 	}
 
 
