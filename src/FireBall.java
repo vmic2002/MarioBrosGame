@@ -82,6 +82,12 @@ class FireBall extends MovingObject implements Dynamic {
 				} else if (x instanceof Platform) {
 					alive = false;
 					break;
+				} else if (x instanceof BadGuy && !(x instanceof ShootingFlower)) {
+					//shooting flower can kill bad guys (but not other shooting flowers) so mario can stand behind bad guy
+					//to make shooting flower kill other bad guys
+					System.out.println("Fireball shot from shooting flower hit badguy");
+					((BadGuy) x).kill();
+					break;
 				}
 			}
 			if (!alive) break;

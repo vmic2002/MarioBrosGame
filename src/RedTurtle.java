@@ -1,5 +1,8 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+
+import acm.graphics.GObject;
 
 public class RedTurtle extends BadGuy {
 	private static Image redTurtleSpinning1Image, redTurtleSpinning2Image, 
@@ -64,9 +67,21 @@ public class RedTurtle extends BadGuy {
 				System.out.println("In red turtle move function");
 				while (alive) {
 					for (int i=0; i<numMovesToReachEdge; i++) {
+						if (!mario.flashing && alive) {
+							double newX = rightOrLeft?getX()+getWidth()+2*dx:getX()+4*dx;
+							Point p1  = new Point(newX,getY()+getHeight()*0.8);
+							Point p2  = new Point(newX,getY()+getHeight()*0.5);
+							Point p3  = new Point(newX,getY()+getHeight()*0.2);
+							Point[] arr = new Point[]{p1,p2,p3};
+							ArrayList<GObject> o = checkAtPositions(arr);
+							for (GObject x : o) {
+								if (mario.flashing || !alive) break;
+								inContactWith(x, true);
+							}
+						}
 						if (walkingFrequency==WALKING_FREQUENCY) toggleStandingOrWalking();
 						move(dx, 0);
-						//TODO need to call inContactWith to check if turtle runs into mario
+
 						//TODO also need to check if turtle runs into a power up etc (maybe change that in incontact func of badguy)
 						walkingFrequency++;
 						try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
