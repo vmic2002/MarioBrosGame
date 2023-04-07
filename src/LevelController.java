@@ -94,6 +94,7 @@ public class LevelController {
 		endCurrentLevel();
 		canvas.removeAll();
 		if (subLevelID.equals("1a")) playLevel1a();
+		else if (subLevelID.equals("1b")) playLevel1b();
 		else if (subLevelID.equals("1")) playLevel1();
 		else if (subLevelID.equals("2")) playLevel2();
 		else System.out.println("NO SUBLEVEL WITH ID "+subLevelID);
@@ -304,14 +305,16 @@ public class LevelController {
 		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;//need to re initialize xCounter to 0 at the beginning of each level
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(8, 2, TURTLE_TYPE.RED, levelParts);
-		spawnWhiteSpace(3);
-		spawnMysteryBox(xCounter+2.0*space, 6, levelParts);
-		spawnGrassMountain(4, 3, TURTLE_TYPE.RED, levelParts);
+		spawnGrassMountain(3, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		spawnWhiteSpace(1);
+		spawnGrassMountain(8, 4, TURTLE_TYPE.RED, levelParts);
+		spawnWhiteSpace(4);
+		spawnMysteryBox(xCounter+2.0*space, 8, levelParts);
+		spawnGrassMountain(4, 5, TURTLE_TYPE.RED, levelParts);
 		spawnWhiteSpace(2);
 		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "1a", levelParts);
 		spawnDownPipe(3, FLOWER_TYPE.SHOOTING, 50, "", levelParts);
-		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "2", levelParts);
+		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "1b", levelParts);
 		spawnWhiteSpace(2);
 		spawnGrassMountain(8, 2, TURTLE_TYPE.RED, levelParts);
 		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
@@ -363,8 +366,22 @@ public class LevelController {
 		spawnGrassMountain(20, 3, TURTLE_TYPE.RED, levelParts);
 		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		spawnWhiteSpace(3);
-		spawnUpAndDownPipes(4, "1", 3, "2", levelParts);
+		spawnUpAndDownPipes(4, "1b", 3, "2", levelParts);
 		Level level1a = new Level("1a", levelParts, xCounter);
+		currLevel = level1a;//set currLevel
+		mario.fall(5);
+	}
+	
+	public static void playLevel1b() {
+		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		xCounter = 0.0;
+		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
+		spawnMysteryBox(5.0*space, 7, levelParts);
+		spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
+		spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
+		spawnWhiteSpace(2);
+		Level level1a = new Level("1b", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
 		mario.fall(5);
 	}

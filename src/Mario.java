@@ -512,6 +512,7 @@ public class Mario extends MovingObject {
 					}
 					if (!alive) {isJumping = false; return;}
 					move(0, -fallDy);
+					//System.out.println("GOING UP");
 					try {
 						Thread.sleep(pauseInAir);
 					} catch (InterruptedException e) {
@@ -538,7 +539,7 @@ public class Mario extends MovingObject {
 					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				}
 				isJumping = false;
-
+				System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
 		});  
 		t1.start();
@@ -548,6 +549,7 @@ public class Mario extends MovingObject {
 		while (!hitPlatformVertical && alive) {//mario falls down until he hits a platform
 			checkUnder(dy);
 			move(0, dy);
+			//System.out.println("Going down");
 			if (hitPlatformVertical) {
 				//if mario jumps onto a Platform, he needs to stop moving down
 				hitPlatformVertical = false;
@@ -569,7 +571,10 @@ public class Mario extends MovingObject {
 				new Point(getX()+getWidth()-0.22*getWidth(), getY()+getHeight()+dy)};
 		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
+			System.out.println("here");
 			inContactWith(x, false);
+			
+			if (hitPlatformVertical) return;
 		}
 	}
 
@@ -907,7 +912,7 @@ public class Mario extends MovingObject {
 	}
 
 	@Override
-	public void inContactWith(GObject o, boolean horizontolOrVertical) {
+	public void inContactWith(GObject o, boolean horizontalOrVertical) {
 		//input o is object mario came into contact with
 		if (o instanceof MovingObject) {
 			if (!((MovingObject) o).alive) {
@@ -936,15 +941,15 @@ public class Mario extends MovingObject {
 		} else if (o instanceof Platform) {
 			//mario should halt, he cant move into a Platform
 			//System.out.println("IN CONTAC WITH Platform");
-			if (horizontolOrVertical) hitPlatformHorizontal = true;
-			if (!horizontolOrVertical) hitPlatformVertical = true;
+			if (horizontalOrVertical) hitPlatformHorizontal = true;
+			if (!horizontalOrVertical) hitPlatformVertical = true;
 			//System.out.println("HIT PLatform");
 			//System.out.println("MARIO BOUND: "+getX()+ " to "+(getX()+getWidth()));
 			//System.out.println("Platform BOUND: "+o.getX()+ " to "+(o.getX()+o.getWidth()));
 
 			//System.out.println("MARIO Y BOUND: "+getY()+ " to "+(getY()+getHeight()));
 			//System.out.println("Platform Y BOUND: "+o.getY()+ " to "+(o.getY()+o.getHeight()));
-			if (wayUpOrWayDown && !horizontolOrVertical) {
+			if (wayUpOrWayDown && !horizontalOrVertical) {
 				//System.out.println("HIT Platform FROM UNDER!!!!!!");
 
 				//if (getY()!=o.getY()+o.getHeight()) {
@@ -1009,7 +1014,13 @@ public class Mario extends MovingObject {
 		} else if (o instanceof BadGuy) {
 			//make mario smaller when he hits a BadGuy (turtle, flower etc)
 			//also play sound
-			marioHit();
+			if (o instanceof RedTurtle && !horizontalOrVertical) {
+				//if bigMario need to MAKE TURTLE GO TO shell mode or start spinning if already in shell mode
+				if (bigOrSmall && !wayUpOrWayDown) ((RedTurtle) o).jumpedOnByBigMario(this);
+				else marioHit();
+			} else {
+				marioHit();
+			}
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
@@ -1429,6 +1440,22 @@ public class Mario extends MovingObject {
 		t1.start();
 	}
 
+	
+	public void hop() {
+		//called when mario jumps on a badguy and has to jump up
+		Thread t1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				///try {Thread.sleep(300);} catch (Exception e) {e.printStackTrace();}
+				while (isJumping) {}
+				System.out.println("Hopping off bad guy");
+				jump();
+			}
+		});  
+		t1.start();
+	}
+	
+	
 	@Override
 	public void move() {
 		// this is for leaf, mushroom, etc not for mario

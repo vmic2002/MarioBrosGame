@@ -87,6 +87,7 @@ class FireBall extends MovingObject implements Dynamic {
 					//to make shooting flower kill other bad guys
 					System.out.println("Fireball shot from shooting flower hit badguy");
 					((BadGuy) x).kill();
+					alive = false;
 					break;
 				}
 			}

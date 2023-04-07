@@ -74,8 +74,8 @@ public class Mushroom extends PowerUp {
 				//dx = -dx;
 				//rightOrLeft = !rightOrLeft;
 				//OR mushroom dies when touches edge of screen
-				alive = false;
-				break;
+				//alive = false;
+				//break;
 			}
 			double newX = rightOrLeft?getX()+getWidth()+10:getX()-10;
 			Point[] pointsSide = new Point[] {
