@@ -16,7 +16,7 @@ public class RedTurtle extends BadGuy {
 	private boolean standingOrWalking;
 	private double dx;
 	private double dy;//used when !spinningOrFalling
-	private static final double DY = MovingObject.moveDx*0.7;
+	private static final double DY = MovingObject.moveDx*0.9;
 	private int numMovesToReachEdge;//num moves until turtle reaches edge of platform and needs to turn around
 	public boolean shellMode;//true if in shell (not standing)
 	public boolean spinningOrFalling;//true if spinning (shell mode and moving on platform)
@@ -36,7 +36,7 @@ public class RedTurtle extends BadGuy {
 		rightOrLeft = true;
 		standingOrWalking = true;
 		walkingFrequency = 0;
-		dx = MovingObject.moveDx*0.8;
+		dx = MovingObject.moveDx*0.9;
 		numMovesToReachEdge = ((int) ((width-this.getWidth())/dx));
 		shellMode = false;
 	}
@@ -148,6 +148,7 @@ public class RedTurtle extends BadGuy {
 			System.out.println("CHANGE DIRECTIONS\n\n\n\n");
 			this.sendToFront();//FOR TESTING
 			previousPointWorked = true;
+			SoundController.playBumpSound();
 		} else if (x instanceof Platform && !horizontalOrVertical) {
 			//turtle fell on platform
 			System.out.println("setting dy to 0\n\n\n");
@@ -189,7 +190,7 @@ public class RedTurtle extends BadGuy {
 			//this happens once per turtle max because a turtle never goes back from shell mode
 			shellMode = true;
 			System.out.println("big mario jumps on !shellMode turtle and sets it to shell mode");
-			dx *=2.0;//shell mode (spinning or falling turtle) is twice as fast as standing turtle
+			dx *=3.0;//shell mode (spinning or falling turtle) is 3 times as fast as standing turtle
 			setTurtleToStoppedShellMode(mario);
 		}
 	}
@@ -240,7 +241,10 @@ public class RedTurtle extends BadGuy {
 							ArrayList<GObject> o = checkAtPositions(arr);
 							for (GObject x : o) {
 								if (mario.flashing || !alive) break;
-								inContactWith(x, true);
+								//super.inContactWith
+								if (x instanceof Mario) {
+									((Mario) x).marioHit();
+								}
 							}
 						}
 						if (walkingFrequency==WALKING_FREQUENCY) toggleStandingOrWalking();

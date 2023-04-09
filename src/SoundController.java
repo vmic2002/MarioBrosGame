@@ -16,6 +16,7 @@ public abstract class SoundController {
 	private static File tailSoundFile;
 	private static File deathSoundFile;
 	private static File pipeSoundFile;
+	private static File bumpSoundFile;
 	public static void setPrefix(String s) {
 		prefix = s;
 		jumpSoundFile = new File(prefix+"SoundEffects/Mario Jump.wav");
@@ -27,6 +28,7 @@ public abstract class SoundController {
 		tailSoundFile = new File(prefix+"SoundEffects/tail.wav");
 		deathSoundFile = new File(prefix+"SoundEffects/Death.wav");
 		pipeSoundFile = new File(prefix+"SoundEffects/Pipe.wav");
+		bumpSoundFile = new File(prefix+"SoundEffects/Bump.wav");
 	}
 	
 	private static void playSound(File f) {
@@ -38,6 +40,12 @@ public abstract class SoundController {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void playBumpSound(){
+		//plays when spinning turtle (in shell mode) bumps into a platform
+		playSound(bumpSoundFile);
+	}
+	
 	
 	public static void playMarioGoesIntoPipeSound(){
 		//plays when mario goes into pipe
