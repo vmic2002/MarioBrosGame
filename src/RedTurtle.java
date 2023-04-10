@@ -42,7 +42,6 @@ public class RedTurtle extends BadGuy {
 	}
 	//TODO have to make red turtle spin after mario kicks it
 	//TODO have to make turtle go upside down when cat mario flicks it with tail
-	//TODO when mario jumps on spinning turtle that is in the air it stops mid air
 	private boolean nothingUnder(Point[] pointsBelow) {
 		for (int i=0; i<pointsBelow.length; i++) {
 			if (canvas.getElementAt(pointsBelow[i].x, pointsBelow[i].y)!=null){
@@ -167,24 +166,28 @@ public class RedTurtle extends BadGuy {
 
 	public void setTurtleToStoppedShellMode(Mario mario) {
 		stopped = true;
-		mario.hitPlatformVertical = true;//mario should treat red turtle like platform at first, this will make him stop moving down
 		setImageAndRelocate(redTurtleSpinning1Image);
 		spinningStage = SPINNING_STAGE.STAGE_1;
 		mario.hop();
 	}
 
+
 	public void jumpedOnByBigMario(Mario mario) {//TODO need to add luigi (mario is passed as parameter so luigi could be passed as well cant use static mario when luigi will exist)
 		if (shellMode) {
 			if (!stopped) {
-				//mario jumps in spinning turtle, turtle should stop
-				System.out.println("mario jumps in spinning turtle, turtle should stop");
-				setTurtleToStoppedShellMode(mario);
+				//mario jumps in spinning turtle, turtle should stop if not falling
+				if (spinningOrFalling) {
+					System.out.println("mario jumps in spinning turtle, turtle should stop");
+					setTurtleToStoppedShellMode(mario);
+				} else {
+					//mario jumps on falling turtle, he hops/jumps off but turtle keeps moving
+					mario.hop();
+				}
 			} else {
 				spinningOrFalling = true;
 				stopped = false;
 				System.out.println("turtle start spinning...");
 				startSpinning(mario.getX()+mario.getWidth()/2<this.getX()+this.getWidth()/2);
-				mario.hitPlatformVertical = true;//mario should treat red turtle like platform at first, this will make him stop moving down
 				mario.hop();
 			}
 		} else {

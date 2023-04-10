@@ -1444,6 +1444,8 @@ public class Mario extends MovingObject {
 	
 	public void hop() {
 		//called when mario jumps on a badguy and has to jump up
+		//TODO if mario needs to hopp off a trampoline-like platform this function could be called 
+		mario.hitPlatformVertical = true;//mario should treat red turtle like platform at first, this will make him stop moving down
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
