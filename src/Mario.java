@@ -8,9 +8,11 @@ import acm.graphics.GObject;
 
 public class Mario extends MovingObject {
 	/*
-	 * Idea for Mario time dilating Mario the time slows down
+	 *TODO Idea for Mario time dilating Mario the time slows down
 	 * modify the global variables that govern the speed of that object
-	 *
+	 *TODO mario needs to be able to slide off and jump off platform when falling on them from the side
+	 *TODO so if mario is !wayUpOrWayDown and isJumping and inContactWith(Platform, horizontalOrVertical==true) and user hits jump then he must jump off in opposite direction
+	 *TODO this will let mario be able to come back up from falling between two platforms
 	 */
 	private Image smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage,
 	smallMarioRightWalkingImage, smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage,
@@ -84,7 +86,7 @@ public class Mario extends MovingObject {
 	public static int numTimesToggleVisibility = 12;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
 	private static int maxHeightOfJump = 75;//max num times move function is called on way up of jump (move(0, -fallDy)
-
+	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image marioDeadImage,
@@ -475,7 +477,6 @@ public class Mario extends MovingObject {
 				//int dy = 10;
 
 				if (isJumping) {
-
 					return;
 				}
 				if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
@@ -1449,7 +1450,9 @@ public class Mario extends MovingObject {
 				///try {Thread.sleep(300);} catch (Exception e) {e.printStackTrace();}
 				while (isJumping) {}
 				System.out.println("Hopping off bad guy");
+				//jumpingOnTurtle = true;
 				jump();
+				//jumpingOnTurtle = false;
 			}
 		});  
 		t1.start();

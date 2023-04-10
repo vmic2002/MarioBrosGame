@@ -45,6 +45,7 @@ public class MyKeyListener implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		if (!mario.alive) return;
 		if (mario.goingIntoPipe) return;
+		//if (mario.jumpingOnTurtle) System.exit(1);;
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT) {
 			mario.movingRight = false;

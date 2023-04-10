@@ -8,9 +8,9 @@ public class RedTurtle extends BadGuy {
 	private static Image redTurtleSpinning1Image, redTurtleSpinning2Image, 
 	redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,
 	redTurtleStandingRightImage, redTurtleWalkingLeftImage, redTurtleWalkingRightImage;
-	private static int WALKING_FREQUENCY = 3;//>0 num times move function is called before red turtle toggles walking/standing
+	private static final int WALKING_FREQUENCY = 3;//>0 num times move function is called before red turtle toggles walking/standing
 	private int walkingFrequency;
-	private static int SPINNING_FREQUENCY = 2;//>0
+	private static final int SPINNING_FREQUENCY = 2;//>0
 	private int spinningFrequency;
 	private boolean rightOrLeft;//used when !shellMode 
 	private boolean standingOrWalking;
@@ -36,7 +36,7 @@ public class RedTurtle extends BadGuy {
 		rightOrLeft = true;
 		standingOrWalking = true;
 		walkingFrequency = 0;
-		dx = MovingObject.moveDx*0.9;
+		dx = MovingObject.moveDx*0.7;
 		numMovesToReachEdge = ((int) ((width-this.getWidth())/dx));
 		shellMode = false;
 	}
@@ -70,16 +70,17 @@ public class RedTurtle extends BadGuy {
 						alive = false;
 						break;
 					}
-					double newX = dx>0?getX()+getWidth()+3.0*dx:getX()+2.0*dx;
+					double newX = dx>0?getX()+getWidth()+2.0*dx:getX()+2.0*dx;
 					Point[] pointsSide = new Point[] {
+							new Point(newX, getY()+getHeight()*0.2),
 							new Point(newX, getY()+getHeight()*0.5),
 							new Point(newX, getY()+getHeight()*0.9)//,
 							//new Point(newX, getY()+getHeight())
 					};
-					double newY = getY()+getHeight()+2*DY;
+					double newY = getY()+getHeight()+1.4*DY;
 					Point[] pointsBelow = new Point[] {
-							new Point(newX ,newY),
-							new Point(getX()+getWidth()/2,newY)
+							new Point(getX()+getWidth()*0.3 ,newY),
+							new Point(getX()+getWidth()*0.7,newY)
 					}; 
 					if (spinningOrFalling) {
 						if (nothingUnder(pointsBelow)) {
@@ -106,7 +107,7 @@ public class RedTurtle extends BadGuy {
 						inContactWith(x, true);
 						if (previousPointWorked) break;
 					}
-
+					//move(dx, dy);
 					//if (!alive || stopped) break;
 					spinningFrequency++;
 					if (spinningFrequency==SPINNING_FREQUENCY) {
@@ -143,7 +144,8 @@ public class RedTurtle extends BadGuy {
 	@Override
 	public void inContactWith(GObject x, boolean horizontalOrVertical) {
 		//called to check if hitting platform from the side to bounce off
-		if (x instanceof Platform && horizontalOrVertical) {
+		if ((x instanceof Platform || x instanceof RedTurtle) && horizontalOrVertical) {
+			//red turtles bounce off each other and platforms
 			dx = -dx;
 			System.out.println("CHANGE DIRECTIONS\n\n\n\n");
 			this.sendToFront();//FOR TESTING
