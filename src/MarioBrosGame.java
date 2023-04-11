@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -472,7 +473,41 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
-		MovingObject.setCanvas(this.getGCanvas(), mario);
+		//TODO ADD LUIGI SPIRTES FOR NOW LUIGI IS IDENTICAL TO MARIO
+		Luigi luigi = new Luigi(smallMarioLeftImage,smallMarioRightImage,
+				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
+				smallMarioRightJumpingImage, marioDeadImage,
+
+				bigMarioLeftImage, bigMarioRightImage,
+				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage,
+				bigMarioRightJumpingImage, bigMarioLeftFireImage, bigMarioRightFireImage, bigMarioLeftWalkingFireImage
+				, bigMarioRightWalkingFireImage,bigMarioLeftJumpingFireImage, bigMarioRightJumpingFireImage,
+				bigMarioLeftJumpingDownImage, bigMarioRightJumpingDownImage,
+
+				bigMarioLeftJumpingDownFireImage, bigMarioRightJumpingDownFireImage,
+				bigMarioLeftCrouchingImage, bigMarioRightCrouchingImage,
+				bigMarioLeftCrouchingFireImage, bigMarioRightCrouchingFireImage,
+				bigMarioLeftFireShooting1Image, bigMarioLeftFireShooting2Image,
+				bigMarioRightFireShooting1Image, bigMarioRightFireShooting2Image,
+				bigMarioLeftJumpingFireShooting1Image, bigMarioLeftJumpingFireShooting2Image,
+				bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
+				bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
+
+				bigMarioLeftCatImage, bigMarioRightCatImage, bigMarioLeftWakingCatImage, bigMarioRightWalkingCatImage,
+				bigMarioLeftJumpingCatImage, bigMarioRightJumpingCatImage, bigMarioRightJumpingDownCatImage,
+				bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage, bigMarioRightCrouchingCatImage,
+				bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTal1Image, bigMarioLeftJumpingCatTail2Image,
+				bigMarioRightJumpingCatTal2Image,
+				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
+				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
+				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage);
+		int numCharacters = 2;
+		Mario[] characters = new Mario[numCharacters];
+		characters[0] = mario;
+		characters[1] = luigi;
+		//TODO add luigi to characters
+		//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
+		MovingObject.setCanvas(this.getGCanvas(), mario.scalingFactor, characters);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
 				redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,
 				redTurtleStandingRightImage, redTurtleWalkingLeftImage, redTurtleWalkingRightImage);
@@ -498,11 +533,11 @@ public class MarioBrosGame extends GraphicsProgram {
 				grassRightImage,grassMiddleImage, 
 				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
 				pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
-				mario,
+				mario.scalingFactor,
 				this.getGCanvas());
 		setSize(WIDTH,HEIGHT);
-		addKeyListeners(new MyKeyListener(mario));
-		LevelController.playLevel1();
+		addKeyListeners(new MyKeyListener(characters));
+		LevelController.playLevel("1");
 		//LevelController.playLevel2();
 	}
 

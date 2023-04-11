@@ -14,7 +14,6 @@ public class LevelController {
 	pipeDownTopLeftImage, pipeDownTopRightImage;
 	private static GCanvas canvas;
 	public static Level currLevel;//only one currLevel mario is playing at a time
-	public static Mario mario;
 	public static double space;
 	public static double xCounter;//used for adding images to a level and keeping track of the level's width
 	public enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
@@ -24,7 +23,7 @@ public class LevelController {
 			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
 			Image pipeUpTopLeftImage1, Image pipeUpTopRightImage1, Image pipeDownMiddleLeftImage1, Image pipeDownMiddleRightImage1,
 			Image pipeDownTopLeftImage1, Image pipeDownTopRightImage1, Image pipeUpMiddleLeftImage1, Image pipeUpMiddleRightImage1,
-			Mario mario1,
+			double scalingFactor,
 			GCanvas canvas1) {
 		grassLeftTopImage = grassLeftTopImage1;
 		grassRightTopImage = grassRightTopImage1;
@@ -40,9 +39,8 @@ public class LevelController {
 		pipeDownTopRightImage = pipeDownTopRightImage1;
 		pipeUpMiddleLeftImage = pipeUpMiddleLeftImage1;
 		pipeUpMiddleRightImage = pipeUpMiddleRightImage1;
-		mario = mario1;
 		canvas = canvas1;
-		space = mario.scalingFactor*10.0;
+		space = scalingFactor*10.0;
 	}
 
 	public static void endCurrentLevel() {
@@ -67,15 +65,15 @@ public class LevelController {
 
 		try {
 			for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
-					for (GImage image : l.part) {
-						if (image instanceof MovingObject) {
-							((MovingObject) image).alive = false;
-							//this fixes bug where power up from previous level is removed from canvas
-							//but when restarting level when mario walks into it it still affects him
-							//or dead fireball to kill turtles etc
-							System.out.println("pow`er up/fireball dead");
-						}
+				for (GImage image : l.part) {
+					if (image instanceof MovingObject) {
+						((MovingObject) image).alive = false;
+						//this fixes bug where power up from previous level is removed from canvas
+						//but when restarting level when mario walks into it it still affects him
+						//or dead fireball to kill turtles etc
+						System.out.println("pow`er up/fireball dead");
 					}
+				}
 			}
 		} catch(Exception e) {
 			System.out.println("Error occured when ending current level and looping through dynamic level parts");
@@ -91,13 +89,14 @@ public class LevelController {
 
 	public static void playLevel(String subLevelID) {
 		System.out.println("STARTING LEVEL "+subLevelID);
-		endCurrentLevel();
+		if (currLevel!=null) endCurrentLevel();
 		canvas.removeAll();
 		if (subLevelID.equals("1a")) playLevel1a();
 		else if (subLevelID.equals("1b")) playLevel1b();
 		else if (subLevelID.equals("1")) playLevel1();
 		else if (subLevelID.equals("2")) playLevel2();
-		else System.out.println("NO SUBLEVEL WITH ID "+subLevelID);
+		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
+		addCharactersAtStartOfLevel();
 	}
 
 
@@ -141,7 +140,7 @@ public class LevelController {
 		images.add(g2);
 		//double height = g1.getHeight();
 		double width = w*g1.getWidth(); 
-		
+
 		if (type == TURTLE_TYPE.RED) {
 			//TODO need to do green turtles too
 			RedTurtle turtle = new RedTurtle(width);
@@ -151,7 +150,7 @@ public class LevelController {
 		}
 		xCounter += width;
 		levelParts.add(new LevelPart(images));
-		
+
 		return width;
 	}
 
@@ -302,7 +301,7 @@ public class LevelController {
 		//to have white space in between level parts need to increment xCounter by width of whitespace
 		//at the end of function XCounter will be the width of the level
 
-		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;//need to re initialize xCounter to 0 at the beginning of each level
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(3, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
@@ -322,11 +321,11 @@ public class LevelController {
 		spawnWhiteSpace(2);
 		Level level1 = new Level("1", levelParts, xCounter);
 		currLevel = level1;//set currLevel
-		mario.fall(5);
+		//mario.fall(5);
 	}
 
 	public static void playLevel2() {
-		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(4, 2, TURTLE_TYPE.RED, levelParts);
@@ -356,11 +355,11 @@ public class LevelController {
 		spawnWhiteSpace(1);
 		Level level2 = new Level("2", levelParts, xCounter);
 		currLevel = level2;//set currLevel
-		mario.fall(5);
+		//mario.fall(5);
 	}
 
 	public static void playLevel1a() {
-		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnGrassMountain(20, 3, TURTLE_TYPE.RED, levelParts);
@@ -369,11 +368,11 @@ public class LevelController {
 		spawnUpAndDownPipes(4, "1b", 3, "2", levelParts);
 		Level level1a = new Level("1a", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
-		mario.fall(5);
+		//	mario.fall(5);
 	}
-	
+
 	public static void playLevel1b() {
-		canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
@@ -383,6 +382,31 @@ public class LevelController {
 		spawnWhiteSpace(2);
 		Level level1a = new Level("1b", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
-		mario.fall(5);
+		//mario.fall(5);
+
+	}
+
+
+	public static void addCharactersAtStartOfLevel() {
+		//for now this function drops all characters at top left of level
+		//and makes them fall at the same time
+		for (int i=0; i<MovingObject.characters.length; i++) {
+			Mario m = MovingObject.characters[i];
+			canvas.add(m, 1.5*i*m.getWidth(), 0);
+			Thread t1 = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					m.setToAlive();//this is in case another mario died after the first mario who died and is still going up/down in dead sprite 
+					if (m.bigOrSmall) m.setToJumpingDown(true);
+					m.fall(5);
+					if (!m.isCrouching ) {
+						m.lookingRightOrLeft = true;
+						m.lookInCorrectDirection(true);//sets back to standing sprite looking in correct direction
+					}
+					m.isJumping = false;
+				}
+			});
+			t1.start();
+		}
 	}
 }

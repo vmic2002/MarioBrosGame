@@ -37,12 +37,27 @@ public abstract class ShootingFlower extends BadGuy {
 	}
 	public abstract Point[] getPoints();
 
+	public Mario getClosestMario() {
+		int index = 0;
+		double smallestDistance = Double.MAX_VALUE;
+		for (int i=0; i<MovingObject.characters.length; i++) {
+			Mario m = MovingObject.characters[i];
+			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));
+			if (d<smallestDistance) {
+				index = i;
+				smallestDistance = d;
+			}
+		}
+		return MovingObject.characters[index];
+	}
+
 	public void shootMario() {
 		//flower needs to locate mario and shoot fireball at him (in a straight line)
 		//TODO could add sound when shooting flower shoot fireball at mario
+		Mario mario = getClosestMario();
 		if  (Math.abs(getX()-mario.getX())>canvas.getWidth()*1) {return;}//only flowers on screen shoot at mario
 		boolean rightOrLeft;
-		boolean upOrDown = mario.getY()<getY()+MovingObject.moveDx;
+		boolean upOrDown = mario.getY()<getY()+MovingObject.scalingFactor;
 		if (mario.getX()<getX()) {
 			rightOrLeft = false;
 		} else {
@@ -53,14 +68,14 @@ public abstract class ShootingFlower extends BadGuy {
 		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
 		//need to open the mouth of the shooting flower
 		openMouth(upOrDown, rightOrLeft);
-		double fireBallX = rightOrLeft?getX()+getWidth()+MovingObject.moveDx*1.0:getX()-MovingObject.moveDx*5.0;
-		double fireBallY = (this instanceof DownShootingFlower)?getY()+getHeight()-(upOrDown?9.0:1.0)*MovingObject.moveDx:
-			getY()+(upOrDown?0.0:5.0)*MovingObject.moveDx;
+		double fireBallX = rightOrLeft?getX()+getWidth()+MovingObject.scalingFactor*1.0:getX()-MovingObject.scalingFactor*5.0;
+		double fireBallY = (this instanceof DownShootingFlower)?getY()+getHeight()-(upOrDown?9.0:1.0)*MovingObject.scalingFactor:
+			getY()+(upOrDown?0.0:5.0)*MovingObject.scalingFactor;
 		if (!alive) {
 			closeMouth(upOrDown, rightOrLeft);
 			return;
 		};
-		Factory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft);
+		Factory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
 		//factory calls the fireball function to move the fireball towards mario (in a straight line)
 		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
 		closeMouth(upOrDown, rightOrLeft);		

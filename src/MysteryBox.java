@@ -73,7 +73,7 @@ public class MysteryBox extends Platform {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				double dy = -MovingObject.moveDx;
+				double dy = -MovingObject.scalingFactor;
 				move(dy);//move up
 				dy = -dy;
 				move(dy);//move down

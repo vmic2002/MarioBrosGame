@@ -34,7 +34,7 @@ public class Mario extends MovingObject {
 	bigMarioCatTail1Image, bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 	smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage;
 
-	private boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
+	public boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
 	public boolean wayUpOrWayDown =  false;//if isJumping is false wayUpOrDown's value is meaningless
@@ -82,10 +82,10 @@ public class Mario extends MovingObject {
 	public double scalingFactor;//determined by size of images (like moveDx and fallDy)
 	public boolean flashing = false;//true when mario is hit by BadGuy and becomes false after mario stops flashing
 	//while mario is flashing he cannot die from a bad guy, but he can still die by falling to bottom of screen
-	public static int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
-	public static int numTimesToggleVisibility = 12;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
-	public static int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
-	private static int maxHeightOfJump = 75;//max num times move function is called on way up of jump (move(0, -fallDy)
+	public static final int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
+	public static final int numTimesToggleVisibility = 12;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
+	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
+	private static final int maxHeightOfJump = 75;//max num times move function is called on way up of jump (move(0, -fallDy)
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
@@ -189,9 +189,14 @@ public class Mario extends MovingObject {
 		super.move(dx, dy);
 	}
 
+	@Override
 	public void move(double dx, double dy) {
 		//moves mario or current level mario is playing depending on if
 		//mario goes too much to the corners of the screen
+		//TODO BUG BECAUSE OF MULTIPLE MARIOS, THIS FUNCTION ASSUMED MARIO WOULD ALWAYS BE ON SCREEN FOR NOW
+		//TODO OTHER MARIOS CAN BE LEFT OFF SCREEN IF MOVING MARIO MOVES THE LEVEL SO MUCH
+		
+		
 		double n = 3;
 		//1/n of screen on each side mario cannot walk into because level will move
 		if (dx<0 && getX()>=(1/n)*canvas.getWidth() || dx>0 && getX()+getWidth()<=((n-1)/n)*canvas.getWidth()
@@ -199,7 +204,7 @@ public class Mario extends MovingObject {
 				|| dy<0 &&	getY()>=(1/n)*canvas.getHeight()) {
 			if (dy>0 && LevelController.currLevel.yBaseLine>0) {
 				//see LevelController baseLine documentation
-				LevelController.currLevel.moveLevel(-dx, -dy);
+				LevelController.currLevel.moveLevel(-dx, -dy, this);
 				//System.out.println("XXXXX");
 				return;
 			}
@@ -225,31 +230,48 @@ public class Mario extends MovingObject {
 				marioDied();
 				return;
 			}
-			LevelController.currLevel.moveLevel(-dx, -dy);
+			LevelController.currLevel.moveLevel(-dx, -dy, this);
 			//System.out.println("YYYYY");
 		}
 	}
 
+	public static boolean anotherMarioAlreadyDied(Mario mario) {
+		//if 2 or more marios are playing at the same time and one dies
+		//after another mario already died, then we dont want to restart the current level twice or more
+		for (Mario m: MovingObject.characters) {
+			if (m!=mario && !m.alive) return true;
+		}
+		return false;
+	}
+	
 	public void marioDied() {
 		alive = false;
 		movingRight = false;//in case user releases left/right keys right after mario dies
 		movingLeft = false;
-		SoundController.playMarioDeathSound();
+		boolean anotherMarioAlreadyDied = anotherMarioAlreadyDied(this); 
+		if (!anotherMarioAlreadyDied) SoundController.playMarioDeathSound();
 		setImageAndRelocate(marioDeadImage);
 		sendToFront();
 		try {
+			//alive can be set to true in LevelController.addCharactersAtStartOfLevel
+			//if mario1 dies first and as he is in dead sprite mario2 dies
+			//then mario2 does not have time to finish his jump in dead sprite
+			//because mario1's death will end the current level
 			for (int i=0; i<60; i++) {
+				if (alive) return;
 				super.move(0,-fallDy);
 				Thread.sleep(15);
 			}
 			Thread.sleep(150);
 			double maxTimeFallDown = 1500;
 			while (maxTimeFallDown>0 && getY()+getHeight()+fallDy<=canvas.getHeight()) {
+				if (alive) return;
 				super.move(0,fallDy);
 				Thread.sleep(15);
 				maxTimeFallDown -= 15;
 			}
 			while (maxTimeFallDown>0) {
+				if (alive) return;
 				Thread.sleep(15);
 				maxTimeFallDown -= 15;
 			}
@@ -257,12 +279,19 @@ public class Mario extends MovingObject {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		if (alive) return;
+		setToAlive();
+		if (!anotherMarioAlreadyDied) LevelController.restartCurrentLevel();//when mario dies restart the level
+	}
+	
+	public void setToAlive() {
 		alive = true;
+		flashing = false;
+		setVisible(true);
 		goingIntoPipe = false;
 		setToSmall();//need to change mario from dead sprite to small sprite
 		lookingRightOrLeft = true;//mario should be looking right
 		lookInCorrectDirection(true);
-		LevelController.restartCurrentLevel();//when mario dies restart the level
 	}
 
 	public void setToCat() {
@@ -424,6 +453,8 @@ public class Mario extends MovingObject {
 
 	public void checkCanGoDownIntoPipe() {
 		//need to check if mario is on top of a PipePart
+		//TODO ALSO BUG WHERE MULTIPLE MARIO CAN GO INTO PIPE AT SAME TIME
+		//TODO check to see if another mario is already going down a pipe
 		if (goingIntoPipe) return;
 		if (!isJumping) {
 			GObject o = canvas.getElementAt(getX()+getWidth()/2, getY()+getHeight()+20);
@@ -574,7 +605,7 @@ public class Mario extends MovingObject {
 		for (GObject x : o) {
 			System.out.println("here");
 			inContactWith(x, false);
-			
+
 			if (hitPlatformVertical) return;
 		}
 	}
@@ -1057,7 +1088,7 @@ public class Mario extends MovingObject {
 		//flashingTime
 		try {
 			for (int i=0; i<numTimesToggleVisibility; i++) {
-				if (!alive) {
+				if (!alive || !flashing) {
 					setVisible(true);
 					flashing = false;
 					return;//if mario gets hit (is flashing) and then falls to bottom of screen he shouldnt flash anymore
@@ -1082,7 +1113,7 @@ public class Mario extends MovingObject {
 
 		SoundController.playMarioGoesIntoPipeSound();
 		setToPipe();
-
+		this.sendToBack();
 		double centerXPipe = o instanceof LeftPipePart?o.getX()+o.getWidth():o.getX(); 
 		double marioNewX = centerXPipe-getWidth()/2; //to recenter mario so he goes into the center of the pipe
 
@@ -1441,11 +1472,11 @@ public class Mario extends MovingObject {
 		t1.start();
 	}
 
-	
+
 	public void hop() {
 		//called when mario jumps on a badguy and has to jump up
 		//TODO if mario needs to hopp off a trampoline-like platform this function could be called 
-		mario.hitPlatformVertical = true;//mario should treat red turtle like platform at first, this will make him stop moving down
+		hitPlatformVertical = true;//mario should treat red turtle like platform at first, this will make him stop moving down
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1459,8 +1490,8 @@ public class Mario extends MovingObject {
 		});  
 		t1.start();
 	}
-	
-	
+
+
 	@Override
 	public void move() {
 		// this is for leaf, mushroom, etc not for mario

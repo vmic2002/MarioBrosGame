@@ -8,8 +8,8 @@ public class Mushroom extends PowerUp {
 	private static Image mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
-	private static final double DY = MovingObject.moveDx;
-	private static final double DX = MovingObject.moveDx*0.7;
+	private static final double DY = MovingObject.scalingFactor;
+	private static final double DX = MovingObject.scalingFactor*0.7;
 	private static final int pauseTime = 10;
 	private double dx;
 	private double dy;

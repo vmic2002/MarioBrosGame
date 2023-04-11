@@ -41,8 +41,9 @@ public class Level {
 		System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 		//TODO bug where dynamic level parts is -1 at some point, maybe concurrency bug
 	}
-
-	public void moveLevel(double dx, double dy) {
+	//@param mario is mario who called this function, so every other Mario in 
+	//MovingObject.characters needs to move with level
+	public void moveLevel(double dx, double dy, Mario mario) {
 		//TODO this function works but does not scale when a level is long need to only move the level parts that are visible on screen
 		//this level could "scale" using pipes to connect different sub levels so each level doesnt become too long to move at once
 		Thread t1 = new Thread(new Runnable() {
@@ -53,6 +54,9 @@ public class Level {
 				}
 				for (DynamicLevelPart d : dynamicLevelParts.values()){
 					d.move(dx, dy);
+				}
+				for (Mario m : MovingObject.characters) {
+					if (m!=mario) m.moveOnlyMario(dx, dy);
 				}
 				xBaseLine+=dx;
 				yBaseLine+=dy;

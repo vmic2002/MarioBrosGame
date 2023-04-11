@@ -28,7 +28,7 @@ public abstract class Factory {
 				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
-					powerUp.move(0, -MovingObject.moveDx/2.0);
+					powerUp.move(0, -MovingObject.scalingFactor/2.0);
 					try {
 						Thread.sleep(15);
 					} catch (Exception e) {
@@ -42,14 +42,14 @@ public abstract class Factory {
 		t1.start();
 	}
 
-	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft) {
+	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
 		//called when flower in pipe shoots a fireball at mario
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
-				fireBall.shootAtMario();
+				fireBall.shootAtMario(mario);
 			}
 		});
 		t1.start();

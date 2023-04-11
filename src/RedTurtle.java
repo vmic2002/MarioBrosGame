@@ -16,7 +16,7 @@ public class RedTurtle extends BadGuy {
 	private boolean standingOrWalking;
 	private double dx;
 	private double dy;//used when !spinningOrFalling
-	private static final double DY = MovingObject.moveDx*0.9;
+	private static final double DY = MovingObject.scalingFactor*0.9;
 	private int numMovesToReachEdge;//num moves until turtle reaches edge of platform and needs to turn around
 	public boolean shellMode;//true if in shell (not standing)
 	public boolean spinningOrFalling;//true if spinning (shell mode and moving on platform)
@@ -36,7 +36,7 @@ public class RedTurtle extends BadGuy {
 		rightOrLeft = true;
 		standingOrWalking = true;
 		walkingFrequency = 0;
-		dx = MovingObject.moveDx*0.7;
+		dx = MovingObject.scalingFactor*0.7;
 		numMovesToReachEdge = ((int) ((width-this.getWidth())/dx));
 		shellMode = false;
 	}
@@ -237,7 +237,8 @@ public class RedTurtle extends BadGuy {
 				System.out.println("In red turtle move function");
 				while (alive) {
 					for (int i=0; i<numMovesToReachEdge && !shellMode; i++) {
-						if (!mario.flashing && alive) {
+						//if (!mario.flashing && alive) {
+						if (alive) {
 							double newX = rightOrLeft?getX()+getWidth()+2*dx:getX()+4*dx;
 							Point p1  = new Point(newX,getY()+getHeight()*0.8);
 							Point p2  = new Point(newX,getY()+getHeight()*0.5);
@@ -245,13 +246,14 @@ public class RedTurtle extends BadGuy {
 							Point[] arr = new Point[]{p1,p2,p3};
 							ArrayList<GObject> o = checkAtPositions(arr);
 							for (GObject x : o) {
-								if (mario.flashing || !alive) break;
+								
 								//super.inContactWith
 								if (x instanceof Mario) {
+									if (((Mario) x).flashing || !alive) break;
 									((Mario) x).marioHit();
 								}
 							}
-						}
+						} else break;
 						if (walkingFrequency==WALKING_FREQUENCY) toggleStandingOrWalking();
 						move(dx, 0);
 
