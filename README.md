@@ -29,8 +29,16 @@ The *playMarioGame.sh* file is a bash script that will run MarioBrosGame from th
 
 Use the arrow keys to move and `F` to shoot fire balls or swing Mario's tail.
 
-## Quick preview
-This video was recorded on Feb 27th, 2023 after the 18th commit.
+## Quick preview 1
+This video was recorded on Feb 27th, 2023 after the 18th commit:
 
 https://user-images.githubusercontent.com/89990471/221724952-f823573c-0560-49b2-9ba5-48deaf7d2c8b.mov
+
+
+
+## Quick preview 2
+This video was recorded on April 12th, 2023 after the 65th commit:
+
+https://user-images.githubusercontent.com/89990471/231574900-150501af-47b7-4d54-91ab-eea96760c24b.mp4
+
 
