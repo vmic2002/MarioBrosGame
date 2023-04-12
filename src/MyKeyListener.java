@@ -1,6 +1,13 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+/*
+
+ * TODO when more than one mario are playing in same level (mario and luigi for example)
+ * TODO when user1 will hold down a key and then user2 holds down another one,
+ * TODO user2 is canceling whaterver user1 was doing (spamming fireballs as firemario or swinging tail as cat mario)
+ * TODO could fix this using while (key not released) instead of while (key pressed) 
+ */
 public class MyKeyListener implements KeyListener {
 	private Mario[] characters;
 	public MyKeyListener(Mario[] characters) {
@@ -75,11 +82,7 @@ public class MyKeyListener implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-
-		//if (mario.jumpingOnTurtle) System.exit(1);;
-
 		int keyCode = e.getKeyCode();
-
 		if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT ||
 				keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_UP) {
 			//characters[0] is manipulated by these keys
@@ -127,6 +130,5 @@ public class MyKeyListener implements KeyListener {
 				mario.wayUpOrWayDown = false;
 			}
 		}
-
 	}
 }

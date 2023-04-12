@@ -20,8 +20,8 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * and select size 320x320 in Preview
 	 * 
 	 * 
-	 * small mario has height 160 pixels
-	 * big mario has height 320 pixels
+	 * small mario has height 80 pixels
+	 * big mario has height 160 pixels
 	 * 
 	 * TODO possible idea mario could have laser eyes (mario or firemario
 	 * pictures edited to a different color.) mario would be able to move while shooting his laser eyes
@@ -47,7 +47,6 @@ public class MarioBrosGame extends GraphicsProgram {
 
 		String imageDirectory = "Images";
 		//String imageDirectory = "ScaledImages";
-
 
 		SoundController.setPrefix(prefix);
 
@@ -90,14 +89,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		String bigMarioRightJumpingFireShooting1ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireShooting1Image.png";
 		String bigMarioRightJumpingFireShooting2ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireShooting2Image.png";
 		String bigMarioRightJumpingFireShooting3ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireShooting3Image.png";
-		String leftFireBall1ImagePath = prefix+imageDirectory+"/leftFireBall1.png";
-		String rightFireBall1ImagePath = prefix+imageDirectory+"/rightFireBall1.png";
-		String leftFireBall2ImagePath = prefix+imageDirectory+"/leftFireBall2.png";
-		String rightFireBall2ImagePath = prefix+imageDirectory+"/rightFireBall2.png";
-		String leftFireBall3ImagePath = prefix+imageDirectory+"/leftFireBall3.png";
-		String rightFireBall3ImagePath = prefix+imageDirectory+"/rightFireBall3.png";
-		String leftFireBall4ImagePath = prefix+imageDirectory+"/leftFireBall4.png";
-		String rightFireBall4ImagePath = prefix+imageDirectory+"/rightFireBall4.png";
 
 		String bigMarioLeftCatImagePath = prefix+imageDirectory+"/bigMarioLeftCatImage.png";
 		String bigMarioRightCatImagePath = prefix+imageDirectory+"/bigMarioRightCatImage.png";
@@ -118,6 +109,60 @@ public class MarioBrosGame extends GraphicsProgram {
 		String bigMarioRightCatTail2ImagePath = prefix+imageDirectory+"/bigMarioRightTail2.png";
 		String bigMarioCatTail3ImagePath = prefix+imageDirectory+"/bigMarioTail3.png";
 
+		String smallMarioPipeImagePath = prefix+imageDirectory+"/smallMarioPipe.png";
+		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
+		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
+
+		String smallLuigiLeftImagePath = prefix+imageDirectory+"/smallLuigiLeftImage.png";
+		String smallLuigiRightImagePath = prefix+imageDirectory+"/smallLuigiRightImage.png";
+		String smallLuigiRightWalkingImagePath = prefix+imageDirectory+"/smallLuigiRightWalkingImage.png";
+		String smallLuigiLeftWalkingImagePath = prefix+imageDirectory+"/smallLuigiLeftWalkingImage.png";
+		String smallLuigiLeftJumpingImagePath = prefix+imageDirectory+"/smallLuigiLeftJumpingImage.png";
+		String smallLuigiRightJumpingImagePath = prefix+imageDirectory+"/smallLuigiLRightJumpingImage.png";
+		String luigiDeadImagePath = prefix+imageDirectory+"/luigiDeadImage.png";
+
+		String bigLuigiLeftImagePath = prefix+imageDirectory+"/bigLuigiLeftImage.png";
+		String bigLuigiRightImagePath = prefix+imageDirectory+"/bigLuigiRightImage.png";
+		String bigLuigiRightWalkingImagePath = prefix+imageDirectory+"/bigLuigiRightWalkingImage.png";
+		String bigLuigiLeftWalkingImagePath = prefix+imageDirectory+"/bigLuigiLeftWalkingImage.png";
+		String bigLuigiLeftJumpingImagePath = prefix+imageDirectory+"/bigLuigiLeftJumpingImage.png";
+		String bigLuigiRightJumpingImagePath = prefix+imageDirectory+"/bigLuigiRightJumpingImage.png";
+		String bigLuigiLeftJumpingDownImagePath = prefix+imageDirectory+"/bigLuigiLeftJumpingDownImage.png";
+		String bigLuigiRightJumpingDownImagePath = prefix+imageDirectory+"/bigLuigiRightJumpingDownImage.png";
+		String bigLuigiLeftCrouchingImagePath = prefix+imageDirectory+"/bigLuigiLeftCrouchingImage.png";
+		String bigLuigiRightCrouchingImagePath = prefix+imageDirectory+"/bigLuigiRightCrouchingImage.png";
+
+		String bigLuigiLeftCatImagePath = prefix+imageDirectory+"/catLuigiLeftImage.png";
+		String bigLuigiRightCatImagePath = prefix+imageDirectory+"/catLuigiRightImage.png";
+		String bigLuigiLeftWakingCatImagePath = prefix+imageDirectory+"/catLuigiLeftWalkingImage.png";
+		String bigLuigiRightWalkingCatImagePath = prefix+imageDirectory+"/catLuigiRightWalkingImage.png";
+		String bigLuigiLeftJumpingCatImagePath = prefix+imageDirectory+"/catLuigiLeftJumpingImage.png";
+		String bigLuigiRightJumpingCatImagePath = prefix+imageDirectory+"/catLuigiRightJumpingImage.png";
+		String bigLuigiRightJumpingDownCatImagePath = prefix+imageDirectory+"/catLuigiRightJumpingDownImage.png";
+		String bigLuigiLeftJumpingDownCatImagePath = prefix+imageDirectory+"/catLuigiLeftJumpingDownImage.png";
+		String bigLuigiLeftCrouchingCatImagePath = prefix+imageDirectory+"/catLuigiLeftCrouchingImage.png";
+		String bigLuigiRightCrouchingCatImagePath = prefix+imageDirectory+"/catLuigiRightCrouchingImage.png";
+		String bigLuigiLeftJumpingCatTail1ImagePath = prefix+imageDirectory+"/catLuigiLeftJumpingTail1Image.png";
+		String bigLuigiRightJumpingCatTal1ImagePath = prefix+imageDirectory+"/catLuigiRightJumpingTail1Image.png";
+		String bigLuigiLeftJumpingCatTail2ImagePath = prefix+imageDirectory+"/catLuigiLeftJumpingTail2Image.png";
+		String bigLuigiRightJumpingCatTail2ImagePath = prefix+imageDirectory+"/catLuigiRightJumpingTail2Image.png";
+		String bigLuigiCatTail1ImagePath = prefix+imageDirectory+"/catLuigiPipeImage.png";
+		String bigLuigiLeftCatTail2ImagePath = prefix+imageDirectory+"/catLuigiLeftTail2Image.png";
+		String bigLuigiRightCatTail2ImagePath = prefix+imageDirectory+"/catLuigiRightTail2Image.png";
+		String bigLuigiCatTail3ImagePath = prefix+imageDirectory+"/catLuigiTail3.png";
+
+		String smallLuigiPipeImagePath = prefix+imageDirectory+"/smallLuigiPipe.png";
+		String bigLuigiPipeImagePath = prefix+imageDirectory+"/bigLuigiPipe.png";		
+
+		String leftFireBall1ImagePath = prefix+imageDirectory+"/leftFireBall1.png";
+		String rightFireBall1ImagePath = prefix+imageDirectory+"/rightFireBall1.png";
+		String leftFireBall2ImagePath = prefix+imageDirectory+"/leftFireBall2.png";
+		String rightFireBall2ImagePath = prefix+imageDirectory+"/rightFireBall2.png";
+		String leftFireBall3ImagePath = prefix+imageDirectory+"/leftFireBall3.png";
+		String rightFireBall3ImagePath = prefix+imageDirectory+"/rightFireBall3.png";
+		String leftFireBall4ImagePath = prefix+imageDirectory+"/leftFireBall4.png";
+		String rightFireBall4ImagePath = prefix+imageDirectory+"/rightFireBall4.png";
+
 		String mushroomImagePath = prefix+imageDirectory+"/mushroomImage.png";
 		String fireFlowerImagePath = prefix+imageDirectory+"/fireFlowerImage.png";
 		String leftLeafImagePath = prefix+imageDirectory+"/leftLeafImage.png";
@@ -136,7 +181,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		String grassRightImagePath = prefix+imageDirectory+"/grassRightImage.png";
 		String grassMiddleImagePath = prefix+imageDirectory+"/grassMiddleImage.png";
 
-
 		String pipeUpTopLeftImagePath = prefix+imageDirectory+"/pipeUpTopLeft.png";
 		String pipeUpTopRightImagePath = prefix+imageDirectory+"/pipeUpTopRight.png";
 		String pipeDownMiddleLeftImagePath = prefix+imageDirectory+"/pipeDownMiddleLeft.png";
@@ -145,11 +189,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		String pipeDownTopRightImagePath = prefix+imageDirectory+"/pipeDownTopRight.png";
 		String pipeUpMiddleLeftImagePath = prefix+imageDirectory+"/pipeUpMiddleLeft.png";
 		String pipeUpMiddleRightImagePath = prefix+imageDirectory+"/pipeUpMiddleRight.png";
-
-
-		String smallMarioPipeImagePath = prefix+imageDirectory+"/smallMarioPipe.png";
-		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
-		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
 
 		String shootingFlowerLeftDownClosedImagePath = prefix+imageDirectory+"/shootingFlowerLeftDownClosed.png";
 		String shootingFlowerLeftDownOpenImagePath = prefix+imageDirectory+"/shootingFlowerLeftDownOpen.png";
@@ -178,7 +217,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		String redTurtleWalkingLeftImagePath = prefix+imageDirectory+"/redTurtleWalkingLeft.png";
 		String redTurtleWalkingRightImagePath = prefix+imageDirectory+"/redTurtleWalkingRight.png";
 
-
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
 		BufferedImage smallMarioRightWalkingImage = null;
@@ -186,7 +224,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage smallMarioLeftJumpingImage = null;
 		BufferedImage smallMarioRightJumpingImage = null;
 		BufferedImage marioDeadImage = null;
-
 
 		BufferedImage bigMarioLeftImage = null;
 		BufferedImage bigMarioRightImage = null;
@@ -219,14 +256,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage bigMarioRightJumpingFireShooting1Image = null;
 		BufferedImage bigMarioRightJumpingFireShooting2Image = null;
 		BufferedImage bigMarioRightJumpingFireShooting3Image = null;
-		BufferedImage leftFireBall1Image = null;
-		BufferedImage rightFireBall1Image = null;
-		BufferedImage leftFireBall2Image = null;
-		BufferedImage rightFireBall2Image = null;
-		BufferedImage leftFireBall3Image = null;
-		BufferedImage rightFireBall3Image = null;
-		BufferedImage leftFireBall4Image = null;
-		BufferedImage rightFireBall4Image = null;
 
 		BufferedImage bigMarioLeftCatImage = null;
 		BufferedImage bigMarioRightCatImage = null;
@@ -247,13 +276,64 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage bigMarioRightCatTail2Image= null;
 		BufferedImage bigMarioCatTail3Image = null;
 
+		BufferedImage smallMarioPipeImage = null;
+		BufferedImage bigMarioPipeImage = null;
+		BufferedImage fireMarioPipeImage = null;
 
+		BufferedImage smallLuigiLeftImage = null;
+		BufferedImage smallLuigiRightImage = null;
+		BufferedImage smallLuigiRightWalkingImage = null;
+		BufferedImage smallLuigiLeftWalkingImage = null;
+		BufferedImage smallLuigiLeftJumpingImage = null;
+		BufferedImage smallLuigiRightJumpingImage = null;
+		BufferedImage luigiDeadImage = null;
+
+		BufferedImage bigLuigiLeftImage = null;
+		BufferedImage bigLuigiRightImage = null;
+		BufferedImage bigLuigiRightWalkingImage = null;
+		BufferedImage bigLuigiLeftWalkingImage = null;
+		BufferedImage bigLuigiLeftJumpingImage = null;
+		BufferedImage bigLuigiRightJumpingImage = null;
+		BufferedImage bigLuigiLeftJumpingDownImage = null;
+		BufferedImage bigLuigiRightJumpingDownImage = null;
+		BufferedImage bigLuigiLeftCrouchingImage = null;
+		BufferedImage bigLuigiRightCrouchingImage = null;
+
+		BufferedImage bigLuigiLeftCatImage = null;
+		BufferedImage bigLuigiRightCatImage = null;
+		BufferedImage bigLuigiLeftWakingCatImage = null;
+		BufferedImage bigLuigiRightWalkingCatImage = null;
+		BufferedImage bigLuigiLeftJumpingCatImage = null;
+		BufferedImage bigLuigiRightJumpingCatImage = null;
+		BufferedImage bigLuigiRightJumpingDownCatImage = null;
+		BufferedImage bigLuigiLeftJumpingDownCatImage = null;
+		BufferedImage bigLuigiLeftCrouchingCatImage = null;
+		BufferedImage bigLuigiRightCrouchingCatImage = null;
+		BufferedImage bigLuigiLeftJumpingCatTail1Image = null;
+		BufferedImage bigLuigiRightJumpingCatTal1Image = null;
+		BufferedImage bigLuigiLeftJumpingCatTail2Image = null;
+		BufferedImage bigLuigiRightJumpingCatTail2Image = null;
+		BufferedImage bigLuigiCatTail1Image = null;
+		BufferedImage bigLuigiLeftCatTail2Image = null;
+		BufferedImage bigLuigiRightCatTail2Image = null;
+		BufferedImage bigLuigiCatTail3Image = null;
+
+		BufferedImage smallLuigiPipeImage = null;
+		BufferedImage bigLuigiPipeImage = null;
+
+		BufferedImage leftFireBall1Image = null;
+		BufferedImage rightFireBall1Image = null;
+		BufferedImage leftFireBall2Image = null;
+		BufferedImage rightFireBall2Image = null;
+		BufferedImage leftFireBall3Image = null;
+		BufferedImage rightFireBall3Image = null;
+		BufferedImage leftFireBall4Image = null;
+		BufferedImage rightFireBall4Image = null;
 
 		BufferedImage mushroomImage = null;
 		BufferedImage fireFlowerImage = null;
 		BufferedImage leftLeafImage = null;
 		BufferedImage rightLeafImage = null;
-
 
 		BufferedImage mysteryBox1Image = null;
 		BufferedImage mysteryBox2Image = null;
@@ -276,10 +356,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage pipeDownTopRightImage = null;
 		BufferedImage pipeUpMiddleLeftImage = null;
 		BufferedImage pipeUpMiddleRightImage = null;
-
-		BufferedImage smallMarioPipeImage = null;
-		BufferedImage bigMarioPipeImage = null;
-		BufferedImage fireMarioPipeImage = null;
 
 		BufferedImage shootingFlowerLeftDownClosedImage = null; 
 		BufferedImage shootingFlowerLeftDownOpenImage = null;
@@ -307,8 +383,6 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage redTurtleStandingRightImage = null;
 		BufferedImage redTurtleWalkingLeftImage = null;
 		BufferedImage redTurtleWalkingRightImage = null;
-
-
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -350,16 +424,6 @@ public class MarioBrosGame extends GraphicsProgram {
 			bigMarioRightJumpingFireShooting1Image = ImageIO.read(new File(bigMarioRightJumpingFireShooting1ImagePath));
 			bigMarioRightJumpingFireShooting2Image = ImageIO.read(new File(bigMarioRightJumpingFireShooting2ImagePath));
 			bigMarioRightJumpingFireShooting3Image = ImageIO.read(new File(bigMarioRightJumpingFireShooting3ImagePath));;
-			leftFireBall1Image = ImageIO.read(new File(leftFireBall1ImagePath));
-			rightFireBall1Image = ImageIO.read(new File(rightFireBall1ImagePath));
-			leftFireBall2Image = ImageIO.read(new File(leftFireBall2ImagePath));
-			rightFireBall2Image = ImageIO.read(new File(rightFireBall2ImagePath));
-			leftFireBall3Image = ImageIO.read(new File(leftFireBall3ImagePath));
-			rightFireBall3Image = ImageIO.read(new File(rightFireBall3ImagePath));
-			leftFireBall4Image = ImageIO.read(new File(leftFireBall4ImagePath));
-			rightFireBall4Image = ImageIO.read(new File(rightFireBall4ImagePath));
-
-
 
 			bigMarioLeftCatImage = ImageIO.read(new File(bigMarioLeftCatImagePath));
 			bigMarioRightCatImage = ImageIO.read(new File(bigMarioRightCatImagePath));
@@ -380,6 +444,59 @@ public class MarioBrosGame extends GraphicsProgram {
 			bigMarioRightCatTail2Image = ImageIO.read(new File(bigMarioRightCatTail2ImagePath));
 			bigMarioCatTail3Image = ImageIO.read(new File(bigMarioCatTail3ImagePath));
 
+			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
+			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
+			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));			
+
+			smallLuigiLeftImage = ImageIO.read(new File(smallLuigiLeftImagePath));
+			smallLuigiRightImage = ImageIO.read(new File(smallLuigiRightImagePath));
+			smallLuigiRightWalkingImage = ImageIO.read(new File(smallLuigiRightWalkingImagePath));
+			smallLuigiLeftWalkingImage = ImageIO.read(new File(smallLuigiLeftWalkingImagePath));
+			smallLuigiLeftJumpingImage = ImageIO.read(new File(smallLuigiLeftJumpingImagePath));
+			smallLuigiRightJumpingImage = ImageIO.read(new File(smallLuigiRightJumpingImagePath));
+			luigiDeadImage = ImageIO.read(new File(luigiDeadImagePath));
+
+			bigLuigiLeftImage = ImageIO.read(new File(bigLuigiLeftImagePath));
+			bigLuigiRightImage = ImageIO.read(new File(bigLuigiRightImagePath));
+			bigLuigiRightWalkingImage = ImageIO.read(new File(bigLuigiRightWalkingImagePath));
+			bigLuigiLeftWalkingImage = ImageIO.read(new File(bigLuigiLeftWalkingImagePath));
+			bigLuigiLeftJumpingImage = ImageIO.read(new File(bigLuigiLeftJumpingImagePath));
+			bigLuigiRightJumpingImage = ImageIO.read(new File(bigLuigiRightJumpingImagePath));
+			bigLuigiLeftJumpingDownImage = ImageIO.read(new File(bigLuigiLeftJumpingDownImagePath));
+			bigLuigiRightJumpingDownImage = ImageIO.read(new File(bigLuigiRightJumpingDownImagePath));
+			bigLuigiLeftCrouchingImage = ImageIO.read(new File(bigLuigiLeftCrouchingImagePath));
+			bigLuigiRightCrouchingImage = ImageIO.read(new File(bigLuigiRightCrouchingImagePath));
+
+			bigLuigiLeftCatImage = ImageIO.read(new File(bigLuigiLeftCatImagePath));
+			bigLuigiRightCatImage = ImageIO.read(new File(bigLuigiRightCatImagePath));
+			bigLuigiLeftWakingCatImage = ImageIO.read(new File(bigLuigiLeftWakingCatImagePath));
+			bigLuigiRightWalkingCatImage = ImageIO.read(new File(bigLuigiRightWalkingCatImagePath));
+			bigLuigiLeftJumpingCatImage = ImageIO.read(new File(bigLuigiLeftJumpingCatImagePath));
+			bigLuigiRightJumpingCatImage = ImageIO.read(new File(bigLuigiRightJumpingCatImagePath));
+			bigLuigiRightJumpingDownCatImage = ImageIO.read(new File(bigLuigiRightJumpingDownCatImagePath));
+			bigLuigiLeftJumpingDownCatImage = ImageIO.read(new File(bigLuigiLeftJumpingDownCatImagePath));
+			bigLuigiLeftCrouchingCatImage = ImageIO.read(new File(bigLuigiLeftCrouchingCatImagePath));
+			bigLuigiRightCrouchingCatImage = ImageIO.read(new File(bigLuigiRightCrouchingCatImagePath));
+			bigLuigiLeftJumpingCatTail1Image = ImageIO.read(new File(bigLuigiLeftJumpingCatTail1ImagePath));
+			bigLuigiRightJumpingCatTal1Image = ImageIO.read(new File(bigLuigiRightJumpingCatTal1ImagePath));
+			bigLuigiLeftJumpingCatTail2Image = ImageIO.read(new File(bigLuigiLeftJumpingCatTail2ImagePath));
+			bigLuigiRightJumpingCatTail2Image = ImageIO.read(new File(bigLuigiRightJumpingCatTail2ImagePath));
+			bigLuigiCatTail1Image = ImageIO.read(new File(bigLuigiCatTail1ImagePath));
+			bigLuigiLeftCatTail2Image = ImageIO.read(new File(bigLuigiLeftCatTail2ImagePath));
+			bigLuigiRightCatTail2Image = ImageIO.read(new File(bigLuigiRightCatTail2ImagePath));
+			bigLuigiCatTail3Image = ImageIO.read(new File(bigLuigiCatTail3ImagePath));
+
+			smallLuigiPipeImage = ImageIO.read(new File(smallLuigiPipeImagePath));
+			bigLuigiPipeImage = ImageIO.read(new File(bigLuigiPipeImagePath));
+
+			leftFireBall1Image = ImageIO.read(new File(leftFireBall1ImagePath));
+			rightFireBall1Image = ImageIO.read(new File(rightFireBall1ImagePath));
+			leftFireBall2Image = ImageIO.read(new File(leftFireBall2ImagePath));
+			rightFireBall2Image = ImageIO.read(new File(rightFireBall2ImagePath));
+			leftFireBall3Image = ImageIO.read(new File(leftFireBall3ImagePath));
+			rightFireBall3Image = ImageIO.read(new File(rightFireBall3ImagePath));
+			leftFireBall4Image = ImageIO.read(new File(leftFireBall4ImagePath));
+			rightFireBall4Image = ImageIO.read(new File(rightFireBall4ImagePath));
 
 			mushroomImage = ImageIO.read(new File(mushroomImagePath));
 			fireFlowerImage = ImageIO.read(new File(fireFlowerImagePath));
@@ -408,10 +525,6 @@ public class MarioBrosGame extends GraphicsProgram {
 			pipeUpMiddleLeftImage = ImageIO.read(new File(pipeUpMiddleLeftImagePath));
 			pipeUpMiddleRightImage = ImageIO.read(new File(pipeUpMiddleRightImagePath));
 
-			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
-			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
-			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));
-
 			shootingFlowerLeftDownClosedImage = ImageIO.read(new File(shootingFlowerLeftDownClosedImagePath)); 
 			shootingFlowerLeftDownOpenImage = ImageIO.read(new File(shootingFlowerLeftDownOpenImagePath));
 			shootingFlowerLeftUpClosedImage = ImageIO.read(new File(shootingFlowerLeftUpClosedImagePath));
@@ -430,7 +543,6 @@ public class MarioBrosGame extends GraphicsProgram {
 			downShootingFlowerRightUpClosedImage = ImageIO.read(new File(downShootingFlowerRightUpClosedImagePath));
 			downShootingFlowerRightUpOpenImage = ImageIO.read(new File(downShootingFlowerRightUpOpenImagePath));
 
-
 			redTurtleSpinning1Image = ImageIO.read(new File(redTurtleSpinning1ImagePath));
 			redTurtleSpinning2Image = ImageIO.read(new File(redTurtleSpinning2ImagePath));
 			redTurtleSpinning3Image = ImageIO.read(new File(redTurtleSpinning3ImagePath));
@@ -439,8 +551,6 @@ public class MarioBrosGame extends GraphicsProgram {
 			redTurtleStandingRightImage = ImageIO.read(new File(redTurtleStandingRightImagePath));
 			redTurtleWalkingLeftImage = ImageIO.read(new File(redTurtleWalkingLeftImagePath));
 			redTurtleWalkingRightImage = ImageIO.read(new File(redTurtleWalkingRightImagePath));
-
-
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -473,19 +583,18 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
-		//TODO ADD LUIGI SPIRTES FOR NOW LUIGI IS IDENTICAL TO MARIO
-		Luigi luigi = new Luigi(smallMarioLeftImage,smallMarioRightImage,
-				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
-				smallMarioRightJumpingImage, marioDeadImage,
+		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
+				smallLuigiLeftWalkingImage, smallLuigiRightWalkingImage, smallLuigiLeftJumpingImage, 
+				smallLuigiRightJumpingImage, luigiDeadImage,
 
-				bigMarioLeftImage, bigMarioRightImage,
-				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage,
-				bigMarioRightJumpingImage, bigMarioLeftFireImage, bigMarioRightFireImage, bigMarioLeftWalkingFireImage
+				bigLuigiLeftImage, bigLuigiRightImage,
+				bigLuigiLeftWalkingImage, bigLuigiRightWalkingImage, bigLuigiLeftJumpingImage,
+				bigLuigiRightJumpingImage, bigMarioLeftFireImage, bigMarioRightFireImage, bigMarioLeftWalkingFireImage
 				, bigMarioRightWalkingFireImage,bigMarioLeftJumpingFireImage, bigMarioRightJumpingFireImage,
-				bigMarioLeftJumpingDownImage, bigMarioRightJumpingDownImage,
+				bigLuigiLeftJumpingDownImage, bigLuigiRightJumpingDownImage,
 
 				bigMarioLeftJumpingDownFireImage, bigMarioRightJumpingDownFireImage,
-				bigMarioLeftCrouchingImage, bigMarioRightCrouchingImage,
+				bigLuigiLeftCrouchingImage, bigLuigiRightCrouchingImage,
 				bigMarioLeftCrouchingFireImage, bigMarioRightCrouchingFireImage,
 				bigMarioLeftFireShooting1Image, bigMarioLeftFireShooting2Image,
 				bigMarioRightFireShooting1Image, bigMarioRightFireShooting2Image,
@@ -493,20 +602,18 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
 				bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
 
-				bigMarioLeftCatImage, bigMarioRightCatImage, bigMarioLeftWakingCatImage, bigMarioRightWalkingCatImage,
-				bigMarioLeftJumpingCatImage, bigMarioRightJumpingCatImage, bigMarioRightJumpingDownCatImage,
-				bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage, bigMarioRightCrouchingCatImage,
-				bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTal1Image, bigMarioLeftJumpingCatTail2Image,
-				bigMarioRightJumpingCatTal2Image,
-				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
-				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
-				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage);
-		int numCharacters = 2;
+				bigLuigiLeftCatImage, bigLuigiRightCatImage, bigLuigiLeftWakingCatImage, bigLuigiRightWalkingCatImage,
+				bigLuigiLeftJumpingCatImage, bigLuigiRightJumpingCatImage, bigLuigiRightJumpingDownCatImage,
+				bigLuigiLeftJumpingDownCatImage, bigLuigiLeftCrouchingCatImage, bigLuigiRightCrouchingCatImage,
+				bigLuigiLeftJumpingCatTail1Image, bigLuigiRightJumpingCatTal1Image, bigLuigiLeftJumpingCatTail2Image,
+				bigLuigiRightJumpingCatTail2Image,
+				bigLuigiCatTail1Image, bigLuigiLeftCatTail2Image,
+				bigLuigiRightCatTail2Image, bigLuigiCatTail3Image,
+				smallLuigiPipeImage, bigLuigiPipeImage, fireMarioPipeImage);
+		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
-		characters[0] = mario;
-		characters[1] = luigi;
-		//TODO add luigi to characters
-		//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
+		characters[0] = luigi;
+		characters[1] = mario;//mario is last in list so he is added last to canvas and "on top of" the other characters
 		MovingObject.setCanvas(this.getGCanvas(), mario.scalingFactor, characters);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
 				redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,

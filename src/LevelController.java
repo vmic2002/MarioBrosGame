@@ -375,11 +375,14 @@ public class LevelController {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
-		spawnMysteryBox(5.0*space, 7, levelParts);
-		spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
-		spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
-		spawnWhiteSpace(2);
+		for (int i=0; i<2; i++) {
+			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
+			spawnMysteryBox(5.0*space, 7, levelParts);
+			spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
+			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
+			if (i!=1) spawnWhiteSpace(2);
+		}
+
 		Level level1a = new Level("1b", levelParts, xCounter);
 		currLevel = level1a;//set currLevel
 		//mario.fall(5);
@@ -396,7 +399,7 @@ public class LevelController {
 			Thread t1 = new Thread(new Runnable() {
 				@Override
 				public void run() {
-					m.setToAlive();//this is in case another mario died after the first mario who died and is still going up/down in dead sprite 
+					m.setToAlive(false);//this is in case another mario died after the first mario who died and is still going up/down in dead sprite 
 					if (m.bigOrSmall) m.setToJumpingDown(true);
 					m.fall(5);
 					if (!m.isCrouching ) {

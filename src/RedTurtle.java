@@ -172,7 +172,7 @@ public class RedTurtle extends BadGuy {
 	}
 
 
-	public void jumpedOnByBigMario(Mario mario) {//TODO need to add luigi (mario is passed as parameter so luigi could be passed as well cant use static mario when luigi will exist)
+	public void jumpedOnByBigMario(Mario mario) {
 		if (shellMode) {
 			if (!stopped) {
 				//mario jumps in spinning turtle, turtle should stop if not falling

@@ -193,10 +193,7 @@ public class Mario extends MovingObject {
 	public void move(double dx, double dy) {
 		//moves mario or current level mario is playing depending on if
 		//mario goes too much to the corners of the screen
-		//TODO BUG BECAUSE OF MULTIPLE MARIOS, THIS FUNCTION ASSUMED MARIO WOULD ALWAYS BE ON SCREEN FOR NOW
-		//TODO OTHER MARIOS CAN BE LEFT OFF SCREEN IF MOVING MARIO MOVES THE LEVEL SO MUCH
-		
-		
+
 		double n = 3;
 		//1/n of screen on each side mario cannot walk into because level will move
 		if (dx<0 && getX()>=(1/n)*canvas.getWidth() || dx>0 && getX()+getWidth()<=((n-1)/n)*canvas.getWidth()
@@ -210,17 +207,22 @@ public class Mario extends MovingObject {
 			}
 			super.move(dx, dy);
 		} else {
-			if (dx<0 && LevelController.currLevel.xBaseLine==0) {
+			//if (dx<0 && LevelController.currLevel.xBaseLine==0) {
+			if (dx<0 && (LevelController.currLevel.xBaseLine==0 || getX()<0 && Math.abs(getX()-LevelController.currLevel.xBaseLine)<15)) {
 				//mario can't move left if he is at the leftmost position in level
 				if (getX()+dx>=0) super.move(dx, dy);
 				return;
 			}
-			if (dx>0 && LevelController.currLevel.xBaseLine==canvas.getWidth()-LevelController.currLevel.width) {
-				//if xbaseline == canvas width-level width then mario is at right most portion of level
+			//if (dx>0 && LevelController.currLevel.xBaseLine==canvas.getWidth()-LevelController.currLevel.width) {
+			if (dx>0 && (LevelController.currLevel.xBaseLine==canvas.getWidth()-LevelController.currLevel.width 
+					|| getX()>0 && Math.abs(getX()+getWidth()-(LevelController.currLevel.width+LevelController.currLevel.xBaseLine))
+					<15)) {
+				//mario is at right mort portion of level
+				//if xbaseline == canvas width-level width then mario is at right most portion of level AND not to the right of the canvas
 				if (getX()+getWidth()+dx<=canvas.getWidth()) super.move(dx, dy);
 				return;
 			}
-			if (dy > 0 && LevelController.currLevel.yBaseLine==0) {
+			if (dy > 0 && LevelController.currLevel.yBaseLine<=0) {
 				//mario touched bottom of screen 
 				if (getY()+getHeight()<=canvas.getHeight()) {
 					super.move(dx, dy);
@@ -230,8 +232,10 @@ public class Mario extends MovingObject {
 				marioDied();
 				return;
 			}
-			LevelController.currLevel.moveLevel(-dx, -dy, this);
-			//System.out.println("YYYYY");
+			if (getX()<0 || getX()>canvas.getWidth()) {
+				//mario is off screen but not at the complete beginning or end of the level
+				super.move(dx, dy);
+			} else LevelController.currLevel.moveLevel(-dx, -dy, this);
 		}
 	}
 
@@ -243,7 +247,7 @@ public class Mario extends MovingObject {
 		}
 		return false;
 	}
-	
+
 	public void marioDied() {
 		alive = false;
 		movingRight = false;//in case user releases left/right keys right after mario dies
@@ -280,16 +284,16 @@ public class Mario extends MovingObject {
 			e.printStackTrace();
 		}
 		if (alive) return;
-		setToAlive();
+		setToAlive(true);
 		if (!anotherMarioAlreadyDied) LevelController.restartCurrentLevel();//when mario dies restart the level
 	}
-	
-	public void setToAlive() {
+
+	public void setToAlive(boolean small) {
 		alive = true;
 		flashing = false;
 		setVisible(true);
 		goingIntoPipe = false;
-		setToSmall();//need to change mario from dead sprite to small sprite
+		if (small) setToSmall();//need to change mario from dead sprite to small sprite
 		lookingRightOrLeft = true;//mario should be looking right
 		lookInCorrectDirection(true);
 	}
