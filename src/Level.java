@@ -43,6 +43,7 @@ public class Level {
 	}
 	//@param mario is mario who called this function, so every other Mario in 
 	//MovingObject.characters needs to move with level
+	//characters aren't part of levelParts or dynamicLevelParts but they move with the level
 	public void moveLevel(double dx, double dy, Mario mario) {
 		//TODO this function works but does not scale when a level is long need to only move the level parts that are visible on screen
 		//this level could "scale" using pipes to connect different sub levels so each level doesnt become too long to move at once

@@ -223,11 +223,11 @@ public class Mario extends MovingObject {
 				return;
 			}
 			if (dy > 0 && LevelController.currLevel.yBaseLine<=0) {
-				//mario touched bottom of screen 
 				if (getY()+getHeight()<=canvas.getHeight()) {
 					super.move(dx, dy);
 					return;
 				}
+				//mario touched bottom of screen 
 				System.out.println("MARIO DEAD he touched bottom of screen");
 				marioDied();
 				return;

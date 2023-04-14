@@ -91,12 +91,12 @@ public class LevelController {
 		System.out.println("STARTING LEVEL "+subLevelID);
 		if (currLevel!=null) endCurrentLevel();
 		canvas.removeAll();
-		if (subLevelID.equals("1a")) playLevel1a();
+		if (subLevelID.equals("1")) playLevel1();
+		else if (subLevelID.equals("1a")) playLevel1a();
 		else if (subLevelID.equals("1b")) playLevel1b();
-		else if (subLevelID.equals("1")) playLevel1();
 		else if (subLevelID.equals("2")) playLevel2();
+		else if (subLevelID.equals("3")) playLevel3();
 		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
-		addCharactersAtStartOfLevel();
 	}
 
 
@@ -287,11 +287,10 @@ public class LevelController {
 	}
 
 	//spawns a down pipe on top of an up pipe, xCounter is modified only once
-	//both pipes dont have flowers that come out of them
-	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, double hDown, String subLevelIDDown, ArrayList<LevelPart> levelParts) {
-		double width = spawnDownPipe(hDown, FLOWER_TYPE.NO_FLOWER, 0, subLevelIDDown, levelParts);
+	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, FLOWER_TYPE tUp,  double hDown, String subLevelIDDown, FLOWER_TYPE tDown, ArrayList<LevelPart> levelParts) {
+		double width = spawnDownPipe(hDown, tDown, 0, subLevelIDDown, levelParts);
 		xCounter -= width;//so that down pipe is on top of up pipe
-		spawnUpPipe(hUp, FLOWER_TYPE.NO_FLOWER, 0, subLevelIDUp, levelParts);
+		spawnUpPipe(hUp, tUp, 0, subLevelIDUp, levelParts);
 	}
 
 	public static void playLevel1() {
@@ -322,13 +321,47 @@ public class LevelController {
 		Level level1 = new Level("1", levelParts, xCounter);
 		currLevel = level1;//set currLevel
 		//mario.fall(5);
+		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
+	}
+	
+
+	public static void playLevel1a() {
+		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		xCounter = 0.0;
+		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		spawnGrassMountain(20, 3, TURTLE_TYPE.RED, levelParts);
+		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
+		spawnWhiteSpace(3);
+		spawnUpAndDownPipes(4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, levelParts);
+		Level level1a = new Level("1a", levelParts, xCounter);
+		currLevel = level1a;//set currLevel
+		//	mario.fall(5);
+		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
+	}
+
+	public static void playLevel1b() {
+		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+		xCounter = 0.0;
+		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		for (int i=0; i<2; i++) {
+			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
+			spawnMysteryBox(5.0*space, 7, levelParts);
+			spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
+			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "3", levelParts);
+			if (i!=1) spawnWhiteSpace(2);
+		}
+
+		Level level1a = new Level("1b", levelParts, xCounter);
+		currLevel = level1a;//set currLevel
+		//mario.fall(5);
+		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 	public static void playLevel2() {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(4, 2, TURTLE_TYPE.RED, levelParts);
+		spawnGrassMountain(4, 2, TURTLE_TYPE.NO_TURTLE, levelParts);
 		spawnMysteryBox(2.0*space, 5, levelParts);
 		spawnWhiteSpace(2);
 		double xCounterTemp = xCounter;
@@ -351,51 +384,38 @@ public class LevelController {
 		}
 		xCounter -= xCounter-xCounterTemp;
 		spawnGrassMountain(17, 2, TURTLE_TYPE.RED, levelParts);
-		spawnUpAndDownPipes(4, "1", 4, "2", levelParts);
+		spawnUpAndDownPipes(4, "1", FLOWER_TYPE.NO_FLOWER, 4, "2", FLOWER_TYPE.NO_FLOWER,  levelParts);
 		spawnWhiteSpace(1);
 		Level level2 = new Level("2", levelParts, xCounter);
 		currLevel = level2;//set currLevel
 		//mario.fall(5);
+		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
-	public static void playLevel1a() {
-		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
+	
+	public static void playLevel3() {
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(20, 3, TURTLE_TYPE.RED, levelParts);
-		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
-		spawnWhiteSpace(3);
-		spawnUpAndDownPipes(4, "1b", 3, "2", levelParts);
-		Level level1a = new Level("1a", levelParts, xCounter);
-		currLevel = level1a;//set currLevel
-		//	mario.fall(5);
-	}
-
-	public static void playLevel1b() {
-		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
-		xCounter = 0.0;
-		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		for (int i=0; i<2; i++) {
-			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
-			spawnMysteryBox(5.0*space, 7, levelParts);
-			spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
-			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
-			if (i!=1) spawnWhiteSpace(2);
-		}
-
-		Level level1a = new Level("1b", levelParts, xCounter);
-		currLevel = level1a;//set currLevel
-		//mario.fall(5);
-
+		spawnGrassMountain(4, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
+		spawnUpAndDownPipes(2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
+		spawnWhiteSpace(2);
+		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
+		spawnWhiteSpace(2);
+		spawnUpAndDownPipes(2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
+		spawnGrassMountain(5, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
+		Level level3 = new Level("3", levelParts, xCounter);
+		currLevel = level3;//set currLevel
+		addCharactersAtStartOfLevel(new double[] {0.0, canvas.getWidth()-MovingObject.characters[1].getWidth()});
 	}
 
 
-	public static void addCharactersAtStartOfLevel() {
+	public static void addCharactersAtStartOfLevel(double[] xPositions) {
+		//xPositions.length expected to be equal to MovingObject.characters.length
 		//for now this function drops all characters at top left of level
 		//and makes them fall at the same time
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
-			canvas.add(m, 1.5*i*m.getWidth(), 0);
+			canvas.add(m, xPositions[i], 0);
 			Thread t1 = new Thread(new Runnable() {
 				@Override
 				public void run() {
