@@ -1,13 +1,7 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-/*
 
- * TODO when more than one mario are playing in same level (mario and luigi for example)
- * TODO when user1 will hold down a key and then user2 holds down another one,
- * TODO user2 is canceling whaterver user1 was doing (spamming fireballs as firemario or swinging tail as cat mario)
- * TODO could fix this using while (key not released) instead of while (key pressed) 
- */
 public class MyKeyListener implements KeyListener {
 	private Mario[] characters;
 	public MyKeyListener(Mario[] characters) {
@@ -84,7 +78,7 @@ public class MyKeyListener implements KeyListener {
 	public void keyReleased(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT ||
-				keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_UP) {
+				keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_K) {
 			//characters[0] is manipulated by these keys
 			Mario mario = characters[0];
 			if (!mario.alive) return;
@@ -105,9 +99,12 @@ public class MyKeyListener implements KeyListener {
 				mario.stopCrouching();
 			} else if (keyCode == KeyEvent.VK_UP) {
 				mario.wayUpOrWayDown = false;
+			} else if (keyCode == KeyEvent.VK_K) {
+				if (mario.isFire) {mario.isShooting = false;System.out.println("\n\n1111111111111isSHootingsetto false for character[0]\n\n");}
+				else if (mario.isCat) mario.isSwinging = false;	
 			}
 		} else if (keyCode == KeyEvent.VK_H || keyCode == KeyEvent.VK_F ||
-				keyCode == KeyEvent.VK_G || keyCode == KeyEvent.VK_T){
+				keyCode == KeyEvent.VK_G || keyCode == KeyEvent.VK_T || keyCode == KeyEvent.VK_Q){
 			//characters[1] is manipulated by these keys
 			Mario mario = characters[1];
 			if (!mario.alive) return;
@@ -128,6 +125,9 @@ public class MyKeyListener implements KeyListener {
 				mario.stopCrouching();
 			} else if (keyCode == KeyEvent.VK_T) {
 				mario.wayUpOrWayDown = false;
+			} else if (keyCode == KeyEvent.VK_Q) {
+				if (mario.isFire) {mario.isShooting = false;System.out.println("\n\n1111111111111isSHootingsetto false for character[1]\n\n");}
+				else if (mario.isCat) mario.isSwinging = false;	
 			}
 		}
 	}

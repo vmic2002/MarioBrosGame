@@ -33,12 +33,12 @@ public class Level {
 	public void removeDynamic(Dynamic f) {
 		//removes Object that implements Dynamic (powerup and fireball for now) from dynamicLevelParts, 	
 		if (dynamicLevelParts.get(f.getID())==null) {
-			System.out.println("Tried to remove "+f.getID()+" from dynamicLevelParts");
+			//System.out.println("Tried to remove "+f.getID()+" from dynamicLevelParts");
 			return;
 		}
 		dynamicLevelParts.remove(f.getID());
-		System.out.println("Successfully removed "+f.getID()+" from dynmiacLevelParts");
-		System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
+		//System.out.println("Successfully removed "+f.getID()+" from dynmiacLevelParts");
+		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 		//TODO bug where dynamic level parts is -1 at some point, maybe concurrency bug
 	}
 	//@param mario is mario who called this function, so every other Mario in 
@@ -70,19 +70,19 @@ public class Level {
 		//to add level parts dynamically (power ups or fireballs) to level
 		//while level is being played
 		if (!(i instanceof Dynamic)) {
-			System.out.println("CAN ONLY ADD Objects who implement Dynamic");
+			//System.out.println("CAN ONLY ADD Objects who implement Dynamic");
 			System.exit(1);
 		}
 		ArrayList<GImage> l = new ArrayList<GImage>();
 		l.add(i);
 		long newID = ID_GENERATOR.getAndIncrement();
 		if (dynamicLevelParts.get(newID)!=null){
-			System.out.println("ID for dynamic level part already used!");
+			//System.out.println("ID for dynamic level part already used!");
 			System.exit(1);
 		}
 		dynamicLevelParts.put(newID, new DynamicLevelPart(l, newID));
 		((Dynamic) i).setID(newID);
-		System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
-		System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
+	//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
+		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 	}
 }

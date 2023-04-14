@@ -57,6 +57,11 @@ public class Mario extends MovingObject {
 	public boolean lookingRightOrLeft = true;//true when looking right and false when looking left
 	public boolean isCrouching = false; //true if mario is crouching false if not
 
+
+
+	public boolean isSwinging = false;//true if swinging tail, false once user releases swinging tail key
+	public boolean isShooting = false;//true if shooting fireball, false once user releases shooting key
+	//could technically use isSwinging for isShooting or vice versa because mario cant be cat and fire mario at same time
 	public enum SHOOT_FIRE_JUMPING {NOT_SHOOTING, STAGE1, STAGE2, STAGE3};
 	public enum SHOOT_FIRE_STANDING {NOT_SHOOTING, STAGE1, STAGE2};
 	SHOOT_FIRE_JUMPING shootFireJumping = SHOOT_FIRE_JUMPING .NOT_SHOOTING;
@@ -65,12 +70,18 @@ public class Mario extends MovingObject {
 	//if jumping, there are 4 stages, one for not shooting
 	//if standing, there are 3, one for not shooting
 
+
+	private static final int pauseBetweenShots = 60;//pause between each fireball shot, the lower the number the more fireballs mario can shoot per second
+	private static final int pauseBetweenSwings = 60;//pause between each tail , the lower the number the faster mario can swing tail
+
 	public enum SWING_TAIL_JUMPING {NOT_SWINGING, STAGE1, STAGE2, STAGE3};//stage 1 tail is parallel to ground, stage 2 tail is down, stage 3 back to parallel
 	public enum SWING_TAIL_STANDING {NOT_SWINGING, STAGE1, STAGE2, STAGE3};//stage 1 is looking at user, stage2 right/left, stage3 back to the user
 	SWING_TAIL_JUMPING swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
 	SWING_TAIL_STANDING swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
 	private static final int pauseInAir = 7;//lower number means faster jump (less long-pauses in jump function)
 	private int pauseGoingDown = pauseInAir;//this is changed while cat mario swings tail in the air so he is suspended in the air
+
+
 
 	public boolean hitPlatformVertical = false;
 	public boolean hitPlatformHorizontal = false;
@@ -83,7 +94,7 @@ public class Mario extends MovingObject {
 	public boolean flashing = false;//true when mario is hit by BadGuy and becomes false after mario stops flashing
 	//while mario is flashing he cannot die from a bad guy, but he can still die by falling to bottom of screen
 	public static final int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
-	public static final int numTimesToggleVisibility = 12;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
+	public static final int numTimesToggleVisibility = 20;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
 	private static final int maxHeightOfJump = 75;//max num times move function is called on way up of jump (move(0, -fallDy)
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
@@ -430,23 +441,23 @@ public class Mario extends MovingObject {
 		if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
 			//JUMPING AND SHOOTING
 			//mario doesn't crouch if shooting
-			return;
+			//return;
 		}
 		if (!isJumping && shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
 			//STANDING AND SHOOTING
 			//mario doesn't crouch if shooting
-			return;
+			//return;
 		}
 		if (!isJumping) {
 			//if mario is not jumping and crouches he must come to a stop
 			if (movingRight) {
 				//TODO animation for mario stopping by crouching down
 				//could be cooler than just stopping at once
-				movingRight = false;
+				//movingRight = false;
 			}
 			if (movingLeft) {
 				//TODO see todo above
-				movingLeft = false;
+				//movingLeft = false;
 			}
 		}
 		lookInDirectionCrouching(lookingRightOrLeft);
@@ -514,12 +525,12 @@ public class Mario extends MovingObject {
 				if (isJumping) {
 					return;
 				}
-				if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
-					return;//mario doesnt jump if he is in the middle of shooting while standing
-				}
-				if (swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) {
-					return;//mario doesnt jump if he is in the middle of swinging while standing
-				}
+				//if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
+				//if mario is shooting fireball while standing then he can jump
+				//}
+				//if (swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) {
+				//if mario is in middle of swinging tail while standing then he can jump 
+				//}
 				isJumping = true;
 				SoundController.playMarioJumpSound();
 
@@ -874,12 +885,11 @@ public class Mario extends MovingObject {
 
 	public void moveHelper(boolean rightOrLeft, boolean toggleWalking) {
 		//this function moves mario right or left once, is repeatedly called to move mario continuously
-		if (!isJumping && isCrouching) {
-			//this is if mario is moving right or left in 
-			//the air while being crouched
-			//once he lands (!isJumping), he should come to a stop;
-			movingRight = false;
-			movingLeft = false;
+		if (!isJumping && (isCrouching || isSwinging)) {
+			//if mario is on ground (not jumping) and crouching or swinging, he cant move to the side
+			//once he stops crouching or swinging he will start moving
+			//also if mario is moving right or left in 
+			//the air while being crouched once he lands (!isJumping), he should come to a stop;
 			return;
 		}
 		//arbitrary dx of 10 to move mario not too much
@@ -1203,275 +1213,310 @@ public class Mario extends MovingObject {
 		}
 	}
 
+
 	public void shootFireBall() {
-		if (!isFire || isCrouching) return;//only fire mario can shoot fireballs, also mario cant shoot if crouching
-		if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
+		if (!isFire || isCrouching || isShooting) return;//only fire mario can shoot fireballs, also mario cant shoot if crouching
+		/*if (isJumping && shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
 			//System.out.println("JUMPING AND SHOOTING");
 			return;//return if already shooting
 		}
 		if (!isJumping && shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
 			//System.out.println("STANDING AND SHOOTING");
 			return;//return if already shooting
-		}
+		}*/
+		//if (isShooting) return;
+		isShooting = true;
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				//code in here runs in another thread
-				boolean startedJumping = isJumping;
-				int pauseBetweenStages = 100;
-				SoundController.playFireballSound();
-				//TODO this function doesnt check if mario gets hit by turtle etc and
-				//reverts to big mario or small mario in which case this function shouldreturn from function and set stage to not shooting
-				double x = lookingRightOrLeft?getX()+getWidth()+moveDx*2:getX()-moveDx*6;
-				double y = getY()+0.4*getHeight();//might have to change
-				Factory.addFireBall(x, y, lookingRightOrLeft);
-				//ENTERING STAGE1
-				if (alive) {
-					if (isJumping) {
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
-						} else {
-							setImageAndRelocate(bigMarioLeftJumpingFireShooting1Image);
-						}
-						shootFireJumping = SHOOT_FIRE_JUMPING.STAGE1;
+				while (alive && isShooting && isFire) {
+					if (isCrouching) {System.out.println("iiiiiiiiiiiiiiiiiiiii");//WITHOUT PRINTLN IT BUGS
 					} else {
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightFireShooting1Image);
-						} else {
-							setImageAndRelocate(bigMarioLeftFireShooting1Image);
+						System.out.println("<<<<<<<<<<<<<<<<,SHOOTING A FIREBALL: "+isShooting);
+						try {Thread.sleep(pauseBetweenShots);}catch(Exception e) {e.printStackTrace();}
+						//isShooting is set to false when shooting key is released
+						//code in here runs in another thread
+						boolean startedJumping = isJumping;
+						int pauseBetweenStages = 100;
+						SoundController.playFireballSound();
+						double x = lookingRightOrLeft?getX()+getWidth()+moveDx*2:getX()-moveDx*6;
+						double y = getY()+0.4*getHeight();//might have to change
+						Factory.addFireBall(x, y, lookingRightOrLeft);
+						//ENTERING STAGE1
+						if (alive) {
+							if (isJumping) {
+								if (lookingRightOrLeft) {
+									setImageAndRelocate(bigMarioRightJumpingFireShooting1Image);
+								} else {
+									setImageAndRelocate(bigMarioLeftJumpingFireShooting1Image);
+								}
+								shootFireJumping = SHOOT_FIRE_JUMPING.STAGE1;
+							} else {
+								if (lookingRightOrLeft) {
+									setImageAndRelocate(bigMarioRightFireShooting1Image);
+								} else {
+									setImageAndRelocate(bigMarioLeftFireShooting1Image);
+								}
+								shootFireStanding = SHOOT_FIRE_STANDING.STAGE1;
+							}
 						}
-						shootFireStanding = SHOOT_FIRE_STANDING.STAGE1;
+						try {
+							Thread.sleep(pauseBetweenStages);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						//ENTERING STAGE2 				
+						if (isJumping != startedJumping || isCrouching) {
+							//need to check if isJumping is different from startedJumping after every stage
+							//if they are different then mario was jumping, started shooting a fireball but
+							//landed before finishing shooting the fireball
+							//need to stop shooting fireball (return from function, set stage to not shooting) if that is the case
+							//if here than isJumping is false but startedJumping is true
+							//because mario cant jump if he is currently shooting and standing, so startedJumping must be true
+							shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+							shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
+							//isShooting = false;
+							//UNCOMMENTreturn;
+							//break;
+						} else {
+							if (alive) {
+								if (isJumping) {
+									if (lookingRightOrLeft) {
+										setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
+									} else {
+										setImageAndRelocate(bigMarioLeftJumpingFireShooting2Image);
+									}
+									shootFireJumping = SHOOT_FIRE_JUMPING.STAGE2;
+								} else {
+									if (lookingRightOrLeft) {
+										setImageAndRelocate(bigMarioRightFireShooting2Image);
+									} else {
+										setImageAndRelocate(bigMarioLeftFireShooting2Image);
+									}
+									shootFireStanding = SHOOT_FIRE_STANDING.STAGE2;
+								}
+							}
+							try {
+								Thread.sleep(pauseBetweenStages);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							if (isJumping != startedJumping || isCrouching) {
+								//need to check if isJumping is different from startedJumping after every stage
+								//if they are different then mario was jumping, started shooting a fireball but
+								//landed before finishing shooting the fireball
+								//need to stop shooting fireball (return from function, set stage to not shooting) if that is the case
+								//if here than isJumping is false but startedJumping is true
+								//because mario cant jump if he is currently shooting and standing, so startedJumping must be true
+								shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+								shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
+								//isShooting = false;
+								//UNCOMMENTreturn;
+								//break;
+							} else {
+								if (!isJumping) {
+									//if standing there is only 2 stages so now must go back to standing sprite
+									//done shooting fireball
+									lookInCorrectDirection(lookingRightOrLeft);
+									shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
+									//isShooting = false;
+									//UNCOMMENTreturn;
+									//break;
+								} else {
+									//ENTERING STAGE3 for jumping
+									if (alive) {
+										if (lookingRightOrLeft) {
+											setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
+										} else {
+											setImageAndRelocate(bigMarioLeftJumpingFireShooting3Image);
+										}
+										shootFireJumping = SHOOT_FIRE_JUMPING.STAGE3;
+									}
+									try {
+										Thread.sleep(pauseBetweenStages);
+									} catch (InterruptedException e) {
+										e.printStackTrace();
+									}
+									if (alive) {
+										if (isJumping) {
+											//if mario is still jumping after thread pause above
+											if (wayUpOrWayDown) {
+												setToJumping(lookingRightOrLeft);
+											} else {
+												setToJumpingDown(lookingRightOrLeft);
+											}
+										}
+									}
+									shootFireJumping= SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+								}
+							}
+						}
 					}
 				}
-				try {
-					Thread.sleep(pauseBetweenStages);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				//ENTERING STAGE2 				
-				if (isJumping != startedJumping) {
-					//need to check if isJumping is different from startedJumping after every stage
-					//if they are different then mario was jumping, started shooting a fireball but
-					//landed before finishing shooting the fireball
-					//need to stop shooting fireball (return from function, set stage to not shooting) if that is the case
-					//if here than isJumping is false but startedJumping is true
-					//because mario cant jump if he is currently shooting and standing, so startedJumping must be true
-					shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
-					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
-					return;
-				}
-				if (alive) {
-					if (isJumping) {
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightJumpingFireShooting2Image);
-						} else {
-							setImageAndRelocate(bigMarioLeftJumpingFireShooting2Image);
-						}
-						shootFireJumping = SHOOT_FIRE_JUMPING.STAGE2;
-					} else {
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightFireShooting2Image);
-						} else {
-							setImageAndRelocate(bigMarioLeftFireShooting2Image);
-						}
-						shootFireStanding = SHOOT_FIRE_STANDING.STAGE2;
-					}
-				}
-				try {
-					Thread.sleep(pauseBetweenStages);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (isJumping != startedJumping) {
-					//need to check if isJumping is different from startedJumping after every stage
-					//if they are different then mario was jumping, started shooting a fireball but
-					//landed before finishing shooting the fireball
-					//need to stop shooting fireball (return from function, set stage to not shooting) if that is the case
-					//if here than isJumping is false but startedJumping is true
-					//because mario cant jump if he is currently shooting and standing, so startedJumping must be true
-					shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
-					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
-					return;
-				}
-				if (!isJumping) {
-					//if standing there is only 2 stages so now must go back to standing sprite
-					//done shooting fireball
-					lookInCorrectDirection(lookingRightOrLeft);
-					shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
-					return;
-				}
-				//ENTERING STAGE3 for jumping
-				if (alive) {
-					if (lookingRightOrLeft) {
-						setImageAndRelocate(bigMarioRightJumpingFireShooting3Image);
-					} else {
-						setImageAndRelocate(bigMarioLeftJumpingFireShooting3Image);
-					}
-					shootFireJumping = SHOOT_FIRE_JUMPING.STAGE3;
-				}
-				try {
-					Thread.sleep(pauseBetweenStages);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (alive) {
-					if (isJumping) {
-						//if mario is still jumping after thread pause above
-						if (wayUpOrWayDown) {
-							setToJumping(lookingRightOrLeft);
-						} else {
-							setToJumpingDown(lookingRightOrLeft);
-						}
-					}
-				}
-				shootFireJumping= SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+
+				shootFireJumping = SHOOT_FIRE_JUMPING.NOT_SHOOTING;
+				shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
+				isShooting = false;
+				System.out.println("\n\t\t\t>>>>>>>DONE SHOOTING FIREBALL(S)\n");
 			}
 		});  
 		t1.start();
 	}
 
 	public void swingTail() {
-		//TODO fix bug when spamming swingTail()
-		if (!isCat || isCrouching) return;//cant swing tail if crouching or not cat
-		if (!isJumping && (movingRight||movingLeft)) return;//cant swing if walking right or left
-		if (isJumping && swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
+		if (!isCat || isCrouching || isSwinging) return;//cant swing tail if crouching or not cat
+		/*if (isJumping && swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
 			//System.out.println("JUMPING AND SWINGING");
 			return;//return if already swinging
 		}
 		if (!isJumping && swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) {
 			//System.out.println("STANDING AND SWINGING");
 			return;//return if already swinging
-		}
+		}*/
+		isSwinging = true;
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				System.out.println("SWING TAILL");
-				int pauseBetweenStages = 70;
-				SoundController.playTailSound();
-				if (!isJumping) {
-					double newX =  lookingRightOrLeft?getX()+getWidth()+2*moveDx:getX()-2*moveDx;
-					GObject a = canvas.getElementAt(newX, getY()+getHeight()*0.7);
-					if (a!=null && a instanceof BadGuy) {		
-						//Cat mario just swung tail at bad guy
-						//kill bad guy
-						System.out.println("CAT MARIO JUST KILLED BADGUY WITH TAIL");
-						//TODO COULD PLAY SOUND FOR KILLING WITH TAIL
-						((BadGuy) a).kill();
-					}								
-				}
-				//ENTERING STAGE1
-				boolean startedJumping = isJumping;
-				if (alive) {
-					if (isJumping) {
-						if (wayUpOrWayDown) {
-							//on the way up swinging the tail makes mario go up a bit more
-							System.out.println("SHOULD MOVE HIGHER");
-							move(0, -getHeight()/4);
-						} else {
-							//on the way down swinging the tail makes mario slow down in the air
-							pauseGoingDown = 120;
-							System.out.println("SHOULD MOVE DOWN SLOWER");
-						}
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
-						} else {
-							setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
-						}
-						swingTailJumping = SWING_TAIL_JUMPING.STAGE1;
-					} else { 
-						setImageAndRelocate(bigMarioCatTail1Image);
-						swingTailStanding = SWING_TAIL_STANDING.STAGE1;
-					}
-				}
-				try {
-					Thread.sleep(pauseBetweenStages);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (isJumping != startedJumping) {
-					//need to check if isJumping is different from startedJumping after every stage
-					//if they are different then mario was jumping, started swinging his tail but
-					//landed before finishing
-					//need to stop swinging tail (return from function, set stage to not swinging) if that is the case
-					//if here than isJumping is false but startedJumping is true
-					//because mario cant jump if he is currently swinging and standing, so startedJumping must be true
-					swingTailJumping =  SWING_TAIL_JUMPING.NOT_SWINGING;
-					pauseGoingDown = pauseInAir;
-					return;
-				}
-				//ENTERING STAGE2
-				double dx = getWidth()/2;
-				if (alive) {
-					if (isJumping) {
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
-						} else {
-							setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
-						}
-						swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
-					} else { 
-						if (lookingRightOrLeft) {
-							moveOnlyMario(dx, 0.0);
-							setImageAndRelocate(bigMarioLeftCatTail2Image);
-						} else {
-							moveOnlyMario(-dx, 0.0);
-							setImageAndRelocate(bigMarioRightCatTail2Image);
-						}
-						swingTailStanding = SWING_TAIL_STANDING.STAGE2;
-					}
-				}
-				try {
-					Thread.sleep(pauseBetweenStages);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (isJumping != startedJumping) {
-					//need to check if isJumping is different from startedJumping after every stage
-					//if they are different then mario was jumping, started swinging his tail but
-					//landed before finishing
-					//need to stop swinging tail (return from function, set stage to not swinging) if that is the case
-					//if here than isJumping is false but startedJumping is true
-					//because mario cant jump if he is currently swinging and standing, so startedJumping must be true
-					swingTailJumping =  SWING_TAIL_JUMPING.NOT_SWINGING;
-					pauseGoingDown = pauseInAir;
-					return;
-				}
-				//ENTERING STAGE3
-				if (alive) {
-					if (isJumping) {
-						if (lookingRightOrLeft) {
-							setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
-						} else {
-							setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
-						}
-						swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
-					} else { 
-						if (lookingRightOrLeft) moveOnlyMario(-dx, 0);
-						else moveOnlyMario(dx, 0);
-						setImageAndRelocate(bigMarioCatTail3Image);
-						swingTailStanding = SWING_TAIL_STANDING.STAGE3;
-					}
-				}
-				try {
-					Thread.sleep(pauseBetweenStages);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				if (alive) {
-					if (isJumping) {
-						if (wayUpOrWayDown) {
-							setToJumping(lookingRightOrLeft);
-						} else {
-							setToJumpingDown(lookingRightOrLeft);
-						}
+				while (alive && isSwinging && isCat) {
+					if (isCrouching) {System.out.println("yyyyyyyyy");//WITHOUT PRINTLN IT BUGS
 					} else {
-						lookInCorrectDirection(lookingRightOrLeft);
+						//isSwinging is set to false when user releases swinging tail key
+						System.out.println("\tSWING ingTAILL");
+						try {Thread.sleep(pauseBetweenSwings);}catch(Exception e) {e.printStackTrace();}
+						int pauseBetweenStages = 70;
+						SoundController.playTailSound();
+						if (!isJumping) {
+							double newX =  lookingRightOrLeft?getX()+getWidth()+2*moveDx:getX()-2*moveDx;
+							GObject a = canvas.getElementAt(newX, getY()+getHeight()*0.7);
+							if (a!=null && a instanceof BadGuy) {		
+								//Cat mario just swung tail at bad guy
+								//kill bad guy
+								System.out.println("CAT MARIO JUST KILLED BADGUY WITH TAIL");
+								//TODO COULD PLAY SOUND FOR KILLING WITH TAIL
+								((BadGuy) a).kill();
+							}								
+						}
+						//ENTERING STAGE1
+						boolean startedJumping = isJumping;
+						if (alive && !isCrouching) {
+							if (isJumping) {
+								if (wayUpOrWayDown) {
+									//on the way up swinging the tail makes mario go up a bit more
+									System.out.println("SHOULD MOVE HIGHER");
+									move(0, -getHeight()/4);
+								} else {
+									//on the way down swinging the tail makes mario slow down in the air
+									pauseGoingDown = 120;
+									System.out.println("SHOULD MOVE DOWN SLOWER");
+								}
+								if (lookingRightOrLeft) {
+									setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+								} else {
+									setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+								}
+								swingTailJumping = SWING_TAIL_JUMPING.STAGE1;
+							} else { 
+								setImageAndRelocate(bigMarioCatTail1Image);
+								swingTailStanding = SWING_TAIL_STANDING.STAGE1;
+							}
+						}
+						try {
+							Thread.sleep(pauseBetweenStages);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+						if (isJumping != startedJumping || isCrouching) {
+							//need to check if isJumping is different from startedJumping after every stage
+							//if they are different then mario was jumping, started swinging his tail but
+							//landed before finishing
+							//need to stop swinging tail (return from function, set stage to not swinging) if that is the case
+							//if here than isJumping is false but startedJumping is true
+							//because mario cant jump if he is currently swinging and standing, so startedJumping must be true
+							swingTailJumping =  SWING_TAIL_JUMPING.NOT_SWINGING;
+							pauseGoingDown = pauseInAir;
+							//UNCOMEMENTreturn;
+						} else {
+							//ENTERING STAGE2
+							double dx = getWidth()/2;
+							if (alive && !isCrouching) {
+								if (isJumping) {
+									if (lookingRightOrLeft) {
+										setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+									} else {
+										setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+									}
+									swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
+								} else { 
+									if (lookingRightOrLeft) {
+										moveOnlyMario(dx, 0.0);
+										setImageAndRelocate(bigMarioLeftCatTail2Image);
+									} else {
+										moveOnlyMario(-dx, 0.0);
+										setImageAndRelocate(bigMarioRightCatTail2Image);
+									}
+									swingTailStanding = SWING_TAIL_STANDING.STAGE2;
+								}
+							}
+							try {
+								Thread.sleep(pauseBetweenStages);
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+							if (isJumping != startedJumping || isCrouching) {
+								//need to check if isJumping is different from startedJumping after every stage
+								//if they are different then mario was jumping, started swinging his tail but
+								//landed before finishing
+								//need to stop swinging tail (return from function, set stage to not swinging) if that is the case
+								//if here than isJumping is false but startedJumping is true
+								//because mario cant jump if he is currently swinging and standing, so startedJumping must be true
+								swingTailJumping =  SWING_TAIL_JUMPING.NOT_SWINGING;
+								pauseGoingDown = pauseInAir;
+								//RETURNreturn;
+							} else {
+								//ENTERING STAGE3
+								if (alive && !isCrouching) {
+									if (isJumping) {
+										if (lookingRightOrLeft) {
+											setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+										} else {
+											setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+										}
+										swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
+									} else { 
+										if (lookingRightOrLeft) moveOnlyMario(-dx, 0);
+										else moveOnlyMario(dx, 0);
+										setImageAndRelocate(bigMarioCatTail3Image);
+										swingTailStanding = SWING_TAIL_STANDING.STAGE3;
+									}
+								}
+								try {
+									Thread.sleep(pauseBetweenStages);
+								} catch (InterruptedException e) {
+									e.printStackTrace();
+								}
+								if (alive && !isCrouching) {
+									if (isJumping) {
+										if (wayUpOrWayDown) {
+											setToJumping(lookingRightOrLeft);
+										} else {
+											setToJumpingDown(lookingRightOrLeft);
+										}
+									} else {
+										lookInCorrectDirection(lookingRightOrLeft);
+									}
+								}
+								pauseGoingDown = pauseInAir;
+								swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
+								swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;	
+							}
+						}
 					}
 				}
-				pauseGoingDown = pauseInAir;
 				swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
-				swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;				
-			}	
+				swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
+				isSwinging = false;
+				System.out.println("\n\n\nDONE SWINGING TAI\n\nL");
+			}
 		});  
 		t1.start();
 	}
