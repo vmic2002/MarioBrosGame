@@ -163,7 +163,7 @@ public class Mushroom extends PowerUp {
 			}
 			canvas.remove(this);
 			SoundController.playPowerUpSound();
-			if (!((Mario) x).isCat && !((Mario) x).isFire){
+			if (!((Mario) x).bigOrSmall){
 				((Mario) x).setToBig();
 			}
 			alive = false;

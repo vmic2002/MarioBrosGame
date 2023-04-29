@@ -32,9 +32,16 @@ public class Mario extends MovingObject {
 	bigMarioRightCrouchingCatImage, bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTail1Image,
 	bigMarioLeftJumpingCatTail2Image, bigMarioRightJumpingCatTail2Image,
 	bigMarioCatTail1Image, bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image,
+	tanookiMarioLeftCatImage, tanookiMarioRightCatImage, tanookiMarioLeftWakingCatImage, tanookiMarioRightWalkingCatImage,
+	tanookiMarioLeftJumpingCatImage, tanookiMarioRightJumpingCatImage, tanookiMarioRightJumpingDownCatImage,
+	tanookiMarioLeftJumpingDownCatImage, tanookiMarioLeftCrouchingCatImage, tanookiMarioRightCrouchingCatImage,
+	tanookiMarioLeftJumpingCatTail1Image, tanookiMarioRightJumpingCatTail1Image, tanookiMarioLeftJumpingCatTail2Image,
+	tanookiMarioRightJumpingCatTail2Image,
+	tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
+	tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
 	smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage;
 
-	public boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode)
+	public boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode or tanooki mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
 	//if he is already jumping and if the user tries to make mario jump he should not
 	public boolean wayUpOrWayDown =  false;//if isJumping is false wayUpOrDown's value is meaningless
@@ -43,6 +50,7 @@ public class Mario extends MovingObject {
 
 	public boolean isFire = false;//true if mario is in fire/flower mode
 	public boolean isCat = false;//true if mario is in cat mode
+	public boolean isTanooki = false;
 	//design decision: small mario eating fire flower/leaf turns directly into fire/cat mario, not just big mario
 
 	public boolean movingRight = false;
@@ -76,10 +84,10 @@ public class Mario extends MovingObject {
 
 	public enum SWING_TAIL_JUMPING {NOT_SWINGING, STAGE1, STAGE2, STAGE3};//stage 1 tail is parallel to ground, stage 2 tail is down, stage 3 back to parallel
 	public enum SWING_TAIL_STANDING {NOT_SWINGING, STAGE1, STAGE2, STAGE3};//stage 1 is looking at user, stage2 right/left, stage3 back to the user
-	SWING_TAIL_JUMPING swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
+	SWING_TAIL_JUMPING swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;//enums are used for both cat and tanooki mario
 	SWING_TAIL_STANDING swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
 	private static final int pauseInAir = 7;//lower number means faster jump (less long-pauses in jump function)
-	private int pauseGoingDown = pauseInAir;//this is changed while cat mario swings tail in the air so he is suspended in the air
+	private int pauseGoingDown = pauseInAir;//this is changed while cat or tanooki mario swings tail in the air so he is suspended in the air
 
 
 
@@ -125,6 +133,15 @@ public class Mario extends MovingObject {
 			Image bigMarioRightJumpingCatTail2Image,
 			Image bigMarioCatTail1Image, Image bigMarioLeftCatTail2Image,
 			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image,
+
+			Image tanookiMarioLeftCatImage, Image tanookiMarioRightCatImage, Image tanookiMarioLeftWakingCatImage, Image tanookiMarioRightWalkingCatImage,
+			Image tanookiMarioLeftJumpingCatImage, Image tanookiMarioRightJumpingCatImage, Image tanookiMarioRightJumpingDownCatImage,
+			Image tanookiMarioLeftJumpingDownCatImage, Image tanookiMarioLeftCrouchingCatImage, Image tanookiMarioRightCrouchingCatImage,
+			Image tanookiMarioLeftJumpingCatTail1Image, Image tanookiMarioRightJumpingCatTal1Image, Image tanookiMarioLeftJumpingCatTail2Image,
+			Image tanookiMarioRightJumpingCatTail2Image,
+			Image tanookiMarioCatTail1Image, Image tanookiMarioLeftCatTail2Image,
+			Image tanookiMarioRightCatTail2Image, Image tanookiMarioCatTail3Image,
+
 			Image smallMarioPipeImage, Image bigMarioPipeImage, Image fireMarioPipeImage) {
 		super(smallMarioRightImage);
 		this.smallMarioRightImage = smallMarioRightImage;
@@ -189,6 +206,27 @@ public class Mario extends MovingObject {
 		this.bigMarioRightCatTail2Image = bigMarioRightCatTail2Image;
 		this.bigMarioCatTail3Image = bigMarioCatTail3Image;
 
+
+		this.tanookiMarioLeftCatImage = tanookiMarioLeftCatImage;
+		this.tanookiMarioRightCatImage = tanookiMarioRightCatImage;
+		this.tanookiMarioLeftWakingCatImage = tanookiMarioLeftWakingCatImage;
+		this.tanookiMarioRightWalkingCatImage = tanookiMarioRightWalkingCatImage;
+		this.tanookiMarioLeftJumpingCatImage = tanookiMarioLeftJumpingCatImage;
+		this.tanookiMarioRightJumpingCatImage = tanookiMarioRightJumpingCatImage;
+		this.tanookiMarioRightJumpingDownCatImage = tanookiMarioRightJumpingDownCatImage; 
+		this.tanookiMarioLeftJumpingDownCatImage = tanookiMarioLeftJumpingDownCatImage;
+		this.tanookiMarioLeftCrouchingCatImage = tanookiMarioLeftCrouchingCatImage;
+		this.tanookiMarioRightCrouchingCatImage = tanookiMarioRightCrouchingCatImage;
+		this.tanookiMarioLeftJumpingCatTail1Image = tanookiMarioLeftJumpingCatTail1Image;
+		this.tanookiMarioRightJumpingCatTail1Image = tanookiMarioRightJumpingCatTal1Image;
+		this.tanookiMarioLeftJumpingCatTail2Image = tanookiMarioLeftJumpingCatTail2Image;
+		this.tanookiMarioRightJumpingCatTail2Image = tanookiMarioRightJumpingCatTail2Image;
+		this.tanookiMarioCatTail1Image = tanookiMarioCatTail1Image;
+		this.tanookiMarioLeftCatTail2Image = tanookiMarioLeftCatTail2Image;
+		this.tanookiMarioRightCatTail2Image = tanookiMarioRightCatTail2Image;
+		this.tanookiMarioCatTail3Image = tanookiMarioCatTail3Image;
+
+
 		this.smallMarioPipeImage = smallMarioPipeImage;
 		this.bigMarioPipeImage = bigMarioPipeImage;
 		this.fireMarioPipeImage = fireMarioPipeImage;
@@ -196,7 +234,7 @@ public class Mario extends MovingObject {
 
 	public void moveOnlyMario(double dx, double dy) {
 		//moves only mario, not the level
-		//used when mario swings his tail
+		//used when mario swings his tail for example
 		super.move(dx, dy);
 	}
 
@@ -309,6 +347,33 @@ public class Mario extends MovingObject {
 		lookInCorrectDirection(true);
 	}
 
+
+	public void setToTanooki() {
+		if (isTanooki) return;
+		if (lookingRightOrLeft) {
+			if (isJumping) {
+				//need to check if jumping because mario can jump in the air to 
+				//reach for the leaf
+				setImageAndRelocate(tanookiMarioRightJumpingCatImage);
+			} else {
+				setImageAndRelocate(tanookiMarioRightCatImage);
+			}
+		} else {
+			if (isJumping) {
+				setImageAndRelocate(tanookiMarioLeftJumpingCatImage);
+			} else {
+				setImageAndRelocate(tanookiMarioLeftCatImage);
+			}
+		}
+		bigOrSmall = true;
+		isFire = false;
+		isCat = false;
+		isTanooki = true;
+		swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
+		swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
+		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
+	}
+
 	public void setToCat() {
 		if (isCat) return;
 		if (lookingRightOrLeft) {
@@ -329,6 +394,7 @@ public class Mario extends MovingObject {
 		bigOrSmall = true;
 		isFire = false;
 		isCat = true;
+		isTanooki = false;
 		swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
 		swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
@@ -338,7 +404,7 @@ public class Mario extends MovingObject {
 		//can be called if mario eats mushroom to grow
 		//or if fire mario or cat mario gets hit by something and goes back 
 		//to big mario
-		if (bigOrSmall && !isFire && !isCat) return;
+		if (bigOrSmall && !isFire && !isCat && !isTanooki) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
 				//need to check if jumping because mario can jump in the air to 
@@ -357,6 +423,7 @@ public class Mario extends MovingObject {
 		bigOrSmall = true;
 		isFire = false;
 		isCat = false;
+		isTanooki = false;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
 	}
 
@@ -381,6 +448,7 @@ public class Mario extends MovingObject {
 		bigOrSmall = false;
 		isFire = false;
 		isCat = false;
+		isTanooki = false;
 		isCrouching = false;
 	}
 
@@ -403,6 +471,7 @@ public class Mario extends MovingObject {
 		bigOrSmall = true;//if small mario takes flower he becomes flower mario (flower mario is also big, cat as well)
 		isFire = true;
 		isCat = false;
+		isTanooki = false;
 		shootFireJumping = SHOOT_FIRE_JUMPING .NOT_SHOOTING;
 		shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
@@ -414,6 +483,8 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioRightCrouchingFireImage);
 			} else if (isCat){
 				setImageAndRelocate(bigMarioRightCrouchingCatImage);
+			} else if (isTanooki){
+				setImageAndRelocate(tanookiMarioRightCrouchingCatImage);
 			} else { 
 				setImageAndRelocate(bigMarioRightCrouchingImage);
 			}
@@ -422,6 +493,8 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioLeftCrouchingFireImage);
 			} else if (isCat){
 				setImageAndRelocate(bigMarioLeftCrouchingCatImage);
+			} else if (isTanooki){
+				setImageAndRelocate(tanookiMarioLeftCrouchingCatImage);
 			} else {
 				setImageAndRelocate(bigMarioLeftCrouchingImage);
 			}
@@ -495,7 +568,11 @@ public class Mario extends MovingObject {
 			setImageAndRelocate(bigMarioCatTail1Image);
 			//CAT MARIO'S PIPE SPRITE is the same as when he swings his tail
 			//and faces user
-		} else { 
+		} else if (isTanooki){
+			setImageAndRelocate(tanookiMarioCatTail1Image);
+			//CAT MARIO'S PIPE SPRITE is the same as when he swings his tail
+			//and faces user
+		}  else { 
 			setImageAndRelocate(bigMarioPipeImage);
 		}
 	}
@@ -632,6 +709,8 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioRightJumpingFireImage);
 				} else if (isCat){
 					setImageAndRelocate(bigMarioRightJumpingCatImage);
+				} else if (isTanooki){
+					setImageAndRelocate(tanookiMarioRightJumpingCatImage);
 				} else {
 					setImageAndRelocate(bigMarioRightJumpingImage);
 				}
@@ -644,6 +723,8 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioLeftJumpingFireImage);
 				} else if (isCat){
 					setImageAndRelocate(bigMarioLeftJumpingCatImage);
+				}  else if (isTanooki){
+					setImageAndRelocate(tanookiMarioLeftJumpingCatImage);
 				} else {
 					setImageAndRelocate(bigMarioLeftJumpingImage);
 				}
@@ -660,6 +741,8 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioRightJumpingDownFireImage);
 			} else if (isCat){
 				setImageAndRelocate(bigMarioRightJumpingDownCatImage);
+			} else if (isTanooki){
+				setImageAndRelocate(tanookiMarioRightJumpingDownCatImage);
 			} else {
 				setImageAndRelocate(bigMarioRightJumpingDownImage);
 			}
@@ -668,7 +751,9 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioLeftJumpingDownFireImage);
 			} else if (isCat){
 				setImageAndRelocate(bigMarioLeftJumpingDownCatImage);
-			} else {
+			} else if (isTanooki){
+				setImageAndRelocate(tanookiMarioLeftJumpingDownCatImage);
+			}  else {
 				setImageAndRelocate(bigMarioLeftJumpingDownImage);
 			}
 		}
@@ -682,7 +767,9 @@ public class Mario extends MovingObject {
 						setImage(bigMarioRightFireImage);
 					} else if (isCat){
 						setImage(bigMarioRightCatImage);
-					} else {
+					} else if (isTanooki){
+						setImage(tanookiMarioRightCatImage);
+					}  else {
 						setImage(bigMarioRightImage);
 					}
 				} else {
@@ -695,6 +782,8 @@ public class Mario extends MovingObject {
 						setImage(bigMarioRightWalkingFireImage);
 					} else if (isCat){
 						setImage(bigMarioRightWalkingCatImage);
+					} else if (isTanooki){
+						setImage(tanookiMarioRightWalkingCatImage);
 					} else {
 						setImage(bigMarioRightWalkingImage);
 					}
@@ -710,6 +799,8 @@ public class Mario extends MovingObject {
 						setImage(bigMarioLeftFireImage);
 					} else if (isCat){
 						setImage(bigMarioLeftCatImage);
+					} else if (isTanooki){
+						setImage(tanookiMarioLeftCatImage);
 					} else {
 						setImage(bigMarioLeftImage);
 					}
@@ -723,6 +814,8 @@ public class Mario extends MovingObject {
 						setImage(bigMarioLeftWalkingFireImage);
 					} else if (isCat){
 						setImage(bigMarioLeftWakingCatImage);
+					} else if (isTanooki){
+						setImage(tanookiMarioLeftWakingCatImage);
 					} else {
 						setImage(bigMarioLeftWalkingImage);
 					}
@@ -742,6 +835,8 @@ public class Mario extends MovingObject {
 					setImage(bigMarioRightFireImage);
 				} else if (isCat){
 					setImage(bigMarioRightCatImage);
+				} else if (isTanooki){
+					setImage(tanookiMarioRightCatImage);
 				} else {
 					setImage(bigMarioRightImage);
 				}
@@ -754,6 +849,8 @@ public class Mario extends MovingObject {
 					setImage(bigMarioLeftFireImage);
 				} else if (isCat){
 					setImage(bigMarioLeftCatImage);
+				} else if (isTanooki){
+					setImage(tanookiMarioLeftCatImage);
 				} else {
 					setImage(bigMarioLeftImage);
 				}
@@ -772,6 +869,8 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioRightFireImage);
 				} else if (isCat) {
 					setImageAndRelocate(bigMarioRightCatImage);
+				} else if (isTanooki) {
+					setImageAndRelocate(tanookiMarioRightCatImage);
 				} else {
 					setImageAndRelocate(bigMarioRightImage);
 				}
@@ -784,6 +883,8 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioLeftFireImage);
 				} else if (isCat){
 					setImageAndRelocate(bigMarioLeftCatImage);
+				} else if (isTanooki){
+					setImageAndRelocate(tanookiMarioLeftCatImage);
 				} else {
 					setImageAndRelocate(bigMarioLeftImage);
 				}
@@ -973,7 +1074,8 @@ public class Mario extends MovingObject {
 		} else if (o instanceof Mushroom) {
 			System.out.println("ITS MUSHROOM");
 			canvas.remove(o);
-			if (!isFire && !isCat) setToBig();//if mario is in flower mode or cat mode, dont want mushroom to make him big
+			//if (!isFire && !isCat && !isTanooki) setToBig();//if mario is in flower mode, cat mode, or tanooki mode, dont want mushroom to make him big
+			if (!bigOrSmall) setToBig();//if mario is in flower mode, cat mode, or tanooki mode, dont want mushroom to make him big
 			SoundController.playPowerUpSound();
 		} else if (o instanceof FireFlower) {
 			canvas.remove(o);
@@ -1089,7 +1191,7 @@ public class Mario extends MovingObject {
 					return;
 				}
 				SoundController.playMarioHitSound();
-				if (isFire || isCat) setToBig();
+				if (isFire || isCat || isTanooki) setToBig();
 				else if (bigOrSmall) setToSmall();
 				flash();
 			}
@@ -1192,21 +1294,27 @@ public class Mario extends MovingObject {
 		//the middle of swinging tail in the air
 		if (rightOrLeft) {
 			if (swingTailJumping==SWING_TAIL_JUMPING.STAGE1) {
-				setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+				if (isCat) setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+				else setImageAndRelocate(tanookiMarioRightJumpingCatTail1Image);
 			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE2) {
-				setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+				if (isCat) setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+				else setImageAndRelocate(tanookiMarioRightJumpingCatTail2Image);
 			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE3) {
-				setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+				if (isCat) setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+				else setImageAndRelocate(tanookiMarioRightJumpingCatTail1Image);
 			} else {
 				System.out.println("SHOULD NEVER HAPPEN1!!!!!!!!!");
 			}
 		} else {
 			if (swingTailJumping==SWING_TAIL_JUMPING.STAGE1) {
-				setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+				if (isCat) setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+				else setImageAndRelocate(tanookiMarioLeftJumpingCatTail1Image);
 			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE2) {
-				setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+				if (isCat) setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+				else setImageAndRelocate(tanookiMarioLeftJumpingCatTail2Image);
 			} else if (swingTailJumping==SWING_TAIL_JUMPING.STAGE3) {
-				setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+				if (isCat) setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+				else setImageAndRelocate(tanookiMarioLeftJumpingCatTail1Image);
 			} else {
 				System.out.println("SHOULD NEVER HAPPEN2!!!!!!!!!");
 			}
@@ -1363,8 +1471,10 @@ public class Mario extends MovingObject {
 		t1.start();
 	}
 
-	public void swingTail() {
-		if (!isCat || isCrouching || isSwinging) return;//cant swing tail if crouching or not cat
+	public void swingTail() { 
+		//mario isCat or isTanooki (MyKeyListener only calls this function if mario is cat or tanooki)
+		//if (!isCat && !isTanooki || isCrouching || isSwinging) return;//cant swing tail if crouching or not cat
+		if (isCrouching || isSwinging) return;//cant swing tail if crouching or not cat
 		/*if (isJumping && swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
 			//System.out.println("JUMPING AND SWINGING");
 			return;//return if already swinging
@@ -1377,7 +1487,7 @@ public class Mario extends MovingObject {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				while (alive && isSwinging && isCat) {
+				while (alive && isSwinging && (isCat || isTanooki)) {
 					if (isCrouching) {System.out.println("yyyyyyyyy");//WITHOUT PRINTLN IT BUGS
 					} else {
 						//isSwinging is set to false when user releases swinging tail key
@@ -1410,13 +1520,16 @@ public class Mario extends MovingObject {
 									System.out.println("SHOULD MOVE DOWN SLOWER");
 								}
 								if (lookingRightOrLeft) {
-									setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+									if (isCat) setImageAndRelocate(bigMarioRightJumpingCatTail1Image);
+									else setImageAndRelocate(tanookiMarioRightJumpingCatTail1Image);//isTanooki
 								} else {
-									setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+									if (isCat) setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);
+									else setImageAndRelocate(tanookiMarioLeftJumpingCatTail1Image);//isTanooki
 								}
 								swingTailJumping = SWING_TAIL_JUMPING.STAGE1;
 							} else { 
-								setImageAndRelocate(bigMarioCatTail1Image);
+								if (isCat) setImageAndRelocate(bigMarioCatTail1Image);
+								else setImageAndRelocate(tanookiMarioCatTail1Image);//isTanooki
 								swingTailStanding = SWING_TAIL_STANDING.STAGE1;
 							}
 						}
@@ -1441,18 +1554,22 @@ public class Mario extends MovingObject {
 							if (alive && !isCrouching) {
 								if (isJumping) {
 									if (lookingRightOrLeft) {
-										setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+										if (isCat) setImageAndRelocate(bigMarioRightJumpingCatTail2Image);
+										else setImageAndRelocate(tanookiMarioRightJumpingCatTail2Image);//isTanooki
 									} else {
-										setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+										if (isCat) setImageAndRelocate(bigMarioLeftJumpingCatTail2Image);
+										else setImageAndRelocate(tanookiMarioLeftJumpingCatTail2Image);//isTanooki
 									}
 									swingTailJumping = SWING_TAIL_JUMPING.STAGE2;
 								} else { 
 									if (lookingRightOrLeft) {
 										moveOnlyMario(dx, 0.0);
-										setImageAndRelocate(bigMarioLeftCatTail2Image);
+										if (isCat) setImageAndRelocate(bigMarioLeftCatTail2Image);
+										else setImageAndRelocate(tanookiMarioLeftCatTail2Image);//isTanooki
 									} else {
 										moveOnlyMario(-dx, 0.0);
-										setImageAndRelocate(bigMarioRightCatTail2Image);
+										if (isCat) setImageAndRelocate(bigMarioRightCatTail2Image);
+										else setImageAndRelocate(tanookiMarioRightCatTail2Image);//isTanooki
 									}
 									swingTailStanding = SWING_TAIL_STANDING.STAGE2;
 								}
@@ -1477,15 +1594,18 @@ public class Mario extends MovingObject {
 								if (alive && !isCrouching) {
 									if (isJumping) {
 										if (lookingRightOrLeft) {
-											setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+											if (isCat) setImageAndRelocate(bigMarioRightJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+											else setImageAndRelocate(tanookiMarioRightJumpingCatTail1Image);//isTanooki
 										} else {
-											setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+											if (isCat) setImageAndRelocate(bigMarioLeftJumpingCatTail1Image);//stage3 for jumping uses same pic as stage 1
+											else setImageAndRelocate(tanookiMarioLeftJumpingCatTail1Image);//isTanooki
 										}
 										swingTailJumping = SWING_TAIL_JUMPING.STAGE3;
 									} else { 
 										if (lookingRightOrLeft) moveOnlyMario(-dx, 0);
 										else moveOnlyMario(dx, 0);
-										setImageAndRelocate(bigMarioCatTail3Image);
+										if (isCat) setImageAndRelocate(bigMarioCatTail3Image);
+										else setImageAndRelocate(tanookiMarioCatTail3Image);//isTanooki
 										swingTailStanding = SWING_TAIL_STANDING.STAGE3;
 									}
 								}

@@ -24,7 +24,15 @@ public class Luigi extends Mario {
 			Image bigMarioRightCrouchingCatImage, Image bigMarioLeftJumpingCatTail1Image,
 			Image bigMarioRightJumpingCatTail1Image, Image bigMarioLeftJumpingCatTail2Image,
 			Image bigMarioRightJumpingCatTail2Image, Image bigMarioCatTail1Image, Image bigMarioLeftCatTail2Image,
-			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image, Image smallMarioPipeImage,
+			Image bigMarioRightCatTail2Image, Image bigMarioCatTail3Image, 
+			Image tanookiMarioLeftCatImage, Image tanookiMarioRightCatImage, Image tanookiMarioLeftWakingCatImage, Image tanookiMarioRightWalkingCatImage,
+			Image tanookiMarioLeftJumpingCatImage, Image tanookiMarioRightJumpingCatImage, Image tanookiMarioRightJumpingDownCatImage,
+			Image tanookiMarioLeftJumpingDownCatImage, Image tanookiMarioLeftCrouchingCatImage, Image tanookiMarioRightCrouchingCatImage,
+			Image tanookiMarioLeftJumpingCatTail1Image, Image tanookiMarioRightJumpingCatTal1Image, Image tanookiMarioLeftJumpingCatTail2Image,
+			Image tanookiMarioRightJumpingCatTail2Image,
+			Image tanookiMarioCatTail1Image, Image tanookiMarioLeftCatTail2Image,
+			Image tanookiMarioRightCatTail2Image, Image tanookiMarioCatTail3Image,
+			Image smallMarioPipeImage,
 			Image bigMarioPipeImage, Image fireMarioPipeImage) {
 		super(smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage, smallMarioRightWalkingImage,
 				smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage, bigMarioLeftImage, bigMarioRightImage,
@@ -42,7 +50,15 @@ public class Luigi extends Mario {
 				bigMarioRightJumpingDownCatImage, bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage,
 				bigMarioRightCrouchingCatImage, bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTail1Image,
 				bigMarioLeftJumpingCatTail2Image, bigMarioRightJumpingCatTail2Image, bigMarioCatTail1Image,
-				bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image, smallMarioPipeImage,
+				bigMarioLeftCatTail2Image, bigMarioRightCatTail2Image, bigMarioCatTail3Image, 
+				tanookiMarioLeftCatImage, tanookiMarioRightCatImage, tanookiMarioLeftWakingCatImage, tanookiMarioRightWalkingCatImage,
+				tanookiMarioLeftJumpingCatImage, tanookiMarioRightJumpingCatImage, tanookiMarioRightJumpingDownCatImage,
+				tanookiMarioLeftJumpingDownCatImage, tanookiMarioLeftCrouchingCatImage, tanookiMarioRightCrouchingCatImage,
+				tanookiMarioLeftJumpingCatTail1Image, tanookiMarioRightJumpingCatTal1Image, tanookiMarioLeftJumpingCatTail2Image,
+				tanookiMarioRightJumpingCatTail2Image,
+				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
+				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
+				smallMarioPipeImage,
 				bigMarioPipeImage, fireMarioPipeImage);
 	}
 }

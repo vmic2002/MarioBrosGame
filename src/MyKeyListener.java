@@ -29,7 +29,9 @@ public class MyKeyListener implements KeyListener {
 			for (Mario m : characters) m.setToFire();
 		} else if (keyCode == KeyEvent.VK_4) {
 			for (Mario m : characters) m.setToCat();
-		} else {
+		} else if (keyCode == KeyEvent.VK_5) {
+			for (Mario m : characters) m.setToTanooki();
+		}  else {
 			if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT ||
 					keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_K || keyCode == KeyEvent.VK_UP) {
 				//characters[0] is manipulated by these keys
@@ -45,7 +47,7 @@ public class MyKeyListener implements KeyListener {
 				} else if (keyCode == KeyEvent.VK_K){
 					if (mario.isFire)
 						mario.shootFireBall();
-					else if (mario.isCat)	
+					else if (mario.isCat || mario.isTanooki)	
 						mario.swingTail();
 				} else if (keyCode == KeyEvent.VK_UP) {
 					mario.jump();
@@ -65,7 +67,7 @@ public class MyKeyListener implements KeyListener {
 				} else if (keyCode == KeyEvent.VK_Q){
 					if (mario.isFire)
 						mario.shootFireBall();
-					else if (mario.isCat)	
+					else if (mario.isCat || mario.isTanooki)	
 						mario.swingTail();
 				} else if (keyCode == KeyEvent.VK_T) {
 					mario.jump();
@@ -101,7 +103,7 @@ public class MyKeyListener implements KeyListener {
 				mario.wayUpOrWayDown = false;
 			} else if (keyCode == KeyEvent.VK_K) {
 				if (mario.isFire) {mario.isShooting = false;System.out.println("\n\n1111111111111isSHootingsetto false for character[0]\n\n");}
-				else if (mario.isCat) mario.isSwinging = false;	
+				else if (mario.isCat || mario.isTanooki) mario.isSwinging = false;	
 			}
 		} else if (keyCode == KeyEvent.VK_H || keyCode == KeyEvent.VK_F ||
 				keyCode == KeyEvent.VK_G || keyCode == KeyEvent.VK_T || keyCode == KeyEvent.VK_Q){
@@ -127,7 +129,7 @@ public class MyKeyListener implements KeyListener {
 				mario.wayUpOrWayDown = false;
 			} else if (keyCode == KeyEvent.VK_Q) {
 				if (mario.isFire) {mario.isShooting = false;System.out.println("\n\n1111111111111isSHootingsetto false for character[1]\n\n");}
-				else if (mario.isCat) mario.isSwinging = false;	
+				else if (mario.isCat || mario.isTanooki) mario.isSwinging = false;	
 			}
 		}
 	}

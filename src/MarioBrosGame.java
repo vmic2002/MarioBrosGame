@@ -109,6 +109,28 @@ public class MarioBrosGame extends GraphicsProgram {
 		String bigMarioRightCatTail2ImagePath = prefix+imageDirectory+"/bigMarioRightTail2.png";
 		String bigMarioCatTail3ImagePath = prefix+imageDirectory+"/bigMarioTail3.png";
 
+		
+		
+		String tanookiMarioLeftCatImagePath = prefix+imageDirectory+"/leftTanookiMario.png";
+		String tanookiMarioRightCatImagePath = prefix+imageDirectory+"/rightTanookiMario.png";
+		String tanookiMarioLeftWakingCatImagePath = prefix+imageDirectory+"/leftTanookiMarioWalking.png";
+		String tanookiMarioRightWalkingCatImagePath = prefix+imageDirectory+"/rightTanookiMarioWalking.png";
+		String tanookiMarioLeftJumpingCatImagePath = prefix+imageDirectory+"/leftTanookiMarioJumpingUp.png";
+		String tanookiMarioRightJumpingCatImagePath = prefix+imageDirectory+"/rightTanookiMarioJumpingUp.png";
+		String tanookiMarioRightJumpingDownCatImagePath = prefix+imageDirectory+"/rightTanookiMarioJumpingDown.png";
+		String tanookiMarioLeftJumpingDownCatImagePath = prefix+imageDirectory+"/leftTanookiMarioJumpingDown.png";
+		String tanookiMarioLeftCrouchingCatImagePath = prefix+imageDirectory+"/leftTanookiMarioCrouching.png";
+		String tanookiMarioRightCrouchingCatImagePath = prefix+imageDirectory+"/rightTanookiMarioCrouching.png";
+		String tanookiMarioLeftJumpingCatTail1ImagePath = prefix+imageDirectory+"/leftTanookiMarioJumpTail1.png";
+		String tanookiMarioRightJumpingCatTal1ImagePath = prefix+imageDirectory+"/rightTanookiMarioJumpTail1.png";
+		String tanookiMarioLeftJumpingCatTail2ImagePath = prefix+imageDirectory+"/leftTanookiMarioJumpTail2.png";
+		String tanookiMarioRightJumpingCatTail2ImagePath = prefix+imageDirectory+"/rightTanookiMarioJumpTail1.png";
+		String tanookiMarioCatTail1ImagePath = prefix+imageDirectory+"/tanookiMarioTail1.png";
+		String tanookiMarioLeftCatTail2ImagePath = prefix+imageDirectory+"/leftTanookiMarioTail2.png";
+		String tanookiMarioRightCatTail2ImagePath = prefix+imageDirectory+"/rightTanookiMarioTail2.png";
+		String tanookiMarioCatTail3ImagePath = prefix+imageDirectory+"/tanookiTail3.png";
+		
+		
 		String smallMarioPipeImagePath = prefix+imageDirectory+"/smallMarioPipe.png";
 		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
 		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
@@ -275,6 +297,27 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage bigMarioLeftCatTail2Image= null;
 		BufferedImage bigMarioRightCatTail2Image= null;
 		BufferedImage bigMarioCatTail3Image = null;
+		
+		
+		BufferedImage tanookiMarioLeftCatImage = null;
+		BufferedImage tanookiMarioRightCatImage = null;
+		BufferedImage tanookiMarioLeftWakingCatImage = null;
+		BufferedImage tanookiMarioRightWalkingCatImage = null;
+		BufferedImage tanookiMarioLeftJumpingCatImage = null;
+		BufferedImage tanookiMarioRightJumpingCatImage = null;
+		BufferedImage tanookiMarioRightJumpingDownCatImage = null;
+		BufferedImage tanookiMarioLeftJumpingDownCatImage = null;
+		BufferedImage tanookiMarioLeftCrouchingCatImage = null;
+		BufferedImage tanookiMarioRightCrouchingCatImage = null;
+		BufferedImage tanookiMarioLeftJumpingCatTail1Image = null;
+		BufferedImage tanookiMarioRightJumpingCatTal1Image = null;
+		BufferedImage tanookiMarioLeftJumpingCatTail2Image = null;
+		BufferedImage tanookiMarioRightJumpingCatTail2Image = null;
+		BufferedImage tanookiMarioCatTail1Image = null;
+		BufferedImage tanookiMarioLeftCatTail2Image = null;
+		BufferedImage tanookiMarioRightCatTail2Image = null;
+		BufferedImage tanookiMarioCatTail3Image = null;
+		
 
 		BufferedImage smallMarioPipeImage = null;
 		BufferedImage bigMarioPipeImage = null;
@@ -444,6 +487,27 @@ public class MarioBrosGame extends GraphicsProgram {
 			bigMarioRightCatTail2Image = ImageIO.read(new File(bigMarioRightCatTail2ImagePath));
 			bigMarioCatTail3Image = ImageIO.read(new File(bigMarioCatTail3ImagePath));
 
+			
+			tanookiMarioLeftCatImage = ImageIO.read(new File(tanookiMarioLeftCatImagePath));
+			tanookiMarioRightCatImage = ImageIO.read(new File(tanookiMarioRightCatImagePath));
+			tanookiMarioLeftWakingCatImage = ImageIO.read(new File(tanookiMarioLeftWakingCatImagePath));
+			tanookiMarioRightWalkingCatImage = ImageIO.read(new File(tanookiMarioRightWalkingCatImagePath));
+			tanookiMarioLeftJumpingCatImage = ImageIO.read(new File(tanookiMarioLeftJumpingCatImagePath));
+			tanookiMarioRightJumpingCatImage = ImageIO.read(new File(tanookiMarioRightJumpingCatImagePath));
+			tanookiMarioRightJumpingDownCatImage = ImageIO.read(new File(tanookiMarioRightJumpingDownCatImagePath));
+			tanookiMarioLeftJumpingDownCatImage = ImageIO.read(new File(tanookiMarioLeftJumpingDownCatImagePath));
+			tanookiMarioLeftCrouchingCatImage = ImageIO.read(new File(tanookiMarioLeftCrouchingCatImagePath));
+			tanookiMarioRightCrouchingCatImage = ImageIO.read(new File(tanookiMarioRightCrouchingCatImagePath));
+			tanookiMarioLeftJumpingCatTail1Image = ImageIO.read(new File(tanookiMarioLeftJumpingCatTail1ImagePath));
+			tanookiMarioRightJumpingCatTal1Image = ImageIO.read(new File(tanookiMarioRightJumpingCatTal1ImagePath));
+			tanookiMarioLeftJumpingCatTail2Image = ImageIO.read(new File(tanookiMarioLeftJumpingCatTail2ImagePath));
+			tanookiMarioRightJumpingCatTail2Image = ImageIO.read(new File(tanookiMarioRightJumpingCatTail2ImagePath));
+			tanookiMarioCatTail1Image = ImageIO.read(new File(tanookiMarioCatTail1ImagePath));
+			tanookiMarioLeftCatTail2Image = ImageIO.read(new File(tanookiMarioLeftCatTail2ImagePath));
+			tanookiMarioRightCatTail2Image = ImageIO.read(new File(tanookiMarioRightCatTail2ImagePath));
+			tanookiMarioCatTail3Image = ImageIO.read(new File(tanookiMarioCatTail3ImagePath));
+			
+			
 			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
 			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
 			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));			
@@ -581,6 +645,17 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightJumpingCatTal2Image,
 				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
+				
+				
+				tanookiMarioLeftCatImage, tanookiMarioRightCatImage, tanookiMarioLeftWakingCatImage, tanookiMarioRightWalkingCatImage,
+				tanookiMarioLeftJumpingCatImage, tanookiMarioRightJumpingCatImage, tanookiMarioRightJumpingDownCatImage,
+				tanookiMarioLeftJumpingDownCatImage, tanookiMarioLeftCrouchingCatImage, tanookiMarioRightCrouchingCatImage,
+				tanookiMarioLeftJumpingCatTail1Image, tanookiMarioRightJumpingCatTal1Image, tanookiMarioLeftJumpingCatTail2Image,
+				tanookiMarioRightJumpingCatTail2Image,
+				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
+				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
+				
+				
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
 				);
 		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
@@ -609,6 +684,16 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigLuigiRightJumpingCatTail2Image,
 				bigLuigiCatTail1Image, bigLuigiLeftCatTail2Image,
 				bigLuigiRightCatTail2Image, bigLuigiCatTail3Image,
+				
+				
+				tanookiMarioLeftCatImage, tanookiMarioRightCatImage, tanookiMarioLeftWakingCatImage, tanookiMarioRightWalkingCatImage,
+				tanookiMarioLeftJumpingCatImage, tanookiMarioRightJumpingCatImage, tanookiMarioRightJumpingDownCatImage,
+				tanookiMarioLeftJumpingDownCatImage, tanookiMarioLeftCrouchingCatImage, tanookiMarioRightCrouchingCatImage,
+				tanookiMarioLeftJumpingCatTail1Image, tanookiMarioRightJumpingCatTal1Image, tanookiMarioLeftJumpingCatTail2Image,
+				tanookiMarioRightJumpingCatTail2Image,
+				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
+				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
+				
 				smallLuigiPipeImage, bigLuigiPipeImage, fireMarioPipeImage);
 		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
@@ -647,6 +732,4 @@ public class MarioBrosGame extends GraphicsProgram {
 		LevelController.playLevel("1");
 		//LevelController.playLevel2();
 	}
-
-
 }
