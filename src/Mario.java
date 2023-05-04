@@ -104,7 +104,7 @@ public class Mario extends MovingObject {
 	public static final int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
 	public static final int numTimesToggleVisibility = 20;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
-	private static final int maxHeightOfJump = 75;//max num times move function is called on way up of jump (move(0, -fallDy)
+	private static final int maxHeightOfJump = 60;//max num times move function is called on way up of jump (move(0, -1.3*fallDy)
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
@@ -635,7 +635,7 @@ public class Mario extends MovingObject {
 						break;
 					}
 					if (!alive) {isJumping = false; return;}
-					move(0, -fallDy);
+					move(0, -1.3*fallDy);//1.3 so mario goes up faster than on way down
 					//System.out.println("GOING UP");
 					try {
 						Thread.sleep(pauseInAir);
