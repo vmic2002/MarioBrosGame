@@ -26,6 +26,8 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * TODO possible idea mario could have laser eyes (mario or firemario
 	 * pictures edited to a different color.) mario would be able to move while shooting his laser eyes
 	 * since the arrows will be needed to control where the laser beam goes
+	 * 
+	 * TODO could have campaign mode (worlds) AND mode with randomly generated levels!
 	 */
 
 	private static final int WIDTH = 1400;
@@ -189,6 +191,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		String fireFlowerImagePath = prefix+imageDirectory+"/fireFlowerImage.png";
 		String leftLeafImagePath = prefix+imageDirectory+"/leftLeafImage.png";
 		String rightLeafImagePath = prefix+imageDirectory+"/rightLeafImage.png";
+		String tanookiPowerUpImagePath = prefix+imageDirectory+"/tanookiPowerUp.png";
+		
 
 		String mysteryBox1ImagePath = prefix+imageDirectory+"/mysteryBox1.png";
 		String mysteryBox2ImagePath = prefix+imageDirectory+"/mysteryBox2.png";
@@ -377,6 +381,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage fireFlowerImage = null;
 		BufferedImage leftLeafImage = null;
 		BufferedImage rightLeafImage = null;
+		BufferedImage tanookiPowerUpImage = null;
 
 		BufferedImage mysteryBox1Image = null;
 		BufferedImage mysteryBox2Image = null;
@@ -566,6 +571,7 @@ public class MarioBrosGame extends GraphicsProgram {
 			fireFlowerImage = ImageIO.read(new File(fireFlowerImagePath));
 			leftLeafImage = ImageIO.read(new File(leftLeafImagePath));;
 			rightLeafImage = ImageIO.read(new File(rightLeafImagePath));
+			tanookiPowerUpImage = ImageIO.read(new File(tanookiPowerUpImagePath));
 
 			mysteryBox1Image = ImageIO.read(new File(mysteryBox1ImagePath));
 			mysteryBox2Image = ImageIO.read(new File(mysteryBox2ImagePath));
@@ -712,6 +718,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				downShootingFlowerRightDownClosedImage, downShootingFlowerRightDownOpenImage,
 				downShootingFlowerRightUpClosedImage, downShootingFlowerRightUpOpenImage);
 		MysteryBox.setObjects(mysteryBox1Image, mysteryBox2Image, mysteryBox3Image, mysteryBox4Image, mysteryBoxFinalImage);
+		Tanooki.setObjects(tanookiPowerUpImage);
 		Mushroom.setObjects(mushroomImage);
 		FireBall.setObjects(leftFireBall1Image, rightFireBall1Image,leftFireBall2Image,
 				rightFireBall2Image, leftFireBall3Image,

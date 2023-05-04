@@ -14,7 +14,7 @@ public class DynamicLevelPart extends LevelPart {
 	}
 
 	public long getID() {return id;}
-	
+
 	@Override
 	public void move(double dx , double dy) {
 		for (GImage image: part) {
@@ -22,6 +22,9 @@ public class DynamicLevelPart extends LevelPart {
 			if (image instanceof FireBall) {
 				((FireBall) image).hoppingX+=dx;
 				((FireBall) image).hoppingY+=dy;
+			} else if (image instanceof Tanooki) {
+				((Tanooki) image).xBaseline+=dx;
+				((Tanooki) image).yBaseline+=dy;
 			}
 		}
 	}

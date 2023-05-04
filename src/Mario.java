@@ -1086,6 +1086,11 @@ public class Mario extends MovingObject {
 			canvas.remove(o);
 			setToCat();
 			SoundController.playPowerUpSound();
+		} else if (o instanceof Tanooki) {
+			System.out.println("HIT TANOOKI");
+			canvas.remove(o);
+			setToTanooki();
+			SoundController.playPowerUpSound();
 		} else if (o instanceof Platform) {
 			//mario should halt, he cant move into a Platform
 			//System.out.println("IN CONTAC WITH Platform");
@@ -1110,14 +1115,16 @@ public class Mario extends MovingObject {
 					if (!((MysteryBox) o).stateIsFinal()) {
 						SoundController.playItemOutOfBoxSound();
 						double x  = o.getX();
-						double y = o.getY();						
+						double y = o.getY();					
 						((MysteryBox) o).hitByMario();
-						if (Math.random()>0.66)
+						if (Math.random()>0.75)
 							Factory.addFireFlower(x, y, o.getWidth());
-						else if (Math.random()>0.33)
+						else if (Math.random()>0.5)
 							Factory.addMushroom(x, y, o.getWidth());
-						else
+						else if (Math.random()>0.25)
 							Factory.addLeaf(x, y, o.getWidth());
+						else
+							Factory.addTanooki(x, y, o.getWidth());
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe

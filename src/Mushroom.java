@@ -59,11 +59,11 @@ public class Mushroom extends PowerUp {
 				stillOnMysteryBox = false;
 			}
 		}
-		System.out.println("MUSHROOM NO LONGER ON MYSTERYBOX");
+		//System.out.println("MUSHROOM NO LONGER ON MYSTERYBOX");
 		//by now mushroom is no longer on mysterybox
 		//need to make it fall until it hits mario or platform
 		while (alive) {			
-			if (getY()+getHeight()>=canvas.getHeight()+LevelController.currLevel.yBaseLine){
+			if (getY()>=canvas.getHeight()+LevelController.currLevel.yBaseLine){
 				//mushroom keeps on moving until mario eats it
 				//OR if it reaches bottom of screen
 				alive = false;

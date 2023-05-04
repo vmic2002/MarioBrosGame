@@ -83,5 +83,11 @@ public abstract class Factory {
 		addPowerUp(x, y, mysteryBoxWidth, leaf);
 		//return leaf;
 	}
+	
+	public static void addTanooki(double x, double y, double mysteryBoxWidth) {
+		//x, y are coordinates of MysteryBox
+		Tanooki tanooki = new Tanooki();
+		addPowerUp(x, y, mysteryBoxWidth, tanooki);
+	}
 }
 //TODO also maybe if user holds fireball key then the fireball could charge until it is really big  

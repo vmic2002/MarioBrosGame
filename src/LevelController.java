@@ -343,12 +343,12 @@ public class LevelController {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		for (int i=0; i<2; i++) {
+		for (int i=0; i<4; i++) {
 			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
-			spawnMysteryBox(5.0*space, 7, levelParts);
+			spawnMysteryBox(xCounter+2.0*space, 7, levelParts);
 			spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
 			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "3", levelParts);
-			if (i!=1) spawnWhiteSpace(2);
+			if (i!=3) spawnWhiteSpace(2);
 		}
 
 		Level level1a = new Level("1b", levelParts, xCounter);
