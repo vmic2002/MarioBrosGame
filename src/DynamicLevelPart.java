@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import acm.graphics.GImage;
 
 public class DynamicLevelPart extends LevelPart {
-	//for now dynamiclevel part is made up of power up or fireball
+	//for now dynamiclevel part is made up of power up or fireball or BulletBill
 	//for level parts that are added dynamically (while level is playing) to a Level's dynamicLevelParts
 	private long id;
 	//each dynamic level part needs to be differentiated from another because

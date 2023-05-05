@@ -74,7 +74,7 @@ public abstract class ShootingFlower extends BadGuy {
 			closeMouth(upOrDown, rightOrLeft);
 			return;
 		};
-		Factory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
+		DynamicFactory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
 		//factory calls the fireball function to move the fireball towards mario (in a straight line)
 		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
 		closeMouth(upOrDown, rightOrLeft);		

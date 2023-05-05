@@ -5,7 +5,7 @@ import acm.graphics.GObject;
 import java.awt.Image;
 import java.util.ArrayList;
 public abstract class MovingObject extends GImage {
-	//fireball, mushroom, fire flower, leaf, mario (turtle) extend MovingObject
+	//fireball, mushroom, fire flower, leaf, mario, turtle, BulletBill extend MovingObject
 	public static GCanvas canvas;
 	public static double scalingFactor;
 	public static Mario[] characters;
@@ -50,7 +50,7 @@ public abstract class MovingObject extends GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());
 	}
 	
-	public static void setCanvas(GCanvas canvas1, double scalingFactor1, Mario[] characters1) {
+	public static void setObjects(GCanvas canvas1, double scalingFactor1, Mario[] characters1) {
 		canvas = canvas1;
 		scalingFactor = scalingFactor1;
 		characters = characters1;

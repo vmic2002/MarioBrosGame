@@ -1,8 +1,9 @@
 import acm.graphics.GCanvas;
 
-public abstract class Factory {
-	//this class spawns MovingObjects that are added to dynamicLevelParts
+public class DynamicFactory {
+	//this class spawns MovingObjects that implement Dynamic and adds them to dynamicLevelParts
 	//dynamically while a level is being played and calls their move function
+	//powerups, fireballs, bulletbill etc
 	private static GCanvas canvas;
 	
 	public static void setCanvas(GCanvas canvas1) {
@@ -53,6 +54,15 @@ public abstract class Factory {
 			}
 		});
 		t1.start();
+	}
+	
+	public static void addBulletBill(double x, double y, boolean rightOrLeft) {
+		//called when BillBlaster shoots a BulletBill
+		BulletBill bulletBill = new BulletBill(rightOrLeft);
+		canvas.add(bulletBill, x, y);
+		bulletBill.sendToBack();//spawns behind BillBlaster
+		LevelController.currLevel.addLevelPartDynamically(bulletBill);
+		addMovingObject(bulletBill);
 	}
 	
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {

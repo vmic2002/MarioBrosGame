@@ -1118,13 +1118,13 @@ public class Mario extends MovingObject {
 						double y = o.getY();					
 						((MysteryBox) o).hitByMario();
 						if (Math.random()>0.75)
-							Factory.addFireFlower(x, y, o.getWidth());
+							DynamicFactory.addFireFlower(x, y, o.getWidth());
 						else if (Math.random()>0.5)
-							Factory.addMushroom(x, y, o.getWidth());
+							DynamicFactory.addMushroom(x, y, o.getWidth());
 						else if (Math.random()>0.25)
-							Factory.addLeaf(x, y, o.getWidth());
+							DynamicFactory.addLeaf(x, y, o.getWidth());
 						else
-							Factory.addTanooki(x, y, o.getWidth());
+							DynamicFactory.addTanooki(x, y, o.getWidth());
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe
@@ -1173,6 +1173,10 @@ public class Mario extends MovingObject {
 				//if bigMario need to MAKE TURTLE GO TO shell mode or start spinning if already in shell mode
 				if (bigOrSmall && !wayUpOrWayDown) ((RedTurtle) o).jumpedOnByBigMario(this);
 				else marioHit();
+			} else if (o instanceof BulletBill && !horizontalOrVertical && !wayUpOrWayDown){
+				//mario jumps on BulletBill
+				this.hop();
+				((BulletBill) o).jumpedOn();
 			} else {
 				marioHit();
 			}
@@ -1356,7 +1360,7 @@ public class Mario extends MovingObject {
 						SoundController.playFireballSound();
 						double x = lookingRightOrLeft?getX()+getWidth()+moveDx*2:getX()-moveDx*6;
 						double y = getY()+0.4*getHeight();//might have to change
-						Factory.addFireBall(x, y, lookingRightOrLeft);
+						DynamicFactory.addFireBall(x, y, lookingRightOrLeft);
 						//ENTERING STAGE1
 						if (alive) {
 							if (isJumping) {

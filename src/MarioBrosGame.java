@@ -242,6 +242,18 @@ public class MarioBrosGame extends GraphicsProgram {
 		String redTurtleStandingRightImagePath = prefix+imageDirectory+"/redTurtleStandingRight.png";
 		String redTurtleWalkingLeftImagePath = prefix+imageDirectory+"/redTurtleWalkingLeft.png";
 		String redTurtleWalkingRightImagePath = prefix+imageDirectory+"/redTurtleWalkingRight.png";
+		
+		
+		
+		String leftBulletBillImagePath = prefix+imageDirectory+"/leftBulletBill.png";
+		String rightBulletBillImagePath = prefix+imageDirectory+"/rightBulletBill.png";
+		String billBlasterTopImagePath = prefix+imageDirectory+"/billBlasterTop.png";
+		String billBlasterMiddleImagePath = prefix+imageDirectory+"/billBlasterMiddle.png";
+		String billBlasterBottomImagePath = prefix+imageDirectory+"/billBlasterBottom.png";
+		
+		
+		
+		
 
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
@@ -431,6 +443,12 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage redTurtleStandingRightImage = null;
 		BufferedImage redTurtleWalkingLeftImage = null;
 		BufferedImage redTurtleWalkingRightImage = null;
+		
+		BufferedImage leftBulletBillImage = null;
+		BufferedImage rightBulletBillImage = null;
+		BufferedImage billBlasterTopImage = null;
+		BufferedImage billBlasterMiddleImage = null;
+		BufferedImage billBlasterBottomImage = null;
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -621,6 +639,13 @@ public class MarioBrosGame extends GraphicsProgram {
 			redTurtleStandingRightImage = ImageIO.read(new File(redTurtleStandingRightImagePath));
 			redTurtleWalkingLeftImage = ImageIO.read(new File(redTurtleWalkingLeftImagePath));
 			redTurtleWalkingRightImage = ImageIO.read(new File(redTurtleWalkingRightImagePath));
+			
+			leftBulletBillImage = ImageIO.read(new File(leftBulletBillImagePath));
+			rightBulletBillImage = ImageIO.read(new File(rightBulletBillImagePath));
+			billBlasterTopImage = ImageIO.read(new File(billBlasterTopImagePath));
+			billBlasterMiddleImage = ImageIO.read(new File(billBlasterMiddleImagePath));
+			billBlasterBottomImage = ImageIO.read(new File(billBlasterBottomImagePath));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -705,7 +730,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
 		characters[1] = mario;//mario is last in list so he is added last to canvas and "on top of" the other characters
-		MovingObject.setCanvas(this.getGCanvas(), mario.scalingFactor, characters);
+		MovingObject.setObjects(this.getGCanvas(), mario.scalingFactor, characters);
+		BulletBill.setObjects(leftBulletBillImage, rightBulletBillImage);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
 				redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,
 				redTurtleStandingRightImage, redTurtleWalkingLeftImage, redTurtleWalkingRightImage);
@@ -726,14 +752,14 @@ public class MarioBrosGame extends GraphicsProgram {
 				rightFireBall4Image);
 		FireFlower.setObjects(fireFlowerImage);
 		Leaf.setObjects(rightLeafImage, leftLeafImage);
-		Factory.setCanvas(this.getGCanvas());
-
-		LevelController.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
+		DynamicFactory.setCanvas(this.getGCanvas());
+		StaticFactory.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, 
 				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
 				pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
-				mario.scalingFactor,
+				billBlasterTopImage, billBlasterMiddleImage, billBlasterBottomImage,
 				this.getGCanvas());
+		LevelController.setObjects(this.getGCanvas(), mario.scalingFactor);
 		setSize(WIDTH,HEIGHT);
 		addKeyListeners(new MyKeyListener(characters));
 		LevelController.playLevel("1");

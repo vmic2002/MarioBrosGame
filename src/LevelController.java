@@ -1,47 +1,20 @@
-import java.awt.Image;
 import java.util.ArrayList;
-
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 
 public class LevelController {
 	//spawns a level and sets currLevel so mario can have access to it and move
 	//level depending on how close to the edges of the screen he is
-	private static Image grassLeftTopImage, grassRightTopImage, 
-	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage,
-	pipeUpTopLeftImage, pipeUpTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
-	pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
-	pipeDownTopLeftImage, pipeDownTopRightImage;
+
 	private static GCanvas canvas;
 	public static Level currLevel;//only one currLevel mario is playing at a time
 	public static double space;
-	public static double xCounter;//used for adding images to a level and keeping track of the level's width
-	public enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
-	public enum TURTLE_TYPE {NO_TURTLE, RED, GREEN};
-	//up/down pipe can have no flower coming out of it, a shooting flower, or a biting flower
-	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
-			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
-			Image pipeUpTopLeftImage1, Image pipeUpTopRightImage1, Image pipeDownMiddleLeftImage1, Image pipeDownMiddleRightImage1,
-			Image pipeDownTopLeftImage1, Image pipeDownTopRightImage1, Image pipeUpMiddleLeftImage1, Image pipeUpMiddleRightImage1,
-			double scalingFactor,
-			GCanvas canvas1) {
-		grassLeftTopImage = grassLeftTopImage1;
-		grassRightTopImage = grassRightTopImage1;
-		grassMiddleTopImage = grassMiddleTopImage1;
-		grassLeftImage = grassLeftImage1;
-		grassRightImage = grassRightImage1;
-		grassMiddleImage = grassMiddleImage1;
-		pipeUpTopLeftImage = pipeUpTopLeftImage1;
-		pipeUpTopRightImage = pipeUpTopRightImage1;
-		pipeDownMiddleLeftImage = pipeDownMiddleLeftImage1;
-		pipeDownMiddleRightImage = pipeDownMiddleRightImage1;
-		pipeDownTopLeftImage = pipeDownTopLeftImage1;
-		pipeDownTopRightImage = pipeDownTopRightImage1;
-		pipeUpMiddleLeftImage = pipeUpMiddleLeftImage1;
-		pipeUpMiddleRightImage = pipeUpMiddleRightImage1;
-		canvas = canvas1;
-		space = scalingFactor*10.0;
-	}
+	public static enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
+	public static enum TURTLE_TYPE {NO_TURTLE, RED, GREEN};
+	private static XCounter xCounter;
+
+	public static void setObjects(GCanvas canvas1, double scalingFactor) {canvas=canvas1;
+	space = scalingFactor*10.0;xCounter = new XCounter();}
 
 	public static void endCurrentLevel() {
 		//sets all moving objects of currLevel to dead
@@ -68,10 +41,12 @@ public class LevelController {
 				for (GImage image : l.part) {
 					if (image instanceof MovingObject) {
 						((MovingObject) image).alive = false;
-						//this fixes bug where power up from previous level is removed from canvas
+						//this fixes bug where power up/fireball/bulletbill from previous level is removed from canvas
 						//but when restarting level when mario walks into it it still affects him
 						//or dead fireball to kill turtles etc
-						System.out.println("pow`er up/fireball dead");
+						if (image instanceof BulletBill)
+							System.out.println("\n\n\tBULLETBILL SET TO DEAD\n\n");
+						System.out.println("pow`er up/fireball/BulletBill dead");
 					}
 				}
 			}
@@ -80,7 +55,9 @@ public class LevelController {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		BillBlasterController.endOfLevel();
 		System.out.println("CURR LEVEL ENDED");
+		//currLevel = null;
 	}
 
 	public static void restartCurrentLevel() {
@@ -91,207 +68,22 @@ public class LevelController {
 		System.out.println("STARTING LEVEL "+subLevelID);
 		if (currLevel!=null) endCurrentLevel();
 		canvas.removeAll();
+		xCounter.initialize();//need to re initialize xCounter.v to 0 at the beginning of each level
+		BillBlasterController.startOfLevel();
 		if (subLevelID.equals("1")) playLevel1();
 		else if (subLevelID.equals("1a")) playLevel1a();
 		else if (subLevelID.equals("1b")) playLevel1b();
 		else if (subLevelID.equals("2")) playLevel2();
 		else if (subLevelID.equals("3")) playLevel3();
+		else if (subLevelID.equals("4")) playLevel4();
 		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
 	}
 
-
-	/***
-	 * This function spawns a grass mountain with given location and size (adds all images to canvas)
-	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
-	 * XCounter is x coordinate of top left Image
-	 * @param w width in number of images from left to right (expected >=3)
-	 * @param h height in number of images from top to bottom (expected >=2)
-
-	 */
-	public static double spawnGrassMountain(double w, double h, TURTLE_TYPE type, ArrayList<LevelPart> levelParts) {
-		ArrayList<GImage> images = new ArrayList<GImage>();
-		for (int i = 1; i<w-1; i++) {
-			for (int j = 1; j<h; j++) {
-				Platform g1 = new Platform(grassMiddleImage);
-				canvas.add(g1, xCounter+i*g1.getWidth(), canvas.getHeight()-j*g1.getHeight());
-				images.add(g1);
-			}
-		}
-		for (int i = 1; i<w-1; i++) {	
-			Platform g1 = new Platform(grassMiddleTopImage);
-			canvas.add(g1, xCounter+i*g1.getWidth(), canvas.getHeight()-h*g1.getHeight());
-			images.add(g1);
-		}
-		for (int j = 1; j<h; j++) {
-			Platform g1 = new Platform(grassLeftImage);
-			canvas.add(g1, xCounter, canvas.getHeight()-j*g1.getHeight());
-			images.add(g1);
-		}
-		for (int j = 1; j<h; j++) {
-			Platform g1 = new Platform(grassRightImage);
-			canvas.add(g1, xCounter+(w-1)*g1.getWidth(), canvas.getHeight()-j*g1.getHeight());
-			images.add(g1);
-		}
-		Platform g1 = new Platform(grassRightTopImage);
-		canvas.add(g1, xCounter+(w-1)*g1.getWidth(), canvas.getHeight()-h*g1.getHeight());
-		images.add(g1);
-		Platform g2 = new Platform(grassLeftTopImage);
-		canvas.add(g2, xCounter, canvas.getHeight()-h*g1.getHeight());
-		images.add(g2);
-		//double height = g1.getHeight();
-		double width = w*g1.getWidth(); 
-
-		if (type == TURTLE_TYPE.RED) {
-			//TODO need to do green turtles too
-			RedTurtle turtle = new RedTurtle(width);
-			canvas.add(turtle, xCounter, canvas.getHeight()-g1.getHeight()*h-turtle.getHeight());
-			images.add(turtle);
-			turtle.move();
-		}
-		xCounter += width;
-		levelParts.add(new LevelPart(images));
-
-		return width;
+	//this function adds white space to level by increasing xCounter.v without adding any images
+	public static void spawnWhiteSpace(XCounter xCounter, double numSpaces) {
+		xCounter.v += numSpaces*space;
 	}
 
-	/***
-	 *
-	 * @param h height in number of images from top to bottom (expected >=2)
-	 * @param subLevelID is non empty if pipe allows mario to go into it and transport him
-	 * 
-	 */
-
-
-	/***
-	 * This function spawns a pipe facing up (mario can go down into) from the bottom of the screen
-	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
-	 * xCounter is x coordinate of top left Image
-	 * @param h height in number of images from top to bottom (expected >=2)
-	 * @param flowerType type of flower coming in/out of pipe (could be NO_FLOWER)
-	 * @param timeOffset to coordinate some flowers to come in/out at the same time (if they have the same timeOffset)
-	 * @param subLevelID is non empty if pipe allows mario to go into it and transport him
-	 * @param levelParts to add every image to the currLevel
-	 * @return width of pipe
-	 */
-	public static double spawnUpPipe(double h, FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
-		//TODO FIX BUG WHERE UP PIPE DOESNT RETURN CORRECT WIDTH, XCOUNTER FOR LEVEL IS INCREMENTED PROPERLY
-		//SO MARIO CAN WALK PAST THE END OF THE LEVEL
-		//loophope around this problem: dont do xCounter += spawnUpPipe
-		//do : spawnUpPipe(); xCounter+=200;
-		if (h<2) h=2;
-		ArrayList<GImage> images = new ArrayList<GImage>();	
-		for (int i=1; i<h; i++) {
-			Platform middleLeft = new Platform(pipeUpMiddleLeftImage);
-			canvas.add(middleLeft, xCounter, canvas.getHeight()-middleLeft.getHeight()*i);
-			images.add(middleLeft);
-			Platform middleRight = new Platform(pipeUpMiddleRightImage);
-			canvas.add(middleRight, xCounter+middleLeft.getWidth(), canvas.getHeight()-middleRight.getHeight()*i);
-			images.add(middleRight);
-		}
-
-
-
-		Platform topLeft = subLevelID.length()>0?new LeftPipePart(pipeUpTopLeftImage, subLevelID, true):new Platform(pipeUpTopLeftImage);
-		Platform topRight = subLevelID.length()>0?new RightPipePart(pipeUpTopRightImage, subLevelID, true):new Platform(pipeUpTopRightImage);
-
-		Platform middleRight = new Platform(pipeUpMiddleRightImage);
-		double dx = topLeft.getWidth()-middleRight.getWidth();
-		//dx is to offset the top part so it sits in middle of pipe
-		canvas.add(topLeft, xCounter-dx, canvas.getHeight()-h*topLeft.getHeight());
-		images.add(topLeft);
-		canvas.add(topRight, xCounter-dx+topLeft.getWidth(), canvas.getHeight()-h*topRight.getHeight());
-		images.add(topRight);
-
-		if (flowerType == FLOWER_TYPE.SHOOTING) {
-			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			ShootingFlower flower = new UpShootingFlower(timeOffset);
-			double width = flower.getWidth();
-			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY());
-			flower.sendToBack();
-			images.add(flower);
-			flower.move();
-		}
-
-		levelParts.add(new LevelPart(images));
-		double width = 2.0*middleRight.getWidth(); 
-		xCounter += width;//width is always 2 images
-		return width;
-	}
-
-
-	/***
-	 * This function spawns a pipe facing down (mario can jump into) from the top of the screen
-	 * Adds LevelPart to levelParts and increments xCounter (leftmost available place for a new LevelPart)
-	 * xCounter is x coordinate of top left Image
-	 * @param h height in number of images from top to bottom (expected >=2)
-	 * @param flowerType type of flower coming in/out of pipe (could be NO_FLOWER)
-	 * @param timeOffset to coordinate some flowers to come in/out at the same time (if they have the same timeOffset)
-	 * @param subLevelID is non empty if pipe allows mario to go into it and transport him
-	 * @param levelParts to add every image to the currLevel
-	 * @return width of pipe
-	 */
-	public static double spawnDownPipe(double h, FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
-		if (h<2) h=2;
-		ArrayList<GImage> images = new ArrayList<GImage>();	
-		for (int i=0; i<h-1; i++) {
-			Platform middleLeft = new Platform(pipeDownMiddleLeftImage);
-			canvas.add(middleLeft, xCounter, middleLeft.getHeight()*i);
-			images.add(middleLeft);
-			Platform middleRight = new Platform(pipeDownMiddleRightImage);
-			canvas.add(middleRight, xCounter+middleLeft.getWidth(), middleRight.getHeight()*i);
-			images.add(middleRight);
-		}
-
-		Platform topLeft = subLevelID.length()>0?new LeftPipePart(pipeDownTopLeftImage, subLevelID, false):new Platform(pipeDownTopLeftImage);
-		Platform topRight = subLevelID.length()>0?new RightPipePart(pipeDownTopRightImage, subLevelID, false):new Platform(pipeDownTopRightImage);
-
-		Platform middleRight = new Platform(pipeDownMiddleRightImage);
-		double dx = topLeft.getWidth()-middleRight.getWidth();
-		//dx is to offset the top part so it sits in middle of pipe
-		canvas.add(topLeft, xCounter-dx, (h-1)*topLeft.getHeight());
-		images.add(topLeft);
-		canvas.add(topRight, xCounter-dx+topLeft.getWidth(), (h-1)*topRight.getHeight());
-		images.add(topRight);
-
-		if (flowerType == FLOWER_TYPE.SHOOTING) {
-			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			ShootingFlower flower = new DownShootingFlower(timeOffset);
-			double width = flower.getWidth();
-			double height = flower.getHeight();
-			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY()+topLeft.getHeight()-height);
-			flower.sendToBack();
-			images.add(flower);
-			flower.move();
-		}
-
-		levelParts.add(new LevelPart(images));
-		double width = 2.0*topLeft.getWidth();
-		xCounter += width;//width is always 2 images
-		return width;
-	}
-
-	//this func does not increase xCounter by the width of the mysterybox
-	//since usually mysterybox is on top of platform (like grass mountain)
-	public static double spawnMysteryBox(double x, double y, ArrayList<LevelPart> levelParts) {
-		ArrayList<GImage> images = new ArrayList<GImage>();
-		MysteryBox b = new MysteryBox();
-		canvas.add(b, x, canvas.getHeight()-y*b.getHeight());
-		images.add(b);
-		levelParts.add(new LevelPart(images));
-		return b.getWidth();
-	}
-
-	//this function adds white space to level by increasing xCounter without adding any images
-	public static void spawnWhiteSpace(double numSpaces) {
-		xCounter += numSpaces*space;
-	}
-
-	//spawns a down pipe on top of an up pipe, xCounter is modified only once
-	public static void spawnUpAndDownPipes(double hUp, String subLevelIDUp, FLOWER_TYPE tUp,  double hDown, String subLevelIDDown, FLOWER_TYPE tDown, ArrayList<LevelPart> levelParts) {
-		double width = spawnDownPipe(hDown, tDown, 0, subLevelIDDown, levelParts);
-		xCounter -= width;//so that down pipe is on top of up pipe
-		spawnUpPipe(hUp, tUp, 0, subLevelIDUp, levelParts);
-	}
 
 	public static void playLevel1() {
 		//adds each GImage for each LevelPart to the canvas at their starting positions
@@ -301,39 +93,42 @@ public class LevelController {
 		//at the end of function XCounter will be the width of the level
 
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
-		xCounter = 0.0;//need to re initialize xCounter to 0 at the beginning of each level
+		
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(3, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
-		spawnWhiteSpace(1);
-		spawnGrassMountain(8, 4, TURTLE_TYPE.RED, levelParts);
-		spawnWhiteSpace(4);
-		spawnMysteryBox(xCounter+2.0*space, 8, levelParts);
-		spawnGrassMountain(4, 5, TURTLE_TYPE.RED, levelParts);
-		spawnWhiteSpace(2);
-		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "1a", levelParts);
-		spawnDownPipe(3, FLOWER_TYPE.SHOOTING, 50, "", levelParts);
-		spawnUpPipe(4, FLOWER_TYPE.SHOOTING, 0, "1b", levelParts);
-		spawnWhiteSpace(2);
-		spawnGrassMountain(8, 2, TURTLE_TYPE.RED, levelParts);
-		spawnMysteryBox(xCounter-4.0*space, 6, levelParts);
-		spawnMysteryBox(xCounter-2.0*space, 6, levelParts);
-		spawnWhiteSpace(2);
-		Level level1 = new Level("1", levelParts, xCounter);
+		StaticFactory.spawnGrassMountain(xCounter, 3, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		spawnWhiteSpace(xCounter, 1);
+		StaticFactory.spawnBillBlaster(xCounter, 6, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 8, 4, TURTLE_TYPE.RED, levelParts);
+		spawnWhiteSpace(xCounter, 4);
+		StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 8, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 5, TURTLE_TYPE.RED, levelParts);
+		spawnWhiteSpace(xCounter, 1);
+		StaticFactory.spawnBillBlaster(xCounter, 9, levelParts);
+		spawnWhiteSpace(xCounter, 2);
+		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1a", levelParts);
+		StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 50, "", levelParts);
+		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1b", levelParts);
+		spawnWhiteSpace(xCounter, 2);
+		StaticFactory.spawnGrassMountain(xCounter, 8, 2, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 6, levelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 6, levelParts);
+		spawnWhiteSpace(xCounter, 2);
+		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "4", levelParts);
+		Level level1 = new Level("1", levelParts, xCounter.v);
 		currLevel = level1;//set currLevel
 		//mario.fall(5);
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
-	
+
 
 	public static void playLevel1a() {
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
-		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(20, 3, TURTLE_TYPE.RED, levelParts);
-		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
-		spawnWhiteSpace(3);
-		spawnUpAndDownPipes(4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, levelParts);
-		Level level1a = new Level("1a", levelParts, xCounter);
+		StaticFactory.spawnGrassMountain(xCounter, 20, 3, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
+		spawnWhiteSpace(xCounter, 3);
+		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, levelParts);
+		Level level1a = new Level("1a", levelParts, xCounter.v);
 		currLevel = level1a;//set currLevel
 		//	mario.fall(5);
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
@@ -341,17 +136,16 @@ public class LevelController {
 
 	public static void playLevel1b() {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
-		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		for (int i=0; i<4; i++) {
-			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
-			spawnMysteryBox(xCounter+2.0*space, 7, levelParts);
-			spawnGrassMountain(10, 4, TURTLE_TYPE.RED, levelParts);
-			spawnUpPipe(7, FLOWER_TYPE.NO_FLOWER, 0, "3", levelParts);
-			if (i!=3) spawnWhiteSpace(2);
+			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
+			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, levelParts);
+			StaticFactory.spawnGrassMountain(xCounter, 10, 4, TURTLE_TYPE.RED, levelParts);
+			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "3", levelParts);
+			if (i!=3) spawnWhiteSpace(xCounter, 2);
 		}
 
-		Level level1a = new Level("1b", levelParts, xCounter);
+		Level level1a = new Level("1b", levelParts, xCounter.v);
 		currLevel = level1a;//set currLevel
 		//mario.fall(5);
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
@@ -359,54 +153,66 @@ public class LevelController {
 
 	public static void playLevel2() {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
-		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(4, 2, TURTLE_TYPE.NO_TURTLE, levelParts);
-		spawnMysteryBox(2.0*space, 5, levelParts);
-		spawnWhiteSpace(2);
-		double xCounterTemp = xCounter;
+		StaticFactory.spawnGrassMountain(xCounter, 4, 2, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnMysteryBox(2.0*space, 5, levelParts);
+		spawnWhiteSpace(xCounter, 2);
+		double xCounterTemp = xCounter.v;
 		for (int i=0; i<3; i++) {
-			spawnUpPipe(2, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
-			spawnWhiteSpace(2);
-			spawnGrassMountain(3, 2, TURTLE_TYPE.RED, levelParts);
-			spawnWhiteSpace(2);
+			StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
+			spawnWhiteSpace(xCounter, 2);
+			StaticFactory.spawnGrassMountain(xCounter, 3, 2, TURTLE_TYPE.RED, levelParts);
+			spawnWhiteSpace(xCounter, 2);
 		}
-		xCounter -= xCounter-xCounterTemp;
+		xCounter.v -= xCounter.v-xCounterTemp;
 		for (int i=0; i<5; i++) {
-			spawnWhiteSpace(3);
-			spawnDownPipe(3, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
+			spawnWhiteSpace(xCounter, 3);
+			StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
 		}
-		spawnWhiteSpace(2);
-		xCounterTemp = xCounter;
+		spawnWhiteSpace(xCounter, 2);
+		xCounterTemp = xCounter.v;
 		for (int i=0; i<4; i++) {
-			spawnWhiteSpace(2);
-			spawnDownPipe(2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", levelParts);
+			spawnWhiteSpace(xCounter, 2);
+			StaticFactory.spawnDownPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", levelParts);
 		}
-		xCounter -= xCounter-xCounterTemp;
-		spawnGrassMountain(17, 2, TURTLE_TYPE.RED, levelParts);
-		spawnUpAndDownPipes(4, "1", FLOWER_TYPE.NO_FLOWER, 4, "2", FLOWER_TYPE.NO_FLOWER,  levelParts);
-		spawnWhiteSpace(1);
-		Level level2 = new Level("2", levelParts, xCounter);
+		xCounter.v -= xCounter.v-xCounterTemp;
+		StaticFactory.spawnGrassMountain(xCounter, 17, 2, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1", FLOWER_TYPE.NO_FLOWER, 4, "2", FLOWER_TYPE.NO_FLOWER,  levelParts);
+		spawnWhiteSpace(xCounter, 1);
+		Level level2 = new Level("2", levelParts, xCounter.v);
 		currLevel = level2;//set currLevel
 		//mario.fall(5);
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
-	
+
 	public static void playLevel3() {
-		xCounter = 0.0;
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		spawnGrassMountain(4, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
-		spawnUpAndDownPipes(2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
-		spawnWhiteSpace(2);
-		spawnUpPipe(2, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
-		spawnWhiteSpace(2);
-		spawnUpAndDownPipes(2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
-		spawnGrassMountain(5, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
-		Level level3 = new Level("3", levelParts, xCounter);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnUpAndDownPipes(xCounter, 2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
+		spawnWhiteSpace(xCounter, 2);
+		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
+		spawnWhiteSpace(xCounter, 2);
+		StaticFactory.spawnUpAndDownPipes(xCounter, 2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 5, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
+		Level level3 = new Level("3", levelParts, xCounter.v);
 		currLevel = level3;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, canvas.getWidth()-MovingObject.characters[1].getWidth()});
 	}
+	
+	public static void playLevel4() {
+		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		for (int i=0; i<4; i++) {
+			StaticFactory.spawnBillBlaster(xCounter, i+5, levelParts);
+			spawnWhiteSpace(xCounter, 2);
+		}
+		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 5, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		Level level4 = new Level("4", levelParts, xCounter.v);
+		currLevel = level4;//set currLevel
+		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
+	}
+
 
 
 	public static void addCharactersAtStartOfLevel(double[] xPositions) {
