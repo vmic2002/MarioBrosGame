@@ -760,6 +760,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				billBlasterTopImage, billBlasterMiddleImage, billBlasterBottomImage,
 				this.getGCanvas());
 		LevelController.setObjects(this.getGCanvas(), mario.scalingFactor);
+		BillBlasterController.setCanvas(this.getGCanvas());
 		setSize(WIDTH,HEIGHT);
 		addKeyListeners(new MyKeyListener(characters));
 		LevelController.playLevel("1");

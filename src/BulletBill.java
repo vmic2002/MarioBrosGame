@@ -45,7 +45,7 @@ public class BulletBill extends BadGuy implements Dynamic {
 				}
 				kill();
 			}
-		});  
+		});
 		t1.start();	
 	}
 	
