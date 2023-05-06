@@ -729,7 +729,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
-		characters[1] = mario;//mario is last in list so he is added last to canvas and "on top of" the other characters
+		characters[1] = mario;
 		MovingObject.setObjects(this.getGCanvas(), mario.scalingFactor, characters);
 		BulletBill.setObjects(leftBulletBillImage, rightBulletBillImage);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 

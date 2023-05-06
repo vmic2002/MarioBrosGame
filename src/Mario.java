@@ -665,7 +665,7 @@ public class Mario extends MovingObject {
 				isJumping = false;
 				System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
-		});  
+		});
 		t1.start();
 	}
 
@@ -1069,7 +1069,8 @@ public class Mario extends MovingObject {
 				return;
 			}
 		}
-		if (o instanceof Mario) {
+		if (o instanceof Mario && o.equals(this)) {
+			//if points used for edge detection are in frame of this mario
 			System.out.println("ITSA ME MARIO");
 		} else if (o instanceof Mushroom) {
 			System.out.println("ITS MUSHROOM");
@@ -1180,6 +1181,14 @@ public class Mario extends MovingObject {
 			} else {
 				marioHit();
 			}
+		} else if (o instanceof Mario && !o.equals(this)) {
+			//mario in contact with another mario (luigi for example)
+			//want mario to treat other marios as platforms from the side
+			//if mario jumps on another mario he should hop() off
+			if (horizontalOrVertical) hitPlatformHorizontal = true;
+			else if (!wayUpOrWayDown) this.hop();//if mario is on way down and comes in contact with other mario he hops off
+			//if (wayUpOrWayDown) no need to do anything because if mario jumps into another mario from the bottom that mario will
+			//technically be on his way down and so the mario on the way down will call the hop() function
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
@@ -1667,7 +1676,7 @@ public class Mario extends MovingObject {
 				jump();
 				//jumpingOnTurtle = false;
 			}
-		});  
+		});
 		t1.start();
 	}
 
