@@ -27,7 +27,11 @@ cd MarioBrosGame
 ```
 The *playMarioGame.sh* file is a bash script that will run MarioBrosGame from the command line using the *.class* files in the *bin* directory and *acm.jar*.
 
-Use the arrow keys to move and `F` to shoot fire balls or swing Mario's tail.
+To control Luigi: Use &#8592;, &#8593;, and &#8594; to move, &#8595; to crouch and `K` to shoot fire balls or swing Luigi's tail.
+
+To control Mario: Use `F`, `T`, and `H` to move, `G` to crouch and `Q` to shoot fire balls or swing Mario's tail.
+
+You can also press `1`, `2`, `3`, `4`, and `5` to change both Mario and Luigi to small, big, fire, cat, or tanooki, respectively.
 
 ## Quick preview 1
 This video was recorded on Feb 27th, 2023 after the 18th commit:
