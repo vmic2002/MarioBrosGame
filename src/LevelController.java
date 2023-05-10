@@ -106,7 +106,7 @@ public class LevelController {
 		StaticFactory.spawnBillBlaster(xCounter, 9, levelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1a", levelParts);
-		StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 50, "", levelParts);
+		StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 1000, "", levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1b", levelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 2, TURTLE_TYPE.RED, levelParts);

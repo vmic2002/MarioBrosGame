@@ -13,7 +13,7 @@ public abstract class ShootingFlower extends BadGuy {
 	public double dy;
 	public int timeOffset;
 	//timeOffset is so that not all flowers in a level come in/out of pipe at the same time
-	//TODO bug that timeOffset doesnt actually coordinate shooting flowers because only flowers on screen shoot at mario so the other ones have same effect as changing their timeOffset
+	//can use timeOffset to coordinate flowers to come out at same time
 	public ShootingFlower(Image arg0, int timeOffset) {
 		super(arg0);
 		if (this instanceof UpShootingFlower) dy = -DY;
@@ -74,7 +74,12 @@ public abstract class ShootingFlower extends BadGuy {
 			closeMouth(upOrDown, rightOrLeft);
 			return;
 		};
-		DynamicFactory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
+		if  (getX()<=canvas.getWidth() && getX()+getWidth()>=0
+				&& getY()<=canvas.getHeight() && getY()+getHeight()>=0) {
+			DynamicFactory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
+			//only flowers on screen shoot at mario
+			//flower still comes out of pipe when off screen to preserve timeOffset
+		}
 		//factory calls the fireball function to move the fireball towards mario (in a straight line)
 		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
 		closeMouth(upOrDown, rightOrLeft);		
@@ -102,10 +107,7 @@ public abstract class ShootingFlower extends BadGuy {
 						}
 						Thread.sleep(500);
 						if (!alive) break;
-						if  (getX()<=canvas.getWidth() && getX()+getWidth()>=0
-								&& getY()<=canvas.getHeight() && getY()+getHeight()>=0) {
-							shootMario();//only flowers on screen shoot at mario
-						}						
+						shootMario();
 						if (!alive) break;
 						for (int i=0; i<numMoves; i++) {
 							ArrayList<GObject> o1 = checkAtPositions(getPoints());
