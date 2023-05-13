@@ -127,7 +127,8 @@ public abstract class ShootingFlower extends BadGuy {
 				kill();
 				System.out.println("SHOOTING FLOWER DEAD");
 			}
-		});  
+		});
+		t1.setName("shooting flower");
 		t1.start();		
 	}
 }

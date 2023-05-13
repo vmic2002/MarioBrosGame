@@ -17,6 +17,7 @@ public class DynamicFactory {
 				movingObject.move();
 			}
 		});
+		t1.setName("moving object");
 		t1.start();
 	}
 
@@ -40,6 +41,7 @@ public class DynamicFactory {
 				powerUp.move();
 			}
 		});
+		t1.setName("power up");
 		t1.start();
 	}
 
@@ -53,6 +55,7 @@ public class DynamicFactory {
 				fireBall.shootAtMario(mario);
 			}
 		});
+		t1.setName("fireflower fireball");
 		t1.start();
 	}
 	

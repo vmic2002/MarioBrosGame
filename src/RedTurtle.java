@@ -120,7 +120,8 @@ public class RedTurtle extends BadGuy {
 					System.out.println("Red turtle dead2");
 				}
 			}	
-		});  
+		});
+		t1.setName("red turtle spinning/falling");
 		t1.start();
 	}
 
@@ -270,7 +271,8 @@ public class RedTurtle extends BadGuy {
 					System.out.println("Red turtle dead1");
 				}
 			}
-		});  
+		});
+		t1.setName("red turtle moving NOT shell mode");
 		t1.start();	
 	}
 

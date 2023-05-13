@@ -106,6 +106,10 @@ public class Mario extends MovingObject {
 	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
 	private static final int maxHeightOfJump = 60;//max num times move function is called on way up of jump (move(0, -1.3*fallDy)
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
+	
+	
+	public enum CHARACTER {MARIO, LUIGI};//for now only mario and luigi, could add peach toad, etc as along as they move like mario and have same skins (fire, cat etc)
+	CHARACTER character;//to know if this (instance) is Mario, Luigi, etc
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
 			Image smallMarioRightWalkingImage,Image smallMarioLeftJumpingImage,
 			Image smallMarioRightJumpingImage, Image marioDeadImage,
@@ -142,8 +146,9 @@ public class Mario extends MovingObject {
 			Image tanookiMarioCatTail1Image, Image tanookiMarioLeftCatTail2Image,
 			Image tanookiMarioRightCatTail2Image, Image tanookiMarioCatTail3Image,
 
-			Image smallMarioPipeImage, Image bigMarioPipeImage, Image fireMarioPipeImage) {
+			Image smallMarioPipeImage, Image bigMarioPipeImage, Image fireMarioPipeImage, CHARACTER character) {
 		super(smallMarioRightImage);
+		this.character = character;
 		this.smallMarioRightImage = smallMarioRightImage;
 		this.smallMarioLeftImage = smallMarioLeftImage;
 		this.smallMarioLeftWalkingImage = smallMarioLeftWalkingImage;
@@ -553,7 +558,8 @@ public class Mario extends MovingObject {
 						System.out.println("MARIO GOES DOWN INTO PIPE "+((PipePart) o).subLevelID);
 						goIntoPipe(false, (PipePart) o);
 					}
-				});  
+				});
+				t1.setName(this.character.name()+ " fall in pipe");
 				t1.start();
 			}
 		}
@@ -666,6 +672,7 @@ public class Mario extends MovingObject {
 				System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
 		});
+		t1.setName(this.character.name()+ " jump");
 		t1.start();
 	}
 
@@ -690,9 +697,10 @@ public class Mario extends MovingObject {
 	public void checkUnder(double dy) {
 		//checks if mario is in contact with something under him (mushroom, Platform,...)
 		//check for 2 points under mario (left and right)
-		//0.22 is value found to work best through testing
-		Point[] arr = new Point[]{new Point(getX()+0.22*getWidth(),getY()+getHeight()+dy),
-				new Point(getX()+getWidth()-0.22*getWidth(), getY()+getHeight()+dy)};
+		//0.3 is value found to work best through testing (0.22 too)
+		Point[] arr = new Point[]{new Point(getX()+0.2*getWidth(),getY()+getHeight()+dy),
+				new Point(getX()+0.5*getWidth(), getY()+getHeight()+dy),
+				new Point(getX()+0.75*getWidth(), getY()+getHeight()+dy)};
 		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
 			System.out.println("here");
@@ -980,7 +988,8 @@ public class Mario extends MovingObject {
 					}
 				}
 			}
-		});  
+		}); 
+		t1.setName(this.character.name()+ " horizontal movement");
 		t1.start();
 	}
 
@@ -1045,6 +1054,7 @@ public class Mario extends MovingObject {
 						//System.out.println("DONE FALLING");
 					}
 				});  
+				t1.setName(this.character.name()+ " fall off platform");
 				t1.start();
 			} else {
 				//System.out.println("ON Platform OR at bottom of screen");
@@ -1152,7 +1162,8 @@ public class Mario extends MovingObject {
 							System.out.println("MARIO JUMP INTO PIPE "+((PipePart) o).subLevelID);
 							goIntoPipe(true, (PipePart) o);
 						}
-					});  
+					});
+					t1.setName(this.character.name()+ " jumping in pipe");
 					t1.start();
 
 
@@ -1186,7 +1197,7 @@ public class Mario extends MovingObject {
 			//want mario to treat other marios as platforms from the side
 			//if mario jumps on another mario he should hop() off
 			if (horizontalOrVertical) hitPlatformHorizontal = true;
-			else if (!wayUpOrWayDown) this.hop();//if mario is on way down and comes in contact with other mario he hops off
+			else if (!wayUpOrWayDown) {this.hop();}//if mario is on way down and comes in contact with other mario he hops off
 			//if (wayUpOrWayDown) no need to do anything because if mario jumps into another mario from the bottom that mario will
 			//technically be on his way down and so the mario on the way down will call the hop() function
 		}
@@ -1216,6 +1227,7 @@ public class Mario extends MovingObject {
 				flash();
 			}
 		});  
+		t1.setName(this.character.name()+ " hit by badguy");
 		t1.start();
 	}
 
@@ -1488,6 +1500,7 @@ public class Mario extends MovingObject {
 				System.out.println("\n\t\t\t>>>>>>>DONE SHOOTING FIREBALL(S)\n");
 			}
 		});  
+		t1.setName(this.character.name()+ " shoot fireball");
 		t1.start();
 	}
 
@@ -1657,7 +1670,8 @@ public class Mario extends MovingObject {
 				isSwinging = false;
 				System.out.println("\n\n\nDONE SWINGING TAI\n\nL");
 			}
-		});  
+		});
+		t1.setName(this.character.name()+ " swing tail");
 		t1.start();
 	}
 
@@ -1670,13 +1684,16 @@ public class Mario extends MovingObject {
 			@Override
 			public void run() {
 				///try {Thread.sleep(300);} catch (Exception e) {e.printStackTrace();}
+				System.out.println("START HOP");
 				while (isJumping) {}
-				System.out.println("Hopping off bad guy");
+				//TODO bug in mario hop function not hopping when mario should
+				System.out.println("HOPPING NOW");
 				//jumpingOnTurtle = true;
 				jump();
 				//jumpingOnTurtle = false;
 			}
 		});
+		t1.setName(this.character.name()+ " hop");
 		t1.start();
 	}
 

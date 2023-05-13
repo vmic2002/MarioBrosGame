@@ -1,5 +1,6 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Map;
 
 
 public class MyKeyListener implements KeyListener {
@@ -21,6 +22,20 @@ public class MyKeyListener implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
+		
+		if (keyCode == KeyEvent.VK_9) {
+			//print all threads
+			System.out.println("\n\nPrinting all threads:");
+			Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
+			System.out.println("Number of threads: "+threads.keySet().size());
+			System.out.printf("\t%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
+			for (Thread t : threads.keySet()) {
+			    System.out.printf("\t%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
+			}
+			System.out.println("Number of threads: "+threads.keySet().size());
+			System.out.println("\n\n");
+		}
+		
 		if (keyCode == KeyEvent.VK_1) {
 			for (Mario m : characters) m.setToSmall();
 		} else if (keyCode == KeyEvent.VK_2) {

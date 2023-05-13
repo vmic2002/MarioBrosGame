@@ -41,6 +41,7 @@ public class BillBlasterController{
 			}
 		});
 		threads.add(t1);
+		t1.setName("Bill Blaster");
 		t1.start();
 	}
 }

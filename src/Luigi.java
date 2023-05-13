@@ -33,7 +33,7 @@ public class Luigi extends Mario {
 			Image tanookiMarioCatTail1Image, Image tanookiMarioLeftCatTail2Image,
 			Image tanookiMarioRightCatTail2Image, Image tanookiMarioCatTail3Image,
 			Image smallMarioPipeImage,
-			Image bigMarioPipeImage, Image fireMarioPipeImage) {
+			Image bigMarioPipeImage, Image fireMarioPipeImage, CHARACTER character) {
 		super(smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage, smallMarioRightWalkingImage,
 				smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage, bigMarioLeftImage, bigMarioRightImage,
 				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage, bigMarioRightJumpingImage,
@@ -59,6 +59,6 @@ public class Luigi extends Mario {
 				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
 				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
 				smallMarioPipeImage,
-				bigMarioPipeImage, fireMarioPipeImage);
+				bigMarioPipeImage, fireMarioPipeImage, character);
 	}
 }

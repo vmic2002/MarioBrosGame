@@ -54,7 +54,8 @@ public class MysteryBox extends Platform {
 				}
 				System.out.println("END OF CHANGING STATE FOR MYSTERYBOX");
 			}
-		});  
+		});
+		t1.setName("mystery box changing states");
 		t1.start();
 	}
 
@@ -78,7 +79,8 @@ public class MysteryBox extends Platform {
 				dy = -dy;
 				move(dy);//move down
 			}
-		});  
+		});
+		t1.setName("mysterybox hit by mario");
 		t1.start();
 	}
 

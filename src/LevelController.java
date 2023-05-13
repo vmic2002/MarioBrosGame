@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Map;
+
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 
@@ -76,6 +78,7 @@ public class LevelController {
 		else if (subLevelID.equals("2")) playLevel2();
 		else if (subLevelID.equals("3")) playLevel3();
 		else if (subLevelID.equals("4")) playLevel4();
+		else if (subLevelID.equals("5")) playLevel5();
 		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
 	}
 
@@ -213,6 +216,13 @@ public class LevelController {
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
+	public static void playLevel5() {
+		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
+		StaticFactory.spawnGrassMountain(xCounter, 5, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		Level level5 = new Level("5", levelParts, xCounter.v);
+		currLevel = level5;//set currLevel
+		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
+	}
 
 
 	public static void addCharactersAtStartOfLevel(double[] xPositions) {
@@ -235,6 +245,7 @@ public class LevelController {
 					m.isJumping = false;
 				}
 			});
+			t1.setName("adding characters at start of level");
 			t1.start();
 		}
 	}

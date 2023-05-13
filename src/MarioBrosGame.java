@@ -687,7 +687,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
 				
 				
-				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage
+				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage, Mario.CHARACTER.MARIO
 				);
 		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
 				smallLuigiLeftWalkingImage, smallLuigiRightWalkingImage, smallLuigiLeftJumpingImage, 
@@ -725,7 +725,7 @@ public class MarioBrosGame extends GraphicsProgram {
 				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
 				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
 				
-				smallLuigiPipeImage, bigLuigiPipeImage, fireMarioPipeImage);
+				smallLuigiPipeImage, bigLuigiPipeImage, fireMarioPipeImage, Mario.CHARACTER.LUIGI);
 		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
@@ -763,7 +763,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		BillBlasterController.setCanvas(this.getGCanvas());
 		setSize(WIDTH,HEIGHT);
 		addKeyListeners(new MyKeyListener(characters));
-		LevelController.playLevel("1");
+		LevelController.playLevel("5");
 		//LevelController.playLevel2();
 	}
 }

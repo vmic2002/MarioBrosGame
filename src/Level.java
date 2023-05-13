@@ -63,6 +63,7 @@ public class Level {
 				yBaseLine+=dy;
 			}
 		});  
+		t1.setName("moving level");
 		t1.start();
 	}
 
