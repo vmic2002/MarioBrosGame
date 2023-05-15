@@ -30,8 +30,8 @@ public class MarioBrosGame extends GraphicsProgram {
 	 * TODO could have campaign mode (worlds) AND mode with randomly generated levels!
 	 */
 
-	private static final int WIDTH = 1400;
-	private static final int HEIGHT = 1000;
+	private static final int WIDTH = 1200;
+	private static final int HEIGHT = 800;
 
 	public void run() {
 		float[] hsb = new float[3];

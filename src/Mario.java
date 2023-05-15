@@ -9,7 +9,7 @@ import acm.graphics.GObject;
 public class Mario extends MovingObject {
 	/*
 	 *TODO Idea for Mario time dilating Mario the time slows down
-	 * modify the global variables that govern the speed of that object
+	 * modify the global variables that govern the speed of that object, also a super fast flash mario
 	 *TODO mario needs to be able to slide off and jump off platform when falling on them from the side
 	 *TODO so if mario is !wayUpOrWayDown and isJumping and inContactWith(Platform, horizontalOrVertical==true) and user hits jump then he must jump off in opposite direction
 	 *TODO this will let mario be able to come back up from falling between two platforms
@@ -104,10 +104,10 @@ public class Mario extends MovingObject {
 	public static final int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
 	public static final int numTimesToggleVisibility = 20;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
-	private static final int maxHeightOfJump = 60;//max num times move function is called on way up of jump (move(0, -1.3*fallDy)
+	private static final int maxHeightOfJump = 40;//max num times move function is called on way up of jump (move(0, -2.0*fallDy)
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
-	
-	
+
+
 	public enum CHARACTER {MARIO, LUIGI};//for now only mario and luigi, could add peach toad, etc as along as they move like mario and have same skins (fire, cat etc)
 	CHARACTER character;//to know if this (instance) is Mario, Luigi, etc
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
@@ -641,7 +641,8 @@ public class Mario extends MovingObject {
 						break;
 					}
 					if (!alive) {isJumping = false; return;}
-					move(0, -1.3*fallDy);//1.3 so mario goes up faster than on way down
+					move(0, -2.0*fallDy);//2.0 so mario goes up faster than on way down
+					//HAS to be multiple of fallDy (1.0*fallDy, 2.0*fallDy, etc)so currLevel.yBaseLine goes back to zero
 					//System.out.println("GOING UP");
 					try {
 						Thread.sleep(pauseInAir);
@@ -669,7 +670,7 @@ public class Mario extends MovingObject {
 					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				}
 				isJumping = false;
-				System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
+				//System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
 		});
 		t1.setName(this.character.name()+ " jump");
@@ -703,7 +704,7 @@ public class Mario extends MovingObject {
 				new Point(getX()+0.75*getWidth(), getY()+getHeight()+dy)};
 		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
-			System.out.println("here");
+			//System.out.println("here");
 			inContactWith(x, false);
 
 			if (hitPlatformVertical) return;
@@ -1684,7 +1685,7 @@ public class Mario extends MovingObject {
 			@Override
 			public void run() {
 				///try {Thread.sleep(300);} catch (Exception e) {e.printStackTrace();}
-				System.out.println("START HOP");
+				//System.out.println("START HOP");
 				while (isJumping) {}
 				//TODO bug in mario hop function not hopping when mario should
 				System.out.println("HOPPING NOW");

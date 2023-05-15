@@ -80,7 +80,7 @@ public class RedTurtle extends BadGuy {
 					Point[] pointsBelow = new Point[] {
 							new Point(getX()+getWidth()*0.3 ,newY),
 							new Point(getX()+getWidth()*0.7,newY)
-					}; 
+					};
 					if (spinningOrFalling) {
 						if (nothingUnder(pointsBelow)) {
 							//if here then turtle was on a platform and spinning but is no longer on top of one,

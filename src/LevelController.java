@@ -202,7 +202,7 @@ public class LevelController {
 		currLevel = level3;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, canvas.getWidth()-MovingObject.characters[1].getWidth()});
 	}
-	
+
 	public static void playLevel4() {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		for (int i=0; i<4; i++) {
@@ -218,7 +218,8 @@ public class LevelController {
 
 	public static void playLevel5() {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 5, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 6, 4, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
 		Level level5 = new Level("5", levelParts, xCounter.v);
 		currLevel = level5;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});

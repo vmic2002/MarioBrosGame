@@ -8,14 +8,14 @@ public class Level {
 	//levelParts is never modified after the playLevelX() function
 	public HashMap<Long, DynamicLevelPart> dynamicLevelParts;//buffer for level parts that need to be added dynamically (while playing level) to level parts (fireballs and powerups for example)
 	public static AtomicLong ID_GENERATOR = new AtomicLong();//Atomic for concurrency
-	
+
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
 	//if yBaseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
 	public double xBaseLine;//if xBaseLine == 0 then mario is at leftmost spot in the level so can't move the level more left
 	//if xbaseline == canvas width-level width then mario is at right most portion of level
 	//private GImage background;
 	public double width;
-	
+
 	public Level(String id, ArrayList<LevelPart> levelParts, double width){//, GImage background) {
 		this.id = id;
 		this.levelParts = levelParts;
@@ -25,11 +25,11 @@ public class Level {
 		dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		//this.background = background;
 	}
-	
+
 	public String getID() {
 		return id;
 	}
-	
+
 	public void removeDynamic(Dynamic f) {
 		//removes Object that implements Dynamic (powerup and fireball for now) from dynamicLevelParts, 	
 		if (dynamicLevelParts.get(f.getID())==null) {
@@ -45,11 +45,12 @@ public class Level {
 	//MovingObject.characters needs to move with level
 	//characters aren't part of levelParts or dynamicLevelParts but they move with the level
 	public void moveLevel(double dx, double dy, Mario mario) {
-		//TODO this function works but does not scale when a level is long need to only move the level parts that are visible on screen
+		//this function works but does not scale when a level is long need to only move the level parts that are visible on screen
 		//this level could "scale" using pipes to connect different sub levels so each level doesnt become too long to move at once
 		Thread t1 = new Thread(new Runnable() {
 			@Override
-			public void run() {
+			public synchronized void run() {//not sure if synchronized is helping
+				//if (xBaseLine+dx<=0.0 && yBaseLine+dy>=0.0) {
 				for (int i=0; i<levelParts.size(); i++) {
 					levelParts.get(i).move(dx, dy);
 				}
@@ -61,8 +62,9 @@ public class Level {
 				}
 				xBaseLine+=dx;
 				yBaseLine+=dy;
+				//} else {System.out.println("MOVELEVEL");System.exit(1);}
 			}
-		});  
+		});
 		t1.setName("moving level");
 		t1.start();
 	}
@@ -83,7 +85,7 @@ public class Level {
 		}
 		dynamicLevelParts.put(newID, new DynamicLevelPart(l, newID));
 		((Dynamic) i).setID(newID);
-	//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
+		//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
 		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 	}
 }
