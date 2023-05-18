@@ -104,7 +104,7 @@ public class Mario extends MovingObject {
 	public static final int flashingTime = 3000;//total duration in ms that mario flashes when he comes into contact with BadGuy
 	public static final int numTimesToggleVisibility = 20;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
-	private static final int maxHeightOfJump = 40;//max num times move function is called on way up of jump (move(0, -2.0*fallDy)
+	private static final int maxHeightOfJump = 50;//max num times move function is called on way up of jump (move(0, -2.0*fallDy)
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
 
 
@@ -155,9 +155,13 @@ public class Mario extends MovingObject {
 		this.smallMarioRightWalkingImage = smallMarioRightWalkingImage;
 		this.smallMarioLeftJumpingImage = smallMarioLeftJumpingImage;
 		this.smallMarioRightJumpingImage = smallMarioRightJumpingImage;
-		fallDy = smallMarioLeftImage.getHeight(canvas)/16.0;
-		scalingFactor = 1.5*fallDy;
-		moveDx = 2.0*fallDy;
+		//fallDy = smallMarioLeftImage.getHeight(canvas)/16.0;
+		//System.out.println("FALLDY"+smallMarioLeftImage.getHeight(canvas)/16.0);
+		//TODO not a todo but a note fallDy has to be an integer (currently equal to 4.0) will have to change val when changing picture size 
+		fallDy = smallMarioLeftImage.getHeight(canvas)/(20.0);
+		//System.out.println("FALLDY"+fallDy);
+		scalingFactor = 1.5*fallDy*20.0/16.0;
+		moveDx = 2.0*fallDy*20.0/16.0;
 		this.marioDeadImage = marioDeadImage;
 
 		this.bigMarioRightImage = bigMarioRightImage;
