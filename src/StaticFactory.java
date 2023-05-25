@@ -1,8 +1,7 @@
 import java.awt.Image;
 import java.util.ArrayList;
 
-//import LevelController.FLOWER_TYPE;
-//import LevelController.TURTLE_TYPE;
+
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
 
@@ -79,7 +78,7 @@ public class StaticFactory {
 	 * @param h height in number of images from top to bottom (expected >=2)
 
 	 */
-	public static double spawnGrassMountain(XCounter xCounter, double w, double h, LevelController.TURTLE_TYPE type, ArrayList<LevelPart> levelParts) {
+	public static double spawnGrassMountain(XCounter xCounter, double w, double h, LevelController.BADGUY_TYPE type, ArrayList<LevelPart> levelParts) {
 		if (w<3) w=3;
 		if (h<2) h=2;
 		ArrayList<GImage> images = new ArrayList<GImage>();
@@ -114,12 +113,17 @@ public class StaticFactory {
 		//double height = g1.getHeight();
 		double width = w*g1.getWidth(); 
 
-		if (type == LevelController.TURTLE_TYPE.RED) {
+		if (type == LevelController.BADGUY_TYPE.RED_TURTLE) {
 			//TODO need to do green turtles too
 			RedTurtle turtle = new RedTurtle(width);
 			canvas.add(turtle, xCounter.v, canvas.getHeight()-g1.getHeight()*h-turtle.getHeight());
 			images.add(turtle);
 			turtle.move();
+		} else if (type == LevelController.BADGUY_TYPE.GOOMBA) {
+			Goomba goomba = new Goomba();
+			canvas.add(goomba, xCounter.v, canvas.getHeight()-g1.getHeight()*h-goomba.getHeight());
+			images.add(goomba);
+			goomba.move();
 		}
 		xCounter.v += width;
 		levelParts.add(new LevelPart(images));

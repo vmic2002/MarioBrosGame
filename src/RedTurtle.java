@@ -144,8 +144,8 @@ public class RedTurtle extends BadGuy {
 	@Override
 	public void inContactWith(GObject x, boolean horizontalOrVertical) {
 		//called to check if hitting platform from the side to bounce off
-		if ((x instanceof Platform || x instanceof RedTurtle) && horizontalOrVertical) {
-			//red turtles bounce off each other and platforms
+		if ((x instanceof Platform || x instanceof BadGuy) && horizontalOrVertical) {
+			//red turtles bounce off BadGuys and platforms
 			dx = -dx;
 			System.out.println("CHANGE DIRECTIONS\n\n\n\n");
 			this.sendToFront();//FOR TESTING
@@ -157,11 +157,12 @@ public class RedTurtle extends BadGuy {
 			spinningOrFalling = true;
 			dy = 0;
 			previousPointWorked = true;
-		} else if (x instanceof BadGuy) {
+		} else {super.inContactWith(x, true);}
+		/*else if (x instanceof BadGuy) {
 			((BadGuy) x).kill();
 			previousPointWorked=true;
 		}
-		else {super.inContactWith(x, true);}
+		else {super.inContactWith(x, true);}*/
 		//super.inContactWith checks to see if turtle runs into mario
 	}
 
@@ -173,7 +174,7 @@ public class RedTurtle extends BadGuy {
 	}
 
 
-	public void jumpedOnByBigMario(Mario mario) {
+	public void jumpedOnByMario(Mario mario) {
 		if (shellMode) {
 			if (!stopped) {
 				//mario jumps in spinning turtle, turtle should stop if not falling
@@ -192,7 +193,7 @@ public class RedTurtle extends BadGuy {
 				mario.hop();
 			}
 		} else {
-			//big mario jumps on !shellMode turtle and sets it to shell mode
+			//mario jumps on !shellMode turtle and sets it to shell mode
 			//this happens once per turtle max because a turtle never goes back from shell mode
 			shellMode = true;
 			System.out.println("big mario jumps on !shellMode turtle and sets it to shell mode");

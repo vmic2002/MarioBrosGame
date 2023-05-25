@@ -1186,17 +1186,25 @@ public class Mario extends MovingObject {
 		} else if (o instanceof BadGuy) {
 			//make mario smaller when he hits a BadGuy (turtle, flower etc)
 			//also play sound
-			if (o instanceof RedTurtle && !horizontalOrVertical) {
-				//if bigMario need to MAKE TURTLE GO TO shell mode or start spinning if already in shell mode
-				if (bigOrSmall && !wayUpOrWayDown) ((RedTurtle) o).jumpedOnByBigMario(this);
-				else marioHit();
-			} else if (o instanceof BulletBill && !horizontalOrVertical && !wayUpOrWayDown){
-				//mario jumps on BulletBill
-				this.hop();
-				((BulletBill) o).jumpedOn();
+			if (!horizontalOrVertical && isJumping && !wayUpOrWayDown) {
+				((BadGuy) o).jumpedOnByMario(this);
 			} else {
 				marioHit();
 			}
+			/*if (o instanceof RedTurtle) {
+					//need to MAKE TURTLE GO TO shell mode or start spinning if already in shell mode
+					//if (bigOrSmall && !wayUpOrWayDown) ((RedTurtle) o).jumpedOnByBigMario(this);
+					((RedTurtle) o).jumpedOnByMario(this);//big or small mario can jump on turtle
+				} else if (o instanceof BulletBill){
+					//mario jumps on BulletBill
+					this.hop();
+					((BulletBill) o).jumpedOnByMario(this);
+				} else if (o instanceof Goomba) {
+					((Goomba) o).jumpedOnByMario(this);
+				}
+			} else {
+				marioHit();
+			}*/
 		} else if (o instanceof Mario && !o.equals(this)) {
 			//mario in contact with another mario (luigi for example)
 			//want mario to treat other marios as platforms from the side

@@ -29,8 +29,9 @@ public class BulletBill extends BadGuy implements Dynamic {
 		return id;
 	}
 
-	public void jumpedOn() {
+	public void jumpedOnByMario(Mario mario) {
 		//called when mario jumps on BulletBill
+		mario.hop();
 		if (jumpedOn) return;
 		jumpedOn = true;
 		this.sendToFront();

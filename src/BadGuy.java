@@ -3,11 +3,14 @@ import java.awt.Image;
 import acm.graphics.GObject;
 
 public abstract class BadGuy extends MovingObject {
-	//class BadGuy: ShootingFlower, BitingFlower, Turtle, BulletBill and
+	//class BadGuy: ShootingFlower, BitingFlower, Turtle, BulletBill, Goomba and
 	//any other characters in this game that hurt mario will extend BadGuy
 	public BadGuy(Image arg0) {
 		super(arg0);
 	}
+	
+	
+	public abstract void jumpedOnByMario(Mario mario);
 	
 	@Override
 	public void inContactWith(GObject x, boolean horizontalOrVertical) {

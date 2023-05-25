@@ -22,6 +22,8 @@ public abstract class ShootingFlower extends BadGuy {
 		this.timeOffset = timeOffset;
 	}
 
+	public void jumpedOnByMario(Mario mario) {mario.marioHit();}
+	
 	public abstract void lookDownClosedMouth(boolean rightOrLeft);
 	public abstract void lookDownOpenMouth(boolean rightOrLeft);
 	public abstract void lookUpClosedMouth(boolean rightOrLeft);
@@ -39,7 +41,7 @@ public abstract class ShootingFlower extends BadGuy {
 
 	public Mario getClosestMario() {
 		int index = 0;
-		double smallestDistance = Double.MAX_VALUE;
+		double smallestDistance = 10^9;//SHOULD BE DOUBLE.MAX_VALUE
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
 			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));

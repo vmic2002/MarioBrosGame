@@ -251,6 +251,10 @@ public class MarioBrosGame extends GraphicsProgram {
 		String billBlasterMiddleImagePath = prefix+imageDirectory+"/billBlasterMiddle.png";
 		String billBlasterBottomImagePath = prefix+imageDirectory+"/billBlasterBottom.png";
 		
+		String goombaLeftImagePath = prefix+imageDirectory+"/goombaLeft.png";
+		String goombaRightImagePath = prefix+imageDirectory+"/goombaRight.png";
+		String goombaSquishedImagePath = prefix+imageDirectory+"/goombaSquished.png";
+		
 		
 		
 		
@@ -449,6 +453,11 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage billBlasterTopImage = null;
 		BufferedImage billBlasterMiddleImage = null;
 		BufferedImage billBlasterBottomImage = null;
+		
+		
+		BufferedImage goombaLeftImage = null;
+		BufferedImage goombaRightImage = null;
+		BufferedImage goombaSquishedImage = null;
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -646,6 +655,10 @@ public class MarioBrosGame extends GraphicsProgram {
 			billBlasterMiddleImage = ImageIO.read(new File(billBlasterMiddleImagePath));
 			billBlasterBottomImage = ImageIO.read(new File(billBlasterBottomImagePath));
 			
+			goombaLeftImage = ImageIO.read(new File(goombaLeftImagePath));
+			goombaRightImage = ImageIO.read(new File(goombaRightImagePath));
+			goombaSquishedImage = ImageIO.read(new File(goombaSquishedImagePath));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -731,6 +744,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		characters[0] = luigi;
 		characters[1] = mario;
 		MovingObject.setObjects(this.getGCanvas(), mario.scalingFactor, characters);
+		Goomba.setObjects(goombaRightImage, goombaLeftImage, goombaSquishedImage);
 		BulletBill.setObjects(leftBulletBillImage, rightBulletBillImage);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
 				redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,

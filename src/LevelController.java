@@ -12,7 +12,7 @@ public class LevelController {
 	public static Level currLevel;//only one currLevel mario is playing at a time
 	public static double space;
 	public static enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
-	public static enum TURTLE_TYPE {NO_TURTLE, RED, GREEN};
+	public static enum BADGUY_TYPE {NO_BADGUY, RED_TURTLE, GREEN_TURTLE, GOOMBA};//type of bad guy on platform (such as grass mountain)
 	private static XCounter xCounter;
 
 	public static void setObjects(GCanvas canvas1, double scalingFactor) {canvas=canvas1;
@@ -98,13 +98,13 @@ public class LevelController {
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 3, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 3, 3, BADGUY_TYPE.NO_BADGUY, levelParts);
 		spawnWhiteSpace(xCounter, 1);
 		StaticFactory.spawnBillBlaster(xCounter, 6, levelParts);
-		StaticFactory.spawnGrassMountain(xCounter, 8, 4, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 8, 4, BADGUY_TYPE.GOOMBA, levelParts);
 		spawnWhiteSpace(xCounter, 4);
 		StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 8, levelParts);
-		StaticFactory.spawnGrassMountain(xCounter, 4, 5, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 5, BADGUY_TYPE.RED_TURTLE, levelParts);
 		spawnWhiteSpace(xCounter, 1);
 		StaticFactory.spawnBillBlaster(xCounter, 9, levelParts);
 		spawnWhiteSpace(xCounter, 2);
@@ -112,7 +112,7 @@ public class LevelController {
 		StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 1000, "", levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1b", levelParts);
 		spawnWhiteSpace(xCounter, 2);
-		StaticFactory.spawnGrassMountain(xCounter, 8, 2, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 8, 2, BADGUY_TYPE.RED_TURTLE, levelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 6, levelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 6, levelParts);
 		spawnWhiteSpace(xCounter, 2);
@@ -127,7 +127,7 @@ public class LevelController {
 	public static void playLevel1a() {
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 20, 3, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 20, 3, BADGUY_TYPE.RED_TURTLE, levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		spawnWhiteSpace(xCounter, 3);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, levelParts);
@@ -143,7 +143,7 @@ public class LevelController {
 		for (int i=0; i<4; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
 			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, levelParts);
-			StaticFactory.spawnGrassMountain(xCounter, 10, 4, TURTLE_TYPE.RED, levelParts);
+			StaticFactory.spawnGrassMountain(xCounter, 10, 4, BADGUY_TYPE.RED_TURTLE, levelParts);
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "3", levelParts);
 			if (i!=3) spawnWhiteSpace(xCounter, 2);
 		}
@@ -157,14 +157,14 @@ public class LevelController {
 	public static void playLevel2() {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 4, 2, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 2, BADGUY_TYPE.NO_BADGUY, levelParts);
 		StaticFactory.spawnMysteryBox(2.0*space, 5, levelParts);
 		spawnWhiteSpace(xCounter, 2);
 		double xCounterTemp = xCounter.v;
 		for (int i=0; i<3; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, 200*i, "", levelParts);
 			spawnWhiteSpace(xCounter, 2);
-			StaticFactory.spawnGrassMountain(xCounter, 3, 2, TURTLE_TYPE.RED, levelParts);
+			StaticFactory.spawnGrassMountain(xCounter, 3, 2, BADGUY_TYPE.RED_TURTLE, levelParts);
 			spawnWhiteSpace(xCounter, 2);
 		}
 		xCounter.v -= xCounter.v-xCounterTemp;
@@ -179,7 +179,7 @@ public class LevelController {
 			StaticFactory.spawnDownPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", levelParts);
 		}
 		xCounter.v -= xCounter.v-xCounterTemp;
-		StaticFactory.spawnGrassMountain(xCounter, 17, 2, TURTLE_TYPE.RED, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 17, 2, BADGUY_TYPE.RED_TURTLE, levelParts);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1", FLOWER_TYPE.NO_FLOWER, 4, "2", FLOWER_TYPE.NO_FLOWER,  levelParts);
 		spawnWhiteSpace(xCounter, 1);
 		Level level2 = new Level("2", levelParts, xCounter.v);
@@ -191,13 +191,13 @@ public class LevelController {
 
 	public static void playLevel3() {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 4, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 5, BADGUY_TYPE.NO_BADGUY, levelParts);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "2", levelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 2, "", FLOWER_TYPE.SHOOTING, 2, "", FLOWER_TYPE.SHOOTING,  levelParts);
-		StaticFactory.spawnGrassMountain(xCounter, 5, 5, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 5, 5, BADGUY_TYPE.NO_BADGUY, levelParts);
 		Level level3 = new Level("3", levelParts, xCounter.v);
 		currLevel = level3;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, canvas.getWidth()-MovingObject.characters[1].getWidth()});
@@ -210,7 +210,7 @@ public class LevelController {
 			spawnWhiteSpace(xCounter, 2);
 		}
 		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
-		StaticFactory.spawnGrassMountain(xCounter, 5, 3, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 5, 3, BADGUY_TYPE.NO_BADGUY, levelParts);
 		Level level4 = new Level("4", levelParts, xCounter.v);
 		currLevel = level4;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
@@ -218,7 +218,7 @@ public class LevelController {
 
 	public static void playLevel5() {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 6, 4, TURTLE_TYPE.NO_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.NO_BADGUY, levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
 		Level level5 = new Level("5", levelParts, xCounter.v);
 		currLevel = level5;//set currLevel
