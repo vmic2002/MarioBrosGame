@@ -19,8 +19,8 @@ public class Level {
 	public Level(String id, ArrayList<LevelPart> levelParts, double width){//, GImage background) {
 		this.id = id;
 		this.levelParts = levelParts;
-		yBaseLine = 0;
-		xBaseLine = 0;
+		yBaseLine = 0.0;
+		xBaseLine = 0.0;
 		this.width = width;
 		dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		//this.background = background;

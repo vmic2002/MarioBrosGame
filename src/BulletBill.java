@@ -29,6 +29,10 @@ public class BulletBill extends BadGuy implements Dynamic {
 		return id;
 	}
 
+	@Override
+	public void contactFromSideByMario(Mario mario) {mario.marioHit();}
+	
+	@Override
 	public void jumpedOnByMario(Mario mario) {
 		//called when mario jumps on BulletBill
 		mario.hop();
@@ -80,10 +84,10 @@ public class BulletBill extends BadGuy implements Dynamic {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean horizontalOrVertical) {
+	public boolean inContactWith(GObject x, boolean horizontalOrVertical) {
 		//TODO need to check to see if two BulletBills run into each other
-		if (x instanceof FireBall) ((FireBall) x).kill();//fireball dies if BulletBill runs into it
-		else super.inContactWith(x, horizontalOrVertical);//checks to see if inContactWith Mario
+		if (x instanceof FireBall) {((FireBall) x).kill();return true;}//fireball dies if BulletBill runs into it
+		else return super.inContactWith(x, horizontalOrVertical);//checks to see if inContactWith Mario
 	}
 
 	public static void setObjects(Image leftBulletBill1, Image rightBulletBill1){

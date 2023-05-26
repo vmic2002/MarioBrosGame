@@ -8,7 +8,7 @@ public abstract class ShootingFlower extends BadGuy {
 	//UpShootingFlower comes in and out of Up Pipe, down pipe for downShootingFlower
 	//shootingflower is added to level parts when creating/spawning an up/down pipe
 	//shootingflower is part of the same level part as an up/down pipe
-	private static final double DY = 10.0;
+	private static final double DY = MovingObject.scalingFactor*1.33;
 	private int numMoves;
 	public double dy;
 	public int timeOffset;
@@ -21,8 +21,10 @@ public abstract class ShootingFlower extends BadGuy {
 		numMoves = (int) (getHeight()/DY);
 		this.timeOffset = timeOffset;
 	}
-
+	@Override
 	public void jumpedOnByMario(Mario mario) {mario.marioHit();}
+	@Override
+	public void contactFromSideByMario(Mario mario) {mario.marioHit();}
 	
 	public abstract void lookDownClosedMouth(boolean rightOrLeft);
 	public abstract void lookDownOpenMouth(boolean rightOrLeft);

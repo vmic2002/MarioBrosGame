@@ -85,14 +85,13 @@ public class Leaf extends PowerUp {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean b) {
+	public boolean inContactWith(GObject x, boolean b) {
 		if (!alive) {
 			System.out.println("DEAD LEAF WAS GOING TO HIT MARIO");
-			return;
 		}
 		if (x instanceof Mario) {
 			if (!((Mario) x).alive) {
-				return;
+				return true;
 			}
 			canvas.remove(this);
 			alive = false;
@@ -102,6 +101,7 @@ public class Leaf extends PowerUp {
 		} else {
 			//System.out.println("LEAF ONLY CHANGES WHEN in contact with mario");
 		}
+		return true;
 	}
 
 	public static void setObjects(Image rightLeafImage1, Image leftLeafImage1) {

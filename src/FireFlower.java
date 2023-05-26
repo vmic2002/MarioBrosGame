@@ -19,8 +19,9 @@ public class FireFlower extends PowerUp {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean b) {
+	public boolean inContactWith(GObject x, boolean b) {
 		//not really needed since fire flower does not move
+		return false;
 	}
 
 	@Override

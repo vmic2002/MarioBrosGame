@@ -7,20 +7,20 @@ public class Goomba extends BadGuy {
 	//TODO could make goomba implement Dynamic and have a pipe that pumps out goomba periodically
 	private static Image goombaRight, goombaLeft, goombaSquished;
 	private static final int LEFT_OR_RIGHT_FREQUENCY = 5;//>0 num times move function is called before goomba toggles left to right image
-	private static final double DY = MovingObject.scalingFactor*0.9;
+	private static final double DY = MovingObject.scalingFactor*1.4;
 	private static final double DX = MovingObject.scalingFactor*0.9;
 	private int leftOrRightFrequency;
 	private boolean leftOrRightImage;//true if goombaLeft image false if goombaRight image
 	private double dx;
 	private double dy;
-	private boolean previousPointWorked;
+	//private boolean previousPointWorked;
 
 	public Goomba() {
 		super(goombaRight);
 		leftOrRightImage = false;
 		leftOrRightFrequency = 0;
 		dx = DX;
-		dy = DY;
+		dy = 0.0;
 	}
 
 	private void toggleRightOrLeft() {
@@ -29,7 +29,12 @@ public class Goomba extends BadGuy {
 		leftOrRightImage = !leftOrRightImage;
 		leftOrRightFrequency = 0;
 	}
+	
+	
+	@Override
+	public void contactFromSideByMario(Mario mario) {mario.marioHit();}
 
+	@Override
 	public void jumpedOnByMario(Mario mario) {
 		if (!this.alive) return;
 		this.alive = false;
@@ -82,17 +87,17 @@ public class Goomba extends BadGuy {
 
 
 
-					previousPointWorked = false;
+					//previousPointWorked = false;
 					ArrayList<GObject> o1 = checkAtPositions(pointsBelow);
 					for (GObject x : o1) {
-						inContactWith(x, false);
-						if (previousPointWorked) break;
+						if (inContactWith(x, false)) break;
+						//if (previousPointWorked) break;
 					}
-					previousPointWorked = false;
+					//previousPointWorked = false;
 					ArrayList<GObject> o2 = checkAtPositions(pointsSide);
 					for (GObject x : o2) {
-						inContactWith(x, true);
-						if (previousPointWorked) break;
+						if (inContactWith(x, true)) break;
+						//if (previousPointWorked) break;
 					}
 
 					if (nothingUnder(pointsBelow)) {
@@ -116,18 +121,20 @@ public class Goomba extends BadGuy {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean horizontalOrVertical) {
+	public boolean inContactWith(GObject x, boolean horizontalOrVertical) {
 		if ((x instanceof Platform || x instanceof BadGuy) && horizontalOrVertical) {
 			//goombas bounce off BadGuys and platforms
 			dx = -dx;
 			//this.sendToFront();//FOR TESTING
-			previousPointWorked = true;
+			//previousPointWorked = true;
+			return true;
 			//SoundController.playBumpSound();
 		} else if (x instanceof Platform && !horizontalOrVertical) {
 			//goomba fell on platform
 			dy = 0;
-			previousPointWorked = true;
-		} else {super.inContactWith(x, true);}
+			//previousPointWorked = true;
+			return true;
+		} else {return super.inContactWith(x, true);}
 		//super.inContactWith checks to see if turtle runs into mario
 	}
 

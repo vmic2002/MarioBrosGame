@@ -11,6 +11,7 @@ public class DownShootingFlower extends ShootingFlower{
 	public DownShootingFlower(int timeOffset) {
 		super(downShootingFlowerLeftDownClosedImage, timeOffset);
 	}
+	
 	public Point[] getPoints() {
 		return new Point[] {
 				new Point(getX(), getY()+getHeight()+dy), 
@@ -51,4 +52,5 @@ public class DownShootingFlower extends ShootingFlower{
 		downShootingFlowerRightUpClosedImage = downShootingFlowerRightUpClosedImage1;
 		downShootingFlowerRightUpOpenImage = downShootingFlowerRightUpOpenImage1;
 	}
+	
 }

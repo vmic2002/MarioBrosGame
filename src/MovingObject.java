@@ -20,7 +20,10 @@ public abstract class MovingObject extends ThreadSafeGImage{//GImage {
 	
 	public abstract void move();//called by factory class once added to canvas
 
-	public abstract void inContactWith(GObject x, boolean horizontalOrVertical);
+	public abstract boolean inContactWith(GObject x, boolean horizontalOrVertical);
+	//returns true if in contact with object and action taken (no need to check other points)
+	//inContactWith is called multiple times with multiple different GObjects from different points on the screen
+	//if one point works, return true and no need to check other points
 
 	public ArrayList<GObject> checkAtPositions(Point[] points) {
 		ArrayList<GObject> result = new ArrayList<GObject>();

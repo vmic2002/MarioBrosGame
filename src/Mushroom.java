@@ -14,7 +14,7 @@ public class Mushroom extends PowerUp {
 	private double dx;
 	private double dy;
 	private boolean rightOrLeft;
-	private boolean previousPointWorked;
+	//private boolean previousPointWorked;
 	//previousPointWorked: for collision detection, multiple points are used, if one already worked, 
 	//no need to use the other ones 
 	public Mushroom() {
@@ -96,19 +96,19 @@ public class Mushroom extends PowerUp {
 				move(dx, dy);
 			} else {
 				move(dx, dy);
-				previousPointWorked = false;
+				//previousPointWorked = false;
 				ArrayList<GObject> o1 = checkAtPositions(pointsSide);
 				for (GObject x : o1) {
-					inContactWith(x, true);
+					if (inContactWith(x, true)) break;
 				}
 				if (!alive) {
 					//if checking points at side kills mushroom no need to check points below
 					break;
 				}
-				previousPointWorked = false;
+				//previousPointWorked = false;
 				ArrayList<GObject> o2 = checkAtPositions(pointsBelow);
 				for (GObject x : o2) {
-					inContactWith(x, false);
+					if (inContactWith(x, false)) break;
 				}
 			}
 			try {
@@ -134,15 +134,15 @@ public class Mushroom extends PowerUp {
 	}
 	
 	@Override
-	public void inContactWith(GObject x, boolean sideOrBelow) {
+	public boolean inContactWith(GObject x, boolean sideOrBelow) {
 		if (!alive) {
 			System.out.println("DEAD MUSHROOM WAS GOING TO HIT MARIO");
-			return;
+			return true;
 		}
 		//sideOrBelow is true if in contact with something from the side
 		//and false if in contact with something from below
-		if (previousPointWorked) return;
-		previousPointWorked = true;
+		//if (previousPointWorked) return true;
+		//previousPointWorked = true;
 		if (x instanceof Platform) {
 			//if sideOrBelow then mushroom is in contact with a platform from the side,
 			//so it should change its horizontal direction
@@ -157,9 +157,10 @@ public class Mushroom extends PowerUp {
 				dy = 0;
 				System.out.println("SET DY TO 0");
 			}
+			return true;
 		} else if (x instanceof Mario) {
 			if (!((Mario) x).alive) {
-				return;
+				return true;
 			}
 			canvas.remove(this);
 			SoundController.playPowerUpSound();
@@ -168,7 +169,9 @@ public class Mushroom extends PowerUp {
 			}
 			alive = false;
 			System.out.println("MUSHROOM HIT MARIO");
-		} 
+			return true;
+		}
+		return false;
 		//TODO could change directions etc (for example if two mushrooms run into each other they should
 		//"bounce off" and change directions 
 	}

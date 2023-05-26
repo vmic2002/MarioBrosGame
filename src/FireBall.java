@@ -215,7 +215,7 @@ class FireBall extends MovingObject implements Dynamic {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean horizontalOrVertical) {
+	public boolean inContactWith(GObject x, boolean horizontalOrVertical) {
 		//if (x instanceof Turtle)
 		//if (x!=null) System.out.println("FIREBALL RAN INTO SOMETHING");
 		//will need to set alive = false when fire ball runs into flower, turtle, side of platform
@@ -225,13 +225,14 @@ class FireBall extends MovingObject implements Dynamic {
 			//shouldnt happen since fireball is faster, but
 			//if mario and luigi shoot fireballs at each other, the fireballs need to die
 			//Luigi should extend Mario
-			return;
+			return true;
 		}
 
 		if (horizontalOrVertical && x instanceof Platform) {
 			//fireball dies if it runs into a platform from the side
 			alive = false;
-			System.out.println("fireball run into platform from side"); 
+			System.out.println("fireball run into platform from side");
+			return true;
 		} else if (!horizontalOrVertical && x instanceof Platform){
 			if (fallingOrHopping) {
 				//if fireball falls on platform then it starts hopping 
@@ -239,24 +240,28 @@ class FireBall extends MovingObject implements Dynamic {
 				hoppingY = getY();
 				hoppingX = getX();
 				System.out.println("fireball fall on platform starts hopping");
+				return true;
 			}
 		} else if (x instanceof BadGuy) {
 			//fireball could have been shot by mario or shooting flower
 			//a shooting flower can kill another if mario stands behind the one getting shot at
 			
-			if (!((BadGuy) x).alive) return;
+			if (!((BadGuy) x).alive) return false;
 			//TODO could add sound of bad guy dying
 			//((BadGuy) x).alive = false;
 			//x.setVisible(false);
 			if (!(x instanceof BulletBill)) ((BadGuy) x).kill();
 			//if fireball is in contact with BulletBill, fireball dies
 			alive = false;
+			return true;
 		} else if (x instanceof FireBall) {
 			//if fireball shot from mario runs into another fireball then they both die
-			if (!((FireBall) x).alive) return;
+			if (!((FireBall) x).alive) return false;
 			((FireBall) x).alive = false;
 			alive = false;
+			return true;
 		}
+		return false;
 	}
 
 	public static void setObjects(Image leftFireBall1X,

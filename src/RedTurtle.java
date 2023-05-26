@@ -24,7 +24,7 @@ public class RedTurtle extends BadGuy {
 	private boolean stopped;//true if shell mode and stopped. (in shell mode, turtle is either stopped or not stopped (spinningOrFalling) 
 	private enum SPINNING_STAGE {STAGE_1,STAGE_2,STAGE_3,STAGE_4};
 	private SPINNING_STAGE spinningStage;//value doesnt matter if !shellMode
-	private boolean previousPointWorked;
+	//private boolean previousPointWorked;
 
 
 	/***
@@ -40,7 +40,6 @@ public class RedTurtle extends BadGuy {
 		numMovesToReachEdge = ((int) ((width-this.getWidth())/dx));
 		shellMode = false;
 	}
-	//TODO have to make red turtle spin after mario kicks it
 	//TODO have to make turtle go upside down when cat mario flicks it with tail
 	private boolean nothingUnder(Point[] pointsBelow) {
 		for (int i=0; i<pointsBelow.length; i++) {
@@ -51,12 +50,14 @@ public class RedTurtle extends BadGuy {
 		return true;
 	}
 
-	private void startSpinning(boolean rightOrLeft) {
+	public void startSpinning(boolean rightOrLeft) {
 		//in this func turtle alternates between spinning on platform and falling until it dies or stopped
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				//keep spinning or falling until !alive or stopped
+				spinningOrFalling = true;
+				stopped = false;
 				dx = Math.abs(dx);
 				if (!rightOrLeft) dx = -dx;
 				spinningFrequency = 0;
@@ -94,17 +95,17 @@ public class RedTurtle extends BadGuy {
 					//if (!alive || stopped) break;
 
 					//if (!alive || stopped) break;
-					previousPointWorked = false;
+				//	previousPointWorked = false;
 					ArrayList<GObject> o1 = checkAtPositions(pointsBelow);
 					for (GObject x : o1) {
-						inContactWith(x, false);
-						if (previousPointWorked) break;
+						if (inContactWith(x, false)) break;
+						//if (previousPointWorked) break;
 					}
-					previousPointWorked = false;
+				//	previousPointWorked = false;
 					ArrayList<GObject> o2 = checkAtPositions(pointsSide);
 					for (GObject x : o2) {
-						inContactWith(x, true);
-						if (previousPointWorked) break;
+						if (inContactWith(x, true)) break;
+						//if (previousPointWorked) break;
 					}
 					//move(dx, dy);
 					//if (!alive || stopped) break;
@@ -142,22 +143,24 @@ public class RedTurtle extends BadGuy {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean horizontalOrVertical) {
+	public boolean inContactWith(GObject x, boolean horizontalOrVertical) {
 		//called to check if hitting platform from the side to bounce off
 		if ((x instanceof Platform || x instanceof BadGuy) && horizontalOrVertical) {
 			//red turtles bounce off BadGuys and platforms
 			dx = -dx;
 			System.out.println("CHANGE DIRECTIONS\n\n\n\n");
 			this.sendToFront();//FOR TESTING
-			previousPointWorked = true;
+			//previousPointWorked = true;
 			SoundController.playBumpSound();
+			return true;
 		} else if (x instanceof Platform && !horizontalOrVertical) {
 			//turtle fell on platform
 			System.out.println("setting dy to 0\n\n\n");
 			spinningOrFalling = true;
-			dy = 0;
-			previousPointWorked = true;
-		} else {super.inContactWith(x, true);}
+			dy = 0.0;
+			//previousPointWorked = true;
+			return true;
+		} else {return super.inContactWith(x, true);}
 		/*else if (x instanceof BadGuy) {
 			((BadGuy) x).kill();
 			previousPointWorked=true;
@@ -173,7 +176,17 @@ public class RedTurtle extends BadGuy {
 		mario.hop();
 	}
 
+	@Override
+	public void contactFromSideByMario(Mario mario) {
+		//System.out.println("\n"+mario.character.name()+" ran into RED TURTLE\n");
+		if (shellMode && stopped) {
+			startSpinning(mario.getX()<this.getX());//mario walking into a stopped turtle in shell mode will make the shell start spinning (like mario kicked the turtle)
+		} else {
+			mario.marioHit();
+		}
+	}
 
+	@Override
 	public void jumpedOnByMario(Mario mario) {
 		if (shellMode) {
 			if (!stopped) {
@@ -186,8 +199,6 @@ public class RedTurtle extends BadGuy {
 					mario.hop();
 				}
 			} else {
-				spinningOrFalling = true;
-				stopped = false;
 				System.out.println("turtle start spinning...");
 				startSpinning(mario.getX()+mario.getWidth()/2<this.getX()+this.getWidth()/2);
 				mario.hop();
@@ -197,7 +208,7 @@ public class RedTurtle extends BadGuy {
 			//this happens once per turtle max because a turtle never goes back from shell mode
 			shellMode = true;
 			System.out.println("big mario jumps on !shellMode turtle and sets it to shell mode");
-			dx *=3.0;//shell mode (spinning or falling turtle) is 3 times as fast as standing turtle
+			dx *= 4.0;//shell mode (spinning or falling turtle) is 4 times as fast as standing turtle
 			setTurtleToStoppedShellMode(mario);
 		}
 	}

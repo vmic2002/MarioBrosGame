@@ -9,7 +9,7 @@ public class Tanooki extends PowerUp {
 	private static final double DX = MovingObject.scalingFactor*0.2;
 	private static final int pauseTime = 5;
 	private double dx;
-	private boolean previousPointWorked;
+	//private boolean previousPointWorked;
 	public double yBaseline;
 	public double xBaseline;
 	private static final double maxHeightOfJump = MovingObject.scalingFactor*20.0;
@@ -85,20 +85,20 @@ public class Tanooki extends PowerUp {
 			};		
 
 			//System.out.println("TANOOOKI GOING UP/DOWN: "+goingUpOrDown());
-			previousPointWorked = false;
+			//previousPointWorked = false;
 			ArrayList<GObject> o1 = checkAtPositions(pointsSide);
 			for (GObject x : o1) {
-				inContactWith(x, true);
+				if (inContactWith(x, true)) break;
 			}
 			if (!alive) {
 				//if checking points at side kills tanooki no need to check points below
 				break;
 			}
-			previousPointWorked = false;
+			//previousPointWorked = false;
 			ArrayList<GObject> o2 = goingUpOrDown()?checkAtPositions(pointsAbove):checkAtPositions(pointsBelow);
 			//if goingUp check points above else (going down) check points below
 			for (GObject x : o2) {
-				inContactWith(x, false);
+				if (inContactWith(x, false)) break;
 			}
 			hop();
 			try {
@@ -126,15 +126,15 @@ public class Tanooki extends PowerUp {
 	}
 
 	@Override
-	public void inContactWith(GObject x, boolean horizontalOrVertical) {
+	public boolean inContactWith(GObject x, boolean horizontalOrVertical) {
 		if (!alive) {
 			System.out.println("DEAD TANOOKI WAS GOING TO HIT MARIO");
-			return;
+			return true;
 		}
 		//horizontalOrVertical is true if in contact with something from the side
 		//and false if in contact with something from below/above
-		if (previousPointWorked) return;
-		previousPointWorked = true;
+		//if (previousPointWorked) return true;
+		//previousPointWorked = true;
 		if (x instanceof Platform) {
 			//if horizontalOrVertical then tanooki is in contact with a platform from the side,
 			//so it should change its horizontal direction
@@ -156,16 +156,19 @@ public class Tanooki extends PowerUp {
 					//System.out.println("\n\nHIT PLATFORM GOING DOOWWWWWN\n\n");
 				}
 			}
+			return true;
 		} else if (x instanceof Mario) {
 			if (!((Mario) x).alive) {
-				return;
+				return true;
 			}
 			canvas.remove(this);
 			SoundController.playPowerUpSound();
 			((Mario) x).setToTanooki();
 			alive = false;
 			System.out.println("Tanooki HIT MARIO");
+			return true;
 		}
+		return false;
 	}
 
 	public static void setObjects(Image tanookiImage1) {

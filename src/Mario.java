@@ -1011,7 +1011,7 @@ public class Mario extends MovingObject {
 		double dx = rightOrLeft?moveDx:-moveDx;
 		double newX = rightOrLeft?getX()+getWidth()+dx:getX()+dx;//+dx cause dx is already negative
 		//TODO bug where fire mario can walk through Platform if he is rapidly shooting fireballs!
-		/*TODO
+		/*
 		 * mario only checks if he walks into an object
 		 * if an object were to run into him, such as turtle or mushroom,
 		 * it would be in that object's move function that handling of such collision
@@ -1024,7 +1024,7 @@ public class Mario extends MovingObject {
 		}
 		ArrayList<GObject> o = checkAtPositions(arr);
 		for (GObject x : o) {
-			inContactWith(x, true);
+			if (inContactWith(x, true)) break;
 		}
 		if (!hitPlatformHorizontal) {
 			move(dx, 0);
@@ -1074,14 +1074,14 @@ public class Mario extends MovingObject {
 	}
 
 	@Override
-	public void inContactWith(GObject o, boolean horizontalOrVertical) {
+	public boolean inContactWith(GObject o, boolean horizontalOrVertical) {
 		//input o is object mario came into contact with
 		if (o instanceof MovingObject) {
 			if (!((MovingObject) o).alive) {
 				//if o is from a previous level that has been cleared from canvas
 				//but the (invisible) power ups still affect mario
 				System.out.println("RAN INTO DEAD OBJECT");
-				return;
+				return false;
 			}
 		}
 		if (o instanceof Mario && o.equals(this)) {
@@ -1127,7 +1127,7 @@ public class Mario extends MovingObject {
 				//	System.out.println("HIT Platform FROM UNDER");
 				if (o instanceof MysteryBox) {
 					System.out.println("MARIO HIT MYSTERYBOX FROM UNDER");
-					if (Math.abs(getY()-o.getY()-o.getHeight())>20) return;
+					if (Math.abs(getY()-o.getY()-o.getHeight())>20) return false;
 					if (!((MysteryBox) o).stateIsFinal()) {
 						SoundController.playItemOutOfBoxSound();
 						double x  = o.getX();
@@ -1146,20 +1146,20 @@ public class Mario extends MovingObject {
 					//mario jumped into a pipe part, need to make him go into pipe
 					//mario cannot jumps into pipe while swinging tail/shooting fireball
 					if (shootFireJumping!=SHOOT_FIRE_JUMPING.NOT_SHOOTING) {
-						return;
+						return false;
 					}
 					if (swingTailJumping!=SWING_TAIL_JUMPING.NOT_SWINGING) {
-						return;
+						return false;
 					}
 					if (isCrouching) {
 						System.out.println("MARIO CANT JUMP INTO PIPE IF HE IS CROUCHING");
-						return;
+						return false;
 					}
 					if (((PipePart) o).upOrDownPipe) {
 						System.out.println("mario tries jumping into an up pipe instead of down pipe");
-						return;
+						return false;
 					}
-					if (goingIntoPipe) return;
+					if (goingIntoPipe) return false;
 
 					Thread t1 = new Thread(new Runnable() {
 						@Override
@@ -1188,9 +1188,11 @@ public class Mario extends MovingObject {
 			//also play sound
 			if (!horizontalOrVertical && isJumping && !wayUpOrWayDown) {
 				((BadGuy) o).jumpedOnByMario(this);
-			} else {
-				marioHit();
-			}
+			} else if (horizontalOrVertical){
+				System.out.println("\n\n"+this.character.name()+" ran into BADGUY\n\n");
+				((BadGuy) o).contactFromSideByMario(this);
+				return true;
+			} else {marioHit();}
 			/*if (o instanceof RedTurtle) {
 					//need to MAKE TURTLE GO TO shell mode or start spinning if already in shell mode
 					//if (bigOrSmall && !wayUpOrWayDown) ((RedTurtle) o).jumpedOnByBigMario(this);
@@ -1210,14 +1212,14 @@ public class Mario extends MovingObject {
 			//want mario to treat other marios as platforms from the side
 			//if mario jumps on another mario he should hop() off
 			if (horizontalOrVertical) hitPlatformHorizontal = true;
-			else if (!wayUpOrWayDown) {this.hop();}//if mario is on way down and comes in contact with other mario he hops off
-			//if (wayUpOrWayDown) no need to do anything because if mario jumps into another mario from the bottom that mario will
-			//technically be on his way down and so the mario on the way down will call the hop() function
+			else if (wayUpOrWayDown) hitPlatformVertical = true;
+			else {this.hop();}//if mario is on way down and comes in contact with other mario he hops off
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;
 			LevelController.currLevel.removeDynamic((PowerUp) o);//mostly for FireFlower since every other power up would call this function after their alive field is set to false
 		}
+		return false;
 	}
 
 	public void marioHit() {
@@ -1266,7 +1268,7 @@ public class Mario extends MovingObject {
 
 	public void goIntoPipe(boolean upOrDown, PipePart o) {
 		if (!alive) return;
-		goingIntoPipe=true;//to disable user from moving mario as he is going into pipe
+		goingIntoPipe = true;//to disable user from moving mario as he is going into pipe
 		//setting movingRight/Left to false in case mario
 		//is moving while going into a pipe
 		movingRight = false;

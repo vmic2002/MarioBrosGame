@@ -9,5 +9,5 @@ public abstract class PowerUp extends MovingObject implements Dynamic{
 		super(arg0);
 	}
 	public abstract void move();
-	public abstract void inContactWith(GObject x, boolean horizontalOrVertical);
+	//public abstract boolean inContactWith(GObject x, boolean horizontalOrVertical);
 }
