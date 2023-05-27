@@ -180,6 +180,8 @@ public class RedTurtle extends BadGuy {
 	public void contactFromSideByMario(Mario mario) {
 		//System.out.println("\n"+mario.character.name()+" ran into RED TURTLE\n");
 		if (shellMode && stopped) {
+			//TODO could add animation for mario to kick turtle
+			SoundController.playKickSound();
 			startSpinning(mario.getX()<this.getX());//mario walking into a stopped turtle in shell mode will make the shell start spinning (like mario kicked the turtle)
 		} else {
 			mario.marioHit();
@@ -211,6 +213,7 @@ public class RedTurtle extends BadGuy {
 			dx *= 4.0;//shell mode (spinning or falling turtle) is 4 times as fast as standing turtle
 			setTurtleToStoppedShellMode(mario);
 		}
+		SoundController.playSquishSound();
 	}
 
 	private void toggleStandingOrWalking() {

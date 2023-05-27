@@ -179,7 +179,7 @@ public class LevelController {
 			StaticFactory.spawnDownPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", levelParts);
 		}
 		xCounter.v -= xCounter.v-xCounterTemp;
-		StaticFactory.spawnGrassMountain(xCounter, 17, 2, BADGUY_TYPE.RED_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 17, 2, BADGUY_TYPE.GOOMBA, levelParts);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1", FLOWER_TYPE.NO_FLOWER, 4, "2", FLOWER_TYPE.NO_FLOWER,  levelParts);
 		spawnWhiteSpace(xCounter, 1);
 		Level level2 = new Level("2", levelParts, xCounter.v);

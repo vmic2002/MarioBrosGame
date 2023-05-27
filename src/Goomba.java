@@ -39,6 +39,7 @@ public class Goomba extends BadGuy {
 		if (!this.alive) return;
 		this.alive = false;
 		setImageAndRelocate(goombaSquished);
+		SoundController.playSquishSound();
 		mario.hop();
 		Thread t1 = new Thread(new Runnable() {
 			@Override
@@ -65,7 +66,7 @@ public class Goomba extends BadGuy {
 					if (getY()+dy>=canvas.getHeight()+LevelController.currLevel.yBaseLine){//!spinningOrFalling && 
 						//turtle dies if reaches bottom of screen
 						System.out.println("turtle at bottom of screen ");
-						alive = false;
+						kill();
 						break;
 					}
 

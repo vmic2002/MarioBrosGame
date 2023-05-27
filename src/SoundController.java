@@ -7,16 +7,10 @@ public abstract class SoundController {
 	private static String prefix;
 	//when running from command line, prefix = "../"
 	//when running from eclipse, prefix = ""
-	private static File jumpSoundFile;
-	private static File powerUpSoundFile;
-	private static File marioGetsHitSoundFile;
-	private static File itemOutOfBoxSoundFile;
-	private static File fireBallSoundFile;
-	private static File squishSoundFile;
-	private static File tailSoundFile;
-	private static File deathSoundFile;
-	private static File pipeSoundFile;
-	private static File bumpSoundFile;
+	private static File jumpSoundFile,powerUpSoundFile,
+	marioGetsHitSoundFile,itemOutOfBoxSoundFile, fireBallSoundFile,
+	squishSoundFile, tailSoundFile, deathSoundFile, pipeSoundFile,
+	bumpSoundFile, kickSoundFile;
 	public static void setPrefix(String s) {
 		prefix = s;
 		jumpSoundFile = new File(prefix+"SoundEffects/Mario Jump.wav");
@@ -29,6 +23,7 @@ public abstract class SoundController {
 		deathSoundFile = new File(prefix+"SoundEffects/Death.wav");
 		pipeSoundFile = new File(prefix+"SoundEffects/Pipe.wav");
 		bumpSoundFile = new File(prefix+"SoundEffects/Bump.wav");
+		kickSoundFile = new File(prefix+"SoundEffects/Kick.wav");
 	}
 
 	private static void playSound(File f) {
@@ -53,6 +48,11 @@ public abstract class SoundController {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public static void playKickSound() {
+		//plays when mario kicks a turtle in shell mode and stopped so it starts spinning
+		playSound(kickSoundFile);
 	}
 
 	public static void playBumpSound(){
@@ -99,8 +99,7 @@ public abstract class SoundController {
 	}
 
 	public static void playSquishSound() {
-		//TODO need to call this function
-		//should play when mario jumps on turtle etc
+		//plays when mario jumps on turtle or goomba
 		playSound(squishSoundFile);
 	}
 	//TODO NEED TO ADD ALL SOUNDS IN THIS CLASS
