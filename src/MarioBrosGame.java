@@ -1,18 +1,23 @@
 import java.awt.image.BufferedImage;
 import java.awt.Color;
-import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+//import java.awt.Image;
+//import java.awt.event.KeyEvent;
+//import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
+//import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
 import acm.graphics.*;
-import acm.program.GraphicsProgram;
+//import acm.program.GraphicsProgram;
 
-public class MarioBrosGame extends GraphicsProgram {
+
+import java.awt.BorderLayout;
+
+import javax.swing.JFrame;
+
+public class MarioBrosGame {//extends GraphicsProgram {
 
 	/*General comments for Mario Game:
 	 * 
@@ -33,17 +38,27 @@ public class MarioBrosGame extends GraphicsProgram {
 	private static final int WIDTH = 1200;
 	private static final int HEIGHT = 800;
 
-	public void run() {
+	//public void run() {
+	//@SuppressWarnings("deprecation")
+	public static void main(String[] args) {
+		GCanvas canvas = new GCanvas();
+		canvas.setSize(WIDTH, HEIGHT);
+		JFrame frame = new JFrame();
+		frame.getContentPane().add(BorderLayout.CENTER, canvas);
+		frame.setSize(WIDTH,HEIGHT);
+		frame.show();
+		
 		float[] hsb = new float[3];
 		Color.RGBtoHSB(0, 120, 255, hsb);
 		Color c = new Color(hsb[0], hsb[1], hsb[2]);
-		this.getGCanvas().setBackground(c);
-		System.out.println("Hello, World!");
+		canvas.setBackground(c);
+		System.out.println("MarioBrosGame loading...");
 		//when running from command line:
 		//image path is ../Images/*.png since program is run from bin directory
 		//when running from command line, prefix = "../"
 		//when running from eclipse, prefix = ""
 		//before pushing to github make sure prefix = "../"
+		
 		String prefix = "../";
 		//String prefix = "";
 
@@ -111,8 +126,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		String bigMarioRightCatTail2ImagePath = prefix+imageDirectory+"/bigMarioRightTail2.png";
 		String bigMarioCatTail3ImagePath = prefix+imageDirectory+"/bigMarioTail3.png";
 
-		
-		
+
+
 		String tanookiMarioLeftCatImagePath = prefix+imageDirectory+"/leftTanookiMario.png";
 		String tanookiMarioRightCatImagePath = prefix+imageDirectory+"/rightTanookiMario.png";
 		String tanookiMarioLeftWakingCatImagePath = prefix+imageDirectory+"/leftTanookiMarioWalking.png";
@@ -131,8 +146,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		String tanookiMarioLeftCatTail2ImagePath = prefix+imageDirectory+"/leftTanookiMarioTail2.png";
 		String tanookiMarioRightCatTail2ImagePath = prefix+imageDirectory+"/rightTanookiMarioTail2.png";
 		String tanookiMarioCatTail3ImagePath = prefix+imageDirectory+"/tanookiTail3.png";
-		
-		
+
+
 		String smallMarioPipeImagePath = prefix+imageDirectory+"/smallMarioPipe.png";
 		String bigMarioPipeImagePath = prefix+imageDirectory+"/bigMarioPipe.png";
 		String fireMarioPipeImagePath = prefix+imageDirectory+"/fireMarioPipe.png";
@@ -192,7 +207,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		String leftLeafImagePath = prefix+imageDirectory+"/leftLeafImage.png";
 		String rightLeafImagePath = prefix+imageDirectory+"/rightLeafImage.png";
 		String tanookiPowerUpImagePath = prefix+imageDirectory+"/tanookiPowerUp.png";
-		
+
 
 		String mysteryBox1ImagePath = prefix+imageDirectory+"/mysteryBox1.png";
 		String mysteryBox2ImagePath = prefix+imageDirectory+"/mysteryBox2.png";
@@ -242,22 +257,22 @@ public class MarioBrosGame extends GraphicsProgram {
 		String redTurtleStandingRightImagePath = prefix+imageDirectory+"/redTurtleStandingRight.png";
 		String redTurtleWalkingLeftImagePath = prefix+imageDirectory+"/redTurtleWalkingLeft.png";
 		String redTurtleWalkingRightImagePath = prefix+imageDirectory+"/redTurtleWalkingRight.png";
-		
-		
-		
+
+
+
 		String leftBulletBillImagePath = prefix+imageDirectory+"/leftBulletBill.png";
 		String rightBulletBillImagePath = prefix+imageDirectory+"/rightBulletBill.png";
 		String billBlasterTopImagePath = prefix+imageDirectory+"/billBlasterTop.png";
 		String billBlasterMiddleImagePath = prefix+imageDirectory+"/billBlasterMiddle.png";
 		String billBlasterBottomImagePath = prefix+imageDirectory+"/billBlasterBottom.png";
-		
+
 		String goombaLeftImagePath = prefix+imageDirectory+"/goombaLeft.png";
 		String goombaRightImagePath = prefix+imageDirectory+"/goombaRight.png";
 		String goombaSquishedImagePath = prefix+imageDirectory+"/goombaSquished.png";
-		
-		
-		
-		
+
+
+
+
 
 		BufferedImage smallMarioLeftImage = null;
 		BufferedImage smallMarioRightImage = null;
@@ -317,8 +332,8 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage bigMarioLeftCatTail2Image= null;
 		BufferedImage bigMarioRightCatTail2Image= null;
 		BufferedImage bigMarioCatTail3Image = null;
-		
-		
+
+
 		BufferedImage tanookiMarioLeftCatImage = null;
 		BufferedImage tanookiMarioRightCatImage = null;
 		BufferedImage tanookiMarioLeftWakingCatImage = null;
@@ -337,7 +352,7 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage tanookiMarioLeftCatTail2Image = null;
 		BufferedImage tanookiMarioRightCatTail2Image = null;
 		BufferedImage tanookiMarioCatTail3Image = null;
-		
+
 
 		BufferedImage smallMarioPipeImage = null;
 		BufferedImage bigMarioPipeImage = null;
@@ -447,14 +462,14 @@ public class MarioBrosGame extends GraphicsProgram {
 		BufferedImage redTurtleStandingRightImage = null;
 		BufferedImage redTurtleWalkingLeftImage = null;
 		BufferedImage redTurtleWalkingRightImage = null;
-		
+
 		BufferedImage leftBulletBillImage = null;
 		BufferedImage rightBulletBillImage = null;
 		BufferedImage billBlasterTopImage = null;
 		BufferedImage billBlasterMiddleImage = null;
 		BufferedImage billBlasterBottomImage = null;
-		
-		
+
+
 		BufferedImage goombaLeftImage = null;
 		BufferedImage goombaRightImage = null;
 		BufferedImage goombaSquishedImage = null;
@@ -519,7 +534,7 @@ public class MarioBrosGame extends GraphicsProgram {
 			bigMarioRightCatTail2Image = ImageIO.read(new File(bigMarioRightCatTail2ImagePath));
 			bigMarioCatTail3Image = ImageIO.read(new File(bigMarioCatTail3ImagePath));
 
-			
+
 			tanookiMarioLeftCatImage = ImageIO.read(new File(tanookiMarioLeftCatImagePath));
 			tanookiMarioRightCatImage = ImageIO.read(new File(tanookiMarioRightCatImagePath));
 			tanookiMarioLeftWakingCatImage = ImageIO.read(new File(tanookiMarioLeftWakingCatImagePath));
@@ -538,8 +553,8 @@ public class MarioBrosGame extends GraphicsProgram {
 			tanookiMarioLeftCatTail2Image = ImageIO.read(new File(tanookiMarioLeftCatTail2ImagePath));
 			tanookiMarioRightCatTail2Image = ImageIO.read(new File(tanookiMarioRightCatTail2ImagePath));
 			tanookiMarioCatTail3Image = ImageIO.read(new File(tanookiMarioCatTail3ImagePath));
-			
-			
+
+
 			smallMarioPipeImage = ImageIO.read(new File(smallMarioPipeImagePath));
 			bigMarioPipeImage = ImageIO.read(new File(bigMarioPipeImagePath));
 			fireMarioPipeImage = ImageIO.read(new File(fireMarioPipeImagePath));			
@@ -648,17 +663,17 @@ public class MarioBrosGame extends GraphicsProgram {
 			redTurtleStandingRightImage = ImageIO.read(new File(redTurtleStandingRightImagePath));
 			redTurtleWalkingLeftImage = ImageIO.read(new File(redTurtleWalkingLeftImagePath));
 			redTurtleWalkingRightImage = ImageIO.read(new File(redTurtleWalkingRightImagePath));
-			
+
 			leftBulletBillImage = ImageIO.read(new File(leftBulletBillImagePath));
 			rightBulletBillImage = ImageIO.read(new File(rightBulletBillImagePath));
 			billBlasterTopImage = ImageIO.read(new File(billBlasterTopImagePath));
 			billBlasterMiddleImage = ImageIO.read(new File(billBlasterMiddleImagePath));
 			billBlasterBottomImage = ImageIO.read(new File(billBlasterBottomImagePath));
-			
+
 			goombaLeftImage = ImageIO.read(new File(goombaLeftImagePath));
 			goombaRightImage = ImageIO.read(new File(goombaRightImagePath));
 			goombaSquishedImage = ImageIO.read(new File(goombaSquishedImagePath));
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -689,8 +704,8 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigMarioRightJumpingCatTal2Image,
 				bigMarioCatTail1Image, bigMarioLeftCatTail2Image,
 				bigMarioRightCatTail2Image, bigMarioCatTail3Image,
-				
-				
+
+
 				tanookiMarioLeftCatImage, tanookiMarioRightCatImage, tanookiMarioLeftWakingCatImage, tanookiMarioRightWalkingCatImage,
 				tanookiMarioLeftJumpingCatImage, tanookiMarioRightJumpingCatImage, tanookiMarioRightJumpingDownCatImage,
 				tanookiMarioLeftJumpingDownCatImage, tanookiMarioLeftCrouchingCatImage, tanookiMarioRightCrouchingCatImage,
@@ -698,8 +713,8 @@ public class MarioBrosGame extends GraphicsProgram {
 				tanookiMarioRightJumpingCatTail2Image,
 				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
 				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
-				
-				
+
+
 				smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage, Mario.CHARACTER.MARIO
 				);
 		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
@@ -728,8 +743,8 @@ public class MarioBrosGame extends GraphicsProgram {
 				bigLuigiRightJumpingCatTail2Image,
 				bigLuigiCatTail1Image, bigLuigiLeftCatTail2Image,
 				bigLuigiRightCatTail2Image, bigLuigiCatTail3Image,
-				
-				
+
+
 				tanookiMarioLeftCatImage, tanookiMarioRightCatImage, tanookiMarioLeftWakingCatImage, tanookiMarioRightWalkingCatImage,
 				tanookiMarioLeftJumpingCatImage, tanookiMarioRightJumpingCatImage, tanookiMarioRightJumpingDownCatImage,
 				tanookiMarioLeftJumpingDownCatImage, tanookiMarioLeftCrouchingCatImage, tanookiMarioRightCrouchingCatImage,
@@ -737,13 +752,13 @@ public class MarioBrosGame extends GraphicsProgram {
 				tanookiMarioRightJumpingCatTail2Image,
 				tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
 				tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
-				
+
 				smallLuigiPipeImage, bigLuigiPipeImage, fireMarioPipeImage, Mario.CHARACTER.LUIGI);
 		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
 		characters[1] = mario;
-		MovingObject.setObjects(this.getGCanvas(), mario.scalingFactor, characters);
+		MovingObject.setObjects(canvas, mario.scalingFactor, characters);
 		Goomba.setObjects(goombaRightImage, goombaLeftImage, goombaSquishedImage);
 		BulletBill.setObjects(leftBulletBillImage, rightBulletBillImage);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
@@ -766,17 +781,17 @@ public class MarioBrosGame extends GraphicsProgram {
 				rightFireBall4Image);
 		FireFlower.setObjects(fireFlowerImage);
 		Leaf.setObjects(rightLeafImage, leftLeafImage);
-		DynamicFactory.setCanvas(this.getGCanvas());
+		DynamicFactory.setCanvas(canvas);
 		StaticFactory.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, 
 				pipeUpTopLeftImage, pipeUpTopRightImage, pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
 				pipeDownTopLeftImage, pipeDownTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
 				billBlasterTopImage, billBlasterMiddleImage, billBlasterBottomImage,
-				this.getGCanvas());
-		LevelController.setObjects(this.getGCanvas(), mario.scalingFactor);
-		BillBlasterController.setCanvas(this.getGCanvas());
-		setSize(WIDTH,HEIGHT);
-		addKeyListeners(new MyKeyListener(characters));
+				canvas);
+		LevelController.setObjects(canvas, mario.scalingFactor);
+		BillBlasterController.setCanvas(canvas);
+		canvas.setSize(WIDTH,HEIGHT);
+		canvas.addKeyListener(new MyKeyListener(characters));
 		LevelController.playLevel("5");
 		//LevelController.playLevel2();
 	}

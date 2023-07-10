@@ -601,6 +601,9 @@ public class Mario extends MovingObject {
 	}
 
 	public void jump() {
+		if (isJumping) {
+			return;
+		}
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -609,9 +612,9 @@ public class Mario extends MovingObject {
 
 				//int dy = 10;
 
-				if (isJumping) {
-					return;
-				}
+				//if (isJumping) {
+				//	return;
+				//}
 				//if (shootFireStanding!=SHOOT_FIRE_STANDING.NOT_SHOOTING) {
 				//if mario is shooting fireball while standing then he can jump
 				//}
@@ -673,6 +676,9 @@ public class Mario extends MovingObject {
 				if (!isCrouching && alive) {
 					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
 				}
+
+				//hitPlatformVertical = false;
+
 				isJumping = false;
 				//System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
@@ -1694,7 +1700,7 @@ public class Mario extends MovingObject {
 	public void hop() {
 		//called when mario jumps on a badguy and has to jump up
 		//TODO if mario needs to hopp off a trampoline-like platform this function could be called 
-		hitPlatformVertical = true;//mario should treat red turtle like platform at first, this will make him stop moving down
+		hitPlatformVertical = true;//mario should treat red turtle (or anything it hops off) like platform at first, this will make him stop moving down
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -1702,6 +1708,7 @@ public class Mario extends MovingObject {
 				//System.out.println("START HOP");
 				while (isJumping) {}
 				//TODO bug in mario hop function not hopping when mario should
+				//TODO MARIO/LUIGI HOP threads accumulate over time this is not good
 				System.out.println("HOPPING NOW");
 				//jumpingOnTurtle = true;
 				jump();
