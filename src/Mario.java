@@ -108,6 +108,10 @@ public class Mario extends MovingObject {
 	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
 
 
+	private boolean jumpAgain;//set to true in hop() function if mario jumps off bad guy, other Mario, or bouncy platform
+
+
+
 	public enum CHARACTER {MARIO, LUIGI};//for now only mario and luigi, could add peach toad, etc as along as they move like mario and have same skins (fire, cat etc)
 	CHARACTER character;//to know if this (instance) is Mario, Luigi, etc
 	public Mario(Image smallMarioLeftImage, Image smallMarioRightImage, Image smallMarioLeftWalkingImage,
@@ -621,64 +625,70 @@ public class Mario extends MovingObject {
 				//if (swingTailStanding!=SWING_TAIL_STANDING.NOT_SWINGING) {
 				//if mario is in middle of swinging tail while standing then he can jump 
 				//}
-				isJumping = true;
-				SoundController.playMarioJumpSound();
 
-				wayUpOrWayDown = true;
-				if (!isCrouching) {
-					setToJumping(lookingRightOrLeft);
-				}
-				for (int i=0; i<maxHeightOfJump && wayUpOrWayDown; i++) {
-					// for 3 points over mario (left middle and right)
-					Point[] arr = new Point[]{new Point(getX()+10,getY()-fallDy),
-							new Point(getX()+getWidth()/2, getY()-fallDy),
-							new Point(getX()+getWidth()-10, getY()-fallDy)};
-					ArrayList<GObject> o = checkAtPositions(arr);
-					for (GObject x : o) {
-						inContactWith(x, false);
+
+				isJumping = true;
+				jumpAgain = true;
+
+				while (jumpAgain) {
+					jumpAgain = false;
+					SoundController.playMarioJumpSound();
+
+					wayUpOrWayDown = true;
+					if (!isCrouching) {
+						setToJumping(lookingRightOrLeft);
+					}
+					for (int i=0; i<maxHeightOfJump && wayUpOrWayDown; i++) {
+						// for 3 points over mario (left middle and right)
+						Point[] arr = new Point[]{new Point(getX()+10,getY()-fallDy),
+								new Point(getX()+getWidth()/2, getY()-fallDy),
+								new Point(getX()+getWidth()-10, getY()-fallDy)};
+						ArrayList<GObject> o = checkAtPositions(arr);
+						for (GObject x : o) {
+							inContactWith(x, false);
+							if (hitPlatformVertical) {
+								//if mario jumps into a Platform, he needs to stop moving up
+								//and start moving down, making it look like the Platform stopped him
+								move(0, -fallDy);
+								break;
+							}
+						}
 						if (hitPlatformVertical) {
-							//if mario jumps into a Platform, he needs to stop moving up
-							//and start moving down, making it look like the Platform stopped him
-							move(0, -fallDy);
+							hitPlatformVertical = false;
 							break;
 						}
+						if (!alive) {isJumping = false; return;}
+						move(0, -2.0*fallDy);//2.0 so mario goes up faster than on way down
+						//HAS to be multiple of fallDy (1.0*fallDy, 2.0*fallDy, etc)so currLevel.yBaseLine goes back to zero
+						//System.out.println("GOING UP");
+						try {
+							Thread.sleep(pauseInAir);
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
 					}
-					if (hitPlatformVertical) {
-						hitPlatformVertical = false;
-						break;
-					}
-					if (!alive) {isJumping = false; return;}
-					move(0, -2.0*fallDy);//2.0 so mario goes up faster than on way down
-					//HAS to be multiple of fallDy (1.0*fallDy, 2.0*fallDy, etc)so currLevel.yBaseLine goes back to zero
-					//System.out.println("GOING UP");
+
 					try {
-						Thread.sleep(pauseInAir);
+						Thread.sleep(80);//PAUSE AT TOP OF JUMP
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
-				}
+					if (goingIntoPipe) {
+						isJumping = false;
+						return;//in case mario jumps into a pipe he shouldnt fall back down
+					}
+					wayUpOrWayDown = false;
+					if (bigOrSmall && !isCrouching) {
+						//if mario is not small then he doesn't stay in jumping sprite on the way down
+						setToJumpingDown(lookingRightOrLeft);
+					}
+					fall(fallDy);
+					if (!isCrouching && alive) {
+						lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
+					}
 
-				try {
-					Thread.sleep(80);//PAUSE AT TOP OF JUMP
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+					//hitPlatformVertical = false;
 				}
-				if (goingIntoPipe) {
-					isJumping = false;
-					return;//in case mario jumps into a pipe he shouldnt fall back down
-				}
-				wayUpOrWayDown = false;
-				if (bigOrSmall && !isCrouching) {
-					//if mario is not small then he doesn't stay in jumping sprite on the way down
-					setToJumpingDown(lookingRightOrLeft);
-				}
-				fall(fallDy);
-				if (!isCrouching && alive) {
-					lookInCorrectDirection(lookingRightOrLeft);//sets back to standing sprite looking in correct direction
-				}
-
-				//hitPlatformVertical = false;
-
 				isJumping = false;
 				//System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
@@ -1696,29 +1706,12 @@ public class Mario extends MovingObject {
 		t1.start();
 	}
 
-
 	public void hop() {
-		//called when mario jumps on a badguy and has to jump up
+		//called when mario jumps on a badguy or other Mario or bouncy platform and has to jump up
 		//TODO if mario needs to hopp off a trampoline-like platform this function could be called 
-		hitPlatformVertical = true;//mario should treat red turtle (or anything it hops off) like platform at first, this will make him stop moving down
-		Thread t1 = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				///try {Thread.sleep(300);} catch (Exception e) {e.printStackTrace();}
-				//System.out.println("START HOP");
-				while (isJumping) {}
-				//TODO bug in mario hop function not hopping when mario should
-				//TODO MARIO/LUIGI HOP threads accumulate over time this is not good
-				System.out.println("HOPPING NOW");
-				//jumpingOnTurtle = true;
-				jump();
-				//jumpingOnTurtle = false;
-			}
-		});
-		t1.setName(this.character.name()+ " hop");
-		t1.start();
+		hitPlatformVertical = true;//mario should treat red turtle (or anything it hops off) like platform at first, this will make him stop falling
+		jumpAgain = true;//this will make mario jump again because of while loop in jump() function 
 	}
-
 
 	@Override
 	public void move() {
