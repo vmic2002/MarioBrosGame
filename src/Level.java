@@ -33,6 +33,13 @@ public class Level {
 		this.width = width;
 		this.dynamicLevelParts = dynamicLevelParts;
 		//this.background = background;
+
+		//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
+		for (DynamicLevelPart l : this.dynamicLevelParts.values())
+			for (GImage image : l.part)
+				if (image instanceof Coin)
+					((Coin) image).startSpinning();
+		
 	}
 
 	public String getID() {
@@ -77,7 +84,7 @@ public class Level {
 		t1.setName("moving level");
 		t1.start();
 	}
-	
+
 	public static void addLevelPartDynamically(GImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
 		//TO ADD DYNAMICLEVEL PARTS LIKE COINS FOR EXAMPLE TO A TEMP HASHMAP BEFORE LEVEL IS INSTANTIATED
@@ -96,7 +103,7 @@ public class Level {
 		((Dynamic) i).setID(newID);
 		//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
 		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
-	
+
 	}
 
 	public void addLevelPartDynamically(GImage i) {

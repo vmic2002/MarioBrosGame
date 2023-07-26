@@ -4,15 +4,13 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
 public abstract class SoundController {
-	private static String prefix;
-	//when running from command line, prefix = "../"
-	//when running from eclipse, prefix = ""
 	private static File jumpSoundFile,powerUpSoundFile,
 	marioGetsHitSoundFile,itemOutOfBoxSoundFile, fireBallSoundFile,
 	squishSoundFile, tailSoundFile, deathSoundFile, pipeSoundFile,
-	bumpSoundFile, kickSoundFile;
-	public static void setPrefix(String s) {
-		prefix = s;
+	bumpSoundFile, kickSoundFile, coinSoundFile;
+	public static void setPrefix(String prefix) {
+		//when running from command line, prefix = "../"
+		//when running from eclipse, prefix = ""
 		jumpSoundFile = new File(prefix+"SoundEffects/Mario Jump.wav");
 		powerUpSoundFile = new File(prefix+"SoundEffects/Powerup.wav");
 		marioGetsHitSoundFile = new File(prefix+"SoundEffects/Transformation.wav");
@@ -24,6 +22,7 @@ public abstract class SoundController {
 		pipeSoundFile = new File(prefix+"SoundEffects/Pipe.wav");
 		bumpSoundFile = new File(prefix+"SoundEffects/Bump.wav");
 		kickSoundFile = new File(prefix+"SoundEffects/Kick.wav");
+		coinSoundFile = new File(prefix+"SoundEffects/Coin.wav");
 	}
 
 	private static void playSound(File f) {
@@ -48,6 +47,11 @@ public abstract class SoundController {
 		} catch (Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public static void playCoinSound() {
+		//plays when mario collects floating coin or jumps in mysterybox/brick that had coin inside
+		playSound(coinSoundFile);
 	}
 	
 	public static void playKickSound() {

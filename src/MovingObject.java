@@ -4,7 +4,7 @@ import acm.graphics.GObject;
 
 import java.awt.Image;
 import java.util.ArrayList;
-public abstract class MovingObject extends ThreadSafeGImage{//GImage {
+public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	//fireball, mushroom, fire flower, leaf, mario, turtle, BulletBill extend MovingObject
 	public static GCanvas canvas;
 	public static double scalingFactor;

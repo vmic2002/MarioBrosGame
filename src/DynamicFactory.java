@@ -11,7 +11,7 @@ public class DynamicFactory {
 	public static void setCanvas(GCanvas canvas1) {
 		canvas = canvas1;
 	}
-	
+
 	private static void addMovingObject(MovingObject movingObject) {
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
@@ -60,7 +60,7 @@ public class DynamicFactory {
 		t1.setName("fireflower fireball");
 		t1.start();
 	}
-	
+
 	public static void addBulletBill(double x, double y, boolean rightOrLeft) {
 		//called when BillBlaster shoots a BulletBill
 		BulletBill bulletBill = new BulletBill(rightOrLeft);
@@ -69,7 +69,7 @@ public class DynamicFactory {
 		LevelController.currLevel.addLevelPartDynamically(bulletBill);
 		addMovingObject(bulletBill);
 	}
-	
+
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
@@ -77,15 +77,57 @@ public class DynamicFactory {
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		addMovingObject(fireBall);
 	}
-	
-	public static void addCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+
+	public static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
 		Coin coin = new Coin();
+		double height = coin.getHeight();//this is height of coin in stage 1 (when it is tallest)
 		canvas.add(coin, x, y);
 		Level.addLevelPartDynamically(coin, dynamicLevelParts);
-		addMovingObject(coin);
+		//addMovingObject(coin); THIS LINE IS COMMENTED BECAUSE FLOATING COINS DONT CALL MOVE FUNCTION (SEE COIN.JAVA FOR MORE DETAILS)
+		//coins start spinning once level is instantiated (in Level() constructor)
+		return height;
 	}
-	
+
+	public static void addFloatingCoinsRectangle(double x, double y, int w, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		//adds a 2D array of floating coins of width w (num coins wide) and height h (num coins high)
+		//to dynamicLevelParts
+		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts);
+		double space = coinHeight/4;
+		//assuming coinWidth is equal to coinHeight (it basically is, coin1.png is very close to being a square)
+		if (w<2) w=2;
+		if (h<2) h=2;
+		for (int i=0; i<w; i++) {
+			for (int j=1; j<h; j++) {
+				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y+j*(coinHeight+space), dynamicLevelParts);
+			}
+		}
+		for (int i=1; i<w; i++) {
+			DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y, dynamicLevelParts);
+		}
+	}
+
+	public static void addFloatingCoinsTriangle(double x, double y, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		//adds floating coins in triangle pattern
+		//if h=2, 4 coins total, if h=3, 9 coins total...
+		//there are h^2 coins total!!!
+		if (h<2) h=2;
+		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts);
+		double space = coinHeight/4;
+		int i;
+		for (i=1; i<h; i++) {
+			for (int j=i; j>=0; j--) {
+				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts);
+			}
+		}
+		for (int newI=h-2; i<2*h; i++) {
+			for (int j=newI; j>=0; j--) {
+				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts);
+			}
+			newI--;
+		}
+	}
+
 	public static void addCoin(double x, double y) {
 		//TODO call this addCoin function when Mario jumps into mysterybox or brick
 		Coin coin = new Coin();
@@ -114,7 +156,7 @@ public class DynamicFactory {
 		addPowerUp(x, y, mysteryBoxWidth, leaf);
 		//return leaf;
 	}
-	
+
 	public static void addTanooki(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		Tanooki tanooki = new Tanooki();

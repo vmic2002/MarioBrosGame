@@ -102,6 +102,7 @@ public class LevelController {
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 3, 3, BADGUY_TYPE.NO_BADGUY, levelParts);
 		spawnWhiteSpace(xCounter, 1);
+		DynamicFactory.addFloatingCoinsRectangle(xCounter.v+3.0*space, canvas.getHeight()/5, 3, 3, dynamicLevelParts);
 		StaticFactory.spawnBillBlaster(xCounter, 6, levelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 4, BADGUY_TYPE.GOOMBA, levelParts);
 		spawnWhiteSpace(xCounter, 4);
@@ -115,6 +116,7 @@ public class LevelController {
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1b", levelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 2, BADGUY_TYPE.RED_TURTLE, levelParts);
+		DynamicFactory.addFloatingCoinsTriangle(xCounter.v-3.0*space, canvas.getHeight()/4-space, 5, dynamicLevelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 6, levelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 6, levelParts);
 		spawnWhiteSpace(xCounter, 2);
@@ -228,9 +230,13 @@ public class LevelController {
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		//Level.addLevelPartDynamically(GImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 	
-		//FOLLOWING LINE IS HOW TO ADD "FLOATING" COIN IN LEVEL
-		DynamicFactory.addCoin(xCounter.v+space, canvas.getHeight()/2, dynamicLevelParts);
+		//FOLLOWING LINE IS HOW TO ADD "FLOATING" COINS IN LEVEL
+		//to add 1 coin DynamicFactory.addFloatingCoin(xCounter.v+space, canvas.getHeight()/2, dynamicLevelParts);
 		
+		//to add 2x2 coins in a rectangle DynamicFactory.addFloatingCoins(xCounter.v+3*space, canvas.getHeight()/3, 2, 2, dynamicLevelParts);
+		
+		//DynamicFactory.addFloatingCoinsRectangle(xCounter.v+10*space, canvas.getHeight()/5, 5, 3, dynamicLevelParts);
+		DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.NO_BADGUY, levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
 		Level level5 = new Level("5", levelParts, dynamicLevelParts, xCounter.v);

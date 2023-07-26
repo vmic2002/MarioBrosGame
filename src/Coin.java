@@ -1,12 +1,10 @@
 import java.awt.Image;
-
 import acm.graphics.GCanvas;
 import acm.graphics.GObject;
 
-
-
 public class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
+	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
 	public long id;
 	private static GCanvas canvas;
@@ -41,6 +39,16 @@ public class Coin extends MovingObject implements Dynamic{
 
 	public boolean collected() {return coinState==COIN_STATE.COLLECTED;}
 
+	public void startSpinning() {
+		//each floating coin changes its pictures (changes state) in its own thread
+		//TODO maybe when level will have lots of coins it will be worth it to have one thread doing spinning multiple coins
+		Thread t1 = new Thread(new Runnable() {
+			public void run() {changeState();}
+		});
+		t1.setName("floating coin changing state");
+		t1.start();
+	}
+
 	public void changeState() {
 		try {
 			while (!collected() && alive) {
@@ -53,13 +61,13 @@ public class Coin extends MovingObject implements Dynamic{
 		canvas.remove(this);
 		alive = false;
 		LevelController.currLevel.removeDynamic(this);
-		System.out.println("END OF CHANGING STATE FOR COIN");
+		System.out.println("END OF CHANGING STATE FOR FLOATING COIN");
 	}
 
 	public void collectedByMario(Mario mario) {
 		//TODO make PointsController class to increase points of mario and coin number
 		coinState = COIN_STATE.COLLECTED;
-		//TODO need to add sound when mario collects coin
+		SoundController.playCoinSound();
 	}
 
 	public static void setObjects(Image image1, Image image2, Image image3, GCanvas canvas1) {
@@ -81,8 +89,8 @@ public class Coin extends MovingObject implements Dynamic{
 
 	@Override
 	public void move() {
-		//each coin changes its pictures (changes state) in its own thread
-		changeState();
+		//TODO the move function will be for coins retrieved from mysteryboxes+bricks (NOT floating coins)
+		//since they have a small animation of moving out of the box
 	}
 
 	@Override
