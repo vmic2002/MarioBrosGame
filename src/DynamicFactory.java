@@ -1,3 +1,5 @@
+import java.util.HashMap;
+
 import acm.graphics.GCanvas;
 
 public class DynamicFactory {
@@ -17,7 +19,7 @@ public class DynamicFactory {
 				movingObject.move();
 			}
 		});
-		t1.setName("moving object");
+		t1.setName("moving object");//TODO movingObjects should have better thread name for move function
 		t1.start();
 	}
 
@@ -74,6 +76,22 @@ public class DynamicFactory {
 		canvas.add(fireBall, x, y);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		addMovingObject(fireBall);
+	}
+	
+	public static void addCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
+		Coin coin = new Coin();
+		canvas.add(coin, x, y);
+		Level.addLevelPartDynamically(coin, dynamicLevelParts);
+		addMovingObject(coin);
+	}
+	
+	public static void addCoin(double x, double y) {
+		//TODO call this addCoin function when Mario jumps into mysterybox or brick
+		Coin coin = new Coin();
+		canvas.add(coin, x, y);
+		LevelController.currLevel.addLevelPartDynamically(coin);
+		addMovingObject(coin);
 	}
 
 	public static void addMushroom(double x, double y, double mysteryBoxWidth) {

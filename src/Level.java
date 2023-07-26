@@ -6,7 +6,16 @@ public class Level {
 	private String id;
 	public final ArrayList<LevelPart> levelParts;//for levelParts added at level creation time, when playLevelX() is called
 	//levelParts is never modified after the playLevelX() function
-	public HashMap<Long, DynamicLevelPart> dynamicLevelParts;//buffer for level parts that need to be added dynamically (while playing level) to level parts (fireballs and powerups for example)
+	public HashMap<Long, DynamicLevelPart> dynamicLevelParts;
+	//dynamicLevelParts is buffer for level parts that need to be added dynamically 
+	//(while playing level) to level parts (fireballs, powerups, coins for example)
+	//dynamicLevelParts is also for level parts that could be killed/removed from screen so would be
+	//inefficient to keep them in static levelParts (like coins for example)
+	//TODO make BadGuys and anything else that mario can kill/collect from level implement dynamic so that static levelParts
+	//TODO nly contains levelParts that will ALWAYS be part of level
+	//coins that come out of mysterybox, bricks etc are part of dynamicLevelParts
+	//and coins that float in the air are ALSO part of dynamicLevelParts since once they are collected by mario
+	//there is no point in keeping them in levelParts (static levelParts)
 	public static AtomicLong ID_GENERATOR = new AtomicLong();//Atomic for concurrency
 
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
@@ -16,13 +25,13 @@ public class Level {
 	//private GImage background;
 	public double width;
 
-	public Level(String id, ArrayList<LevelPart> levelParts, double width){//, GImage background) {
+	public Level(String id, ArrayList<LevelPart> levelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts, double width){//, GImage background) {
 		this.id = id;
 		this.levelParts = levelParts;
 		yBaseLine = 0.0;
 		xBaseLine = 0.0;
 		this.width = width;
-		dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
+		this.dynamicLevelParts = dynamicLevelParts;
 		//this.background = background;
 	}
 
@@ -68,10 +77,10 @@ public class Level {
 		t1.setName("moving level");
 		t1.start();
 	}
-
-	public void addLevelPartDynamically(GImage i) {
-		//to add level parts dynamically (power ups or fireballs) to level
-		//while level is being played
+	
+	public static void addLevelPartDynamically(GImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
+		//TO ADD DYNAMICLEVEL PARTS LIKE COINS FOR EXAMPLE TO A TEMP HASHMAP BEFORE LEVEL IS INSTANTIATED
 		if (!(i instanceof Dynamic)) {
 			//System.out.println("CAN ONLY ADD Objects who implement Dynamic");
 			System.exit(1);
@@ -87,5 +96,12 @@ public class Level {
 		((Dynamic) i).setID(newID);
 		//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
 		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
+	
+	}
+
+	public void addLevelPartDynamically(GImage i) {
+		//to add level parts dynamically (power ups or fireballs) to level
+		//while level is being played
+		Level.addLevelPartDynamically(i, dynamicLevelParts);
 	}
 }

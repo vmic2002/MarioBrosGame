@@ -1230,6 +1230,8 @@ public class Mario extends MovingObject {
 			if (horizontalOrVertical) hitPlatformHorizontal = true;
 			else if (wayUpOrWayDown) hitPlatformVertical = true;
 			else {this.hop();}//if mario is on way down and comes in contact with other mario he hops off
+		} else if (o instanceof Coin) {
+			((Coin) o).collectedByMario(this);
 		}
 		if (o instanceof PowerUp) {
 			((PowerUp) o).alive = false;

@@ -10,6 +10,7 @@ public abstract class MovingObject extends ThreadSafeGImage{//GImage {
 	public static double scalingFactor;
 	public static Mario[] characters;
 	public boolean alive;
+
 	
 	//moveDx is to ensure that the movement of images is scaled proportionally
 	//depending on their size
