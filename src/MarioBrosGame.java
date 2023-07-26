@@ -17,6 +17,10 @@ import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
 
+
+import java.awt.GraphicsEnvironment;//to verify that headless mode is enabled (if run on server without displaying a window)
+import java.awt.HeadlessException;
+
 public class MarioBrosGame {//extends GraphicsProgram {
 
 	/*General comments for Mario Game:
@@ -35,23 +39,45 @@ public class MarioBrosGame {//extends GraphicsProgram {
 	 * TODO could have campaign mode (worlds) AND mode with randomly generated levels!
 	 */
 
-	private static final int WIDTH = 1200;
-	private static final int HEIGHT = 800;
+	private static final int WIDTH = 800;//1200;
+	private static final int HEIGHT = 750;//800;
 
 	//public void run() {
 	//@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
-		GCanvas canvas = new GCanvas();
-		canvas.setSize(WIDTH, HEIGHT);
-		JFrame frame = new JFrame();
-		frame.getContentPane().add(BorderLayout.CENTER, canvas);
-		frame.setSize(WIDTH,HEIGHT);
-		frame.show();
 		
-		float[] hsb = new float[3];
-		Color.RGBtoHSB(0, 120, 255, hsb);
-		Color c = new Color(hsb[0], hsb[1], hsb[2]);
-		canvas.setBackground(c);
+		
+		// If running game on java web server and connecting to client site (website) via javascript using websockets,
+		// need to set headless mode to true
+		// because no window will be displayed on the server side
+		
+		boolean setToHeadlessMode = false;
+		// Enable headless mode
+		if (setToHeadlessMode) System.setProperty("java.awt.headless", "true");
+
+        // Check if headless mode is enabled
+        System.out.println("Headless mode: " + GraphicsEnvironment.isHeadless());
+		
+		
+        GCanvas canvas = new GCanvas();
+		canvas.setSize(WIDTH, HEIGHT);
+		JFrame frame = null;
+		try {
+			//new JFrame() will throw HeadlessException if headless mode is set to true -> GraphicsEnvironment.isHeadless()==true
+			frame = new JFrame();
+			frame.getContentPane().add(BorderLayout.CENTER, canvas);
+			frame.setSize(WIDTH,HEIGHT);
+			frame.show();
+			
+			float[] hsb = new float[3];
+			Color.RGBtoHSB(0, 120, 255, hsb);
+			Color c = new Color(hsb[0], hsb[1], hsb[2]);
+			canvas.setBackground(c);
+		} catch (HeadlessException e) {
+			System.out.println("\"new JFrame()\" threw HeadlessException!");
+			System.out.println(e.getMessage());
+		}
+		
 		System.out.println("MarioBrosGame loading...");
 		//when running from command line:
 		//image path is ../Images/*.png since program is run from bin directory
@@ -59,7 +85,10 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		//when running from eclipse, prefix = ""
 		//before pushing to github make sure prefix = "../"
 		
-		String prefix = "../";
+		boolean runningFromCommandLine = true;//set to false to run from eclipse, true from command line
+		
+		
+		String prefix = runningFromCommandLine?"../":"";
 		//String prefix = "";
 
 		String imageDirectory = "Images";
@@ -270,8 +299,10 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String goombaRightImagePath = prefix+imageDirectory+"/goombaRight.png";
 		String goombaSquishedImagePath = prefix+imageDirectory+"/goombaSquished.png";
 
-
-
+		String coin1ImagePath = prefix+imageDirectory+"/coin1.png";
+		String coin2ImagePath = prefix+imageDirectory+"/coin2.png";
+		String coin3ImagePath = prefix+imageDirectory+"/coin3.png";
+		
 
 
 		BufferedImage smallMarioLeftImage = null;
@@ -473,6 +504,10 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		BufferedImage goombaLeftImage = null;
 		BufferedImage goombaRightImage = null;
 		BufferedImage goombaSquishedImage = null;
+		
+		BufferedImage coin1Image = null;
+		BufferedImage coin2Image = null;
+		BufferedImage coin3Image = null;
 
 		try {
 			smallMarioLeftImage = ImageIO.read(new File(smallMarioLeftImagePath));
@@ -674,6 +709,10 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			goombaRightImage = ImageIO.read(new File(goombaRightImagePath));
 			goombaSquishedImage = ImageIO.read(new File(goombaSquishedImagePath));
 
+			
+			coin1Image = ImageIO.read(new File(coin1ImagePath));
+			coin2Image = ImageIO.read(new File(coin2ImagePath));
+			coin3Image = ImageIO.read(new File(coin3ImagePath));
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -759,6 +798,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		characters[0] = luigi;
 		characters[1] = mario;
 		MovingObject.setObjects(canvas, mario.scalingFactor, characters);
+		Coin.setObjects(coin1Image, coin2Image, coin3Image, canvas);
 		Goomba.setObjects(goombaRightImage, goombaLeftImage, goombaSquishedImage);
 		BulletBill.setObjects(leftBulletBillImage, rightBulletBillImage);
 		RedTurtle.setObjects(redTurtleSpinning1Image, redTurtleSpinning2Image, 
@@ -790,7 +830,6 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				canvas);
 		LevelController.setObjects(canvas, mario.scalingFactor);
 		BillBlasterController.setCanvas(canvas);
-		canvas.setSize(WIDTH,HEIGHT);
 		canvas.addKeyListener(new MyKeyListener(characters));
 		LevelController.playLevel("5");
 		//LevelController.playLevel2();
