@@ -65,7 +65,9 @@ public class Coin extends MovingObject implements Dynamic{
 	}
 
 	public void collectedByMario(Mario mario) {
-		//TODO make PointsController class to increase points of mario and coin number
+		//THIS IS FOR FLOATING COINS
+		if (collected()) return;
+		StatsController.collectCoin(mario);
 		coinState = COIN_STATE.COLLECTED;
 		SoundController.playCoinSound();
 	}

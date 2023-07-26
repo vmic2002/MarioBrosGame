@@ -797,6 +797,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
 		characters[1] = mario;
+		StatsController.initializeStats(characters);
 		MovingObject.setObjects(canvas, mario.scalingFactor, characters);
 		Coin.setObjects(coin1Image, coin2Image, coin3Image, canvas);
 		Goomba.setObjects(goombaRightImage, goombaLeftImage, goombaSquishedImage);

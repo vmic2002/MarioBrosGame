@@ -1709,6 +1709,7 @@ public class Mario extends MovingObject {
 	}
 
 	public void hop() {
+		//TODO bug where mario walks off platform and falls on something to hop off but doenst actually jump
 		//called when mario jumps on a badguy or other Mario or bouncy platform and has to jump up
 		//TODO if mario needs to hopp off a trampoline-like platform this function could be called 
 		hitPlatformVertical = true;//mario should treat red turtle (or anything it hops off) like platform at first, this will make him stop falling

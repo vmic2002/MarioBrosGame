@@ -23,8 +23,7 @@ public class MyKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_0) {
-			System.out.println("CURLEVEL XBASELINE: "+LevelController.currLevel.xBaseLine);
-			System.out.println("CURLEVEL YBASELINE: "+LevelController.currLevel.yBaseLine);
+			StatsController.printAllStats();
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads

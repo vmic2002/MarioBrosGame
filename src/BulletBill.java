@@ -37,6 +37,7 @@ public class BulletBill extends BadGuy implements Dynamic {
 		//called when mario jumps on BulletBill
 		mario.hop();
 		if (jumpedOn) return;
+		StatsController.killBulletBillByJumpingOnIt(mario);
 		jumpedOn = true;
 		this.sendToFront();
 		Thread t1 = new Thread(new Runnable() {

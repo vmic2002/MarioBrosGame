@@ -37,6 +37,7 @@ public class Goomba extends BadGuy {
 	@Override
 	public void jumpedOnByMario(Mario mario) {
 		if (!this.alive) return;
+		StatsController.killGoombaByJumpingOnIt(mario);
 		this.alive = false;
 		setImageAndRelocate(goombaSquished);
 		SoundController.playSquishSound();
