@@ -12,7 +12,6 @@ import javax.imageio.ImageIO;
 import acm.graphics.*;
 //import acm.program.GraphicsProgram;
 
-
 import java.awt.BorderLayout;
 
 import javax.swing.JFrame;
@@ -51,7 +50,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		// need to set headless mode to true
 		// because no window will be displayed on the server side
 		
-		boolean setToHeadlessMode = false;
+		boolean setToHeadlessMode = true;
 		// Enable headless mode
 		if (setToHeadlessMode) System.setProperty("java.awt.headless", "true");
 
@@ -85,7 +84,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		//when running from eclipse, prefix = ""
 		//before pushing to github make sure prefix = "../"
 		
-		boolean runningFromCommandLine = true;//set to false to run from eclipse, true from command line
+		boolean runningFromCommandLine = false;//set to false to run from eclipse, true from command line
 		
 		
 		String prefix = runningFromCommandLine?"../":"";
