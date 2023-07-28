@@ -44,21 +44,29 @@ public class MarioBrosGame {//extends GraphicsProgram {
 	//public void run() {
 	//@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
-		
-		
+		System.out.println("RUNNING MAIN FUNCTION");
+		boolean runningOnTomcatServer = false;
+		if (args.length>0) {
+			System.out.println("Session id: "+args[0]);
+
+			ServerToClientMessenger.setSessionId(args[0]);
+			runningOnTomcatServer = true;
+		}
+
 		// If running game on java web server and connecting to client site (website) via javascript using websockets,
 		// need to set headless mode to true
 		// because no window will be displayed on the server side
 		
-		boolean setToHeadlessMode = true;
+
+		boolean setToHeadlessMode = runningOnTomcatServer;
 		// Enable headless mode
 		if (setToHeadlessMode) System.setProperty("java.awt.headless", "true");
 
-        // Check if headless mode is enabled
-        System.out.println("Headless mode: " + GraphicsEnvironment.isHeadless());
-		
-		
-        GCanvas canvas = new GCanvas();
+		// Check if headless mode is enabled
+		System.out.println("Headless mode: " + GraphicsEnvironment.isHeadless());
+
+
+		GCanvas canvas = new GCanvas();
 		canvas.setSize(WIDTH, HEIGHT);
 		JFrame frame = null;
 		try {
@@ -67,7 +75,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			frame.getContentPane().add(BorderLayout.CENTER, canvas);
 			frame.setSize(WIDTH,HEIGHT);
 			frame.show();
-			
+
 			float[] hsb = new float[3];
 			Color.RGBtoHSB(0, 120, 255, hsb);
 			Color c = new Color(hsb[0], hsb[1], hsb[2]);
@@ -76,24 +84,37 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			System.out.println("\"new JFrame()\" threw HeadlessException!");
 			System.out.println(e.getMessage());
 		}
-		
+
 		System.out.println("MarioBrosGame loading...");
+
 		//when running from command line:
 		//image path is ../Images/*.png since program is run from bin directory
 		//when running from command line, prefix = "../"
 		//when running from eclipse, prefix = ""
 		//before pushing to github make sure prefix = "../"
-		
+
 		boolean runningFromCommandLine = false;//set to false to run from eclipse, true from command line
-		
-		
-		String prefix = runningFromCommandLine?"../":"";
+		//TO RUN FROM TOMCAT SERVER, runningFromCommandLine NEEDS TO BE SET TO FALSE (still need to test this not sure)
+
+		String prefix;
+		if (runningOnTomcatServer) {
+			//if running $CATALINA_HOME/bin/startup.sh from 
+			// /Users/victormicha/Desktop/apache-tomcat-10.1.11
+			//this successfully loads images!
+			prefix = "webapps/MarioGameServerSide/";
+		} else {
+			prefix = runningFromCommandLine?"../":"";
+		}
 		//String prefix = "";
 
 		String imageDirectory = "Images";
 		//String imageDirectory = "ScaledImages";
 
+
+
+
 		SoundController.setPrefix(prefix);
+		SoundController.setRunningOnTomcatServer(runningOnTomcatServer);
 
 		String smallMarioLeftImagePath = prefix+imageDirectory+"/smallMarioLeftImage.png";
 		String smallMarioRightImagePath = prefix+imageDirectory+"/smallMarioRightImage.png";
@@ -301,7 +322,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String coin1ImagePath = prefix+imageDirectory+"/coin1.png";
 		String coin2ImagePath = prefix+imageDirectory+"/coin2.png";
 		String coin3ImagePath = prefix+imageDirectory+"/coin3.png";
-		
+
 
 
 		BufferedImage smallMarioLeftImage = null;
@@ -503,7 +524,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		BufferedImage goombaLeftImage = null;
 		BufferedImage goombaRightImage = null;
 		BufferedImage goombaSquishedImage = null;
-		
+
 		BufferedImage coin1Image = null;
 		BufferedImage coin2Image = null;
 		BufferedImage coin3Image = null;
@@ -708,7 +729,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			goombaRightImage = ImageIO.read(new File(goombaRightImagePath));
 			goombaSquishedImage = ImageIO.read(new File(goombaSquishedImagePath));
 
-			
+
 			coin1Image = ImageIO.read(new File(coin1ImagePath));
 			coin2Image = ImageIO.read(new File(coin2ImagePath));
 			coin3Image = ImageIO.read(new File(coin3ImagePath));
@@ -716,6 +737,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			e.printStackTrace();
 			System.exit(1);
 		}
+		System.out.println("IMAGES SUCCESSFULLY LOADED!");
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, marioDeadImage,
@@ -830,7 +852,8 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				canvas);
 		LevelController.setObjects(canvas, mario.scalingFactor);
 		BillBlasterController.setCanvas(canvas);
-		canvas.addKeyListener(new MyKeyListener(characters));
+		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
+		else VirtualClientKeyboard.setCharacters(characters);
 		LevelController.playLevel("5");
 		//LevelController.playLevel2();
 	}

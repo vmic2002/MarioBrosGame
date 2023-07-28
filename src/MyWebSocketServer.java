@@ -3,7 +3,7 @@
 export JRE_HOME=/Library/Java/JavaVirtualMachines/jdk-15.0.1.jdk/Contents/Home
 
 $CATALINA_HOME/bin/startup.sh
-
+$CATALINA_HOME/bin/startup.sh
 $CATALINA_HOME/bin/shutdown.sh
 
 
@@ -14,16 +14,21 @@ $CATALINA_HOME/bin/shutdown.sh
  * 
  *  Within ~/Desktop/apache-tomcat-10.1.11/webapps, putting a MarioGameServerSide.war file and then running $CATALINA_HOME/bin/startup.sh will 
  *  create a directory MarioGameServerSide within webapps and deploy the application.
-	
+
 	Go to http://localhost:8080/MarioGameServerSide/ to see the website
 
 	Use http://localhost:8080/manager/html to see if it is running and more details
 	for manager/html, use username="admin" password="victor1". can configure/change this in apache-tomcat-10.1.11/conf/tomcat-users.xml
-	
+
 	Need to use python command to see website on port 8081 to send messages from client side
+
+	Can use makeWARFileAndPlaceInWebappsDir.sh in MarioBrosGame directory to create new .war file from
+	.class and .java files in bin and src directories and place .war file in webapps dir automatically!
+
 	!!!!Sending messages from client side works! Server responds back!!!!!
 	TODO need to try to send messages to move images on client side!
-	TODO could write very short script to cp all .java and .class files to MarioGameServerSide to automate process of making .war file
+	
+	TODO NEED TO DO ONLINE MULTIPLAYER each new window that connects to the server has its own session ID, for online multiplayer (one plays mario one plays luigi)
  *  
  *  
  */
@@ -40,51 +45,87 @@ import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+
 @ServerEndpoint("/websocket/{username}")
 public class MyWebSocketServer {
 
-    // Store all active WebSocket sessions
-    private static final Set<Session> activeSessions = Collections.synchronizedSet(new HashSet<>());
+	// Store all active WebSocket sessions
+	private static final Set<Session> activeSessions = Collections.synchronizedSet(new HashSet<>());
 
-    @OnOpen
-    public void onOpen(Session session, @PathParam("username") String username) {
-        System.out.println("WebSocket connection opened: " + session.getId());
-        System.out.println("Username: "+username);
-        // Add the new session to the activeSessions set
-        activeSessions.add(session);
-        //sendMessage("CONNECTION OPENED!", session);
-    }
 
-    @OnMessage
-    public void onMessage(String message, Session session) {
-        System.out.println("Received message from client: " + message);
+	//System.out.println can be seen from apache-tomcat-10.1.11/logs/catalina.out
+	//when application is running
+	
 
-        // Process the received message
-        String response = "Server response: " + message.toUpperCase();
+	@OnOpen
+	public void onOpen(Session session, @PathParam("username") String username) {
+		System.out.println("WebSocket connection opened: " + session.getId());
+		System.out.println("Username: "+username);
+		// Add the new session to the activeSessions set
+		activeSessions.add(session);
+		System.out.println("CALLING MAIN FUNCTION");
+		MarioBrosGame.main(new String[] {session.getId()});
 
-        // Send the response back to the client
-        sendMessage(response, session);
-    }
+		sendMessage("SESSION ID: "+session.getId(), session);
+	}
 
-    @OnClose
-    public void onClose(Session session) {
-        System.out.println("WebSocket connection closed: " + session.getId());
+	@OnMessage
+	public void onMessage(String message, Session session) {
+		System.out.println("Received message from client: " + message);
 
-        // Remove the closed session from the activeSessions set
-        activeSessions.remove(session);
-    }
+		// Process the received message
+		//String response = "Server response: " + message;
 
-    @OnError
-    public void onError(Session session, Throwable error) {
-        System.out.println("WebSocket error occurred: " + session.getId());
-        error.printStackTrace();
-    }
+		processMessage(message, session);
+		
+		// Send the response back to the client
+		//sendMessage(response, session);
+	}
 
-    private void sendMessage(String message, Session session) {
-        try {
-            session.getAsyncRemote().sendText(message);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	@OnClose
+	public void onClose(Session session) {
+		System.out.println("WebSocket connection closed: " + session.getId());
+
+		// Remove the closed session from the activeSessions set
+		activeSessions.remove(session);
+	}
+
+	@OnError
+	public void onError(Session session, Throwable error) {
+		System.out.println("WebSocket error occurred: " + session.getId());
+		error.printStackTrace();
+	}
+	
+	private void processMessage(String message, Session session) {
+		//expected JSON of form: { keyEvent: "keyEvent", key: "key", character: "character" }
+		//JSON format will probably change since no character field is needed if it can be determined by sessionID for multiplayer online play
+		//keyEvent is keyPressed or keyReleased
+		//key is either ArrowUp, ArrowDown, ArrowLeft, ArrowRight, q
+		//character is either Mario, Luigi
+		JSONObject json = (JSONObject) JSONValue.parse(message);
+		
+		sendMessage("MESSAGE PROCESSED: "+json.get("keyEvent")+" " +json.get("key") + " "+ json.get("character"), session);
+		boolean keyPressedOrReleased = ((String) json.get("keyEvent")).equals("keyPressed");
+		VirtualClientKeyboard.keyPressed(keyPressedOrReleased, (String) json.get("key"), (String) json.get("character"));
+		sendMessage("AFTERKEYABORD", session);
+		//System.out.println(json.toString());  
+		//String technology = json.getString("technology");  
+	}
+
+	public static void sendMessage(String message, Session session) {
+		try {
+			session.getBasicRemote().sendText(message);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static Session getSession(String sessionId) {
+		for (Session s: activeSessions)
+			if (s.getId().equals(sessionId))
+				return s;
+		return null;
+	}
 }

@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="acm.jar"/>
 	<classpathentry kind="lib" path="websocket-api.jar"/>
 	<classpathentry kind="lib" path="websocket-client-api.jar"/>
+	<classpathentry kind="lib" path="json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
