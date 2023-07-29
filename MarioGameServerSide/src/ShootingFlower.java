@@ -14,7 +14,7 @@ public abstract class ShootingFlower extends BadGuy {
 	public int timeOffset;
 	//timeOffset is so that not all flowers in a level come in/out of pipe at the same time
 	//can use timeOffset to coordinate flowers to come out at same time
-	public ShootingFlower(Image arg0, int timeOffset) {
+	public ShootingFlower(MyImage arg0, int timeOffset) {
 		super(arg0);
 		if (this instanceof UpShootingFlower) dy = -DY;
 		else dy = DY;//(this instanceof DownShootingFlower)

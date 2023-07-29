@@ -14,7 +14,7 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	
 	//moveDx is to ensure that the movement of images is scaled proportionally
 	//depending on their size
-	public MovingObject(Image arg0) {
+	public MovingObject(MyImage arg0) {
 		super(arg0);
 		alive = true;
 	}
@@ -37,7 +37,7 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 		return result;
 	}
 	
-	public void setImageAndRelocate(Image newImage) {
+	public void setImageAndRelocate(MyImage newImage) {
 		//this function is called instead of setImage when mario (or any MovingObject with multiple sprites of different dimensions)
 		//changes from big to small
 		//or small to big since they have different heights they need to be readjusted

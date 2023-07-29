@@ -8,7 +8,7 @@ import acm.graphics.GObject;
 class FireBall extends MovingObject implements Dynamic {
 	//TODO fix bug where fireball moves weirdly when the level is moving (sometimes it moves too much when mario jumps/walks close to edges)
 	//TODO bug could be due to fireball being added/removed from levelParts while level is being moved (levelParts being looped through)
-	private static Image leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
+	private static MyImage leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
 	private static final int maxDistance = canvas.getWidth()*3;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
@@ -109,7 +109,7 @@ class FireBall extends MovingObject implements Dynamic {
 
 	public void changeToNextStage() {
 		//changes fireball image from stage 1 to stage 2, 2->3, 3->4, 4->1
-		Image newImage;
+		MyImage newImage;
 		if (fireBallStage == FIREBALL_STAGE.STAGE_1) {
 			newImage = rightOrLeft?rightFireBall2:leftFireBall2;
 			fireBallStage = FIREBALL_STAGE.STAGE_2;
@@ -264,11 +264,11 @@ class FireBall extends MovingObject implements Dynamic {
 		return false;
 	}
 
-	public static void setObjects(Image leftFireBall1X,
-			Image rightFireBall1X,Image leftFireBall2X,
-			Image rightFireBall2X,Image leftFireBall3X,
-			Image rightFireBall3X,Image leftFireBall4X,
-			Image rightFireBall4X) {
+	public static void setObjects(MyImage leftFireBall1X,
+			MyImage rightFireBall1X, MyImage leftFireBall2X,
+			MyImage rightFireBall2X, MyImage leftFireBall3X,
+			MyImage rightFireBall3X, MyImage leftFireBall4X,
+			MyImage rightFireBall4X) {
 		leftFireBall1 = leftFireBall1X;
 		rightFireBall1 = rightFireBall1X;
 		leftFireBall2 = leftFireBall2X;

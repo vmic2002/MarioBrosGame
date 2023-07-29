@@ -12,7 +12,7 @@ public class VirtualClientKeyboard {
 	}
 
 
-	//up/down/left/right arrows and K to shoot/swing tail...
+	//up/down/left/right arrows and q to shoot/swing tail...
 
 	public static void keyPressed(boolean keyPressedOrKeyReleased, String key, String character) {
 		//key is either ArrowUp, ArrowDown, ArrowLeft, ArrowRight, q

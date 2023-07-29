@@ -11,6 +11,8 @@ public class ServerToClientMessenger {
 	public static void sendMessage(String message) {
 		//Server should contact client to:
 		//MOVE AN IMAGE, PLAY A SOUND, REPLACE AN IMAGE WITH ANOTHER (SETIMAGE)
+		//showImageAndSetlocation, and hideImage
+		//total of 5 message types
 		if (session!=null)
 			MyWebSocketServer.sendMessage(message, session);
 		else System.out.println("SESSION NULLL");

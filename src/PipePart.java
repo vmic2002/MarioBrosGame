@@ -23,7 +23,7 @@ public class PipePart extends Platform{
 	
 	boolean upOrDownPipe;
 	String subLevelID;
-	public PipePart(Image arg0, String subLevelID, boolean upOrDownPipe) {
+	public PipePart(MyImage arg0, String subLevelID, boolean upOrDownPipe) {
 		super(arg0);
 		this.subLevelID = subLevelID;
 		this.upOrDownPipe = upOrDownPipe;

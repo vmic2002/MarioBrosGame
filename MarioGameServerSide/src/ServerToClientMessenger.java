@@ -1,6 +1,6 @@
 import jakarta.websocket.Session;
 public class ServerToClientMessenger {
-	//this class will hanle sending messages to the client: when to play sound, when to move images
+	//this class will hanle sending messages to the client: when to play sound, when to move images, when to switch images
 	private static String sessionId;
 	private static Session session;
 	public static void setSessionId(String id) {
@@ -9,8 +9,10 @@ public class ServerToClientMessenger {
 	}
 
 	public static void sendMessage(String message) {
-		//Server shoul contact client to:
+		//Server should contact client to:
 		//MOVE AN IMAGE, PLAY A SOUND, REPLACE AN IMAGE WITH ANOTHER (SETIMAGE)
+		//showImageAndSetlocation, and hideImage
+		//total of 5 message types
 		if (session!=null)
 			MyWebSocketServer.sendMessage(message, session);
 		else System.out.println("SESSION NULLL");

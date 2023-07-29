@@ -5,11 +5,8 @@ import java.awt.Image;
 public class MysteryBox extends Platform {
 	//extends Platform means that this is something mario would not be able
 	//to walk/jump into. if he does, it will halt him
-	private static Image mysteryBox1Image;
-	private static Image mysteryBox2Image;
-	private static Image mysteryBox3Image;
-	private static Image mysteryBox4Image;
-	private static Image mysteryBoxFinalImage;
+	private static MyImage mysteryBox1Image, mysteryBox2Image, mysteryBox3Image,
+	mysteryBox4Image, mysteryBoxFinalImage;
 	private enum MYSTERYBOX_STATE {STATE_1, STATE_2, STATE_3, STATE_4, FINAL};
 	MYSTERYBOX_STATE mysteryBoxState;
 
@@ -95,7 +92,7 @@ public class MysteryBox extends Platform {
 		}
 	}
 
-	public static void setObjects(Image image1, Image image2, Image image3, Image image4, Image imageFinal) {
+	public static void setObjects(MyImage image1, MyImage image2, MyImage image3, MyImage image4, MyImage imageFinal) {
 		mysteryBox1Image = image1;
 		mysteryBox2Image = image2;
 		mysteryBox3Image = image3;

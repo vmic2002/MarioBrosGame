@@ -5,7 +5,7 @@ import acm.graphics.GObject;
 import java.awt.Image;
 import java.util.ArrayList;
 public class Mushroom extends PowerUp {
-	private static Image mushroomImage;
+	private static MyImage mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
 	private static final double DY = MovingObject.scalingFactor;
@@ -176,7 +176,7 @@ public class Mushroom extends PowerUp {
 		//"bounce off" and change directions 
 	}
 
-	public static void setObjects(Image mushroomImage1) {
+	public static void setObjects(MyImage mushroomImage1) {
 		mushroomImage = mushroomImage1;
 	}
 

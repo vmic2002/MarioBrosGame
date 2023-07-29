@@ -5,7 +5,7 @@ import acm.graphics.GObject;
 import java.awt.Image;
 import java.util.ArrayList;
 public class Leaf extends PowerUp {
-	private static Image leftLeafImage, rightLeafImage;
+	private static MyImage leftLeafImage, rightLeafImage;
 	private static double DX = MovingObject.scalingFactor*0.8;
 	private static double DY = MovingObject.scalingFactor*0.6;
 	private static int pauseTime = 35;
@@ -23,7 +23,7 @@ public class Leaf extends PowerUp {
 
 	private void toggleState() {
 		//changes leaf from right to left or from left to right	
-		Image newImage = rightOrLeft?leftLeafImage:rightLeafImage;
+		MyImage newImage = rightOrLeft?leftLeafImage:rightLeafImage;
 		setImageAndRelocate(newImage);
 		rightOrLeft = !rightOrLeft;
 		dx = rightOrLeft?DX:-DX;
@@ -104,7 +104,7 @@ public class Leaf extends PowerUp {
 		return true;
 	}
 
-	public static void setObjects(Image rightLeafImage1, Image leftLeafImage1) {
+	public static void setObjects(MyImage rightLeafImage1, MyImage leftLeafImage1) {
 		rightLeafImage = rightLeafImage1;
 		leftLeafImage = leftLeafImage1;
 	}

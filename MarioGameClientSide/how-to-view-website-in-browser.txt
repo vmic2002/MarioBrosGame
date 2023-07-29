@@ -1,3 +1,4 @@
 to run on http://localhost:8081, use the following command in the same directory as "index.html":
 python3 -mhttp.server 8081
 Make sure to paste http://localhost:8081 in a browser to see the website
+You can also run ./viewWebsiteInBrowser.sh

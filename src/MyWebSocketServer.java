@@ -61,11 +61,11 @@ public class MyWebSocketServer {
 
 	@OnOpen
 	public void onOpen(Session session, @PathParam("username") String username) {
-		System.out.println("WebSocket connection opened: " + session.getId());
-		System.out.println("Username: "+username);
+		//System.out.println("WebSocket connection opened: " + session.getId());
+		//System.out.println("Username: "+username);
 		// Add the new session to the activeSessions set
 		activeSessions.add(session);
-		System.out.println("CALLING MAIN FUNCTION");
+		//System.out.println("CALLING MAIN FUNCTION");
 		MarioBrosGame.main(new String[] {session.getId()});
 
 		sendMessage("SESSION ID: "+session.getId(), session);
@@ -73,7 +73,7 @@ public class MyWebSocketServer {
 
 	@OnMessage
 	public void onMessage(String message, Session session) {
-		System.out.println("Received message from client: " + message);
+		//System.out.println("Received message from client: " + message);
 
 		// Process the received message
 		//String response = "Server response: " + message;
@@ -86,7 +86,7 @@ public class MyWebSocketServer {
 
 	@OnClose
 	public void onClose(Session session) {
-		System.out.println("WebSocket connection closed: " + session.getId());
+		//System.out.println("WebSocket connection closed: " + session.getId());
 
 		// Remove the closed session from the activeSessions set
 		activeSessions.remove(session);
@@ -106,10 +106,10 @@ public class MyWebSocketServer {
 		//character is either Mario, Luigi
 		JSONObject json = (JSONObject) JSONValue.parse(message);
 		
-		sendMessage("MESSAGE PROCESSED: "+json.get("keyEvent")+" " +json.get("key") + " "+ json.get("character"), session);
+		//sendMessage("MESSAGE PROCESSED: "+json.get("keyEvent")+" " +json.get("key") + " "+ json.get("character"), session);
 		boolean keyPressedOrReleased = ((String) json.get("keyEvent")).equals("keyPressed");
 		VirtualClientKeyboard.keyPressed(keyPressedOrReleased, (String) json.get("key"), (String) json.get("character"));
-		sendMessage("AFTERKEYABORD", session);
+		//sendMessage("AFTERKEYABORD", session);
 		//System.out.println(json.toString());  
 		//String technology = json.getString("technology");  
 	}

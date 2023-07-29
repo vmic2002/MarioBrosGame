@@ -8,7 +8,7 @@ public class Coin extends MovingObject implements Dynamic{
 	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
 	public long id;
 	private static GCanvas canvas;
-	private static Image coin1Image, coin2Image, coin3Image;
+	private static MyImage coin1Image, coin2Image, coin3Image;
 	private static int pauseBetweenStates = 150;
 	private enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
 	//"collected" state means Mario collected the coin and it should be removed from the canvas as well as the dynamicLevelParts
@@ -23,7 +23,7 @@ public class Coin extends MovingObject implements Dynamic{
 	public void toggleState() {
 		//changes coin image from stage 1 to stage 2, 2->3, 3->1
 		if (collected()) return;
-		Image newImage;
+		MyImage newImage;
 		if (coinState == COIN_STATE.STATE_1) {
 			newImage = coin2Image;
 			coinState = COIN_STATE.STATE_2;
@@ -72,7 +72,7 @@ public class Coin extends MovingObject implements Dynamic{
 		SoundController.playCoinSound();
 	}
 
-	public static void setObjects(Image image1, Image image2, Image image3, GCanvas canvas1) {
+	public static void setObjects(MyImage image1, MyImage image2, MyImage image3, GCanvas canvas1) {
 		coin1Image = image1;
 		coin2Image = image2;
 		coin3Image = image3;

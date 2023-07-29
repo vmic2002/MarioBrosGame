@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import acm.graphics.GObject;
 
 public class RedTurtle extends BadGuy {
-	private static Image redTurtleSpinning1Image, redTurtleSpinning2Image, 
+	private static MyImage redTurtleSpinning1Image, redTurtleSpinning2Image, 
 	redTurtleSpinning3Image, redTurtleSpinning4Image, redTurtleStandingLeftImage,
 	redTurtleStandingRightImage, redTurtleWalkingLeftImage, redTurtleWalkingRightImage;
 	private static final int WALKING_FREQUENCY = 3;//>0 num times move function is called before red turtle toggles walking/standing
@@ -291,9 +291,9 @@ public class RedTurtle extends BadGuy {
 		t1.start();	
 	}
 
-	public static void setObjects(Image redTurtleSpinning1Image1,Image redTurtleSpinning2Image1, 
-			Image redTurtleSpinning3Image1, Image redTurtleSpinning4Image1, Image redTurtleStandingLeftImage1,
-			Image redTurtleStandingRightImage1, Image redTurtleWalkingLeftImage1, Image redTurtleWalkingRightImage1) {
+	public static void setObjects(MyImage redTurtleSpinning1Image1,MyImage redTurtleSpinning2Image1, 
+			MyImage redTurtleSpinning3Image1, MyImage redTurtleSpinning4Image1, MyImage redTurtleStandingLeftImage1,
+			MyImage redTurtleStandingRightImage1, MyImage redTurtleWalkingLeftImage1, MyImage redTurtleWalkingRightImage1) {
 		redTurtleSpinning1Image = redTurtleSpinning1Image1;
 		redTurtleSpinning2Image = redTurtleSpinning2Image1; 
 		redTurtleSpinning3Image = redTurtleSpinning3Image1;

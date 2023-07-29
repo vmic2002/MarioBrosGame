@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import acm.graphics.GObject;
 
 public class Tanooki extends PowerUp {
-	private static Image tanookiImage;
+	private static MyImage tanookiImage;
 	private static final double DY = MovingObject.scalingFactor*1.2;
 	private static final double DX = MovingObject.scalingFactor*0.2;
 	private static final int pauseTime = 5;
@@ -171,7 +171,7 @@ public class Tanooki extends PowerUp {
 		return false;
 	}
 
-	public static void setObjects(Image tanookiImage1) {
+	public static void setObjects(MyImage tanookiImage1) {
 		tanookiImage = tanookiImage1;
 	}
 }

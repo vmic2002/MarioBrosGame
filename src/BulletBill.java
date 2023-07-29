@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import acm.graphics.GObject;
 
 public class BulletBill extends BadGuy implements Dynamic {
-	private static Image leftBulletBill, rightBulletBill;
+	private static MyImage leftBulletBill, rightBulletBill;
 	private static long pause = 20;
 	private long id;//to add/remove from dynamicLevelParts
 	private static int MAX_GAS_LEFT = 500;
@@ -91,7 +91,7 @@ public class BulletBill extends BadGuy implements Dynamic {
 		else return super.inContactWith(x, horizontalOrVertical);//checks to see if inContactWith Mario
 	}
 
-	public static void setObjects(Image leftBulletBill1, Image rightBulletBill1){
+	public static void setObjects(MyImage leftBulletBill1, MyImage rightBulletBill1){
 		leftBulletBill = leftBulletBill1;
 		rightBulletBill = rightBulletBill1;
 	}

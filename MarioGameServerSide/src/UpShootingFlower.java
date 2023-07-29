@@ -4,7 +4,7 @@ import acm.graphics.GObject;
 
 public class UpShootingFlower extends ShootingFlower{
 	//upShootingFlower comes in and out of up pipes
-	private static Image shootingFlowerLeftDownClosedImage, shootingFlowerLeftDownOpenImage,
+	private static MyImage shootingFlowerLeftDownClosedImage, shootingFlowerLeftDownOpenImage,
 	shootingFlowerLeftUpClosedImage, shootingFlowerLeftUpOpenImage,
 	shootingFlowerRightDownClosedImage, shootingFlowerRightDownOpenImage,
 	shootingFlowerRightUpClosedImage, shootingFlowerRightUpOpenImage;
@@ -39,10 +39,10 @@ public class UpShootingFlower extends ShootingFlower{
 		setImageAndRelocate(rightOrLeft?shootingFlowerRightUpOpenImage:shootingFlowerLeftUpOpenImage);
 	}
 	
-	public static void setObjects(Image shootingFlowerLeftDownClosedImage1, Image shootingFlowerLeftDownOpenImage1,
-			Image shootingFlowerLeftUpClosedImage1, Image shootingFlowerLeftUpOpenImage1,
-			Image shootingFlowerRightDownClosedImage1, Image shootingFlowerRightDownOpenImage1,
-			Image shootingFlowerRightUpClosedImage1, Image shootingFlowerRightUpOpenImage1) {
+	public static void setObjects(MyImage shootingFlowerLeftDownClosedImage1, MyImage shootingFlowerLeftDownOpenImage1,
+			MyImage shootingFlowerLeftUpClosedImage1, MyImage shootingFlowerLeftUpOpenImage1,
+			MyImage shootingFlowerRightDownClosedImage1, MyImage shootingFlowerRightDownOpenImage1,
+			MyImage shootingFlowerRightUpClosedImage1, MyImage shootingFlowerRightUpOpenImage1) {
 		shootingFlowerLeftDownClosedImage = shootingFlowerLeftDownClosedImage1; 
 		shootingFlowerLeftDownOpenImage = shootingFlowerLeftDownOpenImage1; 
 		shootingFlowerLeftUpClosedImage = shootingFlowerLeftUpClosedImage1;

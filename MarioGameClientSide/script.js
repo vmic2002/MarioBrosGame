@@ -4,7 +4,7 @@ const imageList = [
   //{ id: 'image3', path: 'Images/image3.jpg', x: 100, y: 300 },
   // Add more image objects as needed
 //THIS WORKS ALL IMAGES ARE AT X AND Y 100, 100
-//Images directory has ALL (177) images needed for current version of mario game and JS includes all 177 images
+//Images directory has ALL (180) images needed for current version of mario game and JS includes all 180 images
 { id: 'bigLuigiLeftCrouchingImage', path: 'Images/bigLuigiLeftCrouchingImage.png', x: 300, y: 100 },
 { id: 'bigLuigiPipe', path: 'Images/bigLuigiPipe.png', x: 400, y: 100 },
 { id: 'catLuigiPipeImage', path: 'Images/catLuigiPipeImage.png', x: 500, y: 100 },
@@ -211,8 +211,8 @@ const images = imageList.map(image => {
     img.onload = function() {
         imageElement.style.width = `${this.width}px`;
         imageElement.style.height = `${this.height}px`;
-        scaleImage(imageElement, 0.5);
-        //TODO SCALE IMAGE WORKS NEED TO SCALE IMAGE DEPENDING ON SIZE OF BROWSER WINDOW
+        //TODO SCALE ALL IMAGES WHEN THEY LOAD HERE 
+        //scaleImage(imageElement, 5, 5);
     };
    
    //console.log(`LOad:${imageElement.style.height}`);
@@ -225,15 +225,81 @@ const images = imageList.map(image => {
     return imageElement;
 });
 
+const imagesHashMap = {};
 
-function scaleImage(image, scalePercentage) {
-    console.log(`NOT Scaled image: ${image.id}  ${image.style.height} ${image.style.width}`);
-    const newWidth = parseFloat(image.style.width)*scalePercentage;
-    const newHeight = parseFloat(image.style.height)*scalePercentage;
+// Loop through the array and create the hashmap
+for (const image of images) {
+  imagesHashMap[image.id] = image;
+}
+
+function scaleImage(image, scaleWidth, scaleHeight) {
+    //console.log(`NOT Scaled image: ${image.id}  ${image.style.height} ${image.style.width}`);
+    const newWidth = parseFloat(image.style.width)*scaleWidth;
+    const newHeight = parseFloat(image.style.height)*scaleHeight;
     image.style.width = `${newWidth}px`;
     image.style.height = `${newHeight}px`;
-    console.log(`Scaled image: ${image.id}  ${image.style.height} ${image.style.width}`);
+    //console.log(`Scaled image: ${image.id}  ${image.style.height} ${image.style.width}`);
 }
+
+
+// Function to scale all images based on the provided scale percentage
+function scaleAllImages(scaleWidth, scaleHeight) {
+  for (const imageElement of images) {
+    scaleImage(imageElement, scaleWidth, scaleHeight);
+  }
+}
+
+
+// Function to calculate the scale percentage based on window dimensions
+function calculateScalePercentage(previousWidth, previousHeight) {
+    const currentWidth = window.innerWidth;
+    const currentHeight = window.innerHeight;
+
+    const widthPercentageChange = currentWidth / previousWidth;
+    const heightPercentageChange = currentHeight / previousHeight;
+
+    // You can choose to use either widthPercentageChange or heightPercentageChange,
+    // or calculate the average of both for a more balanced scaling
+    const scaleWidth = widthPercentageChange;
+    const scaleHeight = heightPercentageChange;
+    return [scaleWidth, scaleHeight];
+}
+
+// Initialize previousWidth and previousHeight with the initial window dimensions
+let previousWidth = window.innerWidth;
+let previousHeight = window.innerHeight;
+
+
+const imageWindowRatioWidth = 0.069;//increase/decrease value to make images wider/thinner compared to window width
+const imageWindowRatioHeight = 0.2;//increase/decrease value to make images taller/shorter compared to window height
+
+
+
+// Call the scaleAllImages function with the initial scale percentage when the page loads
+const initialWidthScale = (imageWindowRatioWidth*previousWidth)/96;//bigmarioright is 96x160, used him as baseline for how big images should be relative to window size
+const initialHeightScale = (imageWindowRatioHeight*previousHeight)/160;
+console.log(`${initialWidthScale}  ${initialHeightScale}`);
+window.addEventListener('load', () => scaleAllImages(initialWidthScale, initialHeightScale));
+
+// Call the scaleAllImages function with the new scale percentage when the window is resized
+window.addEventListener('resize', () => {
+  const [scaleWidth, scaleHeight] = calculateScalePercentage(previousWidth, previousHeight);
+  scaleAllImages(scaleWidth, scaleHeight);
+
+  // Update previousWidth and previousHeight with the new window dimensions
+  previousWidth = window.innerWidth;
+  previousHeight = window.innerHeight;
+});
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -290,8 +356,12 @@ sendMessageButton.addEventListener('click', () => {
     // Example usage
     //everytime button is clicked, message is sent to server
     const data = { imageName: 'bigLuigiSomething', otherData: 30 };
-    sendJsonMessage(data);
+    //sendJsonMessage(data);
     playSound('Item Box.wav');
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    //console.log(`The viewport's width is ${width} and the height is ${height}.`);
+    //console.log(imagesHashMap['bigLuigiLeftCrouchingImage']);
 });
 
 
@@ -309,22 +379,37 @@ socket.onmessage = function(event) {
     const message = event.data;
     console.log('Received message from server:', message);
     
-    //ALL POSSIBLE MESSAGES TO RECEIVE: MOVE AN IMAGE, PLAY A SOUND, REPLACE AN IMAGE WITH ANOTHER (SETIMAGEANDRELOCATE)
-   
+    //ALL POSSIBLE MESSAGES TO RECEIVE: MOVE AN IMAGE, PLAY A SOUND, REPLACE AN IMAGE WITH ANOTHER (SETIMAGEANDRELOCATE, showImageAndSetlocation, and hideImage
+
+   //!!!!!!use imagesHashMap<id, image> -> id is imagename
+    //!!!!!imagesHashMap[imageName] returns the div which can be moved etc
 
     try {
         const parsedMessage = JSON.parse(message);
 
         if (parsedMessage.type === 'moveImage') {
             // Example: { "type": "moveImage", "imageName": "imageName", "dx":"10", "dy":"20" }
-            console.log('Received moveImage data:', parsedMessage.data);
+            const {type, imageName, dx, dy} = parsedMessage;
+            console.log('Received moveImage data:', `${type}, ${imageName}, ${dx}, ${dy}`);
+            //this works!!!!!!, json is received and parsed correctly
         } else if (parsedMessage.type === 'replaceImage') {
             // Example: { "type": "replaceImage", "oldImageName":"luigiStanding", "newImageName":"luigiWalking" }
-            console.log('Received replaceImage data:', parsedMessage.value);
+            const {type, oldImageName, newImageName} = parsedMessage;
+            console.log('Received replaceImage data:', `${type}, ${oldImageName}, ${newImageName}`);
+            //this works!!! json is received and parsed correctly
         } else if (parsedMessage.type === 'playSound') {
             // Example: { "type": "playSound", "soundName": "Coin.wav" }
-            console.log('Received playSound data:', parsedMessage.value);
-            playSound(parsedMessage.soundName);//this works!
+            console.log('Received playSound data:', parsedMessage.soundName);
+            playSound(parsedMessage.soundName);
+            //this works!!!!!
+        } else if (parsedMessage.type === 'showImageAndSetlocation') {
+            // Example: { "type": "showImageAndSetlocation", "imageName": "i", "x":"10", "y":"10" }
+            console.log('Received showImageAndSetlocation data:', parsedMessage.imageName);
+            //TODO
+        } else if (parsedMessage.type === 'hideImage') {
+            // Example: { "type": "hideImage", "imageName": "i" }
+            console.log('Received hideImage data:', parsedMessage.imageName);
+            //TODO
         } else {
             // Handle other JSON data structures or handle unknown types
             console.log('Received unknown JSON data:', parsedMessage);
@@ -333,9 +418,6 @@ socket.onmessage = function(event) {
         console.log('Error parsing JSON:', error);
     }
  
-    //for now message will look like this:
-    //{"messageType":"playSound", "soundName":"name"}
-    //{"messageType":"move", "character":"character", "x":"10", "y":"20"}  
     //message could be id of image and new x, y positions to move this image
   //message could be sound to play etc
     // Parse the message received from the backend
@@ -355,6 +437,8 @@ socket.onmessage = function(event) {
 socket.onopen = function(event) {
   console.log('WebSocket connection opened!');
   // Perform actions specific to when the connection is open
+    //TODO every image on JS end should start up not being visible
+    //TODO server shoul send message onopen to tell JS which pictures to set visible and where on the screen
 };
 
 socket.onclose = function(event) {

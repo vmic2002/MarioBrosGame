@@ -6,7 +6,7 @@ public class Platform extends ThreadSafeGImage {
 	//MysteryBox, WoodBox, Pipe, ground, etc basically anything that if mario tries to walk into,
 	//it will halt him
 	//TODO need to add more platforms for now only mystery box, grass mountain, bill blaster
-	public Platform(Image arg0) {
+	public Platform(MyImage arg0) {
 		super(arg0);
 	}
 }

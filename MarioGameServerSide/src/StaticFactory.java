@@ -8,20 +8,20 @@ import acm.graphics.GImage;
 public class StaticFactory {
 	//adds images to levelParts (adds platforms and ShootingFlower, RedTurtle etc to levelParts)
 	private static GCanvas canvas;
-	private static Image grassLeftTopImage, grassRightTopImage, 
+	private static MyImage grassLeftTopImage, grassRightTopImage, 
 	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage,
 	pipeUpTopLeftImage, pipeUpTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
 	pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
 	pipeDownTopLeftImage, pipeDownTopRightImage, billBlasterTopImage,
 	billBlasterMiddleImage, billBlasterBottomImage;
 	
-	public static void setObjects(Image grassLeftTopImage1, Image grassRightTopImage1, Image grassMiddleTopImage1, 
-			Image grassLeftImage1, Image grassRightImage1, Image grassMiddleImage1,
-			Image pipeUpTopLeftImage1, Image pipeUpTopRightImage1, Image pipeDownMiddleLeftImage1, Image pipeDownMiddleRightImage1,
-			Image pipeDownTopLeftImage1, Image pipeDownTopRightImage1, Image pipeUpMiddleLeftImage1, Image pipeUpMiddleRightImage1,
-			Image billBlasterTopImage1, 
-			Image billBlasterMiddleImage1,
-			Image billBlasterBottomImage1,
+	public static void setObjects(MyImage grassLeftTopImage1, MyImage grassRightTopImage1, MyImage grassMiddleTopImage1, 
+			MyImage grassLeftImage1, MyImage grassRightImage1, MyImage grassMiddleImage1,
+			MyImage pipeUpTopLeftImage1, MyImage pipeUpTopRightImage1, MyImage pipeDownMiddleLeftImage1, MyImage pipeDownMiddleRightImage1,
+			MyImage pipeDownTopLeftImage1, MyImage pipeDownTopRightImage1, MyImage pipeUpMiddleLeftImage1, MyImage pipeUpMiddleRightImage1,
+			MyImage billBlasterTopImage1, 
+			MyImage billBlasterMiddleImage1,
+			MyImage billBlasterBottomImage1,
 			GCanvas canvas1) {
 		grassLeftTopImage = grassLeftTopImage1;
 		grassRightTopImage = grassRightTopImage1;

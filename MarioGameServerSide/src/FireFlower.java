@@ -4,7 +4,7 @@ import acm.graphics.GObject;
 
 import java.awt.Image;
 public class FireFlower extends PowerUp {
-	private static Image fireFlowerImage;
+	private static MyImage fireFlowerImage;
 	public FireFlower() {
 		super(fireFlowerImage);
 	}
@@ -14,7 +14,7 @@ public class FireFlower extends PowerUp {
 		System.out.println("ADDED A FIRE FLOWER");
 	}
 	
-	public static void setObjects(Image fireFlowerImage1) {
+	public static void setObjects(MyImage fireFlowerImage1) {
 		fireFlowerImage = fireFlowerImage1;
 	}
 

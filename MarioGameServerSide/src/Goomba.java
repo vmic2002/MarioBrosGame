@@ -5,7 +5,7 @@ import acm.graphics.GObject;
 
 public class Goomba extends BadGuy {
 	//TODO could make goomba implement Dynamic and have a pipe that pumps out goomba periodically
-	private static Image goombaRight, goombaLeft, goombaSquished;
+	private static MyImage goombaRight, goombaLeft, goombaSquished;
 	private static final int LEFT_OR_RIGHT_FREQUENCY = 5;//>0 num times move function is called before goomba toggles left to right image
 	private static final double DY = MovingObject.scalingFactor*1.4;
 	private static final double DX = MovingObject.scalingFactor*0.9;
@@ -157,7 +157,7 @@ public class Goomba extends BadGuy {
 		return true;
 	}
 
-	public static void setObjects(Image goombaRight1, Image goombaLeft1, Image goombaSquished1) {
+	public static void setObjects(MyImage goombaRight1, MyImage goombaLeft1, MyImage goombaSquished1) {
 		goombaRight = goombaRight1; 
 		goombaLeft = goombaLeft1;
 		goombaSquished = goombaSquished1;
