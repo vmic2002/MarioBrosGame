@@ -66,7 +66,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		System.out.println("Headless mode: " + GraphicsEnvironment.isHeadless());
 
 
-		GCanvas canvas = new GCanvas();
+		MyGCanvas canvas = new MyGCanvas();
 		canvas.setSize(WIDTH, HEIGHT);
 		JFrame frame = null;
 		try {
@@ -278,7 +278,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		
 		String grassLeftTopImagePath = prefix+imageDirectory+"/grassLeftTopImage.png";
 		String grassRightTopImagePath = prefix+imageDirectory+"/grassRightTopImage.png";
-		String grassMidleTopImagePath = prefix+imageDirectory+"/grassMiddleTopImage.png";
+		String grassMiddleTopImagePath = prefix+imageDirectory+"/grassMiddleTopImage.png";
 		String grassLeftImagePath = prefix+imageDirectory+"/grassLeftImage.png";
 		String grassRightImagePath = prefix+imageDirectory+"/grassRightImage.png";
 		String grassMiddleImagePath = prefix+imageDirectory+"/grassMiddleImage.png";
@@ -710,7 +710,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 
 			grassLeftTopImage = new MyImage(ImageIO.read(new File(grassLeftTopImagePath)), "grassLeftTopImage");
 			grassRightTopImage = new MyImage(ImageIO.read(new File(grassRightTopImagePath)), "grassRightTopImage");
-			grassMidleTopImage = new MyImage(ImageIO.read(new File(grassMidleTopImagePath)), "grassMidleTopImage");
+			grassMidleTopImage = new MyImage(ImageIO.read(new File(grassMiddleTopImagePath)), "grassMiddleTopImage");
 			grassLeftImage = new MyImage(ImageIO.read(new File(grassLeftImagePath)), "grassLeftImage");
 			grassRightImage = new MyImage(ImageIO.read(new File(grassRightImagePath)), "grassRightImage");
 			grassMiddleImage = new MyImage(ImageIO.read(new File(grassMiddleImagePath)), "grassMiddleImage");

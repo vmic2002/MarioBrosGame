@@ -1,8 +1,5 @@
-import java.awt.Image;
 import java.util.ArrayList;
 
-import acm.graphics.GCanvas;
-import acm.graphics.GImage;
 import acm.graphics.GObject;
 
 class FireBall extends MovingObject implements Dynamic {

@@ -47,7 +47,7 @@ public class StaticFactory {
 	//h>3
 	public static double spawnBillBlaster(XCounter xCounter, double h, ArrayList<LevelPart> levelParts) {
 		if (h<3) h=3;
-		ArrayList<GImage> images = new ArrayList<GImage>();
+		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();
 		for (int i=1; i<=h-2; i++) {
 			Platform g1 = new Platform(billBlasterBottomImage);
 			canvas.add(g1, xCounter.v, canvas.getHeight()-i*g1.getHeight());
@@ -81,7 +81,7 @@ public class StaticFactory {
 	public static double spawnGrassMountain(XCounter xCounter, double w, double h, LevelController.BADGUY_TYPE type, ArrayList<LevelPart> levelParts) {
 		if (w<3) w=3;
 		if (h<2) h=2;
-		ArrayList<GImage> images = new ArrayList<GImage>();
+		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();
 		for (int i = 1; i<w-1; i++) {
 			for (int j = 1; j<h; j++) {
 				Platform g1 = new Platform(grassMiddleImage);
@@ -147,7 +147,7 @@ public class StaticFactory {
 		//loophope around this problem: dont do xCounter.v += spawnUpPipe
 		//do : spawnUpPipe(); xCounter.v+=200;
 		if (h<2) h=2;
-		ArrayList<GImage> images = new ArrayList<GImage>();	
+		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();	
 		for (int i=1; i<h; i++) {
 			Platform middleLeft = new Platform(pipeUpMiddleLeftImage);
 			canvas.add(middleLeft, xCounter.v, canvas.getHeight()-middleLeft.getHeight()*i);
@@ -198,7 +198,7 @@ public class StaticFactory {
 	 */
 	public static double spawnDownPipe(XCounter xCounter, double h, LevelController.FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
 		if (h<2) h=2;
-		ArrayList<GImage> images = new ArrayList<GImage>();	
+		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();	
 		for (int i=0; i<h-1; i++) {
 			Platform middleLeft = new Platform(pipeDownMiddleLeftImage);
 			canvas.add(middleLeft, xCounter.v, middleLeft.getHeight()*i);
@@ -239,7 +239,7 @@ public class StaticFactory {
 	//this func does not increase xCounter.v by the width of the mysterybox
 	//since usually mysterybox is on top of platform (like grass mountain)
 	public static double spawnMysteryBox(double x, double y, ArrayList<LevelPart> levelParts) {
-		ArrayList<GImage> images = new ArrayList<GImage>();
+		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();
 		MysteryBox b = new MysteryBox();
 		canvas.add(b, x, canvas.getHeight()-y*b.getHeight());
 		images.add(b);

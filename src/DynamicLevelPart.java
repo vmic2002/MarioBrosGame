@@ -8,7 +8,7 @@ public class DynamicLevelPart extends LevelPart {
 	//each dynamic level part needs to be differentiated from another because
 	//they are added/removed to/from dynamicLevelParts (hashmap) at the same time
 	//id of dynamic level part is key in hashmap
-	public DynamicLevelPart(ArrayList<GImage> part, long id) {
+	public DynamicLevelPart(ArrayList<ThreadSafeGImage> part, long id) {
 		super(part);
 		this.id = id;
 	}
@@ -17,7 +17,7 @@ public class DynamicLevelPart extends LevelPart {
 
 	@Override
 	public void move(double dx , double dy) {
-		for (GImage image: part) {
+		for (ThreadSafeGImage image: part) {
 			image.move(dx, dy);
 			if (image instanceof FireBall) {
 				((FireBall) image).hoppingX+=dx;

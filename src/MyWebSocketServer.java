@@ -68,7 +68,7 @@ public class MyWebSocketServer {
 		//System.out.println("CALLING MAIN FUNCTION");
 		MarioBrosGame.main(new String[] {session.getId()});
 
-		sendMessage("SESSION ID: "+session.getId(), session);
+		//sendMessage("SESSION ID: "+session.getId(), session);
 	}
 
 	@OnMessage

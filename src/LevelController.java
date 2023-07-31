@@ -27,7 +27,7 @@ public class LevelController {
 		//for (LevelPart l : currLevel.levelParts) {
 		for (int i=0; i<currLevel.levelParts.size(); i++) {
 			LevelPart l = currLevel.levelParts.get(i);
-			for (GImage image : l.part) {
+			for (ThreadSafeGImage image : l.part) {
 				if (image instanceof MovingObject) {
 					((MovingObject) image).alive = false;
 					//to set all BadGuys (which are added to levelParts) to alive=false
@@ -37,11 +37,11 @@ public class LevelController {
 					System.out.println("mysterybox set to final state");
 				}
 			}
-		} 
+		}
 
 		try {
 			for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
-				for (GImage image : l.part) {
+				for (ThreadSafeGImage image : l.part) {
 					if (image instanceof MovingObject) {
 						((MovingObject) image).alive = false;
 						//this fixes bug where power up/fireball/bulletbill from previous level is removed from canvas
@@ -251,7 +251,9 @@ public class LevelController {
 		//and makes them fall at the same time
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
-			canvas.add(m, xPositions[i], 0);
+			canvas.add(m, xPositions[i], 40);
+			String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
+			ServerToClientMessenger.sendMessage(messageToClient);
 			Thread t1 = new Thread(new Runnable() {
 				@Override
 				public void run() {

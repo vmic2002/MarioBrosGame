@@ -35,11 +35,22 @@ public class Level {
 		//this.background = background;
 
 		//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
-		for (DynamicLevelPart l : this.dynamicLevelParts.values())
-			for (GImage image : l.part)
+		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
+			for (ThreadSafeGImage image : l.part) {
+				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
+				ServerToClientMessenger.sendMessage(messageToClient);
+				//System.out.println(messageToClient);
 				if (image instanceof Coin)
 					((Coin) image).startSpinning();
-		
+			}
+		}
+		for (LevelPart l : levelParts) {
+			for (ThreadSafeGImage image :l.part) {
+				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
+				ServerToClientMessenger.sendMessage(messageToClient);
+				//System.out.println(messageToClient);
+			}
+		}		
 	}
 
 	public String getID() {
@@ -85,14 +96,14 @@ public class Level {
 		t1.start();
 	}
 
-	public static void addLevelPartDynamically(GImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+	public static void addLevelPartDynamically(ThreadSafeGImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
 		//TO ADD DYNAMICLEVEL PARTS LIKE COINS FOR EXAMPLE TO A TEMP HASHMAP BEFORE LEVEL IS INSTANTIATED
 		if (!(i instanceof Dynamic)) {
 			//System.out.println("CAN ONLY ADD Objects who implement Dynamic");
 			System.exit(1);
 		}
-		ArrayList<GImage> l = new ArrayList<GImage>();
+		ArrayList<ThreadSafeGImage> l = new ArrayList<ThreadSafeGImage>();
 		l.add(i);
 		long newID = ID_GENERATOR.getAndIncrement();
 		if (dynamicLevelParts.get(newID)!=null){
@@ -106,7 +117,7 @@ public class Level {
 
 	}
 
-	public void addLevelPartDynamically(GImage i) {
+	public void addLevelPartDynamically(ThreadSafeGImage i) {
 		//to add level parts dynamically (power ups or fireballs) to level
 		//while level is being played
 		Level.addLevelPartDynamically(i, dynamicLevelParts);

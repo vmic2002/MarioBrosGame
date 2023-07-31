@@ -18,7 +18,7 @@ public class VirtualClientKeyboard {
 		//key is either ArrowUp, ArrowDown, ArrowLeft, ArrowRight, q
 		//character is either Mario, Luigi
 		Mario mario = characters[character.equals("Mario")?1:0];
-		ServerToClientMessenger.sendMessage("VIRTUALKEYBOARD: key: "+key+ " character: "+character+ " on server");
+		//ServerToClientMessenger.sendMessage("VIRTUALKEYBOARD: key: "+key+ " character: "+character+ " on server");
 		if (keyPressedOrKeyReleased) {
 			if (!mario.alive) return;
 			if (mario.goingIntoPipe) return;
