@@ -1,5 +1,5 @@
-import acm.graphics.GCanvas;
-import acm.graphics.GImage;
+//import acm.graphics.GCanvas;
+//import acm.graphics.GImage;
 import java.awt.Image;
 
 public class MysteryBox extends Platform {

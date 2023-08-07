@@ -9,14 +9,14 @@ public class LevelController {
 	//spawns a level and sets currLevel so mario can have access to it and move
 	//level depending on how close to the edges of the screen he is
 
-	private static GCanvas canvas;
+	private static MyGCanvas canvas;
 	public static Level currLevel;//only one currLevel mario is playing at a time
 	public static double space;
 	public static enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
 	public static enum BADGUY_TYPE {NO_BADGUY, RED_TURTLE, GREEN_TURTLE, GOOMBA};//type of bad guy on platform (such as grass mountain)
 	private static XCounter xCounter;
 
-	public static void setObjects(GCanvas canvas1, double scalingFactor) {canvas=canvas1;
+	public static void setObjects(MyGCanvas canvas1, double scalingFactor) {canvas=canvas1;
 	space = scalingFactor*10.0;xCounter = new XCounter();}
 
 	public static void endCurrentLevel() {
@@ -69,8 +69,8 @@ public class LevelController {
 
 	public static void playLevel(String subLevelID) {
 		System.out.println("STARTING LEVEL "+subLevelID);
-		if (currLevel!=null) endCurrentLevel();
 		canvas.removeAll();
+		if (currLevel!=null) endCurrentLevel();
 		xCounter.initialize();//need to re initialize xCounter.v to 0 at the beginning of each level
 		BillBlasterController.startOfLevel();
 		if (subLevelID.equals("1")) playLevel1();
@@ -132,7 +132,7 @@ public class LevelController {
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 20, 3, BADGUY_TYPE.RED_TURTLE, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 20, 3, BADGUY_TYPE.NO_BADGUY, levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		spawnWhiteSpace(xCounter, 3);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, levelParts);
@@ -236,9 +236,10 @@ public class LevelController {
 		//to add 2x2 coins in a rectangle DynamicFactory.addFloatingCoins(xCounter.v+3*space, canvas.getHeight()/3, 2, 2, dynamicLevelParts);
 		
 		//DynamicFactory.addFloatingCoinsRectangle(xCounter.v+10*space, canvas.getHeight()/5, 5, 3, dynamicLevelParts);
-		DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
+		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.NO_BADGUY, levelParts);
-		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1", levelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, levelParts);
+		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		Level level5 = new Level("5", levelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});

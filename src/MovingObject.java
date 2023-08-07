@@ -1,12 +1,12 @@
-import acm.graphics.GCanvas;
-import acm.graphics.GImage;
+//import acm.graphics.GCanvas;
+//import acm.graphics.GImage;
 import acm.graphics.GObject;
 
-import java.awt.Image;
+//import java.awt.Image;
 import java.util.ArrayList;
 public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	//fireball, mushroom, fire flower, leaf, mario, turtle, BulletBill extend MovingObject
-	public static GCanvas canvas;
+	public static MyGCanvas canvas;
 	public static double scalingFactor;
 	public static Mario[] characters;
 	public boolean alive;
@@ -54,7 +54,7 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());
 	}
 	
-	public static void setObjects(GCanvas canvas1, double scalingFactor1, Mario[] characters1) {
+	public static void setObjects(MyGCanvas canvas1, double scalingFactor1, Mario[] characters1) {
 		canvas = canvas1;
 		scalingFactor = scalingFactor1;
 		characters = characters1;

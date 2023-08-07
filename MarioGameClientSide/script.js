@@ -48,17 +48,17 @@ function moveImage(id, dx, dy) {
         const currentX = currentPosition.left;
         const currentY = currentPosition.top;
         
-        console.log(`${currentX} is currentX`);
+        //console.log(`${currentX} is currentX`);
         // Calculate the new position
         const newX = currentX + parseFloat(dx);
         const newY = currentY + parseFloat(dy);
-        console.log(`${newX} is newX`);
+        //console.log(`${newX} is newX`);
         // Set the new position of the image
-        console.log(`${image.style.left}`);
+        //console.log(`${image.style.left}`);
         image.style.left = `${newX}px`;
         image.style.top = `${newY}px`;
-        console.log(` new pos: ${image.style.left}`);
-        console.log('MOVING IMAGE');
+        //console.log(` new pos: ${image.style.left}`);
+        //console.log('MOVING IMAGE');
     } else {
         console.log(`NO IMAGE WITH ID ${id}`);
     }   
@@ -68,16 +68,36 @@ function moveImage(id, dx, dy) {
 function replaceImage(oldImageId, newImageName) {
     const image = imagesOnScreen[oldImageId];
     if (image) {
+        const oldImageName = image.alt;
+        
         // Get the current position of the image
         const currentPosition = image.getBoundingClientRect();
-        const x = currentPosition.left;
-        const y = currentPosition.top;
-        removeImageFromScreen(oldImageId);
-        addImageToScreen(newImageName, oldImageId, x, y);
-        //TODO MIGHT HAVE TO CHANGE POSITION OF NEW IMAGE LIKE IN SETIMAGEANDRELOCATE IN JAVA
+        const oldX = currentPosition.left;
+        const oldY = currentPosition.top;
+        
+        const oldWidth = currentPosition.width;
+        const oldHeight = currentPosition.height;
+        
+        removeImageFromScreen(oldImageId); 
+        
+        addImageToScreen(newImageName, oldImageId, oldX, oldY);
+        //CHANGE POSITION OF NEW IMAGE LIKE IN SETIMAGEANDRELOCATE IN JAVA
         const newImage = imagesOnScreen[oldImageId];
         if (newImage) {
-            console.log("GREAT");   
+            console.log("---------------------------");
+            console.log(`Replacing ${oldImageName} with ${newImage.alt}`);
+            //need to relocate the image like in setImageAndRelocate method of MovingObject.java
+            //TODO might have to check that image loaded properly before getting width/height
+            const newWidth = newImage.getBoundingClientRect().width;
+            const newHeight = newImage.getBoundingClientRect().height;
+            console.log(`${oldImageName} has width: ${oldWidth} and height: ${oldHeight}`);
+            console.log(`${newImage.alt} has width: ${newWidth} and height: ${newHeight}`);
+            const dx = (oldWidth - newWidth)/2;
+            const dy = oldHeight - newHeight;
+            moveImage(oldImageId, dx, dy);
+            console.log(`Moving image to relocate: dx: ${dx} and dy: ${dy}`);
+            console.log("CHANGED IMAGE AND RELOCATED!");
+            console.log("-----------------------------");
         } else {
             console.log("BIG PROBLEM");
         }   
@@ -204,11 +224,11 @@ loadSounds();
 
 //BUTTON IS ONLY for testing
 // Get a reference to the play button
-const sendMessageButton = document.getElementById('send-message');
+const testButton = document.getElementById('test');
 // Add a click event listener to the play button
 
 //addImageToScreen('smallLuigiLeftImage', 0, 100, 100);
-sendMessageButton.addEventListener('click', () => {
+testButton.addEventListener('click', () => {
     // Example usage
     //everytime button is clicked, message is sent to server
    // const data = { imageName: 'bigLuigiSomething', otherData: 30 };
@@ -220,8 +240,8 @@ sendMessageButton.addEventListener('click', () => {
     //console.log(imagesHashMap['bigLuigiLeftCrouchingImage']);
     //moveImage('1', 10, 20);
    // removeImageFromScreen('1');
-    console.log(`BUTTON CLICKED: map length: ${Object.keys(imagesOnScreen).length}`);
     printAllImagesOnScreen();
+    console.log(`Num elements in imagesOnScreen map: ${Object.keys(imagesOnScreen).length}`);
     //replaceImage(0, 'bigLuigiLeftCrouchingImage');
     //printAllImagesOnScreen();
     //moveImage(0, 10, 0);
@@ -282,7 +302,8 @@ socket.onmessage = function(event) {
             console.log('Received unknown JSON data:', parsedMessage);
         }
     } catch (error) {
-        console.log('Error parsing JSON:', error);
+        //console.log('Error parsing JSON:', error);
+        console.log(message);
     }      
 };
 

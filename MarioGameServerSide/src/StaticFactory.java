@@ -7,7 +7,7 @@ import acm.graphics.GImage;
 
 public class StaticFactory {
 	//adds images to levelParts (adds platforms and ShootingFlower, RedTurtle etc to levelParts)
-	private static GCanvas canvas;
+	private static MyGCanvas canvas;
 	private static MyImage grassLeftTopImage, grassRightTopImage, 
 	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage,
 	pipeUpTopLeftImage, pipeUpTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
@@ -22,7 +22,7 @@ public class StaticFactory {
 			MyImage billBlasterTopImage1, 
 			MyImage billBlasterMiddleImage1,
 			MyImage billBlasterBottomImage1,
-			GCanvas canvas1) {
+			MyGCanvas canvas1) {
 		grassLeftTopImage = grassLeftTopImage1;
 		grassRightTopImage = grassRightTopImage1;
 		grassMiddleTopImage = grassMiddleTopImage1;

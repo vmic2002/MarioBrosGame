@@ -1,4 +1,4 @@
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.awt.Color;
 //import java.awt.Image;
 //import java.awt.event.KeyEvent;
@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import acm.graphics.*;
+//import acm.graphics.*;
 //import acm.program.GraphicsProgram;
 
 import java.awt.BorderLayout;
@@ -56,7 +56,6 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		// If running game on java web server and connecting to client site (website) via javascript using websockets,
 		// need to set headless mode to true
 		// because no window will be displayed on the server side
-		
 
 		boolean setToHeadlessMode = runningOnTomcatServer;
 		// Enable headless mode

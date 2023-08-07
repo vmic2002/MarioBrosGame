@@ -26,5 +26,6 @@ public class ServerToClientMessenger {
 	//Message 3 is sent in ThreadSafeGImage.setImage
 	//Message 4 is sent in Level constructor (to add static and dynamic level parts at start of level) 
 	//	and LevelController.addCharactersAtStartOfLevel (to add mario/luigi at beginning of level)
+	//	and in DynamicFactory.sendMessageToClient (to add powerups, fireballs, bulletbillss, etc while level is being played)
 	//Message 5 is sent in MyGCanvas.remove and removeAll
 }

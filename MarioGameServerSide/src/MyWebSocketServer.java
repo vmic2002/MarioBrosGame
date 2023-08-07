@@ -68,7 +68,13 @@ public class MyWebSocketServer {
 		//System.out.println("CALLING MAIN FUNCTION");
 		MarioBrosGame.main(new String[] {session.getId()});
 
-		//sendMessage("SESSION ID: "+session.getId(), session);
+		sendMessage("SESSION ID: "+session.getId(), session);
+		sendMessage("TOTAL OF "+activeSessions.size()+" sessions:", session);
+		String message = "IDs: ";
+		for (Session s:activeSessions) {
+			message+=s.getId()+", ";
+		}
+		sendMessage(message, session);
 	}
 
 	@OnMessage
@@ -86,7 +92,7 @@ public class MyWebSocketServer {
 
 	@OnClose
 	public void onClose(Session session) {
-		//System.out.println("WebSocket connection closed: " + session.getId());
+		System.out.println("<<<<<<<WebSocket connection closed: " + session.getId());
 
 		// Remove the closed session from the activeSessions set
 		activeSessions.remove(session);
@@ -114,9 +120,13 @@ public class MyWebSocketServer {
 		//String technology = json.getString("technology");  
 	}
 
-	public static void sendMessage(String message, Session session) {
+	public synchronized static void sendMessage(String message, Session session) {
 		try {
-			session.getBasicRemote().sendText(message);
+			if (session.isOpen())
+				session.getBasicRemote().sendText(message);
+			else
+				System.exit(1);
+			//session.getAsyncRemote().sendText(message);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

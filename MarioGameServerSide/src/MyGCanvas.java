@@ -40,5 +40,5 @@ public class MyGCanvas extends GCanvas {
 
 	//instead of Override canvas.add(GObject o) to call ServerToClientMessenger.sendMessage 
 	//of type showImageAndSetlocation each time a GObject is added to the canvas, 
-	//a message is sent in the Level constructor when the level is being instantiated
+	//a message is sent in the Level constructor when the level is being instantiated (images are added to canvas before level is instantiated)
 }

@@ -1,5 +1,5 @@
-import java.awt.Image;
-import acm.graphics.GCanvas;
+//import java.awt.Image;
+//import acm.graphics.GCanvas;
 import acm.graphics.GObject;
 
 public class Coin extends MovingObject implements Dynamic{
@@ -7,7 +7,7 @@ public class Coin extends MovingObject implements Dynamic{
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
 	public long id;
-	private static GCanvas canvas;
+	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
 	private static int pauseBetweenStates = 150;
 	private enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
@@ -72,7 +72,7 @@ public class Coin extends MovingObject implements Dynamic{
 		SoundController.playCoinSound();
 	}
 
-	public static void setObjects(MyImage image1, MyImage image2, MyImage image3, GCanvas canvas1) {
+	public static void setObjects(MyImage image1, MyImage image2, MyImage image3, MyGCanvas canvas1) {
 		coin1Image = image1;
 		coin2Image = image2;
 		coin3Image = image3;

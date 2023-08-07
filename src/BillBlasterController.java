@@ -1,7 +1,7 @@
-import java.awt.Image;
+//import java.awt.Image;
 import java.util.ArrayList;
 
-import acm.graphics.GCanvas;
+//import acm.graphics.GCanvas;
 
 public class BillBlasterController{
 	//when level is spawned, everytime a BillBlaster is added to the level,
@@ -11,8 +11,8 @@ public class BillBlasterController{
 	//at end of level, LevelControlelr calls endOfLevel() to stop all threads from shooting more BulletBills
 	private static long pause = 1000;
 	private static ArrayList<Thread> threads;
-	private static GCanvas canvas;
-	public static void setCanvas(GCanvas canvas1) {canvas=canvas1;}
+	private static MyGCanvas canvas;
+	public static void setCanvas(MyGCanvas canvas1) {canvas=canvas1;}
 	public static void startOfLevel() {threads = new ArrayList<Thread>();}
 	@SuppressWarnings("deprecation")
 	public static void endOfLevel() {for (Thread t: threads) t.stop();

@@ -1,6 +1,6 @@
-import java.awt.Image;
+//import java.awt.Image;
 
-import acm.graphics.GObject;
+//import acm.graphics.GObject;
 
 public abstract class PowerUp extends MovingObject implements Dynamic{
 	//Leaf, Mushroom, FireFlower extend PowerUp

@@ -6,9 +6,9 @@ public class DynamicFactory {
 	//this class spawns MovingObjects that implement Dynamic and adds them to dynamicLevelParts
 	//dynamically while a level is being played and calls their move function
 	//powerups, fireballs, bulletbill etc
-	private static GCanvas canvas;
-	
-	public static void setCanvas(GCanvas canvas1) {
+	private static MyGCanvas canvas;
+
+	public static void setCanvas(MyGCanvas canvas1) {
 		canvas = canvas1;
 	}
 
@@ -30,6 +30,7 @@ public class DynamicFactory {
 			public void run() {
 				LevelController.currLevel.addLevelPartDynamically(powerUp);
 				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
+				sendMessageToClient(powerUp);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
 					powerUp.move(0, -MovingObject.scalingFactor/2.0);
@@ -47,36 +48,9 @@ public class DynamicFactory {
 		t1.start();
 	}
 
-	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
-		//called when flower in pipe shoots a fireball at mario
-		FireBall fireBall = new FireBall(rightOrLeft);
-		canvas.add(fireBall, x, y);
-		LevelController.currLevel.addLevelPartDynamically(fireBall);
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {
-				fireBall.shootAtMario(mario);
-			}
-		});
-		t1.setName("fireflower fireball");
-		t1.start();
-	}
 
-	public static void addBulletBill(double x, double y, boolean rightOrLeft) {
-		//called when BillBlaster shoots a BulletBill
-		BulletBill bulletBill = new BulletBill(rightOrLeft);
-		canvas.add(bulletBill, x, y);
-		bulletBill.sendToBack();//spawns behind BillBlaster
-		LevelController.currLevel.addLevelPartDynamically(bulletBill);
-		addMovingObject(bulletBill);
-	}
 
-	public static void addFireBall(double x, double y, boolean rightOrLeft) {
-		//called when fire mario launches a fireball
-		FireBall fireBall = new FireBall(rightOrLeft);
-		canvas.add(fireBall, x, y);
-		LevelController.currLevel.addLevelPartDynamically(fireBall);
-		addMovingObject(fireBall);
-	}
+
 
 	public static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
@@ -90,6 +64,7 @@ public class DynamicFactory {
 	}
 
 	public static void addFloatingCoinsRectangle(double x, double y, int w, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		//called at level creation time
 		//adds a 2D array of floating coins of width w (num coins wide) and height h (num coins high)
 		//to dynamicLevelParts
 		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts);
@@ -108,6 +83,7 @@ public class DynamicFactory {
 	}
 
 	public static void addFloatingCoinsTriangle(double x, double y, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		//called at level creation time
 		//adds floating coins in triangle pattern
 		//if h=2, 4 coins total, if h=3, 9 coins total...
 		//there are h^2 coins total!!!
@@ -127,11 +103,17 @@ public class DynamicFactory {
 			newI--;
 		}
 	}
+	
+	public static void sendMessageToClient(ThreadSafeGImage i) {
+		String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+i.getMyImageName()+"\", \"id\":\""+i.getID()+"\", \"x\":\""+i.getX()+"\", \"y\":\""+i.getY()+"\" }";
+		ServerToClientMessenger.sendMessage(messageToClient);
+	}
 
 	public static void addCoin(double x, double y) {
 		//TODO call this addCoin function when Mario jumps into mysterybox or brick
 		Coin coin = new Coin();
 		canvas.add(coin, x, y);
+		sendMessageToClient(coin);
 		LevelController.currLevel.addLevelPartDynamically(coin);
 		addMovingObject(coin);
 	}
@@ -161,6 +143,40 @@ public class DynamicFactory {
 		//x, y are coordinates of MysteryBox
 		Tanooki tanooki = new Tanooki();
 		addPowerUp(x, y, mysteryBoxWidth, tanooki);
+	}
+
+	public static void addBulletBill(double x, double y, boolean rightOrLeft) {
+		//called when BillBlaster shoots a BulletBill
+		BulletBill bulletBill = new BulletBill(rightOrLeft);
+		canvas.add(bulletBill, x, y);
+		sendMessageToClient(bulletBill);
+		bulletBill.sendToBack();//spawns behind BillBlaster
+		LevelController.currLevel.addLevelPartDynamically(bulletBill);
+		addMovingObject(bulletBill);
+	}
+
+	public static void addFireBall(double x, double y, boolean rightOrLeft) {
+		//called when fire mario launches a fireball
+		FireBall fireBall = new FireBall(rightOrLeft);
+		canvas.add(fireBall, x, y);
+		sendMessageToClient(fireBall);
+		LevelController.currLevel.addLevelPartDynamically(fireBall);
+		addMovingObject(fireBall);
+	}
+
+	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
+		//called when flower in pipe shoots a fireball at mario
+		FireBall fireBall = new FireBall(rightOrLeft);
+		canvas.add(fireBall, x, y);
+		sendMessageToClient(fireBall);
+		LevelController.currLevel.addLevelPartDynamically(fireBall);
+		Thread t1 = new Thread(new Runnable() {
+			public void run() {
+				fireBall.shootAtMario(mario);
+			}
+		});
+		t1.setName("fireflower fireball");
+		t1.start();
 	}
 }
 //TODO also maybe if user holds fireball key then the fireball could charge until it is really big  
