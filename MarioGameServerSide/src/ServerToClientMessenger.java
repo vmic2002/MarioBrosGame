@@ -15,11 +15,11 @@ public class ServerToClientMessenger {
 		//total of 5 message types
 		if (session!=null)
 			MyWebSocketServer.sendMessage(message, session);
-		else System.out.println("SESSION NULLL");
+		//else System.out.println("SESSION NULLL");
 	}
 	//5 types of messages that server sends to client:
 	//1. moveImage, 2. playSound, 3. replaceImage 
-	//4. addImageToScreen, and 5. removeImageFromScreen
+	//4. addImageToScreen, and 5. removeImageFromScreen, 6. setVisibility
 	//all 5 messages are correctly sent and received by the client
 	//Message 1 is sent in ThreadSafeGImage.move
 	//Message 2 is sent in SoundController.playSound
@@ -28,4 +28,5 @@ public class ServerToClientMessenger {
 	//	and LevelController.addCharactersAtStartOfLevel (to add mario/luigi at beginning of level)
 	//	and in DynamicFactory.sendMessageToClient (to add powerups, fireballs, bulletbillss, etc while level is being played)
 	//Message 5 is sent in MyGCanvas.remove and removeAll
+	//Message 6 is when mario/luigi flashes after being hit. it is sent in ThreadSafeGImage.setVisible()
 }

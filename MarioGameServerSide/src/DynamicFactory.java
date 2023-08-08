@@ -105,8 +105,9 @@ public class DynamicFactory {
 	}
 	
 	public static void sendMessageToClient(ThreadSafeGImage i) {
-		String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+i.getMyImageName()+"\", \"id\":\""+i.getID()+"\", \"x\":\""+i.getX()+"\", \"y\":\""+i.getY()+"\" }";
+		String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+i.getMyImageName()+"\", \"id\":\""+i.getImageID()+"\", \"x\":\""+i.getX()+"\", \"y\":\""+i.getY()+"\" }";
 		ServerToClientMessenger.sendMessage(messageToClient);
+		System.out.println("DYNAMIC FAACTORY CREATED NEW IMAGE WITH ID: "+i.getImageID());
 	}
 
 	public static void addCoin(double x, double y) {
@@ -159,6 +160,7 @@ public class DynamicFactory {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
+		System.out.println("-------"+fireBall.getMyImageName()+ " "+fireBall.getID());
 		sendMessageToClient(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		addMovingObject(fireBall);

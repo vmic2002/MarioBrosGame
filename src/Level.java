@@ -37,7 +37,7 @@ public class Level {
 		//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
 		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
 			for (ThreadSafeGImage image : l.part) {
-				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
+				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
 				ServerToClientMessenger.sendMessage(messageToClient);
 				//System.out.println(messageToClient);
 				if (image instanceof Coin)
@@ -46,7 +46,7 @@ public class Level {
 		}
 		for (LevelPart l : levelParts) {
 			for (ThreadSafeGImage image :l.part) {
-				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
+				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
 				ServerToClientMessenger.sendMessage(messageToClient);
 				//System.out.println(messageToClient);
 			}

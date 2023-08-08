@@ -75,6 +75,9 @@ public class MyWebSocketServer {
 			message+=s.getId()+", ";
 		}
 		sendMessage(message, session);
+		
+		
+	
 	}
 
 	@OnMessage

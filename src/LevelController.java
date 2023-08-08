@@ -133,6 +133,7 @@ public class LevelController {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 20, 3, BADGUY_TYPE.NO_BADGUY, levelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.RED_TURTLE, levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		spawnWhiteSpace(xCounter, 3);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, levelParts);
@@ -238,7 +239,7 @@ public class LevelController {
 		//DynamicFactory.addFloatingCoinsRectangle(xCounter.v+10*space, canvas.getHeight()/5, 5, 3, dynamicLevelParts);
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.NO_BADGUY, levelParts);
-		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, levelParts);
+		//StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, levelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1a", levelParts);
 		Level level5 = new Level("5", levelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel
@@ -253,7 +254,7 @@ public class LevelController {
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
 			canvas.add(m, xPositions[i], 40);
-			String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
+			String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
 			ServerToClientMessenger.sendMessage(messageToClient);
 			Thread t1 = new Thread(new Runnable() {
 				@Override

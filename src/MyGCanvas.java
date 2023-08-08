@@ -33,7 +33,7 @@ public class MyGCanvas extends GCanvas {
 	}
 
 	private void sendHideMessage(ThreadSafeGImage i) {
-		String messageToClient = "{ \"type\": \"removeImageFromScreen\", \"id\": \""+i.getID()+"\"}";
+		String messageToClient = "{ \"type\": \"removeImageFromScreen\", \"id\": \""+i.getImageID()+"\"}";
 		ServerToClientMessenger.sendMessage(messageToClient);
 		System.out.println(messageToClient);
 	}

@@ -64,6 +64,21 @@ function moveImage(id, dx, dy) {
     }   
 }
 
+function changeVisibility(imageId, bool) {
+    const image = imagesOnScreen[imageId];
+    if (image) {
+        if (bool==="true") {
+            //to make image visible
+            image.style.display = 'block';
+            console.log("MAKE IMAGE VISIBLE");
+        } else {
+            //to make image not visible
+            image.style.display = 'none';
+            console.log("HIDE IMAGE");
+        }
+    }
+}
+
 
 function replaceImage(oldImageId, newImageName) {
     const image = imagesOnScreen[oldImageId];
@@ -84,20 +99,20 @@ function replaceImage(oldImageId, newImageName) {
         //CHANGE POSITION OF NEW IMAGE LIKE IN SETIMAGEANDRELOCATE IN JAVA
         const newImage = imagesOnScreen[oldImageId];
         if (newImage) {
-            console.log("---------------------------");
-            console.log(`Replacing ${oldImageName} with ${newImage.alt}`);
+            //console.log("---------------------------");
+            //console.log(`Replacing ${oldImageName} with ${newImage.alt}`);
             //need to relocate the image like in setImageAndRelocate method of MovingObject.java
             //TODO might have to check that image loaded properly before getting width/height
             const newWidth = newImage.getBoundingClientRect().width;
             const newHeight = newImage.getBoundingClientRect().height;
-            console.log(`${oldImageName} has width: ${oldWidth} and height: ${oldHeight}`);
-            console.log(`${newImage.alt} has width: ${newWidth} and height: ${newHeight}`);
+            //console.log(`${oldImageName} has width: ${oldWidth} and height: ${oldHeight}`);
+            //console.log(`${newImage.alt} has width: ${newWidth} and height: ${newHeight}`);
             const dx = (oldWidth - newWidth)/2;
             const dy = oldHeight - newHeight;
             moveImage(oldImageId, dx, dy);
-            console.log(`Moving image to relocate: dx: ${dx} and dy: ${dy}`);
-            console.log("CHANGED IMAGE AND RELOCATED!");
-            console.log("-----------------------------");
+            //console.log(`Moving image to relocate: dx: ${dx} and dy: ${dy}`);
+            //console.log("CHANGED IMAGE AND RELOCATED!");
+            //console.log("-----------------------------");
         } else {
             console.log("BIG PROBLEM");
         }   
@@ -226,7 +241,7 @@ loadSounds();
 // Get a reference to the play button
 const testButton = document.getElementById('test');
 // Add a click event listener to the play button
-
+var bo = true;
 //addImageToScreen('smallLuigiLeftImage', 0, 100, 100);
 testButton.addEventListener('click', () => {
     // Example usage
@@ -240,12 +255,21 @@ testButton.addEventListener('click', () => {
     //console.log(imagesHashMap['bigLuigiLeftCrouchingImage']);
     //moveImage('1', 10, 20);
    // removeImageFromScreen('1');
-    printAllImagesOnScreen();
-    console.log(`Num elements in imagesOnScreen map: ${Object.keys(imagesOnScreen).length}`);
+    //  printAllImagesOnScreen();
+    //  console.log(`Num elements in imagesOnScreen map: ${Object.keys(imagesOnScreen).length}`);
     //replaceImage(0, 'bigLuigiLeftCrouchingImage');
     //printAllImagesOnScreen();
     //moveImage(0, 10, 0);
     //console.log('END OF CLICKED');
+    if (bo) {
+        changeVisibility(1, "false");
+        changeVisibility(0, "false");
+        bo = false;
+    } else {
+        changeVisibility(1, "true");
+        changeVisibility(0, "true");
+        bo = true;
+    }
 });
 
 
@@ -270,33 +294,38 @@ socket.onmessage = function(event) {
         if (parsedMessage.type === 'moveImage') {
             // Example: { "type": "moveImage", "imageId": "imageId", "dx":"10", "dy":"20" }
             const {type, imageId, dx, dy} = parsedMessage;
-            console.log('Received moveImage data:', `${type}, ${imageId}, ${dx}, ${dy}`);
+            //console.log('Received moveImage data:', `${type}, ${imageId}, ${dx}, ${dy}`);
             //this works!!!!!!, json is received and parsed correctly
             moveImage(imageId, dx, dy);
         } else if (parsedMessage.type === 'replaceImage') {
             // Example: { "type": "replaceImage", "oldImageId":"id", "newImageName":"luigiWalking" }
             const {type, oldImageId, newImageName} = parsedMessage;
             //oldImageId is used to find which image to replace and newImageName is used to find image in Images directory to replace it with
-            console.log('Received replaceImage data:', `${type}, ${oldImageId}, ${newImageName}`);
+            //console.log('Received replaceImage data:', `${type}, ${oldImageId}, ${newImageName}`);
             //this works!!! json is received and parsed correctly
             //TODO need to write replaceImage func
             replaceImage(oldImageId, newImageName);
         } else if (parsedMessage.type === 'playSound') {
             // Example: { "type": "playSound", "soundName": "Coin.wav" }
-            console.log('Received playSound data:', parsedMessage.soundName);
+            //console.log('Received playSound data:', parsedMessage.soundName);
             playSound(parsedMessage.soundName);
             //this works!!!!!
         } else if (parsedMessage.type === 'addImageToScreen') {
             // Example: { "type": "addImageToScreen", "imageName": "luigiBigLeft", "id":"25", "x":"10", "y":"10" }
             const {type, imageName, id, x, y} = parsedMessage;
-            console.log('Received addImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
+            //console.log('Received addImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
             //this works!!!!!
             addImageToScreen(imageName, id, x, y);
         } else if (parsedMessage.type === 'removeImageFromScreen') {
             // Example: { "type": "removeImageFromScreen", "id": "i" }
-            console.log('Received removeImageFromScreen data:', parsedMessage.id);
+            //console.log('Received removeImageFromScreen data:', parsedMessage.id);
             //works!!!!
             removeImageFromScreen(parsedMessage.id);
+        } else if (parsedMessage.type === 'setVisible') { 
+           //Example { "type": "setVisible", "imageId": "12", "bool":"true" } 
+            const {type, imageId, bool} = parsedMessage;
+            console.log('>>>>>>>>>>>>>Received setVisible data:', `${imageId}, ${bool}`);
+            changeVisibility(imageId, bool);
         } else {
             // Handle other JSON data structures or handle unknown types
             console.log('Received unknown JSON data:', parsedMessage);

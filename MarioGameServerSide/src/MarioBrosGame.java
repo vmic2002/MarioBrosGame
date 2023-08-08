@@ -591,7 +591,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			bigMarioLeftJumpingDownFireImage = new MyImage(ImageIO.read(new File(bigMarioLeftJumpingDownFireImagePath)), "bigMarioLeftJumpingDownFireImage");
 			bigMarioRightJumpingDownFireImage = new MyImage(ImageIO.read(new File(bigMarioRightJumpingDownFireImagePath)), "bigMarioRightJumpingDownFireImage");
 			bigMarioLeftCrouchingFireImage = new MyImage(ImageIO.read(new File(bigMarioLeftCrouchingFireImagePath)), "bigMarioLeftCrouchingFireImage");
-			bigMarioRightCrouchingFireImage= new MyImage(ImageIO.read(new File(bigMarioRightCrouchingFireImagePath)), "bigMarioRightCrouchingFireImage=");
+			bigMarioRightCrouchingFireImage= new MyImage(ImageIO.read(new File(bigMarioRightCrouchingFireImagePath)), "bigMarioRightCrouchingFireImage");
 			bigMarioLeftFireShooting1Image = new MyImage(ImageIO.read(new File(bigMarioLeftFireShooting1ImagePath)), "bigMarioLeftFireShooting1Image");
 			bigMarioLeftFireShooting2Image = new MyImage(ImageIO.read(new File(bigMarioLeftFireShooting2ImagePath)), "bigMarioLeftFireShooting2Image");
 			bigMarioRightFireShooting1Image = new MyImage(ImageIO.read(new File(bigMarioRightFireShooting1ImagePath)), "bigMarioRightFireShooting1Image");
@@ -770,6 +770,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			System.exit(1);
 		}
 		System.out.println("IMAGES SUCCESSFULLY LOADED!");
+		ThreadSafeGImage.initializeIDGenerator();
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, marioDeadImage,
@@ -888,6 +889,9 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		BillBlasterController.setCanvas(canvas);
 		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
 		else VirtualClientKeyboard.setCharacters(characters);
+		
+		
+		mario.setToFire();
 		LevelController.playLevel("5");
 		//LevelController.playLevel2();
 	}
