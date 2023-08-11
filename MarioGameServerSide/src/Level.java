@@ -12,7 +12,7 @@ public class Level {
 	//dynamicLevelParts is also for level parts that could be killed/removed from screen so would be
 	//inefficient to keep them in static levelParts (like coins for example)
 	//TODO make BadGuys and anything else that mario can kill/collect from level implement dynamic so that static levelParts
-	//TODO nly contains levelParts that will ALWAYS be part of level
+	//TODO only contains levelParts that will ALWAYS be part of level
 	//coins that come out of mysterybox, bricks etc are part of dynamicLevelParts
 	//and coins that float in the air are ALSO part of dynamicLevelParts since once they are collected by mario
 	//there is no point in keeping them in levelParts (static levelParts)
@@ -42,6 +42,10 @@ public class Level {
 				//System.out.println(messageToClient);
 				if (image instanceof Coin)
 					((Coin) image).startSpinning();
+				else if (image instanceof BadGuy)
+					((BadGuy) image).move();
+				else if (image instanceof PowerUp)
+					((PowerUp) image).move();
 			}
 		}
 		for (LevelPart l : levelParts) {
@@ -51,6 +55,7 @@ public class Level {
 				//System.out.println(messageToClient);
 			}
 		}		
+		//TODO could "activate" billblasters when level is instantiated for now it is activated before
 	}
 
 	public String getID() {
@@ -58,7 +63,7 @@ public class Level {
 	}
 
 	public void removeDynamic(Dynamic f) {
-		//removes Object that implements Dynamic (powerup and fireball for now) from dynamicLevelParts, 	
+		//removes Object that implement Dynamic from dynamicLevelParts, 	
 		if (dynamicLevelParts.get(f.getID())==null) {
 			//System.out.println("Tried to remove "+f.getID()+" from dynamicLevelParts");
 			return;
@@ -76,25 +81,31 @@ public class Level {
 		//this level could "scale" using pipes to connect different sub levels so each level doesnt become too long to move at once
 		Thread t1 = new Thread(new Runnable() {
 			@Override
-			public synchronized void run() {//not sure if synchronized is helping
+			public void run() {
 				//if (xBaseLine+dx<=0.0 && yBaseLine+dy>=0.0) {
-				for (int i=0; i<levelParts.size(); i++) {
-					levelParts.get(i).move(dx, dy);
-				}
-				for (DynamicLevelPart d : dynamicLevelParts.values()){
-					d.move(dx, dy);
-				}
-				for (Mario m : MovingObject.characters) {
-					if (m!=mario) m.moveOnlyMario(dx, dy);
-				}
-				xBaseLine+=dx;
-				yBaseLine+=dy;
+				moveLevelAsynchronously(dx, dy, mario);
 				//} else {System.out.println("MOVELEVEL");System.exit(1);}
 			}
 		});
 		t1.setName("moving level");
 		t1.start();
 	}
+	
+	private synchronized void moveLevelAsynchronously(double dx, double dy, Mario mario) {
+		for (int i=0; i<levelParts.size(); i++) {
+			levelParts.get(i).move(dx, dy);
+		}
+		for (DynamicLevelPart d : dynamicLevelParts.values()){
+			d.move(dx, dy);
+		}
+		for (Mario m : MovingObject.characters) {
+			if (m!=mario) m.moveOnlyMario(dx, dy);
+		}
+		xBaseLine+=dx;
+		yBaseLine+=dy;
+	}
+	
+	
 
 	public static void addLevelPartDynamically(ThreadSafeGImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
@@ -110,7 +121,7 @@ public class Level {
 			//System.out.println("ID for dynamic level part already used!");
 			System.exit(1);
 		}
-		dynamicLevelParts.put(newID, new DynamicLevelPart(l, newID));
+		dynamicLevelParts.put(newID, new DynamicLevelPart(l));//, newID));
 		((Dynamic) i).setID(newID);
 		//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
 		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");

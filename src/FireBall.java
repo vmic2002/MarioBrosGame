@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 import acm.graphics.GObject;
 
-class FireBall extends MovingObject implements Dynamic {
+public class FireBall extends MovingObject implements Dynamic {
 	//TODO fix bug where fireball moves weirdly when the level is moving (sometimes it moves too much when mario jumps/walks close to edges)
 	//TODO bug could be due to fireball being added/removed from levelParts while level is being moved (levelParts being looped through)
 	private static MyImage leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
@@ -26,7 +26,7 @@ class FireBall extends MovingObject implements Dynamic {
 	//helpful for using  Math.abs(getX()-hoppingX)%sizeOfHops; for hopping
 
 	public double speedFactor = 3.5;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
-	private long id;//to add/remove from dynamicLevelParts
+	private long dynamicId;//to add/remove from dynamicLevelParts
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
@@ -278,11 +278,11 @@ class FireBall extends MovingObject implements Dynamic {
 
 	@Override
 	public void setID(long id) {
-		this.id = id;
+		this.dynamicId = id;
 	}
 
 	@Override
 	public long getID() {
-		return id;
+		return this.dynamicId;
 	}
 }

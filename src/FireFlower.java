@@ -23,14 +23,4 @@ public class FireFlower extends PowerUp {
 		//not really needed since fire flower does not move
 		return false;
 	}
-
-	@Override
-	public void setID(long id) {
-		this.id = id;
-	}
-
-	@Override
-	public long getID() {
-		return id;
-	}
 }

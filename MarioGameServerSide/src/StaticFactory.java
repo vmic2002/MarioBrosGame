@@ -1,6 +1,6 @@
 import java.awt.Image;
 import java.util.ArrayList;
-
+import java.util.HashMap;
 
 import acm.graphics.GCanvas;
 import acm.graphics.GImage;
@@ -78,7 +78,7 @@ public class StaticFactory {
 	 * @param h height in number of images from top to bottom (expected >=2)
 
 	 */
-	public static double spawnGrassMountain(XCounter xCounter, double w, double h, LevelController.BADGUY_TYPE type, ArrayList<LevelPart> levelParts) {
+	public static double spawnGrassMountain(XCounter xCounter, double w, double h, LevelController.BADGUY_TYPE type, ArrayList<LevelPart> levelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		if (w<3) w=3;
 		if (h<2) h=2;
 		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();
@@ -115,15 +115,17 @@ public class StaticFactory {
 
 		if (type == LevelController.BADGUY_TYPE.RED_TURTLE) {
 			//TODO need to do green turtles too
-			RedTurtle turtle = new RedTurtle(width);
+			/*RedTurtle turtle = new RedTurtle(width);
 			canvas.add(turtle, xCounter.v, canvas.getHeight()-g1.getHeight()*h-turtle.getHeight());
 			images.add(turtle);
-			turtle.move();
+			turtle.move();*/
+			DynamicFactory.addRedTurtle(xCounter.v, canvas.getHeight()-g1.getHeight()*h, width, dynamicLevelParts);
 		} else if (type == LevelController.BADGUY_TYPE.GOOMBA) {
-			Goomba goomba = new Goomba();
+			/*Goomba goomba = new Goomba();
 			canvas.add(goomba, xCounter.v, canvas.getHeight()-g1.getHeight()*h-goomba.getHeight());
 			images.add(goomba);
-			goomba.move();
+			goomba.move();*/
+			DynamicFactory.addGoomba(xCounter.v, canvas.getHeight()-g1.getHeight()*h, dynamicLevelParts);
 		}
 		xCounter.v += width;
 		levelParts.add(new LevelPart(images));
@@ -141,7 +143,7 @@ public class StaticFactory {
 	 * @param levelParts to add every image to the currLevel
 	 * @return width of pipe
 	 */
-	public static double spawnUpPipe(XCounter xCounter, double h, LevelController.FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
+	public static double spawnUpPipe(XCounter xCounter, double h, LevelController.FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//TODO FIX BUG WHERE UP PIPE DOESNT RETURN CORRECT WIDTH, xCounter.v FOR LEVEL IS INCREMENTED PROPERLY
 		//SO MARIO CAN WALK PAST THE END OF THE LEVEL
 		//loophope around this problem: dont do xCounter.v += spawnUpPipe
@@ -170,12 +172,13 @@ public class StaticFactory {
 
 		if (flowerType == LevelController.FLOWER_TYPE.SHOOTING) {
 			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			ShootingFlower flower = new UpShootingFlower(timeOffset);
+			/*ShootingFlower flower = new UpShootingFlower(timeOffset);
 			double width = flower.getWidth();
 			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY());
 			flower.sendToBack();
 			images.add(flower);
-			flower.move();
+			flower.move();*/
+			DynamicFactory.addUpShootingFlower(topLeft.getX()+topLeft.getWidth(), topLeft.getY(), timeOffset, dynamicLevelParts);
 		}
 
 		levelParts.add(new LevelPart(images));
@@ -196,7 +199,7 @@ public class StaticFactory {
 	 * @param levelParts to add every image to the currLevel
 	 * @return width of pipe
 	 */
-	public static double spawnDownPipe(XCounter xCounter, double h, LevelController.FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts) {
+	public static double spawnDownPipe(XCounter xCounter, double h, LevelController.FLOWER_TYPE flowerType, int timeOffset, String subLevelID, ArrayList<LevelPart> levelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		if (h<2) h=2;
 		ArrayList<ThreadSafeGImage> images = new ArrayList<ThreadSafeGImage>();	
 		for (int i=0; i<h-1; i++) {
@@ -221,13 +224,14 @@ public class StaticFactory {
 
 		if (flowerType == LevelController.FLOWER_TYPE.SHOOTING) {
 			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			ShootingFlower flower = new DownShootingFlower(timeOffset);
+			/*ShootingFlower flower = new DownShootingFlower(timeOffset);
 			double width = flower.getWidth();
 			double height = flower.getHeight();
 			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY()+topLeft.getHeight()-height);
 			flower.sendToBack();
 			images.add(flower);
-			flower.move();
+			flower.move();*/
+			DynamicFactory.addDownShootingFlower(topLeft.getX()+topLeft.getWidth(), topLeft.getY()+topLeft.getHeight(), timeOffset, dynamicLevelParts);
 		}
 
 		levelParts.add(new LevelPart(images));
@@ -248,9 +252,10 @@ public class StaticFactory {
 	}
 
 	//spawns a down pipe on top of an up pipe, xCounter.v is modified only once
-	public static void spawnUpAndDownPipes(XCounter xCounter, double hUp, String subLevelIDUp, LevelController.FLOWER_TYPE tUp,  double hDown, String subLevelIDDown, LevelController.FLOWER_TYPE tDown, ArrayList<LevelPart> levelParts) {
-		double width = spawnDownPipe(xCounter, hDown, tDown, 0, subLevelIDDown, levelParts);
+	public static void spawnUpAndDownPipes(XCounter xCounter, double hUp, String subLevelIDUp, LevelController.FLOWER_TYPE tUp,  double hDown, String subLevelIDDown, LevelController.FLOWER_TYPE tDown, ArrayList<LevelPart> levelParts,
+			HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		double width = spawnDownPipe(xCounter, hDown, tDown, 0, subLevelIDDown, levelParts, dynamicLevelParts);
 		xCounter.v -= width;//so that down pipe is on top of up pipe
-		spawnUpPipe(xCounter, hUp, tUp, 0, subLevelIDUp, levelParts);
+		spawnUpPipe(xCounter, hUp, tUp, 0, subLevelIDUp, levelParts, dynamicLevelParts);
 	}
 }

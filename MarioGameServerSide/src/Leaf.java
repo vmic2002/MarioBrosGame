@@ -78,9 +78,7 @@ public class Leaf extends PowerUp {
 				//from the sides or vertically
 			}
 		}
-		alive = false;
-		canvas.remove(this);
-		LevelController.currLevel.removeDynamic(this);
+		kill();
 		System.out.println("end of move function for LEAF (DEAD)");
 	}
 
@@ -107,15 +105,5 @@ public class Leaf extends PowerUp {
 	public static void setObjects(MyImage rightLeafImage1, MyImage leftLeafImage1) {
 		rightLeafImage = rightLeafImage1;
 		leftLeafImage = leftLeafImage1;
-	}
-
-	@Override
-	public void setID(long id) {
-		this.id = id;
-	}
-
-	@Override
-	public long getID() {
-		return id;
 	}
 }

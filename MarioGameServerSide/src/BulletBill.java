@@ -3,10 +3,9 @@ import java.util.ArrayList;
 
 import acm.graphics.GObject;
 
-public class BulletBill extends BadGuy implements Dynamic {
+public class BulletBill extends BadGuy {
 	private static MyImage leftBulletBill, rightBulletBill;
 	private static long pause = 20;
-	private long id;//to add/remove from dynamicLevelParts
 	private static int MAX_GAS_LEFT = 500;
 	private static double MAX_DX = MovingObject.scalingFactor*1.3;
 	private int gasLeft;
@@ -17,16 +16,6 @@ public class BulletBill extends BadGuy implements Dynamic {
 		gasLeft = MAX_GAS_LEFT;
 		dx = rightOrLeft?MAX_DX:-MAX_DX;
 		jumpedOn = false;
-	}
-
-	@Override
-	public void setID(long id) {
-		this.id = id;
-	}
-
-	@Override
-	public long getID() {
-		return id;
 	}
 
 	@Override

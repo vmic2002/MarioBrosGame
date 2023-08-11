@@ -21,16 +21,6 @@ public class Tanooki extends PowerUp {
 		dx =  Math.random()>0.5?DX:-DX;
 	}
 
-	@Override
-	public void setID(long id) {
-		this.id = id;
-	}
-
-	@Override
-	public long getID() {
-		return id;
-	}
-
 	private void hop() {
 		double newX = getX()+dx;
 		double oldY = getY();
@@ -108,9 +98,7 @@ public class Tanooki extends PowerUp {
 			}
 
 		}
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		kill();
 		System.out.println("END OF MOVE FOR TANOOKI (DEAD)");
 	}
 

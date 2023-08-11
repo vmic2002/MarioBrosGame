@@ -118,9 +118,7 @@ public class Mushroom extends PowerUp {
 			}
 
 		}
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		kill();
 		System.out.println("END OF MOVE FOR MUSHROOM (DEAD)");
 	}
 
@@ -178,15 +176,5 @@ public class Mushroom extends PowerUp {
 
 	public static void setObjects(MyImage mushroomImage1) {
 		mushroomImage = mushroomImage1;
-	}
-
-	@Override
-	public void setID(long id) {
-		this.id = id;
-	}
-
-	@Override
-	public long getID() {
-		return id;
 	}
 }

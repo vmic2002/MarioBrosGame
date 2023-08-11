@@ -1106,22 +1106,22 @@ public class Mario extends MovingObject {
 			System.out.println("ITSA ME MARIO");
 		} else if (o instanceof Mushroom) {
 			System.out.println("ITS MUSHROOM");
-			canvas.remove(o);
+			((Mushroom) o).kill();
 			//if (!isFire && !isCat && !isTanooki) setToBig();//if mario is in flower mode, cat mode, or tanooki mode, dont want mushroom to make him big
 			if (!bigOrSmall) setToBig();//if mario is in flower mode, cat mode, or tanooki mode, dont want mushroom to make him big
 			SoundController.playPowerUpSound();
 		} else if (o instanceof FireFlower) {
-			canvas.remove(o);
+			((FireFlower) o).kill();
 			setToFire();
 			SoundController.playPowerUpSound();
 		} else if (o instanceof Leaf) {
 			System.out.println("HIT LEEAFFF");
-			canvas.remove(o);
+			((Leaf) o).kill();
 			setToCat();
 			SoundController.playPowerUpSound();
 		} else if (o instanceof Tanooki) {
 			System.out.println("HIT TANOOKI");
-			canvas.remove(o);
+			((Tanooki) o).kill();
 			setToTanooki();
 			SoundController.playPowerUpSound();
 		} else if (o instanceof Platform) {
@@ -1234,10 +1234,10 @@ public class Mario extends MovingObject {
 		} else if (o instanceof Coin) {
 			((Coin) o).collectedByMario(this);
 		}
-		if (o instanceof PowerUp) {
-			((PowerUp) o).alive = false;
-			LevelController.currLevel.removeDynamic((PowerUp) o);//mostly for FireFlower since every other power up would call this function after their alive field is set to false
-		}
+	//	if (o instanceof PowerUp) {
+	//		((PowerUp) o).alive = false;
+		//	LevelController.currLevel.removeDynamic((PowerUp) o);//mostly for FireFlower since every other power up would call this function after their alive field is set to false
+		//}
 		return false;
 	}
 

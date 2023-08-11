@@ -25,7 +25,8 @@ public class MyKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_0) {
-			StatsController.printAllStats();
+			//StatsController.printAllStats();
+			System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads
