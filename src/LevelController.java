@@ -28,10 +28,7 @@ public class LevelController {
 		for (int i=0; i<currLevel.levelParts.size(); i++) {
 			LevelPart l = currLevel.levelParts.get(i);
 			for (ThreadSafeGImage image : l.part) {
-				if (image instanceof MovingObject) {
-					((MovingObject) image).alive = false;
-					//to set all BadGuys (which are added to levelParts) to alive=false
-				} else if (image instanceof MysteryBox) {
+				if (image instanceof MysteryBox) {
 					((MysteryBox) image).setToFinalState();
 					//to set all MysteryBox (which are added to levelParts) to final state
 					System.out.println("mysterybox set to final state");
@@ -44,6 +41,7 @@ public class LevelController {
 				for (ThreadSafeGImage image : l.part) {
 					if (image instanceof MovingObject) {
 						((MovingObject) image).alive = false;
+						//TODO maybe need to call kill() here instead of setting alive to false?
 						//this fixes bug where power up/fireball/bulletbill from previous level is removed from canvas
 						//but when restarting level when mario walks into it it still affects him
 						//or dead fireball to kill turtles etc
@@ -97,7 +95,7 @@ public class LevelController {
 		//at the end of function XCounter will be the width of the level
 
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
-		
+
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 3, 3, BADGUY_TYPE.NO_BADGUY, levelParts, dynamicLevelParts);
@@ -230,12 +228,12 @@ public class LevelController {
 		ArrayList<LevelPart> levelParts = new ArrayList<LevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		//Level.addLevelPartDynamically(GImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
-	
+
 		//FOLLOWING LINE IS HOW TO ADD "FLOATING" COINS IN LEVEL
 		//to add 1 coin DynamicFactory.addFloatingCoin(xCounter.v+space, canvas.getHeight()/2, dynamicLevelParts);
-		
+
 		//to add 2x2 coins in a rectangle DynamicFactory.addFloatingCoins(xCounter.v+3*space, canvas.getHeight()/3, 2, 2, dynamicLevelParts);
-		
+
 		//DynamicFactory.addFloatingCoinsRectangle(xCounter.v+10*space, canvas.getHeight()/5, 5, 3, dynamicLevelParts);
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.NO_BADGUY, levelParts, dynamicLevelParts);
