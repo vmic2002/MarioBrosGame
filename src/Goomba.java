@@ -116,7 +116,6 @@ public class Goomba extends BadGuy {
 					leftOrRightFrequency++;
 					try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
 				}
-				kill();
 			}
 		});
 		t1.setName("goomba move");

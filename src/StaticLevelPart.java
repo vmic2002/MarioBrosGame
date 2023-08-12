@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import acm.graphics.GImage;
 
-public class LevelPart {
-	public ArrayList<Platform> part;//TODO MAYBE CHANGE LEVEL PART TO ONE GIMAGE NOT ARRAYLIST
-	public LevelPart(ArrayList<Platform> part){
+public class StaticLevelPart {
+	public ArrayList<Platform> part;
+	public StaticLevelPart(ArrayList<Platform> part){
 		this.part = part; 
 	}
 	public void move(double dx , double dy) {

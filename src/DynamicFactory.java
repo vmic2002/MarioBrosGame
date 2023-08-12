@@ -23,7 +23,7 @@ public class DynamicFactory {
 		t1.start();
 	}
 
-	private static void addPowerUp(double x, double y, double mysteryBoxWidth, MovingObject powerUp) {
+	private static void addPowerUp(double x, double y, double mysteryBoxWidth, PowerUp powerUp) {
 		//adds power up behing mystery box and makes it move up
 		//so it looks like power up is coming out of mysteryBox
 		Thread t1 = new Thread(new Runnable() {

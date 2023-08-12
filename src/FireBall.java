@@ -26,7 +26,7 @@ public class FireBall extends MovingObject implements Dynamic {
 	//helpful for using  Math.abs(getX()-hoppingX)%sizeOfHops; for hopping
 
 	public double speedFactor = 3.5;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
-	private long dynamicId;//to add/remove from dynamicLevelParts
+	//private long dynamicId;//to add/remove from dynamicLevelParts
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
@@ -191,10 +191,13 @@ public class FireBall extends MovingObject implements Dynamic {
 		kill();
 	}
 
+	@Override
 	public void kill() {
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		if (!LevelController.endingLevel()) {
+			canvas.remove(this);
+			alive = false;
+			LevelController.currLevel.removeDynamic(this);
+		}
 	}
 
 	private void hop() {
@@ -276,13 +279,10 @@ public class FireBall extends MovingObject implements Dynamic {
 		rightFireBall4 = rightFireBall4X;
 	}
 
-	@Override
-	public void setID(long id) {
-		this.dynamicId = id;
-	}
+	
 
 	@Override
 	public long getID() {
-		return this.dynamicId;
+		return this.getImageID();
 	}
 }

@@ -17,7 +17,7 @@ public abstract class ThreadSafeGImage extends GImage {
 	}
 	
 	public static void initializeIDGenerator() {
-		ID_GENERATOR = new AtomicLong();
+		ID_GENERATOR = new AtomicLong(0);
 	}
 	
 	

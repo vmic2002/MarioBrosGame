@@ -95,13 +95,13 @@ public class RedTurtle extends BadGuy {
 					//if (!alive || stopped) break;
 
 					//if (!alive || stopped) break;
-				//	previousPointWorked = false;
+					//	previousPointWorked = false;
 					ArrayList<GObject> o1 = checkAtPositions(pointsBelow);
 					for (GObject x : o1) {
 						if (inContactWith(x, false)) break;
 						//if (previousPointWorked) break;
 					}
-				//	previousPointWorked = false;
+					//	previousPointWorked = false;
 					ArrayList<GObject> o2 = checkAtPositions(pointsSide);
 					for (GObject x : o2) {
 						if (inContactWith(x, true)) break;
@@ -262,7 +262,7 @@ public class RedTurtle extends BadGuy {
 							Point[] arr = new Point[]{p1,p2,p3};
 							ArrayList<GObject> o = checkAtPositions(arr);
 							for (GObject x : o) {
-								
+
 								//super.inContactWith
 								if (x instanceof Mario) {
 									if (((Mario) x).flashing || !alive) break;
@@ -280,11 +280,11 @@ public class RedTurtle extends BadGuy {
 					if (shellMode) break;
 					changeDirection();
 				}
-				//alive is set to false by level controller when starting new level
-				if (!alive) {
+				if (!shellMode) {
 					kill();
 					System.out.println("Red turtle dead1");
 				}
+
 			}
 		});
 		t1.setName("red turtle moving NOT shell mode");

@@ -6,7 +6,7 @@ public class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
-	public long dynamicId;
+	//public long dynamicId;
 	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
 	private static int pauseBetweenStates = 150;
@@ -77,23 +77,22 @@ public class Coin extends MovingObject implements Dynamic{
 		canvas = canvas1;
 	}
 
-	@Override
-	public void setID(long id) {
-		this.dynamicId = id;
-	}
+
 
 	@Override
 	public long getID() {
-		return this.dynamicId;
+		return this.getImageID();
 	}
 
 	@Override
 	public void kill() {
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		if (!LevelController.endingLevel()) {
+			canvas.remove(this);
+			alive = false;
+			LevelController.currLevel.removeDynamic(this);
+		}
 	}
-	
+
 	@Override
 	public void move() {
 		//TODO the move function will be for coins retrieved from mysteryboxes+bricks (NOT floating coins)
@@ -106,5 +105,5 @@ public class Coin extends MovingObject implements Dynamic{
 		return false;
 	}
 
-		
+
 }
