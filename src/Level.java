@@ -8,15 +8,10 @@ public class Level {
 	//levelParts is never modified after the playLevelX() function
 	public HashMap<Long, DynamicLevelPart> dynamicLevelParts;
 	//dynamicLevelParts is buffer for level parts that need to be added dynamically 
-	//(while playing level) to level parts (fireballs, powerups, coins for example)
+	//(while playing level) to level parts (see Dynamic.java)
 	//dynamicLevelParts is also for level parts that could be killed/removed from screen so would be
 	//inefficient to keep them in static levelParts (like coins for example)
-	//TODO make BadGuys and anything else that mario can kill/collect from level implement dynamic so that static levelParts
-	//TODO only contains levelParts that will ALWAYS be part of level
-	//coins that come out of mysterybox, bricks etc are part of dynamicLevelParts
-	//and coins that float in the air are ALSO part of dynamicLevelParts since once they are collected by mario
-	//there is no point in keeping them in levelParts (static levelParts)
-	public static AtomicLong ID_GENERATOR = new AtomicLong();//Atomic for concurrency
+	public static AtomicLong ID_GENERATOR;//Atomic for concurrency, id of dynamic level parts, used for key of hashmap
 
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
 	//if yBaseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
@@ -33,14 +28,15 @@ public class Level {
 		this.width = width;
 		this.dynamicLevelParts = dynamicLevelParts;
 		//this.background = background;
+		ID_GENERATOR = new AtomicLong(0);//reset id to 0 so key values for hashmap dont become too big over time
 
-		//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
+
 		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
 			for (ThreadSafeGImage image : l.part) {
-				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
-				ServerToClientMessenger.sendMessage(messageToClient);
+				//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
+				ServerToClientMessenger.sendAddImageToScreenMessage(image);
 				//System.out.println(messageToClient);
-				if (image instanceof Coin)
+				if (image instanceof Coin)//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
 					((Coin) image).startSpinning();
 				else if (image instanceof BadGuy)
 					((BadGuy) image).move();
@@ -50,11 +46,11 @@ public class Level {
 		}
 		for (LevelPart l : levelParts) {
 			for (ThreadSafeGImage image :l.part) {
-				String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
-				ServerToClientMessenger.sendMessage(messageToClient);
+				//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
+				ServerToClientMessenger.sendAddImageToScreenMessage(image);
 				//System.out.println(messageToClient);
 			}
-		}		
+		}
 		//TODO could "activate" billblasters when level is instantiated for now it is activated before
 	}
 
@@ -90,7 +86,7 @@ public class Level {
 		t1.setName("moving level");
 		t1.start();
 	}
-	
+
 	private synchronized void moveLevelAsynchronously(double dx, double dy, Mario mario) {
 		for (int i=0; i<levelParts.size(); i++) {
 			levelParts.get(i).move(dx, dy);
@@ -104,8 +100,8 @@ public class Level {
 		xBaseLine+=dx;
 		yBaseLine+=dy;
 	}
-	
-	
+
+
 
 	public static void addLevelPartDynamically(ThreadSafeGImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
@@ -123,7 +119,7 @@ public class Level {
 		}
 		dynamicLevelParts.put(newID, new DynamicLevelPart(l));//, newID));
 		((Dynamic) i).setID(newID);
-		//	System.out.println("NEW DYNAMIC LEVEL PART ADDDED: "+newID);
+		System.out.println("~~~~~~~~~~~~NEW DYNAMIC LEVEL PART ADDDED: "+newID);
 		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 
 	}

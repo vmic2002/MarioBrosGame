@@ -31,7 +31,7 @@ public class SoundController {
 	private static void playSound(File f) {
 		if (runningOnTomcatServer) {
 			//send message to client to play sound on client side
-			ServerToClientMessenger.sendMessage("{\"type\": \"playSound\", \"soundName\": \""+f.getName()+"\" }");
+			ServerToClientMessenger.sendPlaySoundMessage(f.getName());
 			//{ "type": "playSound", "soundName": "Coin.wav" }
 		} else {
 			try{

@@ -11,7 +11,7 @@ public class DynamicFactory {
 	public static void setCanvas(MyGCanvas canvas1) {
 		canvas = canvas1;
 	}
-
+	
 	private static void addMovingObject(MovingObject movingObject) {
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
@@ -30,7 +30,7 @@ public class DynamicFactory {
 			public void run() {
 				LevelController.currLevel.addLevelPartDynamically(powerUp);
 				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
-				sendMessageToClient(powerUp);
+				ServerToClientMessenger.sendAddImageToScreenMessage(powerUp);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
 					powerUp.move(0, -MovingObject.scalingFactor/2.0);
@@ -49,20 +49,11 @@ public class DynamicFactory {
 	}
 
 
-
-
-
-	public static void sendMessageToClient(ThreadSafeGImage i) {
-		String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+i.getMyImageName()+"\", \"id\":\""+i.getImageID()+"\", \"x\":\""+i.getX()+"\", \"y\":\""+i.getY()+"\" }";
-		ServerToClientMessenger.sendMessage(messageToClient);
-		//System.out.println("DYNAMIC FAACTORY CREATED NEW IMAGE WITH ID: "+i.getImageID());
-	}
-
 	public static void addCoin(double x, double y) {
 		//TODO call this addCoin function when Mario jumps into mysterybox or brick
 		Coin coin = new Coin();
 		canvas.add(coin, x, y);
-		sendMessageToClient(coin);
+		ServerToClientMessenger.sendAddImageToScreenMessage(coin);
 		LevelController.currLevel.addLevelPartDynamically(coin);
 		addMovingObject(coin);
 	}
@@ -100,7 +91,7 @@ public class DynamicFactory {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		sendMessageToClient(fireBall);
+		ServerToClientMessenger.sendAddImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		addMovingObject(fireBall);
 	}
@@ -109,7 +100,7 @@ public class DynamicFactory {
 		//called when flower in pipe shoots a fireball at mario
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		sendMessageToClient(fireBall);
+		ServerToClientMessenger.sendAddImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		Thread t1 = new Thread(new Runnable() {
 			public void run() {
@@ -124,11 +115,13 @@ public class DynamicFactory {
 		//called when BillBlaster shoots a BulletBill
 		BulletBill bulletBill = new BulletBill(rightOrLeft);
 		canvas.add(bulletBill, x, y);
-		sendMessageToClient(bulletBill);
+		ServerToClientMessenger.sendAddImageToScreenMessage(bulletBill);
 		bulletBill.sendToBack();//spawns behind BillBlaster
 		LevelController.currLevel.addLevelPartDynamically(bulletBill);
 		addMovingObject(bulletBill);
 	}
+	
+	//functions below are called at level creation time and add levelparts to temp hashmap
 
 	public static void addGoomba(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//called at level creation time (in LevelController.playLevelX func)
@@ -214,4 +207,3 @@ public class DynamicFactory {
 	}
 
 }
-//TODO also maybe if user holds fireball key then the fireball could charge until it is really big  

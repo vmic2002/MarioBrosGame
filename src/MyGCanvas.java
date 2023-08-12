@@ -11,7 +11,7 @@ public class MyGCanvas extends GCanvas {
 	public void remove(GObject o){
 		super.remove(o);
 		try {
-			sendHideMessage((ThreadSafeGImage) o);
+			ServerToClientMessenger.sendRemoveImageFromScreenMessage(((ThreadSafeGImage) o).getImageID());
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -23,7 +23,7 @@ public class MyGCanvas extends GCanvas {
 		Iterator it = this.iterator();
 		try {
 			while (it.hasNext()) {
-				sendHideMessage((ThreadSafeGImage) it.next());
+				ServerToClientMessenger.sendRemoveImageFromScreenMessage(((ThreadSafeGImage) it.next()).getImageID());
 			}
 		}  catch (Exception e) {
 			e.printStackTrace();
@@ -32,13 +32,7 @@ public class MyGCanvas extends GCanvas {
 		super.removeAll();
 	}
 
-	private void sendHideMessage(ThreadSafeGImage i) {
-		String messageToClient = "{ \"type\": \"removeImageFromScreen\", \"id\": \""+i.getImageID()+"\"}";
-		ServerToClientMessenger.sendMessage(messageToClient);
-		System.out.println(messageToClient);
-	}
-
-	//instead of Override canvas.add(GObject o) to call ServerToClientMessenger.sendMessage 
-	//of type showImageAndSetlocation each time a GObject is added to the canvas, 
+	//instead of Override canvas.add(GObject o) to call ServerToClientMessenger.sendAddImageToScreenMessage 
+	//each time a GObject is added to the canvas, 
 	//a message is sent in the Level constructor when the level is being instantiated (images are added to canvas before level is instantiated)
 }

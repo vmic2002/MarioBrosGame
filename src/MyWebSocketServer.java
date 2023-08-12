@@ -96,7 +96,6 @@ public class MyWebSocketServer {
 	@OnClose
 	public void onClose(Session session) {
 		System.out.println("<<<<<<<WebSocket connection closed: " + session.getId());
-
 		// Remove the closed session from the activeSessions set
 		activeSessions.remove(session);
 	}

@@ -252,8 +252,8 @@ public class LevelController {
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
 			canvas.add(m, xPositions[i], 40);
-			String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
-			ServerToClientMessenger.sendMessage(messageToClient);
+			//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
+			ServerToClientMessenger.sendAddImageToScreenMessage(m);
 			Thread t1 = new Thread(new Runnable() {
 				@Override
 				public void run() {
