@@ -41,23 +41,14 @@ public class LevelController {
 		}
 
 		try {
-			//ArrayList<DynamicLevelPart> copy = new ArrayList<DynamicLevelPart>(currLevel.dynamicLevelParts.size());
-
 			for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
-				//	copy.add(l);
 				MovingObject image =  (MovingObject) l.part;
 				((MovingObject) image).alive = false;
-				//TODO COULD HAVE BUG WHERE SETTING ALIVE TO FALL WILL CAUSE MOVING OBJECT
-				//TODO TO CALL KILL FUNCTION WHICH WILL REMOVE THEM FROM DYNAMICLEVELPARTS MAP WHILE IT IS BEING LOOPED THROUGH
 				//this fixes bug where dynamiclevelpart from previous level is removed from canvas
 				//but when restarting level when mario walks into it it still affects him
 				//or dead fireball to kill turtles etc
 				System.out.println("dynamiclevelpart dead");
 			}
-			//for (DynamicLevelPart l: copy) {
-			//	MovingObject image =  (MovingObject) l.part;
-			//	((MovingObject) image).alive = false;
-			//}
 		} catch(Exception e) {
 			System.out.println("Error occured when ending current level and looping through dynamic level parts");
 			e.printStackTrace();

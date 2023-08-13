@@ -90,7 +90,7 @@ public abstract class ShootingFlower extends BadGuy {
 	}
 
 	public void move() {
-		//shootingflower.move() is called when shootingflower is added to levelParts
+		//shootingflower.move() is called when level is instantiated
 		//this func makes the flower move out of the pipe, shoot a fireball at mario,
 		//and come back into the pipe depending on if is a up/down shootingflower		
 		System.out.println("In move function for shooting flower");

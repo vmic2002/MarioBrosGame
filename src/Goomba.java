@@ -63,7 +63,6 @@ public class Goomba extends BadGuy {
 			public void run() {
 				System.out.println("In red turtle move function");
 				while (alive) {
-
 					if (getY()+dy>=canvas.getHeight()+LevelController.currLevel.yBaseLine){//!spinningOrFalling && 
 						//turtle dies if reaches bottom of screen
 						System.out.println("turtle at bottom of screen ");
@@ -116,6 +115,10 @@ public class Goomba extends BadGuy {
 					leftOrRightFrequency++;
 					try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
 				}
+				//no need for kill() function here since only 3 ways goomba dies:
+				//1. falls off screen, at beginning of while loop, kill func already called
+				//2. if fireball kills goomba, fireball calls kill func, while loop ends
+				//3. if end of level and levelcontroller sets goomba alive to =false, we dont want to call kill func
 			}
 		});
 		t1.setName("goomba move");

@@ -4,7 +4,6 @@ public interface Dynamic {
 	//for now FireBall, PowerUp, Coin, BadGuy implement Dynamic
 	//anything added to DynamicLevelPart implement Dynamic
 
-	//void setID(long id);
 	long getID();//Dynamic ID uses same ID as unique ThreadSafeGImage unique ID
 	void kill();
 	/*
