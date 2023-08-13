@@ -12,14 +12,14 @@ public class StaticFactory {
 	grassMiddleTopImage, grassLeftImage, grassRightImage, grassMiddleImage,
 	pipeUpTopLeftImage, pipeUpTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
 	pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
-	pipeDownTopLeftImage, pipeDownTopRightImage, billBlasterTopImage,
+	pipeDownTopLeftImage, pipeDownTopRightImage,// billBlasterTopImage,
 	billBlasterMiddleImage, billBlasterBottomImage;
 	
 	public static void setObjects(MyImage grassLeftTopImage1, MyImage grassRightTopImage1, MyImage grassMiddleTopImage1, 
 			MyImage grassLeftImage1, MyImage grassRightImage1, MyImage grassMiddleImage1,
 			MyImage pipeUpTopLeftImage1, MyImage pipeUpTopRightImage1, MyImage pipeDownMiddleLeftImage1, MyImage pipeDownMiddleRightImage1,
 			MyImage pipeDownTopLeftImage1, MyImage pipeDownTopRightImage1, MyImage pipeUpMiddleLeftImage1, MyImage pipeUpMiddleRightImage1,
-			MyImage billBlasterTopImage1, 
+			//MyImage billBlasterTopImage1, 
 			MyImage billBlasterMiddleImage1,
 			MyImage billBlasterBottomImage1,
 			MyGCanvas canvas1) {
@@ -37,7 +37,7 @@ public class StaticFactory {
 		pipeDownTopRightImage = pipeDownTopRightImage1;
 		pipeUpMiddleLeftImage = pipeUpMiddleLeftImage1;
 		pipeUpMiddleRightImage = pipeUpMiddleRightImage1;
-		billBlasterTopImage = billBlasterTopImage1; 
+		//billBlasterTopImage = billBlasterTopImage1; 
 		billBlasterMiddleImage = billBlasterMiddleImage1; 
 		billBlasterBottomImage = billBlasterBottomImage1;
 		canvas = canvas1;
@@ -57,13 +57,11 @@ public class StaticFactory {
 		canvas.add(g2, xCounter.v, canvas.getHeight()-(h-1)*g2.getHeight());
 		platforms.add(g2);
 		
-		Platform g3 = new Platform(billBlasterTopImage);
-		canvas.add(g3, xCounter.v, canvas.getHeight()-h*g2.getHeight());
-		platforms.add(g3);
+		BillBlasterTop billBlasterTop = new BillBlasterTop();//new Platform(billBlasterTopImage);
+		canvas.add(billBlasterTop, xCounter.v, canvas.getHeight()-h*g2.getHeight());
+		platforms.add(billBlasterTop);
 		
-		BillBlasterController.shoot(g3);
-		
-		double width = g3.getWidth();
+		double width = billBlasterTop.getWidth();
 		xCounter.v += width;
 		staticLevelParts.add(new StaticLevelPart(platforms));
 		return width;
@@ -115,16 +113,8 @@ public class StaticFactory {
 
 		if (type == LevelController.BADGUY_TYPE.RED_TURTLE) {
 			//TODO need to do green turtles too
-			/*RedTurtle turtle = new RedTurtle(width);
-			canvas.add(turtle, xCounter.v, canvas.getHeight()-g1.getHeight()*h-turtle.getHeight());
-			images.add(turtle);
-			turtle.move();*/
 			DynamicFactory.addRedTurtle(xCounter.v, canvas.getHeight()-g1.getHeight()*h, width, dynamicLevelParts);
 		} else if (type == LevelController.BADGUY_TYPE.GOOMBA) {
-			/*Goomba goomba = new Goomba();
-			canvas.add(goomba, xCounter.v, canvas.getHeight()-g1.getHeight()*h-goomba.getHeight());
-			images.add(goomba);
-			goomba.move();*/
 			DynamicFactory.addGoomba(xCounter.v, canvas.getHeight()-g1.getHeight()*h, dynamicLevelParts);
 		}
 		xCounter.v += width;
@@ -171,13 +161,6 @@ public class StaticFactory {
 		platforms.add(topRight);
 
 		if (flowerType == LevelController.FLOWER_TYPE.SHOOTING) {
-			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			/*ShootingFlower flower = new UpShootingFlower(timeOffset);
-			double width = flower.getWidth();
-			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY());
-			flower.sendToBack();
-			images.add(flower);
-			flower.move();*/
 			DynamicFactory.addUpShootingFlower(topLeft.getX()+topLeft.getWidth(), topLeft.getY(), timeOffset, dynamicLevelParts);
 		}
 
@@ -223,14 +206,6 @@ public class StaticFactory {
 		platforms.add(topRight);
 
 		if (flowerType == LevelController.FLOWER_TYPE.SHOOTING) {
-			//ShootingFlower is part of the same LevelPart as all the other images of the up Pipe
-			/*ShootingFlower flower = new DownShootingFlower(timeOffset);
-			double width = flower.getWidth();
-			double height = flower.getHeight();
-			canvas.add(flower, topLeft.getX()+topLeft.getWidth()-width/2, topLeft.getY()+topLeft.getHeight()-height);
-			flower.sendToBack();
-			images.add(flower);
-			flower.move();*/
 			DynamicFactory.addDownShootingFlower(topLeft.getX()+topLeft.getWidth(), topLeft.getY()+topLeft.getHeight(), timeOffset, dynamicLevelParts);
 		}
 

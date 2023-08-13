@@ -13,7 +13,6 @@ public class MysteryBox extends Platform {
 	public MysteryBox() {
 		super(mysteryBox1Image);
 		mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
-		changeState();
 	}
 
 	public void toggleState() {
@@ -36,7 +35,7 @@ public class MysteryBox extends Platform {
 		setImage(newImage);
 	}
 
-	public void changeState() {
+	public void startChangingState() {
 		//each mysterybox changes its pictures (changes state) in their own thread
 		Thread t1 = new Thread(new Runnable() {
 			@Override

@@ -16,7 +16,7 @@ public class LevelController {
 	public static enum BADGUY_TYPE {NO_BADGUY, RED_TURTLE, GREEN_TURTLE, GOOMBA};//type of bad guy on platform (such as grass mountain)
 	private static XCounter xCounter;
 	private static boolean endingLevel=false;
-	
+
 	public static boolean endingLevel() {return endingLevel;}
 
 	public static void setObjects(MyGCanvas canvas1, double scalingFactor) {canvas=canvas1;
@@ -27,26 +27,25 @@ public class LevelController {
 		//sets all moving objects of currLevel to dead
 		//sets all mysteryboxs to final state (so the thread that changes
 		//its state doesnt change picture of mysterybox from previous level)
+		//stops all billblastercontroller threads
 		System.out.println("ENDING CURR LEVEL");
 		//for (LevelPart l : currLevel.staticLevelParts) {
 		for (int i=0; i<currLevel.staticLevelParts.size(); i++) {
 			StaticLevelPart l = currLevel.staticLevelParts.get(i);
-			for (Platform platform : l.part) {
-				if (platform instanceof MysteryBox) {
-					((MysteryBox) platform).setToFinalState();
-					//to set all MysteryBox (which are added to staticLevelParts) to final state
-					System.out.println("mysterybox set to final state");
-				}
+			if (l.platforms.size()==1 && l.platforms.get(0) instanceof MysteryBox) {
+				((MysteryBox) l.platforms.get(0)).setToFinalState();
+				//to set all MysteryBox (which are added to staticLevelParts) to final state
+				System.out.println("mysterybox set to final state");
 			}
 		}
 
 		try {
 			for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
-				MovingObject image =  (MovingObject) l.part;
-				((MovingObject) image).alive = false;
+				((MovingObject) l.part).alive = false;
 				//this fixes bug where dynamiclevelpart from previous level is removed from canvas
 				//but when restarting level when mario walks into it it still affects him
 				//or dead fireball to kill turtles etc
+				//see Dynamic.java for more details
 				System.out.println("dynamiclevelpart dead");
 			}
 		} catch(Exception e) {
@@ -237,7 +236,7 @@ public class LevelController {
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
-		//StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
 		Level level5 = new Level("5", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel

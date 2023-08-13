@@ -30,10 +30,23 @@ public class Level {
 		this.dynamicLevelParts = dynamicLevelParts;
 		//this.background = background;
 
-		for (StaticLevelPart l : this.staticLevelParts)
-			for (Platform platform : l.part)
+		for (StaticLevelPart l : this.staticLevelParts) {
+			if (l.platforms.size()==1 && l.platforms.get(0) instanceof MysteryBox)
+				((MysteryBox) l.platforms.get(0)).startChangingState();//START CHANGING STATES FOR MYSTERYBOXES
+			else {
+				//in StaticFactory.spawnBillBlaster, BillBlasterTop is added at end of platforms arraylist
+				//for staticlevelpart.platforms, so need to check if last platforms in list is BillBlasterTop
+				//to "activate" billblasters when level is instantiated
+				Platform p = l.platforms.get(l.platforms.size()-1);
+				if (p instanceof BillBlasterTop) {
+					BillBlasterController.startShooting((BillBlasterTop) p);
+				}
+			}
+
+			for (Platform platform : l.platforms)
 				ServerToClientMessenger.sendAddImageToScreenMessage(platform);
-		
+		}
+
 		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
 			ThreadSafeGImage image = (ThreadSafeGImage) l.part;
 			ServerToClientMessenger.sendAddImageToScreenMessage(image);
@@ -44,8 +57,6 @@ public class Level {
 			else if (image instanceof PowerUp)
 				((PowerUp) image).move();
 		}
-		
-		//TODO could "activate" billblasters when level is instantiated for now it is activated before
 	}
 
 	public String getID() {
@@ -86,6 +97,7 @@ public class Level {
 			staticLevelParts.get(i).move(dx, dy);
 		}
 		for (DynamicLevelPart d : dynamicLevelParts.values()){
+			//TODO fix bug where sometimes dynamic level parts is being looped through to move level as a new dynamic level part is being added
 			d.move(dx, dy);
 		}
 		for (Mario m : MovingObject.characters) {
@@ -101,8 +113,8 @@ public class Level {
 		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
 		//TO ADD DYNAMICLEVEL PARTS LIKE COINS FOR EXAMPLE TO A TEMP HASHMAP BEFORE LEVEL IS INSTANTIATED
 		//if (!(i instanceof Dynamic)) {
-			//System.out.println("CAN ONLY ADD Objects who implement Dynamic");
-			//System.exit(1);
+		//System.out.println("CAN ONLY ADD Objects who implement Dynamic");
+		//System.exit(1);
 		//}
 		//ArrayList<ThreadSafeGImage> l = new ArrayList<ThreadSafeGImage>();
 		//l.add(i);

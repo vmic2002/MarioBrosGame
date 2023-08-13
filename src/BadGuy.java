@@ -1,5 +1,3 @@
-import java.awt.Image;
-
 import acm.graphics.GObject;
 
 public abstract class BadGuy extends MovingObject implements Dynamic {

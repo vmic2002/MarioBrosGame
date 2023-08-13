@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import acm.graphics.GImage;
 
 public class StaticLevelPart {
-	public ArrayList<Platform> part;
-	public StaticLevelPart(ArrayList<Platform> part){
-		this.part = part; 
+	public ArrayList<Platform> platforms;
+	public StaticLevelPart(ArrayList<Platform> platforms){
+		this.platforms = platforms; 
 	}
 	public void move(double dx , double dy) {
-		for (ThreadSafeGImage image: part) image.move(dx, dy);		
+		for (ThreadSafeGImage image: platforms) image.move(dx, dy);		
 	}
 }

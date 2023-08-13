@@ -1,7 +1,4 @@
-//import java.awt.Image;
 import java.util.ArrayList;
-
-//import acm.graphics.GCanvas;
 
 public class BillBlasterController{
 	//when level is spawned, everytime a BillBlaster is added to the level,
@@ -19,14 +16,13 @@ public class BillBlasterController{
 	System.out.println("\tTOTAL OF "+threads.size()+ " threads");}
 	//number of threads == number of BillBlaster in currLevel
 
-	public static void shoot(Platform p) {
+	public static void startShooting(BillBlasterTop p) {
 		//p is top of bill blaster (where BulletBill needs to be shot from)
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				try {Thread.sleep(pause);} catch (Exception e) {e.printStackTrace();}
 				//pause above is to wait for current level to be fully spawned
-				//since shoot function is called as level is being spawned
 				while (true) {
 					boolean rightOrLeft = Math.random()>0.5;
 					//TODO to shoot from both sides call addBulletBill twice, once with true and once with false (rightOrLeft)

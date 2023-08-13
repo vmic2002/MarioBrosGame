@@ -1,6 +1,4 @@
-import java.awt.Image;
 import java.util.ArrayList;
-
 import acm.graphics.GObject;
 
 public class BulletBill extends BadGuy {

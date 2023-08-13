@@ -258,13 +258,6 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String fireFlowerImagePath = prefix+imageDirectory+"/fireFlowerImage.png";
 		String leftLeafImagePath = prefix+imageDirectory+"/leftLeafImage.png";
 		String rightLeafImagePath = prefix+imageDirectory+"/rightLeafImage.png";
-		
-		
-		
-		
-		
-		
-		
 		String tanookiPowerUpPath = prefix+imageDirectory+"/tanookiPowerUp.png";
 
 
@@ -273,7 +266,6 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String mysteryBox3Path = prefix+imageDirectory+"/mysteryBox3.png";
 		String mysteryBox4Path = prefix+imageDirectory+"/mysteryBox4.png";
 		String mysteryBoxFinalPath = prefix+imageDirectory+"/mysteryBoxFinal.png";
-
 		
 		String grassLeftTopImagePath = prefix+imageDirectory+"/grassLeftTopImage.png";
 		String grassRightTopImagePath = prefix+imageDirectory+"/grassRightTopImage.png";
@@ -282,13 +274,6 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String grassRightImagePath = prefix+imageDirectory+"/grassRightImage.png";
 		String grassMiddleImagePath = prefix+imageDirectory+"/grassMiddleImage.png";
 
-		
-		
-		
-		
-		
-		
-		//
 		String pipeUpTopLeftPath = prefix+imageDirectory+"/pipeUpTopLeft.png";
 		String pipeUpTopRightPath = prefix+imageDirectory+"/pipeUpTopRight.png";
 		String pipeDownMiddleLeftPath = prefix+imageDirectory+"/pipeDownMiddleLeft.png";
@@ -882,9 +867,10 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		StaticFactory.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, 
 				pipeUpTopLeft, pipeUpTopRight, pipeDownMiddleLeft, pipeDownMiddleRight,
-				pipeDownTopLeft, pipeDownTopRight, pipeUpMiddleLeft, pipeUpMiddleRight,
-				billBlasterTop, billBlasterMiddle, billBlasterBottom,
+				pipeDownTopLeft, pipeDownTopRight, pipeUpMiddleLeft, 
+				pipeUpMiddleRight, billBlasterMiddle, billBlasterBottom,
 				canvas);
+		BillBlasterTop.setImage(billBlasterTop);
 		LevelController.setObjects(canvas, mario.scalingFactor);
 		BillBlasterController.setCanvas(canvas);
 		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
@@ -892,7 +878,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		
 		
 		mario.setToFire();
-		LevelController.playLevel("5");
+		LevelController.playLevel("1");
 		//LevelController.playLevel2();
 	}
 }
