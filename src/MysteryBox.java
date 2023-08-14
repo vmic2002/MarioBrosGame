@@ -40,14 +40,12 @@ public class MysteryBox extends Platform {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {
-					while (!stateIsFinal()) {
-						Thread.sleep(150);
-						toggleState();
-					}	
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+
+				while (!stateIsFinal()) {
+					ThreadSleep.sleep(15);
+					toggleState();
+				}	
+
 				System.out.println("END OF CHANGING STATE FOR MYSTERYBOX");
 			}
 		});
@@ -58,11 +56,11 @@ public class MysteryBox extends Platform {
 	public boolean stateIsFinal() {
 		return  mysteryBoxState == MYSTERYBOX_STATE.FINAL;
 	}
-	
+
 	public void setToFinalState() {
 		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
 	}
-	
+
 	public void hitByMario() {
 		//mushroom, coin, flower, leaf... is created by Factory object, not MysteryBox
 		setImage(mysteryBoxFinalImage);
@@ -70,7 +68,7 @@ public class MysteryBox extends Platform {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				double dy = -MovingObject.scalingFactor;
+				double dy = -MovingObject.getBaseLineSpeed();
 				move(dy);//move up
 				dy = -dy;
 				move(dy);//move down
@@ -83,11 +81,9 @@ public class MysteryBox extends Platform {
 	public void move(double dy) {
 		for (int i=0; i<10; i++) {
 			super.move(0, dy);
-			try {
-				Thread.sleep(30);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+
+			ThreadSleep.sleep(3);
+
 		}
 	}
 

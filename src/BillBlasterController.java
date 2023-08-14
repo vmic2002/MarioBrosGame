@@ -6,7 +6,7 @@ public class BillBlasterController{
 	//out of the BillBlaster (Platform p is to keep track of current position of BillBlaster)
 	//at start of level, LevelController calls startOfLevel()
 	//at end of level, LevelControlelr calls endOfLevel() to stop all threads from shooting more BulletBills
-	private static long pause = 1000;
+	private static long pause = 100;
 	private static ArrayList<Thread> threads;
 	private static MyGCanvas canvas;
 	public static void setCanvas(MyGCanvas canvas1) {canvas=canvas1;}
@@ -21,7 +21,7 @@ public class BillBlasterController{
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {Thread.sleep(pause);} catch (Exception e) {e.printStackTrace();}
+				ThreadSleep.sleep(pause);
 				//pause above is to wait for current level to be fully spawned
 				while (true) {
 					boolean rightOrLeft = Math.random()>0.5;
@@ -32,7 +32,7 @@ public class BillBlasterController{
 						DynamicFactory.addBulletBill(p.getX(), p.getY(), rightOrLeft);
 					}
 					//System.out.println("\n\nSHOOTING BULLET BILL\n\n\n");
-					try {Thread.sleep(5*pause);} catch (Exception e) {e.printStackTrace();}
+					ThreadSleep.sleep(5*pause);
 				}
 			}
 		});

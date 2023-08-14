@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	//fireball, mushroom, fire flower, leaf, mario, turtle, BulletBill extend MovingObject
 	public static MyGCanvas canvas;
-	public static double scalingFactor;
+	private static double baseLineSpeed;
 	public static Mario[] characters;
 	public boolean alive;
 
@@ -18,6 +18,9 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 		super(arg0);
 		alive = true;
 	}
+	
+	public static double getBaseLineSpeed() {return baseLineSpeed;}
+	public static void setBaseLineSpeed(double d) {baseLineSpeed = d;}
 	
 	public abstract void move();//called by factory class once added to canvas
 
@@ -54,9 +57,8 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 		this.setLocation(getX()-xShift, relativeY-this.getHeight());
 	}
 	
-	public static void setObjects(MyGCanvas canvas1, double scalingFactor1, Mario[] characters1) {
+	public static void setObjects(MyGCanvas canvas1, Mario[] characters1) {
 		canvas = canvas1;
-		scalingFactor = scalingFactor1;
 		characters = characters1;
 	}
 }

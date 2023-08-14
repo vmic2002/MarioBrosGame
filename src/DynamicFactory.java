@@ -33,12 +33,10 @@ public class DynamicFactory {
 				ServerToClientMessenger.sendAddImageToScreenMessage(powerUp);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
-					powerUp.move(0, -MovingObject.scalingFactor/2.0);
-					try {
-						Thread.sleep(15);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					powerUp.move(0, -MovingObject.getBaseLineSpeed()/2.0);
+					
+					ThreadSleep.sleep(2);
+					
 				}
 				powerUp.setLocation(powerUp.getX(), y-powerUp.getHeight());
 				powerUp.move();

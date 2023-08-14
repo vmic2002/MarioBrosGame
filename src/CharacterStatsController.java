@@ -3,7 +3,7 @@ import java.util.HashMap;
 
 
 
-public class StatsController {
+public class CharacterStatsController {
 	//keeps track of score, number of lives, powerups in reserve , num coins for each character
 	
 	private static final int pointsKillTurtleByFireball = 100;

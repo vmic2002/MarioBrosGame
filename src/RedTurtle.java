@@ -16,7 +16,7 @@ public class RedTurtle extends BadGuy {
 	private boolean standingOrWalking;
 	private double dx;
 	private double dy;//used when !spinningOrFalling
-	private static final double DY = MovingObject.scalingFactor*0.9;
+	private static final double DY = MovingObject.getBaseLineSpeed()*0.9;
 	private int numMovesToReachEdge;//num moves until turtle reaches edge of platform and needs to turn around
 	public boolean shellMode;//true if in shell (not standing)
 	public boolean spinningOrFalling;//true if spinning (shell mode and moving on platform)
@@ -36,7 +36,7 @@ public class RedTurtle extends BadGuy {
 		rightOrLeft = true;
 		standingOrWalking = true;
 		walkingFrequency = 0;
-		dx = MovingObject.scalingFactor*0.7;
+		dx = MovingObject.getBaseLineSpeed()*0.5;
 		numMovesToReachEdge = ((int) ((width-this.getWidth())/dx));
 		shellMode = false;
 	}
@@ -114,7 +114,7 @@ public class RedTurtle extends BadGuy {
 						changeState();
 						spinningFrequency = 0;
 					}
-					try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
+					ThreadSleep.sleep(3);
 				}
 				if (!alive) {
 					kill();
@@ -275,7 +275,7 @@ public class RedTurtle extends BadGuy {
 
 						//TODO also need to check if turtle runs into a power up etc (maybe change that in incontact func of badguy)
 						walkingFrequency++;
-						try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
+						ThreadSleep.sleep(3);
 					}
 					if (shellMode) break;
 					changeDirection();

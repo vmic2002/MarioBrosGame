@@ -26,9 +26,10 @@ public class MyKeyListener implements KeyListener {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_0) {
 			//StatsController.printAllStats();
-			System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
-			Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
-			System.out.println("Number of threads: "+threads.keySet().size());
+			//System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
+			//Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
+			//System.out.println("Number of threads: "+threads.keySet().size());
+			GameStatsController.setBaseLinePause(GameStatsController.getBaseLinePause()*2);
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads

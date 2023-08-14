@@ -7,8 +7,8 @@ public class Goomba extends BadGuy {
 	//TODO could make goomba implement Dynamic and have a pipe that pumps out goomba periodically
 	private static MyImage goombaRight, goombaLeft, goombaSquished;
 	private static final int LEFT_OR_RIGHT_FREQUENCY = 5;//>0 num times move function is called before goomba toggles left to right image
-	private static final double DY = MovingObject.scalingFactor*1.4;
-	private static final double DX = MovingObject.scalingFactor*0.9;
+	private static final double DY = MovingObject.getBaseLineSpeed()*1.2;
+	private static final double DX = MovingObject.getBaseLineSpeed()*0.7;
 	private int leftOrRightFrequency;
 	private boolean leftOrRightImage;//true if goombaLeft image false if goombaRight image
 	private double dx;
@@ -37,7 +37,7 @@ public class Goomba extends BadGuy {
 	@Override
 	public void jumpedOnByMario(Mario mario) {
 		if (!this.alive) return;
-		StatsController.killGoombaByJumpingOnIt(mario);
+		CharacterStatsController.killGoombaByJumpingOnIt(mario);
 		this.alive = false;
 		setImageAndRelocate(goombaSquished);
 		SoundController.playSquishSound();
@@ -45,7 +45,7 @@ public class Goomba extends BadGuy {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+				ThreadSleep.sleep(30);
 				//thread sleeps to let goomba stay squished for a little bit before being removed from canvas
 				kill();
 			}
@@ -113,7 +113,7 @@ public class Goomba extends BadGuy {
 
 					if (leftOrRightFrequency==LEFT_OR_RIGHT_FREQUENCY) toggleRightOrLeft();
 					leftOrRightFrequency++;
-					try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
+					ThreadSleep.sleep(3);
 				}
 				//no need for kill() function here since only 3 ways goomba dies:
 				//1. falls off screen, at beginning of while loop, kill func already called

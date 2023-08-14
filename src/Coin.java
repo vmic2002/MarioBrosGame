@@ -9,7 +9,7 @@ public class Coin extends MovingObject implements Dynamic{
 	//public long dynamicId;
 	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
-	private static int pauseBetweenStates = 150;
+	private static int pauseBetweenStates = 15;
 	private enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
 	//"collected" state means Mario collected the coin and it should be removed from the canvas as well as the dynamicLevelParts
 	COIN_STATE coinState;
@@ -52,7 +52,7 @@ public class Coin extends MovingObject implements Dynamic{
 	public void changeState() {
 		try {
 			while (!collected() && alive) {
-				Thread.sleep(pauseBetweenStates);
+				ThreadSleep.sleep(pauseBetweenStates);
 				toggleState();
 			}	
 		} catch (Exception e) {
@@ -65,7 +65,7 @@ public class Coin extends MovingObject implements Dynamic{
 	public void collectedByMario(Mario mario) {
 		//THIS IS FOR FLOATING COINS
 		if (collected()) return;
-		StatsController.collectCoin(mario);
+		CharacterStatsController.collectCoin(mario);
 		coinState = COIN_STATE.COLLECTED;
 		SoundController.playCoinSound();
 	}

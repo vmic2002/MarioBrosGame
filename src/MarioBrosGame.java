@@ -756,6 +756,12 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		}
 		System.out.println("IMAGES SUCCESSFULLY LOADED!");
 		ThreadSafeGImage.initializeIDGenerator();
+		
+		
+	
+		
+		GameStatsController.setBaseLinePause(10);
+		
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, marioDeadImage,
@@ -838,8 +844,27 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
 		characters[1] = mario;
-		StatsController.initializeStats(characters);
-		MovingObject.setObjects(canvas, mario.scalingFactor, characters);
+		
+		GameStatsController.setCharacters(mario, luigi);
+		
+		int fallDy = (int) (smallMarioLeftImage.getHeight(canvas)/(10.0));
+		GameStatsController.setMarioFallDy(fallDy);
+		GameStatsController.setMarioMoveDx(1.5*fallDy);
+		GameStatsController.setLuigiFallDy(fallDy);
+		GameStatsController.setLuigiMoveDx(1.5*fallDy);
+		
+		GameStatsController.setMovingObjectBaseLineXSpeed(1.5*fallDy);
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		CharacterStatsController.initializeStats(characters);
+		MovingObject.setObjects(canvas, characters);
 		Coin.setObjects(coin1, coin2, coin3, canvas);
 		Goomba.setObjects(goombaRight, goombaLeft, goombaSquished);
 		BulletBill.setObjects(leftBulletBill, rightBulletBill);
@@ -871,14 +896,14 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				pipeUpMiddleRight, billBlasterMiddle, billBlasterBottom,
 				canvas);
 		BillBlasterTop.setImage(billBlasterTop);
-		LevelController.setObjects(canvas, mario.scalingFactor);
+		LevelController.setObjects(canvas);
 		BillBlasterController.setCanvas(canvas);
 		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
 		else VirtualClientKeyboard.setCharacters(characters);
 		
 		
 		mario.setToFire();
-		LevelController.playLevel("1");
+		LevelController.playLevel("5");
 		//LevelController.playLevel2();
 	}
 }

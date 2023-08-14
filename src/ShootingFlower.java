@@ -8,7 +8,7 @@ public abstract class ShootingFlower extends BadGuy {
 	//UpShootingFlower comes in and out of Up Pipe, down pipe for downShootingFlower
 	//shootingflower is added to level parts when creating/spawning an up/down pipe
 	//shootingflower is part of the same level part as an up/down pipe
-	private static final double DY = MovingObject.scalingFactor*1.33;
+	private static final double DY = MovingObject.getBaseLineSpeed()*1.33;
 	private int numMoves;
 	public double dy;
 	public int timeOffset;
@@ -25,7 +25,7 @@ public abstract class ShootingFlower extends BadGuy {
 	public void jumpedOnByMario(Mario mario) {mario.marioHit();}
 	@Override
 	public void contactFromSideByMario(Mario mario) {mario.marioHit();}
-	
+
 	public abstract void lookDownClosedMouth(boolean rightOrLeft);
 	public abstract void lookDownOpenMouth(boolean rightOrLeft);
 	public abstract void lookUpClosedMouth(boolean rightOrLeft);
@@ -42,14 +42,18 @@ public abstract class ShootingFlower extends BadGuy {
 	public abstract Point[] getPoints();
 
 	public Mario getClosestMario() {
+		//TODO for some reason getClosestMario doesnt work anymore
 		int index = 0;
 		double smallestDistance = 10^9;//SHOULD BE DOUBLE.MAX_VALUE
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
+		//	System.out.println("!!!!!!!!LOOp AT: "+m.character);
 			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));
+		//	System.out.println(d);
 			if (d<smallestDistance) {
 				index = i;
 				smallestDistance = d;
+				
 			}
 		}
 		return MovingObject.characters[index];
@@ -59,8 +63,10 @@ public abstract class ShootingFlower extends BadGuy {
 		//flower needs to locate mario and shoot fireball at him (in a straight line)
 		//TODO could add sound when shooting flower shoot fireball at mario
 		Mario mario = getClosestMario();
+		
+		//System.out.println("!!!!!!!!SHOOTING AT: "+mario.character);
 		boolean rightOrLeft;
-		boolean upOrDown = mario.getY()<getY()+MovingObject.scalingFactor;
+		boolean upOrDown = mario.getY()<getY()+MovingObject.getBaseLineSpeed();
 		if (mario.getX()<getX()) {
 			rightOrLeft = false;
 		} else {
@@ -68,12 +74,12 @@ public abstract class ShootingFlower extends BadGuy {
 		}
 		//need to make shooting flower look towards mario with a closed mouth
 		closeMouth(upOrDown, rightOrLeft);
-		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
+		ThreadSleep.sleep(50);
 		//need to open the mouth of the shooting flower
 		openMouth(upOrDown, rightOrLeft);
-		double fireBallX = rightOrLeft?getX()+getWidth()+MovingObject.scalingFactor*1.0:getX()-MovingObject.scalingFactor*5.0;
-		double fireBallY = (this instanceof DownShootingFlower)?getY()+getHeight()-(upOrDown?9.0:1.0)*MovingObject.scalingFactor:
-			getY()+(upOrDown?0.0:5.0)*MovingObject.scalingFactor;
+		double fireBallX = rightOrLeft?getX()+getWidth()+MovingObject.getBaseLineSpeed()*1.0:getX()-MovingObject.getBaseLineSpeed()*5.0;
+		double fireBallY = (this instanceof DownShootingFlower)?getY()+getHeight()-(upOrDown?9.0:1.0)*MovingObject.getBaseLineSpeed():
+			getY()+(upOrDown?0.0:5.0)*MovingObject.getBaseLineSpeed();
 		if (!alive) {
 			closeMouth(upOrDown, rightOrLeft);
 			return;
@@ -85,7 +91,7 @@ public abstract class ShootingFlower extends BadGuy {
 			//flower still comes out of pipe when off screen to preserve timeOffset
 		}
 		//factory calls the fireball function to move the fireball towards mario (in a straight line)
-		try{Thread.sleep(500);} catch(Exception e) {e.printStackTrace();}
+		ThreadSleep.sleep(50);
 		closeMouth(upOrDown, rightOrLeft);		
 	}
 
@@ -97,35 +103,33 @@ public abstract class ShootingFlower extends BadGuy {
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				try {Thread.sleep(timeOffset);}catch (Exception e) {e.printStackTrace();}
+				ThreadSleep.sleep(timeOffset);
 				while (alive) {
-					try {
-						for (int i=0; i<numMoves; i++) {
-							ArrayList<GObject> o1 = checkAtPositions(getPoints());
-							for (GObject x : o1) {
-								inContactWith(x, false);
-							}
-							move(0, dy);
-							//flower comes out of pipe
-							Thread.sleep(40);
+
+					for (int i=0; i<numMoves; i++) {
+						ArrayList<GObject> o1 = checkAtPositions(getPoints());
+						for (GObject x : o1) {
+							inContactWith(x, false);
 						}
-						Thread.sleep(500);
-						if (!alive) break;
-						shootMario();
-						if (!alive) break;
-						for (int i=0; i<numMoves; i++) {
-							ArrayList<GObject> o1 = checkAtPositions(getPoints());
-							for (GObject x : o1) {
-								inContactWith(x, false);
-							}
-							move(0, -dy);
-							//flower goes back into pipe
-							Thread.sleep(40);
-						}
-						Thread.sleep(4000);
-					} catch (Exception e) {
-						e.printStackTrace();
+						move(0, dy);
+						//flower comes out of pipe
+						ThreadSleep.sleep(4);
 					}
+					ThreadSleep.sleep(50);
+					if (!alive) break;
+					shootMario();
+					if (!alive) break;
+					for (int i=0; i<numMoves; i++) {
+						ArrayList<GObject> o1 = checkAtPositions(getPoints());
+						for (GObject x : o1) {
+							inContactWith(x, false);
+						}
+						move(0, -dy);
+						//flower goes back into pipe
+						ThreadSleep.sleep(4);
+					}
+					ThreadSleep.sleep(400);
+
 				}
 				//alive is set to false by level controller when starting new level
 				kill();

@@ -5,14 +5,14 @@ import acm.graphics.GObject;
 
 public class Tanooki extends PowerUp {
 	private static MyImage tanookiImage;
-	private static final double DY = MovingObject.scalingFactor*1.2;
-	private static final double DX = MovingObject.scalingFactor*0.2;
-	private static final int pauseTime = 5;
+	private static final double DY = MovingObject.getBaseLineSpeed()*1.2;
+	private static final double DX = MovingObject.getBaseLineSpeed()*0.2;
+	private static final double pauseTime = 0.5;
 	private double dx;
 	//private boolean previousPointWorked;
 	public double yBaseline;
 	public double xBaseline;
-	private static final double maxHeightOfJump = MovingObject.scalingFactor*20.0;
+	private static final double maxHeightOfJump = MovingObject.getBaseLineSpeed()*20.0;
 	private static final double lengthOfJumpFactor = 0.01;//>0, closer to 0 means quadratic will be wider (wider hops)
 	private static final double xOffset = Math.sqrt(maxHeightOfJump/lengthOfJumpFactor);
 	//Tanooki bounces in quadratic motion, x/yBaseline to keep track of where he started hopping
@@ -39,12 +39,9 @@ public class Tanooki extends PowerUp {
 
 	@Override
 	public void move() {
-		try {
-			Thread.sleep(300);
-			//to wait for mysterybox to stop moving up/down
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+			ThreadSleep.sleep(30);
+		
 		System.out.println("Tanooki ADDED");
 
 		setBaselines();
@@ -91,11 +88,9 @@ public class Tanooki extends PowerUp {
 				if (inContactWith(x, false)) break;
 			}
 			hop();
-			try {
-				Thread.sleep(pauseTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
+			ThreadSleep.sleep(pauseTime);
+			
 
 		}
 		kill();

@@ -8,9 +8,9 @@ public class Mushroom extends PowerUp {
 	private static MyImage mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
-	private static final double DY = MovingObject.scalingFactor;
-	private static final double DX = MovingObject.scalingFactor*0.7;
-	private static final int pauseTime = 10;
+	private static final double DY = MovingObject.getBaseLineSpeed();
+	private static final double DX = MovingObject.getBaseLineSpeed()*0.5;
+	private static final int pauseTime = 1;
 	private double dx;
 	private double dy;
 	private boolean rightOrLeft;
@@ -29,12 +29,10 @@ public class Mushroom extends PowerUp {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
 		//TODO there is bug where if mario jumps so high that the level moves up and down,
 		//the mushroom moves weird (goes down into a platform or changes direction)
-		try {
-			Thread.sleep(250);
+		
+			ThreadSleep.sleep(25);
 			//to wait for mysterybox to stop moving up/down
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 		
 		System.out.println("ADDED MUSHROOM");
 		
@@ -49,11 +47,9 @@ public class Mushroom extends PowerUp {
 				//mushroom is still on top of mysterybox
 				//System.out.println("MUSHROOM ON TOP OF MYSTERYBOX");
 				move(dx, 0);
-				try {
-					Thread.sleep(pauseTime);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+				
+					ThreadSleep.sleep(pauseTime);
+				
 			} else {
 				//mushroom is no longer on top of mysterybox
 				stillOnMysteryBox = false;
@@ -111,11 +107,9 @@ public class Mushroom extends PowerUp {
 					if (inContactWith(x, false)) break;
 				}
 			}
-			try {
-				Thread.sleep(pauseTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
+				ThreadSleep.sleep(pauseTime);
+		
 
 		}
 		kill();

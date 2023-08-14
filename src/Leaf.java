@@ -1,14 +1,13 @@
-import acm.graphics.GCanvas;
-import acm.graphics.GImage;
+
 import acm.graphics.GObject;
 
-import java.awt.Image;
+
 import java.util.ArrayList;
 public class Leaf extends PowerUp {
 	private static MyImage leftLeafImage, rightLeafImage;
-	private static double DX = MovingObject.scalingFactor*0.8;
-	private static double DY = MovingObject.scalingFactor*0.6;
-	private static int pauseTime = 35;
+	private static double DX = MovingObject.getBaseLineSpeed()*0.8;
+	private static double DY = MovingObject.getBaseLineSpeed()*0.6;
+	private static double pauseTime = 3.5;
 	private static int toggleCounter = 14;//every <toggleCounter> times leaf moves it toggles direction
 	private boolean rightOrLeft;
 	private double dx, dy;
@@ -27,24 +26,20 @@ public class Leaf extends PowerUp {
 		setImageAndRelocate(newImage);
 		rightOrLeft = !rightOrLeft;
 		dx = rightOrLeft?DX:-DX;
-		try {
-			Thread.sleep(5*pauseTime);
+		
+			ThreadSleep.sleep(5*pauseTime);
 			//leaf pauses while changing direction
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
 	}
 
 	@Override
 	public void move() {
 		this.sendToFront();
 		for (int i=0; i<15 && alive; i++) {
-			move(0, -MovingObject.scalingFactor);
-			try {
-				Thread.sleep(15);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			move(0, -MovingObject.getBaseLineSpeed());
+			
+				ThreadSleep.sleep(1.5);
+			
 		}
 		System.out.println("ADDED LEAF");
 		while (alive && getY()<=canvas.getHeight()+LevelController.currLevel.yBaseLine) {
@@ -59,11 +54,9 @@ public class Leaf extends PowerUp {
 			else dx-=2;
 			toggle++;
 			move(dx, dy);
-			try {
-				Thread.sleep(pauseTime);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			
+				ThreadSleep.sleep(pauseTime);
+			
 			double newX = rightOrLeft?getX()+getWidth()+dx:getX()+dx;//+dx because dx == -10
 			Point[] points = new Point[] {
 					new Point(newX, getY()),

@@ -3,9 +3,9 @@ import acm.graphics.GObject;
 
 public class BulletBill extends BadGuy {
 	private static MyImage leftBulletBill, rightBulletBill;
-	private static long pause = 20;
+	private static long pause = 2;
 	private static int MAX_GAS_LEFT = 500;
-	private static double MAX_DX = MovingObject.scalingFactor*1.3;
+	private static double MAX_DX = MovingObject.getBaseLineSpeed()*1.3;
 	private int gasLeft;
 	private double dx;
 	private boolean jumpedOn;//true when jumped on by mario
@@ -24,7 +24,7 @@ public class BulletBill extends BadGuy {
 		//called when mario jumps on BulletBill
 		mario.hop();
 		if (jumpedOn) return;
-		StatsController.killBulletBillByJumpingOnIt(mario);
+		CharacterStatsController.killBulletBillByJumpingOnIt(mario);
 		jumpedOn = true;
 		this.sendToFront();
 		Thread t1 = new Thread(new Runnable() {
@@ -34,7 +34,7 @@ public class BulletBill extends BadGuy {
 					move(dx, 0.5*MAX_DX);
 					checkIfRunIntoSomething();
 					//TODO falling bulletbill doesnt check below when falling
-					try {Thread.sleep(pause);} catch (Exception e) {e.printStackTrace();}
+					ThreadSleep.sleep(pause);
 				}
 				kill();
 			}
@@ -64,7 +64,7 @@ public class BulletBill extends BadGuy {
 			//System.out.println("\n\nBULLET BILL MOVING\n\n");
 			gasLeft--;
 			checkIfRunIntoSomething();
-			try {Thread.sleep(pause);} catch (Exception e) {e.printStackTrace();}
+			ThreadSleep.sleep(pause);
 		}
 		if (gasLeft<=0 || !alive) this.kill();
 		System.out.println("\n\nBulletBill END OF MOVE\n\n");

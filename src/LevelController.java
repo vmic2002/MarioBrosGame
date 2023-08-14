@@ -19,8 +19,8 @@ public class LevelController {
 
 	public static boolean endingLevel() {return endingLevel;}
 
-	public static void setObjects(MyGCanvas canvas1, double scalingFactor) {canvas=canvas1;
-	space = scalingFactor*10.0;xCounter = new XCounter();}
+	public static void setObjects(MyGCanvas canvas1) {canvas=canvas1;
+	space = MovingObject.getBaseLineSpeed()*10.0;xCounter = new XCounter();}
 
 	public static void endCurrentLevel() {
 		endingLevel = true;
