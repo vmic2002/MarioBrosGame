@@ -39,9 +39,9 @@ public class Tanooki extends PowerUp {
 
 	@Override
 	public void move() {
-		
-			ThreadSleep.sleep(30);
-		
+
+		ThreadSleep.sleep(30);
+
 		System.out.println("Tanooki ADDED");
 
 		setBaselines();
@@ -88,9 +88,9 @@ public class Tanooki extends PowerUp {
 				if (inContactWith(x, false)) break;
 			}
 			hop();
-			
+
 			ThreadSleep.sleep(pauseTime);
-			
+
 
 		}
 		kill();
@@ -141,12 +141,19 @@ public class Tanooki extends PowerUp {
 			}
 			return true;
 		} else if (x instanceof Mario) {
-			if (!((Mario) x).alive) {
+			Mario m = (Mario) x;
+			if (!m.alive) {
 				return true;
 			}
 			canvas.remove(this);
 			SoundController.playPowerUpSound();
-			((Mario) x).setToTanooki();
+
+
+			if (m.isTimeDilating)
+				m.stopTimeDilationForAllCharacters(m);
+
+
+			m.setToTanooki();
 			alive = false;
 			System.out.println("Tanooki HIT MARIO");
 			return true;

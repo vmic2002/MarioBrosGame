@@ -25,11 +25,14 @@ public class MyKeyListener implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_0) {
-			//StatsController.printAllStats();
+			//CharacterStatsController.printAllStats();
 			//System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
-			//Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
+			Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
 			//System.out.println("Number of threads: "+threads.keySet().size());
-			GameStatsController.setBaseLinePause(GameStatsController.getBaseLinePause()*2);
+			//GameStatsController.setToLongPause();
+			System.out.print("Time dilating: ");
+			for (Mario m:characters) System.out.print(m.isTimeDilating+ " ");
+			System.out.println();
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads
@@ -38,12 +41,12 @@ public class MyKeyListener implements KeyListener {
 			System.out.println("Number of threads: "+threads.keySet().size());
 			System.out.printf("\t%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
 			for (Thread t : threads.keySet()) {
-			    System.out.printf("\t%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
+				System.out.printf("\t%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());
 			}
 			System.out.println("Number of threads: "+threads.keySet().size());
 			System.out.println("\n\n");
 		}
-		
+
 		if (keyCode == KeyEvent.VK_1) {
 			for (Mario m : characters) m.setToSmall();
 		} else if (keyCode == KeyEvent.VK_2) {
@@ -54,6 +57,11 @@ public class MyKeyListener implements KeyListener {
 			for (Mario m : characters) m.setToCat();
 		} else if (keyCode == KeyEvent.VK_5) {
 			for (Mario m : characters) m.setToTanooki();
+		}  else if (keyCode == KeyEvent.VK_6) {
+			for (Mario m:MovingObject.characters)
+				m.setToTimeDilating();//every mario character luigi, peach etc is set to time dilating as well	
+			GameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
+
 		}  else {
 			if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT ||
 					keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_K || keyCode == KeyEvent.VK_UP) {

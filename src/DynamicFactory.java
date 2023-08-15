@@ -82,7 +82,13 @@ public class DynamicFactory {
 		Tanooki tanooki = new Tanooki();
 		addPowerUp(x, y, mysteryBoxWidth, tanooki);
 	}
-
+	
+	
+	public static void addHourglass(double x, double y, double mysteryBoxWidth) {
+		//x, y are coordinates of MysteryBox
+		Hourglass hourglass = new Hourglass();
+		addPowerUp(x, y, mysteryBoxWidth, hourglass);
+	}
 
 
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {

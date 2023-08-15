@@ -39,7 +39,26 @@ public class Mario extends MovingObject {
 	tanookiMarioRightJumpingCatTail2Image,
 	tanookiMarioCatTail1Image, tanookiMarioLeftCatTail2Image,
 	tanookiMarioRightCatTail2Image, tanookiMarioCatTail3Image,
-	smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage;
+	smallMarioPipeImage, bigMarioPipeImage, fireMarioPipeImage,
+
+	timedilatingsmallMarioLeftImage,
+	timedilatingbigMarioLeftJumpingImage,
+	timedilatingsmallMarioLeftWalkingImage,
+	timedilatingbigMarioRightWalkingImage,
+	timedilatingsmallMarioRightJumpingImage,
+	timedilatingsmallMarioRightImage,
+	timedilatingbigMarioRightCrouchingImage,
+	timedilatingbigMarioLeftWalkingImage,
+	timedilatingbigMarioPipe,
+	timedilatingbigMarioLeftImage,
+	timedilatingsmallMarioLeftJumpingImage,
+	timedilatingbigMarioLeftJumpingDownImage,
+	timedilatingsmallMarioRightWalkingImage,
+	timedilatingbigMarioRightJumpingImage,
+	timedilatingbigMarioRightImage,
+	timedilatingsmallMarioPipe,
+	timedilatingbigMarioLeftCrouchingImage,
+	timedilatingbigMarioRightJumpingDownImage;
 
 	public boolean bigOrSmall = false;//true if mario is big (still true if mario is in flower mode or cat mode or tanooki mode)
 	public boolean isJumping = false;//need to keep track of if mario is jumping or not
@@ -51,6 +70,11 @@ public class Mario extends MovingObject {
 	public boolean isFire = false;//true if mario is in fire/flower mode
 	public boolean isCat = false;//true if mario is in cat mode
 	public boolean isTanooki = false;
+	public boolean isTimeDilating = false;//time dilating mario can be big or small! all mario characters are timeDilating if one of them is
+	//TODO for now time dilation is until you lose it. kind of OP maybe make it temporary
+	//IF MARIO CHARACTERS ARE FIRE, CAT, OR TANOOKI AND BECOME TIME DILATING,
+	//they become big automatically and that powerup was lost
+	//if one mario becomes time dilating, all the other ones are as well
 	//design decision: small mario eating fire flower/leaf turns directly into fire/cat mario, not just big mario
 
 	public boolean movingRight = false;
@@ -149,7 +173,29 @@ public class Mario extends MovingObject {
 			MyImage tanookiMarioCatTail1Image, MyImage tanookiMarioLeftCatTail2Image,
 			MyImage tanookiMarioRightCatTail2Image, MyImage tanookiMarioCatTail3Image,
 
-			MyImage smallMarioPipeImage, MyImage bigMarioPipeImage, MyImage fireMarioPipeImage, CHARACTER character) {
+			MyImage smallMarioPipeImage, MyImage bigMarioPipeImage, MyImage fireMarioPipeImage, 
+
+
+			MyImage timedilatingsmallMarioLeftImage,
+			MyImage timedilatingbigMarioLeftJumpingImage,
+			MyImage timedilatingsmallMarioLeftWalkingImage,
+			MyImage timedilatingbigMarioRightWalkingImage,
+			MyImage timedilatingsmallMarioRightJumpingImage,
+			MyImage timedilatingsmallMarioRightImage,
+			MyImage timedilatingbigMarioRightCrouchingImage,
+			MyImage timedilatingbigMarioLeftWalkingImage,
+			MyImage timedilatingbigMarioPipe,
+			MyImage timedilatingbigMarioLeftImage,
+			MyImage timedilatingsmallMarioLeftJumpingImage,
+			MyImage timedilatingbigMarioLeftJumpingDownImage,
+			MyImage timedilatingsmallMarioRightWalkingImage,
+			MyImage timedilatingbigMarioRightJumpingImage,
+			MyImage timedilatingbigMarioRightImage,
+			MyImage timedilatingsmallMarioPipe,
+			MyImage timedilatingbigMarioLeftCrouchingImage,
+			MyImage timedilatingbigMarioRightJumpingDownImage,
+
+			CHARACTER character) {
 		super(smallMarioRightImage);
 		this.character = character;
 		this.smallMarioRightImage = smallMarioRightImage;
@@ -244,6 +290,38 @@ public class Mario extends MovingObject {
 		this.smallMarioPipeImage = smallMarioPipeImage;
 		this.bigMarioPipeImage = bigMarioPipeImage;
 		this.fireMarioPipeImage = fireMarioPipeImage;
+
+
+
+
+		this.timedilatingsmallMarioLeftImage = timedilatingsmallMarioLeftImage;
+		this.timedilatingbigMarioLeftJumpingImage = timedilatingbigMarioLeftJumpingImage;
+		this.timedilatingsmallMarioLeftWalkingImage = timedilatingsmallMarioLeftWalkingImage;
+		this.timedilatingbigMarioRightWalkingImage = timedilatingbigMarioRightWalkingImage;
+		this.timedilatingsmallMarioRightJumpingImage = timedilatingsmallMarioRightJumpingImage;
+		this.timedilatingsmallMarioRightImage = timedilatingsmallMarioRightImage;
+		this.timedilatingbigMarioRightCrouchingImage = timedilatingbigMarioRightCrouchingImage;
+		this.timedilatingbigMarioLeftWalkingImage = timedilatingbigMarioLeftWalkingImage;
+		this.timedilatingbigMarioPipe = timedilatingbigMarioPipe;
+		this.timedilatingbigMarioLeftImage = timedilatingbigMarioLeftImage;
+		this.timedilatingsmallMarioLeftJumpingImage = timedilatingsmallMarioLeftJumpingImage;
+		this.timedilatingbigMarioLeftJumpingDownImage = timedilatingbigMarioLeftJumpingDownImage;
+		this.timedilatingsmallMarioRightWalkingImage = timedilatingsmallMarioRightWalkingImage;
+		this.timedilatingbigMarioRightJumpingImage = timedilatingbigMarioRightJumpingImage;
+		this.timedilatingbigMarioRightImage = timedilatingbigMarioRightImage;
+		this.timedilatingsmallMarioPipe = timedilatingsmallMarioPipe;
+		this.timedilatingbigMarioLeftCrouchingImage = timedilatingbigMarioLeftCrouchingImage;
+		this.timedilatingbigMarioRightJumpingDownImage = timedilatingbigMarioRightJumpingDownImage;
+
+
+	}
+
+	public void sleep(double t) {
+		//TODO IN MARIO SLEEP FUNCTION MAKE FAST MODE
+		//if fast mode
+		//ThreadSleep.sleepMarioFastMode(t);
+		//else
+		ThreadSleep.sleepMarioNormal(t);
 	}
 
 	public void setFallDy(double dy) {fallDy = dy;}
@@ -320,6 +398,9 @@ public class Mario extends MovingObject {
 		movingLeft = false;
 		boolean anotherMarioAlreadyDied = anotherMarioAlreadyDied(this); 
 		if (!anotherMarioAlreadyDied) SoundController.playMarioDeathSound();
+		for (Mario m:MovingObject.characters)
+			m.isTimeDilating = false;
+		GameStatsController.setToBaseLinePause();//stops time dilation if mario is hit or dies
 		setImageAndRelocate(marioDeadImage);
 		sendToFront();
 		try {
@@ -330,25 +411,26 @@ public class Mario extends MovingObject {
 			for (int i=0; i<30; i++) {
 				if (alive) return;
 				super.move(0,-fallDy);
-				ThreadSleep.sleep(1.5);
+				sleep(1.5);
 			}
-			ThreadSleep.sleep(25);
+			sleep(25);
 			double maxTimeFallDown = 1500;
 			while (maxTimeFallDown>0 && getY()+getHeight()+fallDy<=canvas.getHeight()) {
 				if (alive) return;
 				super.move(0,fallDy);
-				ThreadSleep.sleep(1.5);
+				sleep(1.5);
 				maxTimeFallDown -= 15;
 			}
 			while (maxTimeFallDown>0) {
 				if (alive) return;
-				ThreadSleep.sleep(1.5);
+				sleep(1.5);
 				maxTimeFallDown -= 15;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		if (alive) return;
+		
 		setToAlive(true);
 		if (!anotherMarioAlreadyDied) LevelController.restartCurrentLevel();//when mario dies restart the level
 	}
@@ -385,6 +467,7 @@ public class Mario extends MovingObject {
 		isFire = false;
 		isCat = false;
 		isTanooki = true;
+		isTimeDilating = false;
 		swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
 		swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
@@ -411,6 +494,7 @@ public class Mario extends MovingObject {
 		isFire = false;
 		isCat = true;
 		isTanooki = false;
+		isTimeDilating = false;
 		swingTailJumping = SWING_TAIL_JUMPING.NOT_SWINGING;
 		swingTailStanding = SWING_TAIL_STANDING.NOT_SWINGING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
@@ -420,7 +504,7 @@ public class Mario extends MovingObject {
 		//can be called if mario eats mushroom to grow
 		//or if fire mario or cat mario gets hit by something and goes back 
 		//to big mario
-		if (bigOrSmall && !isFire && !isCat && !isTanooki) return;
+		if (bigOrSmall && !isFire && !isCat && !isTanooki && !isTimeDilating) return;
 		if (lookingRightOrLeft) {
 			if (isJumping) {
 				//need to check if jumping because mario can jump in the air to 
@@ -440,12 +524,13 @@ public class Mario extends MovingObject {
 		isFire = false;
 		isCat = false;
 		isTanooki = false;
+		isTimeDilating = false;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
 	}
 
 	public void setToSmall() {
 		//can be called if big mario gets hit by something
-		if (!bigOrSmall) return;//return if mario already small
+		if (!bigOrSmall && !isTimeDilating) return;//return if mario already small
 		if (lookingRightOrLeft) {
 			if (isJumping) {
 				//need to check if jumping because mario can jump in the air and
@@ -465,6 +550,7 @@ public class Mario extends MovingObject {
 		isFire = false;
 		isCat = false;
 		isTanooki = false;
+		isTimeDilating = false;
 		isCrouching = false;
 	}
 
@@ -488,9 +574,53 @@ public class Mario extends MovingObject {
 		isFire = true;
 		isCat = false;
 		isTanooki = false;
+		isTimeDilating = false;
 		shootFireJumping = SHOOT_FIRE_JUMPING .NOT_SHOOTING;
 		shootFireStanding = SHOOT_FIRE_STANDING.NOT_SHOOTING;
 		if (isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
+	}
+
+	public void setToTimeDilating() {
+		if (isTimeDilating) return;
+		if (lookingRightOrLeft) {
+			if (isJumping) {
+				if (bigOrSmall) {
+					if (wayUpOrWayDown) 
+						setImageAndRelocate(timedilatingbigMarioRightJumpingImage);
+					else
+						setImageAndRelocate(timedilatingbigMarioRightJumpingDownImage);
+				} else {
+					setImageAndRelocate(timedilatingsmallMarioRightJumpingImage);
+				}
+			} else {
+				if (bigOrSmall)
+					setImageAndRelocate(timedilatingbigMarioRightImage);
+				else
+					setImageAndRelocate(timedilatingsmallMarioRightImage);
+			}
+		} else {
+			if (isJumping) {
+				if (bigOrSmall) {
+					if (wayUpOrWayDown) 
+						setImageAndRelocate(timedilatingbigMarioLeftJumpingImage);
+					else
+						setImageAndRelocate(timedilatingbigMarioLeftJumpingDownImage);
+				} else {
+					setImageAndRelocate(timedilatingsmallMarioLeftJumpingImage);
+				}
+			} else {
+				if (bigOrSmall)
+					setImageAndRelocate(timedilatingbigMarioLeftImage);
+				else
+					setImageAndRelocate(timedilatingsmallMarioLeftImage);
+			}
+		}
+		isFire = false;
+		isCat = false;
+		isTanooki = false;
+		isTimeDilating = true;
+		if (bigOrSmall && isCrouching) lookInDirectionCrouching(lookingRightOrLeft);
+		//GameStatsController.setToLongPause() is called in inContactWith func 
 	}
 
 	public void lookInDirectionCrouching(boolean rightOrLeft) {
@@ -501,6 +631,8 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioRightCrouchingCatImage);
 			} else if (isTanooki){
 				setImageAndRelocate(tanookiMarioRightCrouchingCatImage);
+			} else if (isTimeDilating){
+				setImageAndRelocate(timedilatingbigMarioRightCrouchingImage);
 			} else { 
 				setImageAndRelocate(bigMarioRightCrouchingImage);
 			}
@@ -511,7 +643,9 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioLeftCrouchingCatImage);
 			} else if (isTanooki){
 				setImageAndRelocate(tanookiMarioLeftCrouchingCatImage);
-			} else {
+			} else if (isTimeDilating){
+				setImageAndRelocate(timedilatingbigMarioLeftCrouchingImage);
+			}  else {
 				setImageAndRelocate(bigMarioLeftCrouchingImage);
 			}
 		}
@@ -578,7 +712,10 @@ public class Mario extends MovingObject {
 
 	public void setToPipe() {
 		if (!bigOrSmall) {
-			setImageAndRelocate(smallMarioPipeImage);
+			if (isTimeDilating)
+				setImageAndRelocate(timedilatingsmallMarioPipe);
+			else 
+				setImageAndRelocate(smallMarioPipeImage);
 		} else if (isFire) {
 			setImageAndRelocate(fireMarioPipeImage);
 		} else if (isCat){
@@ -589,6 +726,8 @@ public class Mario extends MovingObject {
 			setImageAndRelocate(tanookiMarioCatTail1Image);
 			//CAT MARIO'S PIPE SPRITE is the same as when he swings his tail
 			//and faces user
+		} else if (isTimeDilating){
+			setImageAndRelocate(timedilatingbigMarioPipe);
 		}  else { 
 			setImageAndRelocate(bigMarioPipeImage);
 		}
@@ -665,11 +804,11 @@ public class Mario extends MovingObject {
 						//HAS to be multiple of fallDy (1.0*fallDy, 2.0*fallDy, etc)so currLevel.yBaseLine goes back to zero
 						//System.out.println("GOING UP");
 
-						ThreadSleep.sleep(pauseInAir);
+						sleep(pauseInAir);
 
 					}
 
-					ThreadSleep.sleep(8);//PAUSE AT TOP OF JUMP
+					sleep(8);//PAUSE AT TOP OF JUMP
 
 					if (goingIntoPipe) {
 						isJumping = false;
@@ -706,7 +845,7 @@ public class Mario extends MovingObject {
 				break;
 			}
 
-			ThreadSleep.sleep(pauseGoingDown);
+			sleep(pauseGoingDown);
 
 		}
 	}
@@ -736,11 +875,16 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioRightJumpingCatImage);
 				} else if (isTanooki){
 					setImageAndRelocate(tanookiMarioRightJumpingCatImage);
+				} else if (isTimeDilating){
+					setImageAndRelocate(timedilatingbigMarioRightJumpingImage);
 				} else {
 					setImageAndRelocate(bigMarioRightJumpingImage);
 				}
 			} else {
-				setImageAndRelocate(smallMarioRightJumpingImage);
+				if (isTimeDilating)
+					setImageAndRelocate(timedilatingsmallMarioRightJumpingImage);
+				else
+					setImageAndRelocate(smallMarioRightJumpingImage);
 			}
 		} else {
 			if (bigOrSmall) {
@@ -750,11 +894,16 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioLeftJumpingCatImage);
 				}  else if (isTanooki){
 					setImageAndRelocate(tanookiMarioLeftJumpingCatImage);
+				} else if (isTimeDilating){
+					setImageAndRelocate(timedilatingbigMarioLeftJumpingImage);
 				} else {
 					setImageAndRelocate(bigMarioLeftJumpingImage);
 				}
 			} else {
-				setImageAndRelocate(smallMarioLeftJumpingImage);
+				if (isTimeDilating)
+					setImageAndRelocate(timedilatingsmallMarioLeftJumpingImage);
+				else
+					setImageAndRelocate(smallMarioLeftJumpingImage);
 			}
 		}
 	}
@@ -768,6 +917,8 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioRightJumpingDownCatImage);
 			} else if (isTanooki){
 				setImageAndRelocate(tanookiMarioRightJumpingDownCatImage);
+			} else if (isTimeDilating){
+				setImageAndRelocate(timedilatingbigMarioRightJumpingDownImage);
 			} else {
 				setImageAndRelocate(bigMarioRightJumpingDownImage);
 			}
@@ -778,7 +929,9 @@ public class Mario extends MovingObject {
 				setImageAndRelocate(bigMarioLeftJumpingDownCatImage);
 			} else if (isTanooki){
 				setImageAndRelocate(tanookiMarioLeftJumpingDownCatImage);
-			}  else {
+			} else if (isTimeDilating){
+				setImageAndRelocate(timedilatingbigMarioLeftJumpingDownImage);
+			}   else {
 				setImageAndRelocate(bigMarioLeftJumpingDownImage);
 			}
 		}
@@ -794,11 +947,16 @@ public class Mario extends MovingObject {
 						setImage(bigMarioRightCatImage);
 					} else if (isTanooki){
 						setImage(tanookiMarioRightCatImage);
+					}  else if (isTimeDilating){
+						setImage(timedilatingbigMarioRightImage);
 					}  else {
 						setImage(bigMarioRightImage);
 					}
 				} else {
-					setImage(smallMarioRightImage);
+					if (isTimeDilating)
+						setImage(timedilatingsmallMarioRightImage);
+					else
+						setImage(smallMarioRightImage);
 				}
 				walkingRightOrLeft = false;
 			} else {
@@ -809,11 +967,16 @@ public class Mario extends MovingObject {
 						setImage(bigMarioRightWalkingCatImage);
 					} else if (isTanooki){
 						setImage(tanookiMarioRightWalkingCatImage);
+					} else if (isTimeDilating){
+						setImage(timedilatingbigMarioRightWalkingImage);
 					} else {
 						setImage(bigMarioRightWalkingImage);
 					}
 				} else {
-					setImage(smallMarioRightWalkingImage);
+					if (isTimeDilating)
+						setImage(timedilatingsmallMarioRightWalkingImage);
+					else
+						setImage(smallMarioRightWalkingImage);
 				}
 				walkingRightOrLeft = true;
 			}
@@ -826,11 +989,16 @@ public class Mario extends MovingObject {
 						setImage(bigMarioLeftCatImage);
 					} else if (isTanooki){
 						setImage(tanookiMarioLeftCatImage);
+					} else if (isTimeDilating){
+						setImage(timedilatingbigMarioLeftImage);
 					} else {
 						setImage(bigMarioLeftImage);
 					}
 				} else {
-					setImage(smallMarioLeftImage);
+					if (isTimeDilating)
+						setImage(timedilatingsmallMarioLeftImage);
+					else
+						setImage(smallMarioLeftImage);
 				}
 				walkingRightOrLeft = false;
 			} else {
@@ -841,11 +1009,16 @@ public class Mario extends MovingObject {
 						setImage(bigMarioLeftWakingCatImage);
 					} else if (isTanooki){
 						setImage(tanookiMarioLeftWakingCatImage);
+					} else if (isTimeDilating){
+						setImage(timedilatingbigMarioLeftWalkingImage);
 					} else {
 						setImage(bigMarioLeftWalkingImage);
 					}
 				} else {
-					setImage(smallMarioLeftWalkingImage);
+					if (isTimeDilating)
+						setImage(timedilatingsmallMarioLeftWalkingImage);
+					else
+						setImage(smallMarioLeftWalkingImage);
 				}
 				walkingRightOrLeft = true;
 			}
@@ -862,11 +1035,16 @@ public class Mario extends MovingObject {
 					setImage(bigMarioRightCatImage);
 				} else if (isTanooki){
 					setImage(tanookiMarioRightCatImage);
+				} else if (isTimeDilating){
+					setImage(timedilatingbigMarioRightImage);
 				} else {
 					setImage(bigMarioRightImage);
 				}
 			} else {
-				setImage(smallMarioRightImage);
+				if (isTimeDilating)
+					setImage(timedilatingsmallMarioRightImage);
+				else
+					setImage(smallMarioRightImage);
 			}
 		} else {
 			if (bigOrSmall) {
@@ -876,11 +1054,16 @@ public class Mario extends MovingObject {
 					setImage(bigMarioLeftCatImage);
 				} else if (isTanooki){
 					setImage(tanookiMarioLeftCatImage);
+				} else if (isTimeDilating){
+					setImage(timedilatingbigMarioLeftImage);
 				} else {
 					setImage(bigMarioLeftImage);
 				}
 			} else {
-				setImage(smallMarioLeftImage);
+				if (isTimeDilating)
+					setImage(timedilatingsmallMarioLeftImage);
+				else
+					setImage(smallMarioLeftImage);
 			}
 		}
 		walkingRightOrLeft = false;
@@ -896,11 +1079,16 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioRightCatImage);
 				} else if (isTanooki) {
 					setImageAndRelocate(tanookiMarioRightCatImage);
+				} else if (isTimeDilating) {
+					setImageAndRelocate(timedilatingbigMarioRightImage);
 				} else {
 					setImageAndRelocate(bigMarioRightImage);
 				}
 			} else {
-				setImageAndRelocate(smallMarioRightImage);
+				if (isTimeDilating)
+					setImageAndRelocate(timedilatingsmallMarioRightImage);
+				else
+					setImageAndRelocate(smallMarioRightImage);
 			}
 		} else {
 			if (bigOrSmall) {
@@ -910,11 +1098,16 @@ public class Mario extends MovingObject {
 					setImageAndRelocate(bigMarioLeftCatImage);
 				} else if (isTanooki){
 					setImageAndRelocate(tanookiMarioLeftCatImage);
+				} else if (isTimeDilating) {
+					setImageAndRelocate(timedilatingbigMarioLeftImage);
 				} else {
 					setImageAndRelocate(bigMarioLeftImage);
 				}
 			} else {
-				setImageAndRelocate(smallMarioLeftImage);
+				if (isTimeDilating)
+					setImageAndRelocate(timedilatingsmallMarioLeftImage);
+				else
+					setImageAndRelocate(smallMarioLeftImage);
 			}
 		}
 		//lookingRightOrLeft = rightOrLeft;
@@ -1079,9 +1272,25 @@ public class Mario extends MovingObject {
 			}
 		}
 
-		ThreadSleep.sleep(2);
+		sleep(2);
 
 	}
+
+	public void stopTimeDilationForAllCharacters(Mario mario) {
+		//if any powerup is taken other than hourglass when in time dilation, time dilation stops
+		if (!isTimeDilating) return;
+		for (Mario m:MovingObject.characters)
+			if (m!=mario) {
+				if (m.bigOrSmall)
+					m.setToBig();
+				else
+					m.setToSmall();
+				//m.isTimeDilating=false;
+			}
+		GameStatsController.setToBaseLinePause();
+		//for (int i=0; i<3; i++) SoundController.playCoinSound();
+	}
+
 
 	@Override
 	public boolean inContactWith(GObject o, boolean horizontalOrVertical) {
@@ -1094,6 +1303,12 @@ public class Mario extends MovingObject {
 				return false;
 			}
 		}
+
+		if (o instanceof PowerUp && !(o instanceof Hourglass) && this.isTimeDilating) {
+			//taking another power up when time is dilated stops time dilation
+			stopTimeDilationForAllCharacters(this);
+		}
+
 		if (o instanceof Mario && o.equals(this)) {
 			//if points used for edge detection are in frame of this mario
 			System.out.println("ITSA ME MARIO");
@@ -1117,6 +1332,15 @@ public class Mario extends MovingObject {
 			((Tanooki) o).kill();
 			setToTanooki();
 			SoundController.playPowerUpSound();
+		} else if (o instanceof Hourglass) {
+			System.out.println("HIT HOURGLASS");
+			((Hourglass) o).kill();
+			for (Mario m:MovingObject.characters)
+				m.setToTimeDilating();//every mario character luigi, peach etc is set to time dilating as well	
+			GameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
+
+
+			SoundController.playPowerUpSound();
 		} else if (o instanceof Platform) {
 			//mario should halt, he cant move into a Platform
 			//System.out.println("IN CONTAC WITH Platform");
@@ -1139,18 +1363,7 @@ public class Mario extends MovingObject {
 					System.out.println("MARIO HIT MYSTERYBOX FROM UNDER");
 					if (Math.abs(getY()-o.getY()-o.getHeight())>20) return false;
 					if (!((MysteryBox) o).stateIsFinal()) {
-						SoundController.playItemOutOfBoxSound();
-						double x  = o.getX();
-						double y = o.getY();					
-						((MysteryBox) o).hitByMario();
-						if (Math.random()>0.75)
-							DynamicFactory.addFireFlower(x, y, o.getWidth());
-						else if (Math.random()>0.5)
-							DynamicFactory.addMushroom(x, y, o.getWidth());
-						else if (Math.random()>0.25)
-							DynamicFactory.addLeaf(x, y, o.getWidth());
-						else
-							DynamicFactory.addTanooki(x, y, o.getWidth());
+						((MysteryBox) o).hitByMario(this.bigOrSmall);
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe
@@ -1227,6 +1440,7 @@ public class Mario extends MovingObject {
 		} else if (o instanceof Coin) {
 			((Coin) o).collectedByMario(this);
 		}
+
 		//	if (o instanceof PowerUp) {
 		//		((PowerUp) o).alive = false;
 		//	LevelController.currLevel.removeDynamic((PowerUp) o);//mostly for FireFlower since every other power up would call this function after their alive field is set to false
@@ -1249,8 +1463,17 @@ public class Mario extends MovingObject {
 					return;
 				}
 				SoundController.playMarioHitSound();
-				if (isFire || isCat || isTanooki) setToBig();
-				else if (bigOrSmall) setToSmall();
+				if (isTimeDilating) {
+					GameStatsController.setToBaseLinePause();//stops time dilation if mario is hit or dies
+					for (Mario m:MovingObject.characters) {
+						//no need to check if fire, cat or tanooki
+						if (m.bigOrSmall) m.setToBig();
+						else m.setToSmall();
+					}
+				} else {
+					if (isFire || isCat || isTanooki) setToBig();
+					else setToSmall();
+				}
 				flash();
 			}
 		});  
@@ -1269,7 +1492,7 @@ public class Mario extends MovingObject {
 					return;//if mario gets hit (is flashing) and then falls to bottom of screen he shouldnt flash anymore
 				}
 				setVisible(!isVisible());
-				ThreadSleep.sleep(flashingInterval);
+				sleep(flashingInterval);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1297,7 +1520,7 @@ public class Mario extends MovingObject {
 			//to move mario to center of pipe
 			moveOnlyMario(dx, 0);
 
-			ThreadSleep.sleep(2);
+			sleep(2);
 
 		}
 		this.setLocation(marioNewX, this.getY());
@@ -1306,7 +1529,7 @@ public class Mario extends MovingObject {
 		double dy = getHeight()/x;
 		if (upOrDown) dy = -dy;
 		for (int i=0; i<x; i++) {
-			ThreadSleep.sleep(4);
+			sleep(4);
 			moveOnlyMario(0, dy);
 		}
 
@@ -1396,7 +1619,7 @@ public class Mario extends MovingObject {
 					if (isCrouching) {System.out.println("iiiiiiiiiiiiiiiiiiiii");//WITHOUT PRINTLN IT BUGS
 					} else {
 						System.out.println("<<<<<<<<<<<<<<<<,SHOOTING A FIREBALL: "+isShooting);
-						ThreadSleep.sleep(pauseBetweenShots);
+						sleep(pauseBetweenShots);
 						//isShooting is set to false when shooting key is released
 						//code in here runs in another thread
 						boolean startedJumping = isJumping;
@@ -1424,7 +1647,7 @@ public class Mario extends MovingObject {
 							}
 						}
 
-						ThreadSleep.sleep(pauseBetweenStages);
+						sleep(pauseBetweenStages);
 
 						//ENTERING STAGE2 				
 						if (isJumping != startedJumping || isCrouching) {
@@ -1458,7 +1681,7 @@ public class Mario extends MovingObject {
 								}
 							}
 
-							ThreadSleep.sleep(pauseBetweenStages);
+							sleep(pauseBetweenStages);
 
 							if (isJumping != startedJumping || isCrouching) {
 								//need to check if isJumping is different from startedJumping after every stage
@@ -1492,7 +1715,7 @@ public class Mario extends MovingObject {
 										shootFireJumping = SHOOT_FIRE_JUMPING.STAGE3;
 									}
 
-									ThreadSleep.sleep(pauseBetweenStages);
+									sleep(pauseBetweenStages);
 
 									if (alive) {
 										if (isJumping) {
@@ -1542,7 +1765,7 @@ public class Mario extends MovingObject {
 					} else {
 						//isSwinging is set to false when user releases swinging tail key
 						System.out.println("\tSWING ingTAILL");
-						ThreadSleep.sleep(pauseBetweenSwings);
+						sleep(pauseBetweenSwings);
 						int pauseBetweenStages = 7;
 						SoundController.playTailSound();
 						if (!isJumping) {
@@ -1584,7 +1807,7 @@ public class Mario extends MovingObject {
 							}
 						}
 
-						ThreadSleep.sleep(pauseBetweenStages);
+						sleep(pauseBetweenStages);
 
 						if (isJumping != startedJumping || isCrouching) {
 							//need to check if isJumping is different from startedJumping after every stage
@@ -1623,7 +1846,7 @@ public class Mario extends MovingObject {
 								}
 							}
 
-							ThreadSleep.sleep(pauseBetweenStages);
+							sleep(pauseBetweenStages);
 
 							if (isJumping != startedJumping || isCrouching) {
 								//need to check if isJumping is different from startedJumping after every stage
@@ -1656,7 +1879,7 @@ public class Mario extends MovingObject {
 									}
 								}
 
-								ThreadSleep.sleep(pauseBetweenStages);
+								sleep(pauseBetweenStages);
 
 								if (alive && !isCrouching) {
 									if (isJumping) {

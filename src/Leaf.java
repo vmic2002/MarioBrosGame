@@ -81,13 +81,22 @@ public class Leaf extends PowerUp {
 			System.out.println("DEAD LEAF WAS GOING TO HIT MARIO");
 		}
 		if (x instanceof Mario) {
-			if (!((Mario) x).alive) {
+			Mario m = (Mario) x;
+			if (!m.alive) {
 				return true;
 			}
 			canvas.remove(this);
 			alive = false;
 
-			((Mario) x).setToCat();
+			if (m.isTimeDilating)
+				m.stopTimeDilationForAllCharacters(m);
+			
+			
+			m.setToCat();
+			
+			
+			
+			
 			SoundController.playPowerUpSound();
 		} else {
 			//System.out.println("LEAF ONLY CHANGES WHEN in contact with mario");

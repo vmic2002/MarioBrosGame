@@ -115,7 +115,7 @@ public class StaticFactory {
 			//TODO need to do green turtles too
 			DynamicFactory.addRedTurtle(xCounter.v, canvas.getHeight()-g1.getHeight()*h, width, dynamicLevelParts);
 		} else if (type == LevelController.BADGUY_TYPE.GOOMBA) {
-			DynamicFactory.addGoomba(xCounter.v, canvas.getHeight()-g1.getHeight()*h, dynamicLevelParts);
+			DynamicFactory.addGoomba(xCounter.v+width/3, canvas.getHeight()-g1.getHeight()*h, dynamicLevelParts);
 		}
 		xCounter.v += width;
 		staticLevelParts.add(new StaticLevelPart(platforms));

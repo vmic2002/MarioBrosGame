@@ -53,7 +53,7 @@ public class Level {
 			if (image instanceof Coin)//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
 				((Coin) image).startSpinning();
 			else if (image instanceof BadGuy)
-				((BadGuy) image).move();
+				((BadGuy) image).move();//TODO calling move func in level constructor can cause null pointer bug when moving objects try to access currlevel.ybaseline! (since level is instantiated yet!)
 			else if (image instanceof PowerUp)
 				((PowerUp) image).move();
 		}

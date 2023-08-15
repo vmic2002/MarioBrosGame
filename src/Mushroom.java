@@ -151,14 +151,21 @@ public class Mushroom extends PowerUp {
 			}
 			return true;
 		} else if (x instanceof Mario) {
-			if (!((Mario) x).alive) {
+			Mario m = (Mario) x;
+			if (!m.alive) {
 				return true;
 			}
 			canvas.remove(this);
 			SoundController.playPowerUpSound();
-			if (!((Mario) x).bigOrSmall){
-				((Mario) x).setToBig();
+			if (!m.bigOrSmall){
+				if (m.isTimeDilating)
+					m.stopTimeDilationForAllCharacters(m);
+				m.setToBig();
+			} else if (m.isTimeDilating) {
+				m.stopTimeDilationForAllCharacters(m);
+				m.setToBig();
 			}
+			
 			alive = false;
 			System.out.println("MUSHROOM HIT MARIO");
 			return true;

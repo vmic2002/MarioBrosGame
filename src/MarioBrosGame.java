@@ -325,6 +325,48 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String coin1Path = prefix+imageDirectory+"/coin1.png";
 		String coin2Path = prefix+imageDirectory+"/coin2.png";
 		String coin3Path = prefix+imageDirectory+"/coin3.png";
+		
+		
+		
+		
+		String timedilatingsmallMarioLeftImagePath = prefix+imageDirectory+"/timedilatingsmallMarioLeftImage.png";
+		String timedilatingbigLuigiLeftJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftJumpingDownImage.png";
+		String timedilatingbigMarioLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftJumpingImage.png";
+		String timedilatingsmallMarioLeftWalkingImagePath = prefix+imageDirectory+"/timedilatingsmallMarioLeftWalkingImage.png";
+		String timedilatingbigLuigiLeftImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftImage.png";
+		String timedilatingsmallLuigiLRightJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiLRightJumpingImage.png";
+		String timedilatingbigLuigiRightJumpingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightJumpingImage.png";
+		String timedilatingbigMarioRightWalkingImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightWalkingImage.png";
+		String timedilatingsmallLuigiRightWalkingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiRightWalkingImage.png";
+		String timedilatingbigLuigiLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftJumpingImage.png";
+		String timedilatingsmallMarioRightJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallMarioRightJumpingImage.png";
+		String timedilatingsmallMarioRightImagePath = prefix+imageDirectory+"/timedilatingsmallMarioRightImage.png";
+		String timedilatingbigMarioRightCrouchingImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightCrouchingImage.png";
+		String timedilatingsmallLuigiLeftWalkingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiLeftWalkingImage.png";
+		String timedilatingbigLuigiRightCrouchingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightCrouchingImage.png";
+		String timedilatingbigLuigiRightImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightImage.png";
+		String timedilatingbigMarioLeftWalkingImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftWalkingImage.png";
+		String timedilatingsmallLuigiLeftImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiLeftImage.png";
+		String timedilatingsmallLuigiPipePath = prefix+imageDirectory+"/timedilatingsmallLuigiPipe.png";
+		String timedilatingbigMarioPipePath = prefix+imageDirectory+"/timedilatingbigMarioPipe.png";
+		String timedilatingbigMarioLeftImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftImage.png";
+		String timedilatingsmallMarioLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallMarioLeftJumpingImage.png";
+		String timedilatingbigMarioLeftJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftJumpingDownImage.png";
+		String timedilatingsmallMarioRightWalkingImagePath = prefix+imageDirectory+"/timedilatingsmallMarioRightWalkingImage.png";
+		String timedilatingbigLuigiLeftWalkingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftWalkingImage.png";
+		String timedilatingbigMarioRightJumpingImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightJumpingImage.png";
+		String timedilatingbigMarioRightImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightImage.png";
+		String timedilatingbigLuigiRightWalkingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightWalkingImage.png";
+		String timedilatingsmallMarioPipePath = prefix+imageDirectory+"/timedilatingsmallMarioPipe.png";
+		String timedilatingbigLuigiLeftCrouchingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftCrouchingImage.png";
+		String timedilatingbigMarioLeftCrouchingImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftCrouchingImage.png";
+		String timedilatingbigLuigiPipePath = prefix+imageDirectory+"/timedilatingbigLuigiPipe.png";
+		String timedilatingsmallLuigiRightImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiRightImage.png";
+		String timedilatingbigMarioRightJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightJumpingDownImage.png";
+		String timedilatingsmallLuigiLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiLeftJumpingImage.png";
+		String timedilatingbigLuigiRightJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightJumpingDownImage.png";
+		
+		String timeDilationPowerupPath = prefix+imageDirectory+"/timeDilationPowerup.png";
 
 
 
@@ -546,7 +588,48 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage coin2 = null;
 		MyImage coin3 = null;
 		
-	
+		
+		
+		MyImage timedilatingsmallMarioLeftImage = null;
+		MyImage timedilatingbigMarioLeftJumpingImage = null;
+		MyImage timedilatingsmallMarioLeftWalkingImage = null;
+		MyImage timedilatingbigMarioRightWalkingImage = null;
+		MyImage timedilatingsmallMarioRightJumpingImage = null;
+		MyImage timedilatingsmallMarioRightImage = null;
+		MyImage timedilatingbigMarioRightCrouchingImage = null;
+		MyImage timedilatingbigMarioLeftWalkingImage = null;
+		MyImage timedilatingbigMarioPipe = null;
+		MyImage timedilatingbigMarioLeftImage = null;
+		MyImage timedilatingsmallMarioLeftJumpingImage = null;
+		MyImage timedilatingbigMarioLeftJumpingDownImage = null;
+		MyImage timedilatingsmallMarioRightWalkingImage = null;
+		MyImage timedilatingbigMarioRightJumpingImage = null;
+		MyImage timedilatingbigMarioRightImage = null;
+		MyImage timedilatingsmallMarioPipe = null;
+		MyImage timedilatingbigMarioLeftCrouchingImage = null;
+		MyImage timedilatingbigMarioRightJumpingDownImage = null;
+		
+		
+		MyImage timedilatingbigLuigiLeftJumpingDownImage = null;
+		MyImage timedilatingbigLuigiLeftImage = null;
+		MyImage timedilatingsmallLuigiLRightJumpingImage = null;
+		MyImage timedilatingbigLuigiRightJumpingImage = null;
+		MyImage timedilatingsmallLuigiRightWalkingImage = null;
+		MyImage timedilatingbigLuigiLeftJumpingImage = null;
+		MyImage timedilatingsmallLuigiLeftWalkingImage = null;
+		MyImage timedilatingbigLuigiRightCrouchingImage = null;
+		MyImage timedilatingbigLuigiRightImage = null;
+		MyImage timedilatingsmallLuigiLeftImage = null;
+		MyImage timedilatingsmallLuigiPipe = null;
+		MyImage timedilatingbigLuigiLeftWalkingImage = null;
+		MyImage timedilatingbigLuigiRightWalkingImage = null;
+		MyImage timedilatingbigLuigiLeftCrouchingImage = null;
+		MyImage timedilatingbigLuigiPipe = null;
+		MyImage timedilatingsmallLuigiRightImage = null;
+		MyImage timedilatingsmallLuigiLeftJumpingImage = null;
+		MyImage timedilatingbigLuigiRightJumpingDownImage = null;
+		
+		MyImage timeDilationPowerup = null;
 
 		try {
 			smallMarioLeftImage = new MyImage(ImageIO.read(new File(smallMarioLeftImagePath)), "smallMarioLeftImage");
@@ -750,6 +833,45 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			coin2 = new MyImage(ImageIO.read(new File(coin2Path)), "coin2");
 			coin3 = new MyImage(ImageIO.read(new File(coin3Path)), "coin3");
 			
+			
+			timedilatingsmallMarioLeftImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioLeftImagePath)), "timedilatingsmallMarioLeftImage");
+			timedilatingbigLuigiLeftJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftJumpingDownImagePath)), "timedilatingbigLuigiLeftJumpingDownImage");
+			timedilatingbigMarioLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftJumpingImagePath)), "timedilatingbigMarioLeftJumpingImage");
+			timedilatingsmallMarioLeftWalkingImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioLeftWalkingImagePath)), "timedilatingsmallMarioLeftWalkingImage");
+			timedilatingbigLuigiLeftImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftImagePath)), "timedilatingbigLuigiLeftImage");
+			timedilatingsmallLuigiLRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiLRightJumpingImagePath)), "timedilatingsmallLuigiLRightJumpingImage");
+			timedilatingbigLuigiRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightJumpingImagePath)), "timedilatingbigLuigiRightJumpingImage");
+			timedilatingbigMarioRightWalkingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightWalkingImagePath)), "timedilatingbigMarioRightWalkingImage");
+			timedilatingsmallLuigiRightWalkingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiRightWalkingImagePath)), "timedilatingsmallLuigiRightWalkingImage");
+			timedilatingbigLuigiLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftJumpingImagePath)), "timedilatingbigLuigiLeftJumpingImage");
+			timedilatingsmallMarioRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioRightJumpingImagePath)), "timedilatingsmallMarioRightJumpingImage");
+			timedilatingsmallMarioRightImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioRightImagePath)), "timedilatingsmallMarioRightImage");
+			timedilatingbigMarioRightCrouchingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightCrouchingImagePath)), "timedilatingbigMarioRightCrouchingImage");
+			timedilatingsmallLuigiLeftWalkingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiLeftWalkingImagePath)), "timedilatingsmallLuigiLeftWalkingImage");
+			timedilatingbigLuigiRightCrouchingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightCrouchingImagePath)), "timedilatingbigLuigiRightCrouchingImage");
+			timedilatingbigLuigiRightImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightImagePath)), "timedilatingbigLuigiRightImage");
+			timedilatingbigMarioLeftWalkingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftWalkingImagePath)), "timedilatingbigMarioLeftWalkingImage");
+			timedilatingsmallLuigiLeftImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiLeftImagePath)), "timedilatingsmallLuigiLeftImage");
+			timedilatingsmallLuigiPipe = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiPipePath)), "timedilatingsmallLuigiPipe");
+			timedilatingbigMarioPipe = new MyImage(ImageIO.read(new File(timedilatingbigMarioPipePath)), "timedilatingbigMarioPipe");
+			timedilatingbigMarioLeftImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftImagePath)), "timedilatingbigMarioLeftImage");
+			timedilatingsmallMarioLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioLeftJumpingImagePath)), "timedilatingsmallMarioLeftJumpingImage");
+			timedilatingbigMarioLeftJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftJumpingDownImagePath)), "timedilatingbigMarioLeftJumpingDownImage");
+			timedilatingsmallMarioRightWalkingImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioRightWalkingImagePath)), "timedilatingsmallMarioRightWalkingImage");
+			timedilatingbigLuigiLeftWalkingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftWalkingImagePath)), "timedilatingbigLuigiLeftWalkingImage");
+			timedilatingbigMarioRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightJumpingImagePath)), "timedilatingbigMarioRightJumpingImage");
+			timedilatingbigMarioRightImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightImagePath)), "timedilatingbigMarioRightImage");
+			timedilatingbigLuigiRightWalkingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightWalkingImagePath)), "timedilatingbigLuigiRightWalkingImage");
+			timedilatingsmallMarioPipe = new MyImage(ImageIO.read(new File(timedilatingsmallMarioPipePath)), "timedilatingsmallMarioPipe");
+			timedilatingbigLuigiLeftCrouchingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftCrouchingImagePath)), "timedilatingbigLuigiLeftCrouchingImage");
+			timedilatingbigMarioLeftCrouchingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftCrouchingImagePath)), "timedilatingbigMarioLeftCrouchingImage");
+			timedilatingbigLuigiPipe = new MyImage(ImageIO.read(new File(timedilatingbigLuigiPipePath)), "timedilatingbigLuigiPipe");
+			timedilatingsmallLuigiRightImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiRightImagePath)), "timedilatingsmallLuigiRightImage");
+			timedilatingbigMarioRightJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightJumpingDownImagePath)), "timedilatingbigMarioRightJumpingDownImage");
+			timedilatingsmallLuigiLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiLeftJumpingImagePath)), "timedilatingsmallLuigiLeftJumpingImage");
+			timedilatingbigLuigiRightJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightJumpingDownImagePath)), "timedilatingbigLuigiRightJumpingDownImage");
+			
+			timeDilationPowerup = new MyImage(ImageIO.read(new File(timeDilationPowerupPath)), "timeDilationPowerup");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -760,7 +882,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		
 	
 		
-		GameStatsController.setBaseLinePause(10);
+		GameStatsController.setPauses(10);//10 works well
 		
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
@@ -799,7 +921,30 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				rightTanookiMarioTail2, tanookiTail3,
 
 
-				smallMarioPipe, bigMarioPipe, fireMarioPipe, Mario.CHARACTER.MARIO
+				smallMarioPipe, bigMarioPipe, fireMarioPipe, 
+				
+				timedilatingsmallMarioLeftImage,
+				timedilatingbigMarioLeftJumpingImage,
+				timedilatingsmallMarioLeftWalkingImage,
+				timedilatingbigMarioRightWalkingImage,
+				timedilatingsmallMarioRightJumpingImage,
+				timedilatingsmallMarioRightImage,
+				timedilatingbigMarioRightCrouchingImage,
+				timedilatingbigMarioLeftWalkingImage,
+				timedilatingbigMarioPipe,
+				timedilatingbigMarioLeftImage,
+				timedilatingsmallMarioLeftJumpingImage,
+				timedilatingbigMarioLeftJumpingDownImage,
+				timedilatingsmallMarioRightWalkingImage,
+				timedilatingbigMarioRightJumpingImage,
+				timedilatingbigMarioRightImage,
+				timedilatingsmallMarioPipe,
+				timedilatingbigMarioLeftCrouchingImage,
+				timedilatingbigMarioRightJumpingDownImage,
+				
+				
+				
+				Mario.CHARACTER.MARIO
 				);	
 		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
 				smallLuigiLeftWalkingImage, smallLuigiRightWalkingImage, smallLuigiLeftJumpingImage, 
@@ -839,7 +984,28 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				tanookiMarioTail1, leftTanookiMarioTail2,
 				rightTanookiMarioTail2, tanookiTail3,
 
-				smallLuigiPipe, bigLuigiPipe, fireMarioPipe, Mario.CHARACTER.LUIGI);
+				smallLuigiPipe, bigLuigiPipe, fireMarioPipe,
+				
+				timedilatingsmallLuigiLeftImage,
+				timedilatingbigLuigiLeftJumpingImage,
+				timedilatingsmallLuigiLeftWalkingImage,
+				timedilatingbigLuigiRightWalkingImage,
+				timedilatingsmallLuigiLRightJumpingImage,
+				timedilatingsmallLuigiRightImage,
+				timedilatingbigLuigiRightCrouchingImage,
+				timedilatingbigLuigiLeftWalkingImage,
+				timedilatingbigLuigiPipe,
+				timedilatingbigLuigiLeftImage,
+				timedilatingsmallLuigiLeftJumpingImage,
+				timedilatingbigLuigiLeftJumpingDownImage,
+				timedilatingsmallLuigiRightWalkingImage,
+				timedilatingbigLuigiRightJumpingImage,
+				timedilatingbigLuigiRightImage,
+				timedilatingsmallLuigiPipe,
+				timedilatingbigLuigiLeftCrouchingImage,
+				timedilatingbigLuigiRightJumpingDownImage,
+				
+				Mario.CHARACTER.LUIGI);
 		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
@@ -888,6 +1054,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				rightFireBall4);
 		FireFlower.setObjects(fireFlowerImage);
 		Leaf.setObjects(rightLeafImage, leftLeafImage);
+		Hourglass.setObject(timeDilationPowerup);
 		DynamicFactory.setCanvas(canvas);
 		StaticFactory.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
 				grassRightImage,grassMiddleImage, 

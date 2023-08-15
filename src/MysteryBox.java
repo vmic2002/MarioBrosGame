@@ -1,7 +1,3 @@
-//import acm.graphics.GCanvas;
-//import acm.graphics.GImage;
-import java.awt.Image;
-
 public class MysteryBox extends Platform {
 	//extends Platform means that this is something mario would not be able
 	//to walk/jump into. if he does, it will halt him
@@ -18,7 +14,7 @@ public class MysteryBox extends Platform {
 	public void toggleState() {
 		//changes mysterybox image from stage 1 to stage 2, 2->3, 3->4, 4->1
 		if (stateIsFinal()) return;
-		Image newImage;
+		MyImage newImage;
 		if (mysteryBoxState == MYSTERYBOX_STATE.STATE_1) {
 			newImage = mysteryBox2Image;
 			mysteryBoxState = MYSTERYBOX_STATE.STATE_2;
@@ -61,10 +57,32 @@ public class MysteryBox extends Platform {
 		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
 	}
 
-	public void hitByMario() {
-		//mushroom, coin, flower, leaf... is created by Factory object, not MysteryBox
-		setImage(mysteryBoxFinalImage);
+	public void hitByMario(boolean marioBigOrSmall) {
 		setToFinalState();
+		SoundController.playItemOutOfBoxSound();
+		setImage(mysteryBoxFinalImage);
+		double x  = this.getX();
+		double y = this.getY();
+		
+		//DynamicFactory.addHourglass(x, y, this.getWidth());
+		
+		if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
+			if (Math.random()>0.25)
+				DynamicFactory.addMushroom(x, y, this.getWidth());
+			else
+				DynamicFactory.addHourglass(x, y, this.getWidth());
+		} else {
+			//if mario is big, he has equal change of getting fireflower,
+			//hourglass, leaf, or tanooki
+			if (Math.random()>0.75)
+				DynamicFactory.addFireFlower(x, y, this.getWidth());
+			else if (Math.random()>0.5)
+				DynamicFactory.addHourglass(x, y, this.getWidth());
+			else if (Math.random()>0.25)
+				DynamicFactory.addLeaf(x, y, this.getWidth());
+			else
+				DynamicFactory.addTanooki(x, y, this.getWidth());
+		}
 		Thread t1 = new Thread(new Runnable() {
 			@Override
 			public void run() {
