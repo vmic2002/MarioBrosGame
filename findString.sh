@@ -1,6 +1,8 @@
+#must be within MarioBrosGame directory
 #this script prints out in which file(s) the
 #inputed string is within the src dir
 #example: ./findString.sh "new Thread" to know which files contain this string
+cd src
 if [ "$#" -ne 1 ]; then
     echo "One argument required";
     exit 1;
@@ -11,3 +13,4 @@ for FILE in *; do
         echo $FILE;
     fi
 done
+cd ..
