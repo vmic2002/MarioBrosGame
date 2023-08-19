@@ -15,22 +15,6 @@ public class BillBlasterController{
 	public static void endOfLevel() {for (Thread t: threads) t.interrupt();
 	System.out.println("\tTOTAL OF "+threads.size()+ " threads");}
 	
-	/*TODO stop using thread.stop() in BillBlasterController
-	 * The Javadoc for Thread.stop() explains:
-
-This method is inherently unsafe. Stopping a thread with Thread.stop 
-causes it to unlock all of the monitors that it has locked (as a natural consequence 
-of the unchecked ThreadDeath exception propagating up the stack). If 
-any of the objects previously protected by these monitors were in 
-an inconsistent state, the damaged objects become visible to other 
-threads, potentially resulting in arbitrary behavior. Many uses of 
-stop should be replaced by code that simply modifies some variable to indicate 
-that the target thread should stop running. The target thread should check this 
-variable regularly, and return from its run method in an orderly fashion if 
-the variable indicates that it is to stop running. If the target thread waits 
-for long periods (on a condition variable, for example), the interrupt 
-method should be used to interrupt the wait.
-	 */
 	//number of threads == number of BillBlaster in currLevel
 
 	public static void startShooting(BillBlasterTop p) {

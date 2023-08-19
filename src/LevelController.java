@@ -14,6 +14,7 @@ public class LevelController {
 	public static double space;
 	public static enum FLOWER_TYPE {NO_FLOWER, SHOOTING, BITING};
 	public static enum BADGUY_TYPE {NO_BADGUY, RED_TURTLE, GREEN_TURTLE, GOOMBA};//type of bad guy on platform (such as grass mountain)
+	public static enum MUSHROOM_PLATFORM_TYPE {GREEN, RED, YELLOW};//type of mushroom platform
 	private static XCounter xCounter;
 	private static boolean endingLevel=false;
 
@@ -271,6 +272,14 @@ public class LevelController {
 		//StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-1.0*space, 6, staticLevelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
+		spawnWhiteSpace(xCounter, 2);
+		StaticFactory.spawnMushroomPlatform(xCounter, 2, 3, MUSHROOM_PLATFORM_TYPE.YELLOW, staticLevelParts);
+		spawnWhiteSpace(xCounter, 1);
+		StaticFactory.spawnMushroomPlatform(xCounter, 1, 4, MUSHROOM_PLATFORM_TYPE.RED, staticLevelParts);
+		spawnWhiteSpace(xCounter, 1);
+		StaticFactory.spawnMushroomPlatform(xCounter, 3, 1, MUSHROOM_PLATFORM_TYPE.GREEN, staticLevelParts);
+		spawnWhiteSpace(xCounter, 1);
+		StaticFactory.spawnMushroomPlatform(xCounter, 6, 2, MUSHROOM_PLATFORM_TYPE.YELLOW, staticLevelParts);
 		Level level5 = new Level("5", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});

@@ -3,7 +3,7 @@
 import os
  
 # assign directory
-directory = 'Images'
+directory = 'TEMPIMAGES'
  
 # iterate over files in
 # that directory

@@ -14,7 +14,6 @@ public class GameThread extends Thread {
 	}
 
 	public static void interruptAllMarioThreads() {
-		//TODO NEED TO CALL THIS FUNC IN MYWEBSOCKETSERVER.ONCLOSE
 		for (GameThread t:gameThreads)
 			t.interrupt();
 		gameThreads.clear();

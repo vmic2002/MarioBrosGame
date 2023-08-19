@@ -99,8 +99,6 @@ public class FireBall extends MovingObject implements Dynamic {
 			frequencyChangeStage--;
 		}
 		kill();
-		//TODO if levelcontroller ends the current level and sets all fireballs to alive=false,
-		//no need to remove fireball from currlevel
 		System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
 	}
 

@@ -1386,6 +1386,8 @@ public class Mario extends MovingObject {
 					System.out.println("MARIO JUMPED INTO PLATFORM");
 				}
 				//	}
+			} else if (!wayUpOrWayDown && !horizontalOrVertical && o instanceof BouncyPlatform) {
+				this.hop();//MARIO HOPS OFF BOUNCYPLATFORM
 			}
 		} else if (o instanceof FireBall) {
 			System.out.println("MARIO RAN/JUMPed INTO A FIREBALL");
@@ -1427,11 +1429,6 @@ public class Mario extends MovingObject {
 		} else if (o instanceof Coin) {
 			((Coin) o).collectedByMario(this);
 		}
-
-		//	if (o instanceof PowerUp) {
-		//		((PowerUp) o).alive = false;
-		//	LevelController.currLevel.removeDynamic((PowerUp) o);//mostly for FireFlower since every other power up would call this function after their alive field is set to false
-		//}
 		return false;
 	}
 

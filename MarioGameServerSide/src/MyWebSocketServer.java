@@ -26,7 +26,6 @@ $CATALINA_HOME/bin/shutdown.sh
 	.class and .java files in bin and src directories and place .war file in webapps dir automatically!
 
 	!!!!Sending messages from client side works! Server responds back!!!!!
-	TODO need to try to send messages to move images on client side!
 	
 	TODO NEED TO DO ONLINE MULTIPLAYER each new window that connects to the server has its own session ID, for online multiplayer (one plays mario one plays luigi)
  *  
@@ -35,7 +34,6 @@ $CATALINA_HOME/bin/shutdown.sh
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
-import java.util.Map;
 
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -103,10 +101,10 @@ public class MyWebSocketServer {
 		// Remove the closed session from the activeSessions set
 		activeSessions.remove(session);
 		System.out.println("INTERRUPTING ALL GAME THREADS");
-		
+		//TODO MAYHBE TRY INTERRUPTING ALL THREADS NOT ONLY GAMETHREADS
 		GameThread.interruptAllMarioThreads();
-		//TODO see MyRunnable and GameThread for how to make threads that can be stopped SAFELY
-		//TODO BUG WHERE WHEN RELOADING PAGE, ALL THREADS THAT WERE STARTED IN PREVIOUS SESSION MUST ALL BE STOPPED
+		//see MyRunnable.java and GameThread.java
+		//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
 		//calling System.exit doesnt work
 		//OR ELSE WILL GET ERROR MESSAGE: 
 		/*

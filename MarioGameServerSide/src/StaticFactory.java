@@ -13,7 +13,17 @@ public class StaticFactory {
 	pipeUpTopLeftImage, pipeUpTopRightImage, pipeUpMiddleLeftImage, pipeUpMiddleRightImage,
 	pipeDownMiddleLeftImage, pipeDownMiddleRightImage,
 	pipeDownTopLeftImage, pipeDownTopRightImage,// billBlasterTopImage,
-	billBlasterMiddleImage, billBlasterBottomImage;
+	billBlasterMiddleImage, billBlasterBottomImage,
+	greenMushroomPlatformLeft,
+	redMushroomPlatformLeft,
+	greenMushroomPlatformMiddle,
+	yellowMushroomPlatformMiddle,
+	redMushroomPlatformRight,
+	mushroomPlatformBottom,
+	yellowMushroomPlatformLeft,
+	yellowMushroomPlatformRight,
+	greenMushroomPlatformRight,
+	redMushroomPlatformMiddle;
 	
 	public static void setObjects(MyImage grassLeftTopImage1, MyImage grassRightTopImage1, MyImage grassMiddleTopImage1, 
 			MyImage grassLeftImage1, MyImage grassRightImage1, MyImage grassMiddleImage1,
@@ -22,6 +32,18 @@ public class StaticFactory {
 			//MyImage billBlasterTopImage1, 
 			MyImage billBlasterMiddleImage1,
 			MyImage billBlasterBottomImage1,
+			MyImage greenMushroomPlatformLeft1,
+			MyImage redMushroomPlatformLeft1,
+			MyImage greenMushroomPlatformMiddle1,
+			MyImage yellowMushroomPlatformMiddle1,
+			MyImage redMushroomPlatformRight1,
+			MyImage mushroomPlatformBottom1,
+			MyImage yellowMushroomPlatformLeft1,
+			MyImage yellowMushroomPlatformRight1,
+			MyImage greenMushroomPlatformRight1,
+			MyImage redMushroomPlatformMiddle1,
+			
+			
 			MyGCanvas canvas1) {
 		grassLeftTopImage = grassLeftTopImage1;
 		grassRightTopImage = grassRightTopImage1;
@@ -40,8 +62,98 @@ public class StaticFactory {
 		//billBlasterTopImage = billBlasterTopImage1; 
 		billBlasterMiddleImage = billBlasterMiddleImage1; 
 		billBlasterBottomImage = billBlasterBottomImage1;
+		
+		
+		greenMushroomPlatformLeft = greenMushroomPlatformLeft1; 
+		redMushroomPlatformLeft = redMushroomPlatformLeft1; 
+		greenMushroomPlatformMiddle = greenMushroomPlatformMiddle1;
+		yellowMushroomPlatformMiddle = yellowMushroomPlatformMiddle1;
+		redMushroomPlatformRight = redMushroomPlatformRight1;
+		mushroomPlatformBottom = mushroomPlatformBottom1;
+		yellowMushroomPlatformLeft = yellowMushroomPlatformLeft1;
+		yellowMushroomPlatformRight = yellowMushroomPlatformRight1;
+		greenMushroomPlatformRight = greenMushroomPlatformRight1;
+		redMushroomPlatformMiddle = redMushroomPlatformMiddle1;
+		
 		canvas = canvas1;
 	}
+	
+	
+	
+	
+	
+	/***
+	 * mushroomplatform is trampoline-like platform 
+	 * @param xCounter
+	 * @param h: h>=1, h is num of mushroomPlatformBottom
+	 * @param w: w>=1, w is num of mushroomPlatformMiddle
+	 * @param type: red, yellow, or green mushroom platform
+	 * @param staticLevelParts
+	 * @return width of mushroom platform
+	 */
+	public static double spawnMushroomPlatform(XCounter xCounter, double w, double h, LevelController.MUSHROOM_PLATFORM_TYPE type, ArrayList<StaticLevelPart> staticLevelParts) {
+		if (h<1) h=1;
+		if (w<1) w=1;
+		MyImage mushroomLeft, mushroomMiddle, mushroomRight;
+		if (type==LevelController.MUSHROOM_PLATFORM_TYPE.GREEN) {
+			mushroomLeft = greenMushroomPlatformLeft;
+			mushroomMiddle = greenMushroomPlatformMiddle;
+			mushroomRight = greenMushroomPlatformRight;
+		} else if (type==LevelController.MUSHROOM_PLATFORM_TYPE.RED) {
+			mushroomLeft = redMushroomPlatformLeft;
+			mushroomMiddle = redMushroomPlatformMiddle;
+			mushroomRight = redMushroomPlatformRight;
+		} else {//must be yellow
+			mushroomLeft = yellowMushroomPlatformLeft;
+			mushroomMiddle = yellowMushroomPlatformMiddle;
+			mushroomRight = yellowMushroomPlatformRight;
+		}
+		
+		ArrayList<Platform> platforms = new ArrayList<Platform>();
+		double width = 0.0;
+		Platform g1 = new Platform(mushroomPlatformBottom);
+		
+		
+		BouncyPlatform g3 = new BouncyPlatform(mushroomLeft);
+		canvas.add(g3, xCounter.v, canvas.getHeight()-h*g1.getHeight()-g3.getHeight());
+		platforms.add(g3);
+		width+=g3.getWidth();
+		
+		for (int i=0; i<w;i++) {
+			BouncyPlatform g4 = new BouncyPlatform(mushroomMiddle);
+			canvas.add(g4, xCounter.v+g3.getWidth()+i*g4.getWidth(), canvas.getHeight()-h*g1.getHeight()-g4.getHeight());
+			platforms.add(g4);
+			width+=g4.getWidth();
+		}
+		
+		
+		BouncyPlatform g5 = new BouncyPlatform(mushroomRight);
+		canvas.add(g5, xCounter.v+width, canvas.getHeight()-h*g1.getHeight()-g5.getHeight());
+		platforms.add(g5);
+		width+=g5.getWidth();
+		
+		////////
+		double middlePlatformX = width/2-g1.getWidth()/2;
+		canvas.add(g1, xCounter.v+middlePlatformX, canvas.getHeight()-g1.getHeight());
+		platforms.add(g1);
+		
+		
+		for (int i=2; i<=h; i++) {
+			g1 = new Platform(mushroomPlatformBottom);
+			canvas.add(g1, xCounter.v+middlePlatformX, canvas.getHeight()-i*g1.getHeight());
+			platforms.add(g1);
+		}
+		
+		
+		
+		
+		xCounter.v += width;
+		staticLevelParts.add(new StaticLevelPart(platforms));
+		return width;
+	}
+	
+	
+	
 	
 	//bill blaster is cannon that shoots bullets (BulletBill)
 	//h>3

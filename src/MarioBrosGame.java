@@ -368,6 +368,19 @@ public class MarioBrosGame {
 
 		String timeDilationPowerupPath = prefix+imageDirectory+"/timeDilationPowerup.png";
 
+		
+		
+		String greenMushroomPlatformLeftPath = prefix+imageDirectory+"/greenMushroomPlatformLeft.png";
+		String redMushroomPlatformLeftPath = prefix+imageDirectory+"/redMushroomPlatformLeft.png";
+		String greenMushroomPlatformMiddlePath = prefix+imageDirectory+"/greenMushroomPlatformMiddle.png";
+		String yellowMushroomPlatformMiddlePath = prefix+imageDirectory+"/yellowMushroomPlatformMiddle.png";
+		String redMushroomPlatformRightPath = prefix+imageDirectory+"/redMushroomPlatformRight.png";
+		String mushroomPlatformBottomPath = prefix+imageDirectory+"/mushroomPlatformBottom.png";
+		String yellowMushroomPlatformLeftPath = prefix+imageDirectory+"/yellowMushroomPlatformLeft.png";
+		String yellowMushroomPlatformRightPath = prefix+imageDirectory+"/yellowMushroomPlatformRight.png";
+		String greenMushroomPlatformRightPath = prefix+imageDirectory+"/greenMushroomPlatformRight.png";
+		String redMushroomPlatformMiddlePath = prefix+imageDirectory+"/redMushroomPlatformMiddle.png";
+		
 
 
 		MyImage smallMarioLeftImage = null;
@@ -630,6 +643,18 @@ public class MarioBrosGame {
 		MyImage timedilatingbigLuigiRightJumpingDownImage = null;
 
 		MyImage timeDilationPowerup = null;
+		
+		
+		MyImage greenMushroomPlatformLeft = null;
+		MyImage redMushroomPlatformLeft = null;
+		MyImage greenMushroomPlatformMiddle = null;
+		MyImage yellowMushroomPlatformMiddle = null;
+		MyImage redMushroomPlatformRight = null;
+		MyImage mushroomPlatformBottom = null;
+		MyImage yellowMushroomPlatformLeft = null;
+		MyImage yellowMushroomPlatformRight = null;
+		MyImage greenMushroomPlatformRight = null;
+		MyImage redMushroomPlatformMiddle = null;
 
 		try {
 			smallMarioLeftImage = new MyImage(ImageIO.read(new File(smallMarioLeftImagePath)), "smallMarioLeftImage");
@@ -872,6 +897,20 @@ public class MarioBrosGame {
 			timedilatingbigLuigiRightJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightJumpingDownImagePath)), "timedilatingbigLuigiRightJumpingDownImage");
 
 			timeDilationPowerup = new MyImage(ImageIO.read(new File(timeDilationPowerupPath)), "timeDilationPowerup");
+			
+			
+			
+			
+			greenMushroomPlatformLeft = new MyImage(ImageIO.read(new File(greenMushroomPlatformLeftPath)), "greenMushroomPlatformLeft");
+			redMushroomPlatformLeft = new MyImage(ImageIO.read(new File(redMushroomPlatformLeftPath)), "redMushroomPlatformLeft");
+			greenMushroomPlatformMiddle = new MyImage(ImageIO.read(new File(greenMushroomPlatformMiddlePath)), "greenMushroomPlatformMiddle");
+			yellowMushroomPlatformMiddle = new MyImage(ImageIO.read(new File(yellowMushroomPlatformMiddlePath)), "yellowMushroomPlatformMiddle");
+			redMushroomPlatformRight = new MyImage(ImageIO.read(new File(redMushroomPlatformRightPath)), "redMushroomPlatformRight");
+			mushroomPlatformBottom = new MyImage(ImageIO.read(new File(mushroomPlatformBottomPath)), "mushroomPlatformBottom");
+			yellowMushroomPlatformLeft = new MyImage(ImageIO.read(new File(yellowMushroomPlatformLeftPath)), "yellowMushroomPlatformLeft");
+			yellowMushroomPlatformRight = new MyImage(ImageIO.read(new File(yellowMushroomPlatformRightPath)), "yellowMushroomPlatformRight");
+			greenMushroomPlatformRight = new MyImage(ImageIO.read(new File(greenMushroomPlatformRightPath)), "greenMushroomPlatformRight");
+			redMushroomPlatformMiddle = new MyImage(ImageIO.read(new File(redMushroomPlatformMiddlePath)), "redMushroomPlatformMiddle");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -1061,6 +1100,16 @@ public class MarioBrosGame {
 				pipeUpTopLeft, pipeUpTopRight, pipeDownMiddleLeft, pipeDownMiddleRight,
 				pipeDownTopLeft, pipeDownTopRight, pipeUpMiddleLeft, 
 				pipeUpMiddleRight, billBlasterMiddle, billBlasterBottom,
+				greenMushroomPlatformLeft,
+				redMushroomPlatformLeft,
+				greenMushroomPlatformMiddle,
+				yellowMushroomPlatformMiddle,
+				redMushroomPlatformRight,
+				mushroomPlatformBottom,
+				yellowMushroomPlatformLeft,
+				yellowMushroomPlatformRight,
+				greenMushroomPlatformRight,
+				redMushroomPlatformMiddle,
 				canvas);
 		BillBlasterTop.setImage(billBlasterTop);
 		LevelController.setObjects(canvas);

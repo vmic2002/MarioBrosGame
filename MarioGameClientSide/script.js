@@ -1,3 +1,5 @@
+//TODO WILL PROBS HAVE TO DO MULTITHREADING FOR MOVING IMAGES ETC IN JS
+
 const gameContainer = document.getElementById('game-container');
 const imagesOnScreen = {};
 //imagesOnScreen is hashmap that keeps track of all images on screen

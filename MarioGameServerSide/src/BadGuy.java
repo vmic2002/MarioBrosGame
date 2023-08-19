@@ -3,7 +3,6 @@ import acm.graphics.GObject;
 public abstract class BadGuy extends MovingObject implements Dynamic {
 	//class BadGuy: ShootingFlower, BitingFlower, Turtle, BulletBill, Goomba and
 	//any other characters in this game that hurt mario will extend BadGuy
-	//public long dynamicId;
 	public BadGuy(MyImage arg0) {
 		super(arg0);
 	}
