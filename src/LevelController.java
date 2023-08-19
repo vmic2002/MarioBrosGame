@@ -22,7 +22,7 @@ public class LevelController {
 	public static void setObjects(MyGCanvas canvas1) {canvas=canvas1;
 	space = MovingObject.getBaseLineSpeed()*10.0;xCounter = new XCounter();}
 
-	public static void endCurrentLevel() {
+	private static void endCurrentLevel() {
 		endingLevel = true;
 		//sets all moving objects of currLevel to dead
 		//sets all mysteryboxs to final state (so the thread that changes
@@ -77,15 +77,48 @@ public class LevelController {
 		else if (subLevelID.equals("4")) playLevel4();
 		else if (subLevelID.equals("5")) playLevel5();
 		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
+		//by now currLevel = new Level and need to start moving all the moving objects
+		startMovingObjects();
+	}
+
+	private static void startMovingObjects() {
+		GameThread t1 = new GameThread(new MyRunnable() {
+			@Override
+			public void doWork() throws InterruptedException {
+				for (StaticLevelPart l : currLevel.staticLevelParts) {
+					if (l.platforms.size()==1 && l.platforms.get(0) instanceof MysteryBox)
+						((MysteryBox) l.platforms.get(0)).startChangingState();//START CHANGING STATES FOR MYSTERYBOXES
+					else {
+						//in StaticFactory.spawnBillBlaster, BillBlasterTop is added at end of platforms arraylist
+						//for staticlevelpart.platforms, so need to check if last platforms in list is BillBlasterTop
+						//to "activate" billblasters when level is instantiated
+						Platform p = l.platforms.get(l.platforms.size()-1);
+						if (p instanceof BillBlasterTop) {
+							BillBlasterController.startShooting((BillBlasterTop) p);
+						}
+					}
+				}
+
+				for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
+					ThreadSafeGImage image = (ThreadSafeGImage) l.part;
+					if (image instanceof Coin)//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
+						((Coin) image).startSpinning();
+					else if (image instanceof BadGuy)
+						((BadGuy) image).startMove();
+					else if (image instanceof PowerUp)
+						((PowerUp) image).startMove();
+				}
+			}
+		}, "starting moving objects at beginning of level");
 	}
 
 	//this function adds white space to level by increasing xCounter.v without adding any images
-	public static void spawnWhiteSpace(XCounter xCounter, double numSpaces) {
+	private static void spawnWhiteSpace(XCounter xCounter, double numSpaces) {
 		xCounter.v += numSpaces*space;
 	}
 
 
-	public static void playLevel1() {
+	private static void playLevel1() {
 		//adds each GImage for each LevelPart to the canvas at their starting positions
 		//adds LevelParts from left to right so helpful to have xCounter to keep track of
 		//smallest left index where a new LevelPart could be spawned
@@ -124,7 +157,7 @@ public class LevelController {
 	}
 
 
-	public static void playLevel1a() {
+	private static void playLevel1a() {
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
@@ -139,7 +172,7 @@ public class LevelController {
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
-	public static void playLevel1b() {
+	private static void playLevel1b() {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
@@ -157,7 +190,7 @@ public class LevelController {
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
-	public static void playLevel2() {
+	private static void playLevel2() {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
@@ -193,7 +226,7 @@ public class LevelController {
 	}
 
 
-	public static void playLevel3() {
+	private static void playLevel3() {
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 4, 5, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
@@ -208,7 +241,7 @@ public class LevelController {
 		addCharactersAtStartOfLevel(new double[] {0.0, canvas.getWidth()-MovingObject.characters[1].getWidth()});
 	}
 
-	public static void playLevel4() {
+	private static void playLevel4() {
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		for (int i=0; i<4; i++) {
@@ -222,7 +255,7 @@ public class LevelController {
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
-	public static void playLevel5() {
+	private static void playLevel5() {
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		//Level.addLevelPartDynamically(GImage i, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
@@ -235,8 +268,8 @@ public class LevelController {
 		//DynamicFactory.addFloatingCoinsRectangle(xCounter.v+10*space, canvas.getHeight()/5, 5, 3, dynamicLevelParts);
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts);
+		//StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-1.0*space, 6, staticLevelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
 		Level level5 = new Level("5", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel
@@ -244,7 +277,7 @@ public class LevelController {
 	}
 
 
-	public static void addCharactersAtStartOfLevel(double[] xPositions) {
+	private static void addCharactersAtStartOfLevel(double[] xPositions) {
 		//xPositions.length expected to be equal to MovingObject.characters.length
 		//for now this function drops all characters at top left of level
 		//and makes them fall at the same time
@@ -253,9 +286,9 @@ public class LevelController {
 			canvas.add(m, xPositions[i], 40);
 			//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
 			ServerToClientMessenger.sendAddImageToScreenMessage(m);
-			Thread t1 = new Thread(new Runnable() {
+			GameThread t1 = new GameThread(new MyRunnable() {
 				@Override
-				public void run() {
+				public void doWork() throws InterruptedException{
 					m.setToAlive(false);//this is in case another mario died after the first mario who died and is still going up/down in dead sprite 
 					if (m.bigOrSmall) m.setToJumpingDown(true);
 					m.fall(5);
@@ -265,9 +298,7 @@ public class LevelController {
 					}
 					m.isJumping = false;
 				}
-			});
-			t1.setName("adding characters at start of level");
-			t1.start();
+			},"adding characters at start of level");
 		}
 	}
 }

@@ -35,6 +35,7 @@ $CATALINA_HOME/bin/shutdown.sh
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
 
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -66,8 +67,7 @@ public class MyWebSocketServer {
 		// Add the new session to the activeSessions set
 		activeSessions.add(session);
 		//System.out.println("CALLING MAIN FUNCTION");
-		MarioBrosGame.main(new String[] {session.getId()});
-
+		
 		sendMessage("SESSION ID: "+session.getId(), session);
 		sendMessage("TOTAL OF "+activeSessions.size()+" sessions:", session);
 		String message = "IDs: ";
@@ -75,6 +75,10 @@ public class MyWebSocketServer {
 			message+=s.getId()+", ";
 		}
 		sendMessage(message, session);
+		
+		MarioBrosGame.main(new String[] {session.getId()});
+
+		
 		
 		
 	
@@ -95,9 +99,22 @@ public class MyWebSocketServer {
 
 	@OnClose
 	public void onClose(Session session) {
-		System.out.println("<<<<<<<WebSocket connection closed: " + session.getId());
+		System.out.println("<<<<<<<\t\tWebSocket connection closed: " + session.getId());
 		// Remove the closed session from the activeSessions set
 		activeSessions.remove(session);
+		System.out.println("INTERRUPTING ALL GAME THREADS");
+		
+		GameThread.interruptAllMarioThreads();
+		//see MyRunnable.java and GameThread.java
+		//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
+		//calling System.exit doesnt work
+		//OR ELSE WILL GET ERROR MESSAGE: 
+		/*
+		 * WARNING [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web     
+		 * application [MarioGameServerSide] appears to have started a thread named [mystery box changing states OR AWT-EventQueue-0 (FOR EXAMPLE)] 
+		 * but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread
+		 */
+		
 	}
 
 	@OnError

@@ -47,23 +47,23 @@ public abstract class ShootingFlower extends BadGuy {
 		double smallestDistance = 10^9;//SHOULD BE DOUBLE.MAX_VALUE
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
-		//	System.out.println("!!!!!!!!LOOp AT: "+m.character);
+			//	System.out.println("!!!!!!!!LOOp AT: "+m.character);
 			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));
-		//	System.out.println(d);
+			//	System.out.println(d);
 			if (d<smallestDistance) {
 				index = i;
 				smallestDistance = d;
-				
+
 			}
 		}
 		return MovingObject.characters[index];
 	}
 
-	public void shootMario() {
+	public void shootMario() throws InterruptedException {
 		//flower needs to locate mario and shoot fireball at him (in a straight line)
 		//TODO could add sound when shooting flower shoot fireball at mario
 		Mario mario = getClosestMario();
-		
+
 		//System.out.println("!!!!!!!!SHOOTING AT: "+mario.character);
 		boolean rightOrLeft;
 		boolean upOrDown = mario.getY()<getY()+MovingObject.getBaseLineSpeed();
@@ -95,48 +95,38 @@ public abstract class ShootingFlower extends BadGuy {
 		closeMouth(upOrDown, rightOrLeft);		
 	}
 
-	public void move() {
-		//shootingflower.move() is called when level is instantiated
+	@Override
+	public void move() throws InterruptedException {
 		//this func makes the flower move out of the pipe, shoot a fireball at mario,
 		//and come back into the pipe depending on if is a up/down shootingflower		
-		System.out.println("In move function for shooting flower");
-		Thread t1 = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				ThreadSleep.sleep(timeOffset);
-				while (alive) {
-
-					for (int i=0; i<numMoves; i++) {
-						ArrayList<GObject> o1 = checkAtPositions(getPoints());
-						for (GObject x : o1) {
-							inContactWith(x, false);
-						}
-						move(0, dy);
-						//flower comes out of pipe
-						ThreadSleep.sleep(4);
-					}
-					ThreadSleep.sleep(50);
-					if (!alive) break;
-					shootMario();
-					if (!alive) break;
-					for (int i=0; i<numMoves; i++) {
-						ArrayList<GObject> o1 = checkAtPositions(getPoints());
-						for (GObject x : o1) {
-							inContactWith(x, false);
-						}
-						move(0, -dy);
-						//flower goes back into pipe
-						ThreadSleep.sleep(4);
-					}
-					ThreadSleep.sleep(400);
-
+		ThreadSleep.sleep(timeOffset);
+		while (alive) {
+			for (int i=0; i<numMoves; i++) {
+				ArrayList<GObject> o1 = checkAtPositions(getPoints());
+				for (GObject x : o1) {
+					inContactWith(x, false);
 				}
-				//alive is set to false by level controller when starting new level
-				kill();
-				System.out.println("SHOOTING FLOWER DEAD");
+				move(0, dy);
+				//flower comes out of pipe
+				ThreadSleep.sleep(4);
 			}
-		});
-		t1.setName("shooting flower");
-		t1.start();		
+			ThreadSleep.sleep(50);
+			if (!alive) break;
+			shootMario();
+			if (!alive) break;
+			for (int i=0; i<numMoves; i++) {
+				ArrayList<GObject> o1 = checkAtPositions(getPoints());
+				for (GObject x : o1) {
+					inContactWith(x, false);
+				}
+				move(0, -dy);
+				//flower goes back into pipe
+				ThreadSleep.sleep(4);
+			}
+			ThreadSleep.sleep(400);
+		}
+		//alive is set to false by level controller when starting new level
+		kill();
+		System.out.println("SHOOTING FLOWER DEAD");
 	}
 }

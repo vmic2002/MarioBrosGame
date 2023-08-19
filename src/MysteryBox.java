@@ -33,20 +33,16 @@ public class MysteryBox extends Platform {
 
 	public void startChangingState() {
 		//each mysterybox changes its pictures (changes state) in their own thread
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
-
+			public void doWork() throws InterruptedException{
 				while (!stateIsFinal()) {
 					ThreadSleep.sleep(15);
 					toggleState();
-				}	
-
+				}
 				System.out.println("END OF CHANGING STATE FOR MYSTERYBOX");
 			}
-		});
-		t1.setName("mystery box changing states");
-		t1.start();
+		},"mystery box changing states");
 	}
 
 	public boolean stateIsFinal() {
@@ -64,9 +60,9 @@ public class MysteryBox extends Platform {
 		double x  = this.getX();
 		double y = this.getY();
 		
-		//DynamicFactory.addHourglass(x, y, this.getWidth());
+		DynamicFactory.addHourglass(x, y, this.getWidth());
 		
-		if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
+		/*if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
 			if (Math.random()>0.25)
 				DynamicFactory.addMushroom(x, y, this.getWidth());
 			else
@@ -82,26 +78,22 @@ public class MysteryBox extends Platform {
 				DynamicFactory.addLeaf(x, y, this.getWidth());
 			else
 				DynamicFactory.addTanooki(x, y, this.getWidth());
-		}
-		Thread t1 = new Thread(new Runnable() {
+		}*/
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException {
 				double dy = -MovingObject.getBaseLineSpeed();
 				move(dy);//move up
 				dy = -dy;
 				move(dy);//move down
 			}
-		});
-		t1.setName("mysterybox hit by mario");
-		t1.start();
+		},"mysterybox hit by mario");
 	}
 
-	public void move(double dy) {
+	public void move(double dy) throws InterruptedException {
 		for (int i=0; i<10; i++) {
 			super.move(0, dy);
-
 			ThreadSleep.sleep(3);
-
 		}
 	}
 

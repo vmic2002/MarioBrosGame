@@ -6,10 +6,10 @@ public class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
-	public long dynamicId;
+	//public long dynamicId;
 	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
-	private static int pauseBetweenStates = 150;
+	private static int pauseBetweenStates = 15;
 	private enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
 	//"collected" state means Mario collected the coin and it should be removed from the canvas as well as the dynamicLevelParts
 	COIN_STATE coinState;
@@ -41,23 +41,18 @@ public class Coin extends MovingObject implements Dynamic{
 
 	public void startSpinning() {
 		//each floating coin changes its pictures (changes state) in its own thread
-		//TODO maybe when level will have lots of coins it will be worth it to have one thread doing spinning multiple coins
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {changeState();}
-		});
-		t1.setName("floating coin changing state");
-		t1.start();
+		//TODO maybe when level will have lots of coins it will be worth it to have one thread doing spinning block of coins
+		GameThread t1 = new GameThread(new MyRunnable() {
+			@Override
+			public void doWork() throws InterruptedException{changeState();}
+		},"floating coin changing state");
 	}
 
-	public void changeState() {
-		try {
-			while (!collected() && alive) {
-				Thread.sleep(pauseBetweenStates);
-				toggleState();
-			}	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void changeState() throws InterruptedException{
+		while (!collected() && alive) {
+			ThreadSleep.sleep(pauseBetweenStates);
+			toggleState();
+		}	
 		kill();
 		System.out.println("END OF CHANGING STATE FOR FLOATING COIN");
 	}
@@ -65,7 +60,7 @@ public class Coin extends MovingObject implements Dynamic{
 	public void collectedByMario(Mario mario) {
 		//THIS IS FOR FLOATING COINS
 		if (collected()) return;
-		StatsController.collectCoin(mario);
+		CharacterStatsController.collectCoin(mario);
 		coinState = COIN_STATE.COLLECTED;
 		SoundController.playCoinSound();
 	}
@@ -77,25 +72,24 @@ public class Coin extends MovingObject implements Dynamic{
 		canvas = canvas1;
 	}
 
-	@Override
-	public void setID(long id) {
-		this.dynamicId = id;
-	}
+
 
 	@Override
 	public long getID() {
-		return this.dynamicId;
+		return this.getImageID();
 	}
 
 	@Override
 	public void kill() {
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		if (!LevelController.endingLevel()) {
+			canvas.remove(this);
+			alive = false;
+			LevelController.currLevel.removeDynamic(this);
+		}
 	}
-	
+
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		//TODO the move function will be for coins retrieved from mysteryboxes+bricks (NOT floating coins)
 		//since they have a small animation of moving out of the box
 	}
@@ -106,5 +100,5 @@ public class Coin extends MovingObject implements Dynamic{
 		return false;
 	}
 
-		
+
 }

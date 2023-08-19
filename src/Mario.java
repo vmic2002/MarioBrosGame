@@ -8,8 +8,6 @@ import acm.graphics.GObject;
 
 public class Mario extends MovingObject {
 	/*
-	 *TODO Idea for Mario time dilating Mario the time slows down
-	 * modify the global variables that govern the speed of that object, also a super fast flash mario
 	 *TODO mario needs to be able to slide off and jump off platform when falling on them from the side
 	 *TODO so if mario is !wayUpOrWayDown and isJumping and inContactWith(Platform, horizontalOrVertical==true) and user hits jump then he must jump off in opposite direction
 	 *TODO this will let mario be able to come back up from falling between two platforms
@@ -73,7 +71,8 @@ public class Mario extends MovingObject {
 	public boolean isTimeDilating = false;//time dilating mario can be big or small! all mario characters are timeDilating if one of them is
 	//TODO for now time dilation is until you lose it. kind of OP maybe make it temporary
 	//IF MARIO CHARACTERS ARE FIRE, CAT, OR TANOOKI AND BECOME TIME DILATING,
-	//they become big automatically and that powerup was lost
+	//they become big automatically and that powerup was lost. makes sense
+	//because fire mario loses fire power when he becomes tanooki
 	//if one mario becomes time dilating, all the other ones are as well
 	//design decision: small mario eating fire flower/leaf turns directly into fire/cat mario, not just big mario
 
@@ -316,7 +315,7 @@ public class Mario extends MovingObject {
 
 	}
 
-	public void sleep(double t) {
+	public void sleep(double t) throws InterruptedException {
 		//TODO IN MARIO SLEEP FUNCTION MAKE FAST MODE
 		//if fast mode
 		//ThreadSleep.sleepMarioFastMode(t);
@@ -373,7 +372,10 @@ public class Mario extends MovingObject {
 				}
 				//mario touched bottom of screen 
 				System.out.println("MARIO DEAD he touched bottom of screen");
-				marioDied();
+				try {marioDied();}
+				catch (InterruptedException e){
+					Thread.currentThread().interrupt();
+				}
 				return;
 			}
 			if (getX()<0 || getX()>canvas.getWidth()) {
@@ -392,45 +394,44 @@ public class Mario extends MovingObject {
 		return false;
 	}
 
-	public void marioDied() {
+	public void marioDied() throws InterruptedException {
 		alive = false;
 		movingRight = false;//in case user releases left/right keys right after mario dies
 		movingLeft = false;
 		boolean anotherMarioAlreadyDied = anotherMarioAlreadyDied(this); 
 		if (!anotherMarioAlreadyDied) SoundController.playMarioDeathSound();
-		for (Mario m:MovingObject.characters)
-			m.isTimeDilating = false;
-		GameStatsController.setToBaseLinePause();//stops time dilation if mario is hit or dies
+		stopTimeDilationForAllCharacters(this);
+		this.isTimeDilating=false;
+		//for (Mario m:MovingObject.characters)
+		//	m.isTimeDilating = false;
 		setImageAndRelocate(marioDeadImage);
 		sendToFront();
-		try {
-			//alive can be set to true in LevelController.addCharactersAtStartOfLevel
-			//if mario1 dies first and as he is in dead sprite mario2 dies
-			//then mario2 does not have time to finish his jump in dead sprite
-			//because mario1's death will end the current level
-			for (int i=0; i<30; i++) {
-				if (alive) return;
-				super.move(0,-fallDy);
-				sleep(1.5);
-			}
-			sleep(25);
-			double maxTimeFallDown = 1500;
-			while (maxTimeFallDown>0 && getY()+getHeight()+fallDy<=canvas.getHeight()) {
-				if (alive) return;
-				super.move(0,fallDy);
-				sleep(1.5);
-				maxTimeFallDown -= 15;
-			}
-			while (maxTimeFallDown>0) {
-				if (alive) return;
-				sleep(1.5);
-				maxTimeFallDown -= 15;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		//alive can be set to true in LevelController.addCharactersAtStartOfLevel
+		//if mario1 dies first and as he is in dead sprite mario2 dies
+		//then mario2 does not have time to finish his jump in dead sprite
+		//because mario1's death will end the current level
+		for (int i=0; i<30; i++) {
+			if (alive) return;
+			super.move(0,-fallDy);
+			sleep(1.5);
 		}
+		sleep(25);
+		double maxTimeFallDown = 1500;
+		while (maxTimeFallDown>0 && getY()+getHeight()+fallDy<=canvas.getHeight()) {
+			if (alive) return;
+			super.move(0,fallDy);
+			sleep(1.5);
+			maxTimeFallDown -= 15;
+		}
+		while (maxTimeFallDown>0) {
+			if (alive) return;
+			sleep(1.5);
+			maxTimeFallDown -= 15;
+		}
+
 		if (alive) return;
-		
+
 		setToAlive(true);
 		if (!anotherMarioAlreadyDied) LevelController.restartCurrentLevel();//when mario dies restart the level
 	}
@@ -697,15 +698,13 @@ public class Mario extends MovingObject {
 		if (!isJumping) {
 			GObject o = canvas.getElementAt(getX()+getWidth()/2, getY()+getHeight()+20);
 			if (o!=null && o instanceof PipePart && ((PipePart) o).upOrDownPipe) {
-				Thread t1 = new Thread(new Runnable() {
+				GameThread t1 = new GameThread(new MyRunnable() {
 					@Override
-					public void run() {
+					public void doWork() throws InterruptedException{
 						System.out.println("MARIO GOES DOWN INTO PIPE "+((PipePart) o).subLevelID);
 						goIntoPipe(false, (PipePart) o);
 					}
-				});
-				t1.setName(this.character.name()+ " fall in pipe");
-				t1.start();
+				},this.character.name()+ " fall in pipe");
 			}
 		}
 	}
@@ -750,9 +749,9 @@ public class Mario extends MovingObject {
 		if (isJumping) {
 			return;
 		}
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				//code in here runs in another thread since mario can go right or left while jumping
 				//has to be done concurrently
 
@@ -829,12 +828,10 @@ public class Mario extends MovingObject {
 				isJumping = false;
 				//System.out.println("Stopping jump!!!!!!!!!!!!!!!!!!!!!!");
 			}
-		});
-		t1.setName(this.character.name()+ " jump");
-		t1.start();
+		},this.character.name()+ " jump");
 	}
 
-	public void fall(double dy) {
+	public void fall(double dy) throws InterruptedException {
 		while (!hitPlatformVertical && alive) {//mario falls down until he hits a platform
 			checkUnder(dy);
 			move(0, dy);
@@ -844,9 +841,7 @@ public class Mario extends MovingObject {
 				hitPlatformVertical = false;
 				break;
 			}
-
 			sleep(pauseGoingDown);
-
 		}
 	}
 
@@ -1166,9 +1161,9 @@ public class Mario extends MovingObject {
 			}
 		}
 		final boolean c = b;
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				int counter = 3;
 				int x = 3;
 				//counter is used to toggle mario from walking to not walking every x number of times
@@ -1198,12 +1193,10 @@ public class Mario extends MovingObject {
 					}
 				}
 			}
-		}); 
-		t1.setName(this.character.name()+ " horizontal movement");
-		t1.start();
+		},this.character.name()+ " horizontal movement");
 	}
 
-	public void moveHelper(boolean rightOrLeft, boolean toggleWalking) {
+	public void moveHelper(boolean rightOrLeft, boolean toggleWalking) throws InterruptedException {
 		//this function moves mario right or left once, is repeatedly called to move mario continuously
 		if (!isJumping && (isCrouching || isSwinging)) {
 			//if mario is on ground (not jumping) and crouching or swinging, he cant move to the side
@@ -1252,9 +1245,9 @@ public class Mario extends MovingObject {
 				//if mario is not on top of a Platform he needs to fall down 
 				//(unless he is already at the bottom of the screen)
 				//System.out.println("NOT ON Platform SHOULD FALL");
-				Thread t1 = new Thread(new Runnable() {
+				GameThread t1 = new GameThread(new MyRunnable() {
 					@Override
-					public void run() {
+					public void doWork() throws InterruptedException{
 						if (bigOrSmall) setToJumpingDown(rightOrLeft);
 						else setToJumping(rightOrLeft);
 						isJumping = true;
@@ -1263,9 +1256,7 @@ public class Mario extends MovingObject {
 						isJumping = false;
 						//System.out.println("DONE FALLING");
 					}
-				});  
-				t1.setName(this.character.name()+ " fall off platform");
-				t1.start();
+				},this.character.name()+ " fall off platform");
 			} else {
 				//System.out.println("ON Platform OR at bottom of screen");
 				hitPlatformVertical = false;
@@ -1384,17 +1375,13 @@ public class Mario extends MovingObject {
 					}
 					if (goingIntoPipe) return false;
 
-					Thread t1 = new Thread(new Runnable() {
+					GameThread t1 = new GameThread(new MyRunnable() {
 						@Override
-						public void run() {
+						public void doWork() throws InterruptedException{
 							System.out.println("MARIO JUMP INTO PIPE "+((PipePart) o).subLevelID);
 							goIntoPipe(true, (PipePart) o);
 						}
-					});
-					t1.setName(this.character.name()+ " jumping in pipe");
-					t1.start();
-
-
+					},this.character.name()+ " jumping in pipe");
 				} else if (o instanceof Platform) {
 					System.out.println("MARIO JUMPED INTO PLATFORM");
 				}
@@ -1453,9 +1440,9 @@ public class Mario extends MovingObject {
 			return;
 		}
 		flashing = true;
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				System.out.println("Mario hit by a BadGuy or fireball shot from shooting flower");
 				if (!bigOrSmall) {
 					marioDied();
@@ -1476,32 +1463,27 @@ public class Mario extends MovingObject {
 				}
 				flash();
 			}
-		});  
-		t1.setName(this.character.name()+ " hit by badguy");
-		t1.start();
+		},this.character.name()+ " hit by badguy");
 	}
 
-	public void flash() {
+	public void flash() throws InterruptedException {
 		//flashingInterval
 		//flashingTime
-		try {
-			for (int i=0; i<numTimesToggleVisibility; i++) {
-				if (!alive || !flashing) {
-					setVisible(true);
-					flashing = false;
-					return;//if mario gets hit (is flashing) and then falls to bottom of screen he shouldnt flash anymore
-				}
-				setVisible(!isVisible());
-				sleep(flashingInterval);
+
+		for (int i=0; i<numTimesToggleVisibility; i++) {
+			if (!alive || !flashing) {
+				setVisible(true);
+				flashing = false;
+				return;//if mario gets hit (is flashing) and then falls to bottom of screen he shouldnt flash anymore
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+			setVisible(!isVisible());
+			sleep(flashingInterval);
 		}
 		flashing = false;
 		//TODO bug where mario stop flashing when he is on top of bad guy but he doesnt get hit again
 	}
 
-	public void goIntoPipe(boolean upOrDown, PipePart o) {
+	public void goIntoPipe(boolean upOrDown, PipePart o) throws InterruptedException {
 		if (!alive) return;
 		goingIntoPipe = true;//to disable user from moving mario as he is going into pipe
 		//setting movingRight/Left to false in case mario
@@ -1612,9 +1594,9 @@ public class Mario extends MovingObject {
 		}*/
 		//if (isShooting) return;
 		isShooting = true;
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				while (alive && isShooting && isFire) {
 					if (isCrouching) {System.out.println("iiiiiiiiiiiiiiiiiiiii");//WITHOUT PRINTLN IT BUGS
 					} else {
@@ -1739,9 +1721,7 @@ public class Mario extends MovingObject {
 				isShooting = false;
 				System.out.println("\n\t\t\t>>>>>>>DONE SHOOTING FIREBALL(S)\n");
 			}
-		});  
-		t1.setName(this.character.name()+ " shoot fireball");
-		t1.start();
+		},this.character.name()+ " shoot fireball");
 	}
 
 	public void swingTail() { 
@@ -1757,9 +1737,9 @@ public class Mario extends MovingObject {
 			return;//return if already swinging
 		}*/
 		isSwinging = true;
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				while (alive && isSwinging && (isCat || isTanooki)) {
 					if (isCrouching) {System.out.println("yyyyyyyyy");//WITHOUT PRINTLN IT BUGS
 					} else {
@@ -1904,9 +1884,7 @@ public class Mario extends MovingObject {
 				isSwinging = false;
 				System.out.println("\n\n\nDONE SWINGING TAI\n\nL");
 			}
-		});
-		t1.setName(this.character.name()+ " swing tail");
-		t1.start();
+		},this.character.name()+ " swing tail");
 	}
 
 	public void hop() {
@@ -1918,7 +1896,7 @@ public class Mario extends MovingObject {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		// this is for leaf, mushroom, etc not for mario
 	}
 

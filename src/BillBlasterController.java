@@ -12,15 +12,16 @@ public class BillBlasterController{
 	public static void setCanvas(MyGCanvas canvas1) {canvas=canvas1;}
 	public static void startOfLevel() {threads = new ArrayList<Thread>();}
 	@SuppressWarnings("deprecation")
-	public static void endOfLevel() {for (Thread t: threads) t.stop();
+	public static void endOfLevel() {for (Thread t: threads) t.interrupt();
 	System.out.println("\tTOTAL OF "+threads.size()+ " threads");}
+	
 	//number of threads == number of BillBlaster in currLevel
 
 	public static void startShooting(BillBlasterTop p) {
 		//p is top of bill blaster (where BulletBill needs to be shot from)
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException {
 				ThreadSleep.sleep(pause);
 				//pause above is to wait for current level to be fully spawned
 				while (true) {
@@ -35,9 +36,7 @@ public class BillBlasterController{
 					ThreadSleep.sleep(5*pause);
 				}
 			}
-		});
+		},"Bill Blaster");
 		threads.add(t1);
-		t1.setName("Bill Blaster");
-		t1.start();
 	}
 }

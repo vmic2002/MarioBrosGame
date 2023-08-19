@@ -9,9 +9,9 @@ public class FireBall extends MovingObject implements Dynamic {
 	private static final int maxDistance = canvas.getWidth()*3;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
-	private static final double sizeOfHops = MovingObject.scalingFactor*20;//fireball hops once it moves on the ground
+	private static final double sizeOfHops = MovingObject.getBaseLineSpeed()*20;//fireball hops once it moves on the ground
 	private static final double hopRadius = sizeOfHops/2;//width of semi circle (hop) is 2*R
-	private static int pauseTime = 10;//milliseconds pause in between each move function call
+	private static int pauseTime = 1;
 	private enum FIREBALL_STAGE {STAGE_1, STAGE_2, STAGE_3, STAGE_4};
 	FIREBALL_STAGE fireBallStage;
 	private boolean rightOrLeft;
@@ -26,18 +26,18 @@ public class FireBall extends MovingObject implements Dynamic {
 	//helpful for using  Math.abs(getX()-hoppingX)%sizeOfHops; for hopping
 
 	public double speedFactor = 3.5;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
-	private long dynamicId;//to add/remove from dynamicLevelParts
+	//private long dynamicId;//to add/remove from dynamicLevelParts
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
-		dx = rightOrLeft?MovingObject.scalingFactor*1.1:-MovingObject.scalingFactor*1.1;
+		dx = rightOrLeft?MovingObject.getBaseLineSpeed()*1.1:-MovingObject.getBaseLineSpeed()*1.1;
 		dy = Math.abs(dx);
 		fireBallStage = FIREBALL_STAGE.STAGE_1;
 		fallingOrHopping = true;
 		//rightOrLeft parameter determines if fireball is moving right or left
 	}
 
-	public void shootAtMario(Mario mario) {
+	public void shootAtMario(Mario mario) throws InterruptedException{
 		//called when a ShootingFlower shoot a fireball at mario
 		//fireball needs to go to in a straight path to mario or until it hits a platform and dies
 		double finalX = mario.getX()+mario.getWidth()/2.0;
@@ -56,7 +56,7 @@ public class FireBall extends MovingObject implements Dynamic {
 		double gasUsagePerMove = Math.sqrt(dx*dx+dy*dy);
 
 		while (alive && gasLeft >0) {
-			try {Thread.sleep(pauseTime);} catch (Exception e) {e.printStackTrace();}
+			ThreadSleep.sleep(pauseTime);
 			Point p1  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()):new Point(getX()+dx,getY()+getHeight());
 			Point p2  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()/2):new Point(getX()+dx,getY()+getHeight()/2);
 			Point p3  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()):new Point(getX()+dx,getY());
@@ -139,7 +139,7 @@ public class FireBall extends MovingObject implements Dynamic {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		//called when mario shoots a fireball
 		//this function moves a fireball its maximum distance or until
 		//it hits a flower, platform, turtle while changing its images
@@ -181,20 +181,21 @@ public class FireBall extends MovingObject implements Dynamic {
 			}
 			gasLeft -= Math.sqrt(dx*dx+dy*dy);
 			frequencyChangeStage--;
-			try {
-				Thread.sleep(pauseTime);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			
+			ThreadSleep.sleep(pauseTime);
+			
 		}
 		System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);
 		kill();
 	}
 
+	@Override
 	public void kill() {
-		canvas.remove(this);
-		alive = false;
-		LevelController.currLevel.removeDynamic(this);
+		if (!LevelController.endingLevel()) {
+			canvas.remove(this);
+			alive = false;
+			LevelController.currLevel.removeDynamic(this);
+		}
 	}
 
 	private void hop() {
@@ -276,13 +277,10 @@ public class FireBall extends MovingObject implements Dynamic {
 		rightFireBall4 = rightFireBall4X;
 	}
 
-	@Override
-	public void setID(long id) {
-		this.dynamicId = id;
-	}
+	
 
 	@Override
 	public long getID() {
-		return this.dynamicId;
+		return this.getImageID();
 	}
 }

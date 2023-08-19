@@ -1,13 +1,11 @@
-import java.awt.Image;
 import java.util.ArrayList;
-
 import acm.graphics.GObject;
 
 public class BulletBill extends BadGuy {
 	private static MyImage leftBulletBill, rightBulletBill;
-	private static long pause = 20;
+	private static long pause = 2;
 	private static int MAX_GAS_LEFT = 500;
-	private static double MAX_DX = MovingObject.scalingFactor*1.3;
+	private static double MAX_DX = MovingObject.getBaseLineSpeed()*1.3;
 	private int gasLeft;
 	private double dx;
 	private boolean jumpedOn;//true when jumped on by mario
@@ -26,23 +24,21 @@ public class BulletBill extends BadGuy {
 		//called when mario jumps on BulletBill
 		mario.hop();
 		if (jumpedOn) return;
-		StatsController.killBulletBillByJumpingOnIt(mario);
+		CharacterStatsController.killBulletBillByJumpingOnIt(mario);
 		jumpedOn = true;
 		this.sendToFront();
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				while (alive && getY()<=canvas.getHeight()+LevelController.currLevel.yBaseLine){
 					move(dx, 0.5*MAX_DX);
 					checkIfRunIntoSomething();
 					//TODO falling bulletbill doesnt check below when falling
-					try {Thread.sleep(pause);} catch (Exception e) {e.printStackTrace();}
+					ThreadSleep.sleep(pause);
 				}
 				kill();
 			}
-		});
-		t1.setName("BulletBill Falling");
-		t1.start();	
+		}, "BulletBill Falling");
 	}
 	
 	private void checkIfRunIntoSomething() {
@@ -59,14 +55,14 @@ public class BulletBill extends BadGuy {
 	}
 	
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		System.out.println("Added BulletBill!!");
 		while (gasLeft>0 && alive && !jumpedOn) {
 			move(dx, 0);
 			//System.out.println("\n\nBULLET BILL MOVING\n\n");
 			gasLeft--;
 			checkIfRunIntoSomething();
-			try {Thread.sleep(pause);} catch (Exception e) {e.printStackTrace();}
+			ThreadSleep.sleep(pause);
 		}
 		if (gasLeft<=0 || !alive) this.kill();
 		System.out.println("\n\nBulletBill END OF MOVE\n\n");

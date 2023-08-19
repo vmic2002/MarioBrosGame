@@ -37,7 +37,7 @@ public class FireBall extends MovingObject implements Dynamic {
 		//rightOrLeft parameter determines if fireball is moving right or left
 	}
 
-	public void shootAtMario(Mario mario) {
+	public void shootAtMario(Mario mario) throws InterruptedException{
 		//called when a ShootingFlower shoot a fireball at mario
 		//fireball needs to go to in a straight path to mario or until it hits a platform and dies
 		double finalX = mario.getX()+mario.getWidth()/2.0;
@@ -139,7 +139,7 @@ public class FireBall extends MovingObject implements Dynamic {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		//called when mario shoots a fireball
 		//this function moves a fireball its maximum distance or until
 		//it hits a flower, platform, turtle while changing its images
@@ -182,7 +182,7 @@ public class FireBall extends MovingObject implements Dynamic {
 			gasLeft -= Math.sqrt(dx*dx+dy*dy);
 			frequencyChangeStage--;
 			
-				ThreadSleep.sleep(pauseTime);
+			ThreadSleep.sleep(pauseTime);
 			
 		}
 		System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);

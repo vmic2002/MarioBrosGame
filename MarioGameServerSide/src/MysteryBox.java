@@ -1,7 +1,3 @@
-//import acm.graphics.GCanvas;
-//import acm.graphics.GImage;
-import java.awt.Image;
-
 public class MysteryBox extends Platform {
 	//extends Platform means that this is something mario would not be able
 	//to walk/jump into. if he does, it will halt him
@@ -13,13 +9,12 @@ public class MysteryBox extends Platform {
 	public MysteryBox() {
 		super(mysteryBox1Image);
 		mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
-		changeState();
 	}
 
 	public void toggleState() {
 		//changes mysterybox image from stage 1 to stage 2, 2->3, 3->4, 4->1
 		if (stateIsFinal()) return;
-		Image newImage;
+		MyImage newImage;
 		if (mysteryBoxState == MYSTERYBOX_STATE.STATE_1) {
 			newImage = mysteryBox2Image;
 			mysteryBoxState = MYSTERYBOX_STATE.STATE_2;
@@ -36,59 +31,69 @@ public class MysteryBox extends Platform {
 		setImage(newImage);
 	}
 
-	public void changeState() {
+	public void startChangingState() {
 		//each mysterybox changes its pictures (changes state) in their own thread
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
-				try {
-					while (!stateIsFinal()) {
-						Thread.sleep(150);
-						toggleState();
-					}	
-				} catch (Exception e) {
-					e.printStackTrace();
+			public void doWork() throws InterruptedException{
+				while (!stateIsFinal()) {
+					ThreadSleep.sleep(15);
+					toggleState();
 				}
 				System.out.println("END OF CHANGING STATE FOR MYSTERYBOX");
 			}
-		});
-		t1.setName("mystery box changing states");
-		t1.start();
+		},"mystery box changing states");
 	}
 
 	public boolean stateIsFinal() {
 		return  mysteryBoxState == MYSTERYBOX_STATE.FINAL;
 	}
-	
+
 	public void setToFinalState() {
 		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
 	}
-	
-	public void hitByMario() {
-		//mushroom, coin, flower, leaf... is created by Factory object, not MysteryBox
-		setImage(mysteryBoxFinalImage);
+
+	public void hitByMario(boolean marioBigOrSmall) {
 		setToFinalState();
-		Thread t1 = new Thread(new Runnable() {
+		SoundController.playItemOutOfBoxSound();
+		setImage(mysteryBoxFinalImage);
+		double x  = this.getX();
+		double y = this.getY();
+		
+		DynamicFactory.addHourglass(x, y, this.getWidth());
+		
+		/*if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
+			if (Math.random()>0.25)
+				DynamicFactory.addMushroom(x, y, this.getWidth());
+			else
+				DynamicFactory.addHourglass(x, y, this.getWidth());
+		} else {
+			//if mario is big, he has equal change of getting fireflower,
+			//hourglass, leaf, or tanooki
+			if (Math.random()>0.75)
+				DynamicFactory.addFireFlower(x, y, this.getWidth());
+			else if (Math.random()>0.5)
+				DynamicFactory.addHourglass(x, y, this.getWidth());
+			else if (Math.random()>0.25)
+				DynamicFactory.addLeaf(x, y, this.getWidth());
+			else
+				DynamicFactory.addTanooki(x, y, this.getWidth());
+		}*/
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
-				double dy = -MovingObject.scalingFactor;
+			public void doWork() throws InterruptedException {
+				double dy = -MovingObject.getBaseLineSpeed();
 				move(dy);//move up
 				dy = -dy;
 				move(dy);//move down
 			}
-		});
-		t1.setName("mysterybox hit by mario");
-		t1.start();
+		},"mysterybox hit by mario");
 	}
 
-	public void move(double dy) {
+	public void move(double dy) throws InterruptedException {
 		for (int i=0; i<10; i++) {
 			super.move(0, dy);
-			try {
-				Thread.sleep(30);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			ThreadSleep.sleep(3);
 		}
 	}
 

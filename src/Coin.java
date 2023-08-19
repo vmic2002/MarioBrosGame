@@ -41,23 +41,18 @@ public class Coin extends MovingObject implements Dynamic{
 
 	public void startSpinning() {
 		//each floating coin changes its pictures (changes state) in its own thread
-		//TODO maybe when level will have lots of coins it will be worth it to have one thread doing spinning multiple coins
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {changeState();}
-		});
-		t1.setName("floating coin changing state");
-		t1.start();
+		//TODO maybe when level will have lots of coins it will be worth it to have one thread doing spinning block of coins
+		GameThread t1 = new GameThread(new MyRunnable() {
+			@Override
+			public void doWork() throws InterruptedException{changeState();}
+		},"floating coin changing state");
 	}
 
-	public void changeState() {
-		try {
-			while (!collected() && alive) {
-				ThreadSleep.sleep(pauseBetweenStates);
-				toggleState();
-			}	
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void changeState() throws InterruptedException{
+		while (!collected() && alive) {
+			ThreadSleep.sleep(pauseBetweenStates);
+			toggleState();
+		}	
 		kill();
 		System.out.println("END OF CHANGING STATE FOR FLOATING COIN");
 	}
@@ -94,7 +89,7 @@ public class Coin extends MovingObject implements Dynamic{
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		//TODO the move function will be for coins retrieved from mysteryboxes+bricks (NOT floating coins)
 		//since they have a small animation of moving out of the box
 	}

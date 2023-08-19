@@ -17,7 +17,7 @@ public abstract class ThreadSafeGImage extends GImage {
 	}
 	
 	public static void initializeIDGenerator() {
-		ID_GENERATOR = new AtomicLong();
+		ID_GENERATOR = new AtomicLong(0);
 	}
 	
 	
@@ -29,9 +29,9 @@ public abstract class ThreadSafeGImage extends GImage {
 		super.move(dx, dy);
 		//System.out.println("<<<<<MOVING IMAGE: "+getMyImageName());
 
-		String messageToClient = "{ \"type\": \"moveImage\", \"imageId\": \""+getImageID()+"\", \"dx\":\""+dx+"\", \"dy\":\""+dy+"\" }";
+		//String messageToClient = "{ \"type\": \"moveImage\", \"imageId\": \""+getImageID()+"\", \"dx\":\""+dx+"\", \"dy\":\""+dy+"\" }";
 		//System.out.println(messageToClient);
-		ServerToClientMessenger.sendMessage(messageToClient);
+		ServerToClientMessenger.sendMoveImageMessage(getImageID(), dx, dy);
 		//need to tell client by how much to move image
 		//ServerToClientMessenger.sendMessage("<<<<<<IMAGE MOVING: "+this.getImage().toString());
 		//{ "type": "moveImage", "imageId": "123", "dx":"10", "dy":"20" }
@@ -43,9 +43,9 @@ public abstract class ThreadSafeGImage extends GImage {
 			//this.getImage is null when a ThreadSafeGImage is instantiated. I am assuming that the super constructor calls the setImage function
 			//when a GImage is instantiated. so when a GImage is instantiated, setImage is called for the first time and this.getImage() is null.
 			//in this case we dont want to send message to client to replace image
-			String messageToClient = "{ \"type\": \"replaceImage\", \"oldImageId\":\""+getImageID()+"\", \"newImageName\":\""+((MyImage) i).getName()+"\" }";
+			
 			//System.out.println(messageToClient);
-			ServerToClientMessenger.sendMessage(messageToClient);
+			ServerToClientMessenger.sendReplaceImageMessage(getImageID(), ((MyImage) i).getName());
 			//need to use ServerToClientMessenger.sendMessage to notify JS to change image when setImage is called
 		}
 		super.setImage(i);
@@ -55,9 +55,9 @@ public abstract class ThreadSafeGImage extends GImage {
 	@Override
 	public void setVisible(boolean b) {
 		super.setVisible(b);
-		String messageToClient = "{ \"type\": \"setVisible\", \"imageId\": \""+getImageID()+"\", \"bool\":\""+b+"\" }";
+		
 		//System.out.println(messageToClient);
-		ServerToClientMessenger.sendMessage(messageToClient);
+		ServerToClientMessenger.sendSetVisibilityMessage(getImageID(), b);
 	}
 	
 

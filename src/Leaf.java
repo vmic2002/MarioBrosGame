@@ -20,7 +20,7 @@ public class Leaf extends PowerUp {
 		toggle = 0;
 	}
 
-	private void toggleState() {
+	private void toggleState() throws InterruptedException {
 		//changes leaf from right to left or from left to right	
 		MyImage newImage = rightOrLeft?leftLeafImage:rightLeafImage;
 		setImageAndRelocate(newImage);
@@ -33,7 +33,7 @@ public class Leaf extends PowerUp {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		this.sendToFront();
 		for (int i=0; i<15 && alive; i++) {
 			move(0, -MovingObject.getBaseLineSpeed());

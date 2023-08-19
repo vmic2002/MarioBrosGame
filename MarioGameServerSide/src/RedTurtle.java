@@ -16,7 +16,7 @@ public class RedTurtle extends BadGuy {
 	private boolean standingOrWalking;
 	private double dx;
 	private double dy;//used when !spinningOrFalling
-	private static final double DY = MovingObject.scalingFactor*0.9;
+	private static final double DY = MovingObject.getBaseLineSpeed()*0.9;
 	private int numMovesToReachEdge;//num moves until turtle reaches edge of platform and needs to turn around
 	public boolean shellMode;//true if in shell (not standing)
 	public boolean spinningOrFalling;//true if spinning (shell mode and moving on platform)
@@ -36,7 +36,7 @@ public class RedTurtle extends BadGuy {
 		rightOrLeft = true;
 		standingOrWalking = true;
 		walkingFrequency = 0;
-		dx = MovingObject.scalingFactor*0.7;
+		dx = MovingObject.getBaseLineSpeed()*0.5;
 		numMovesToReachEdge = ((int) ((width-this.getWidth())/dx));
 		shellMode = false;
 	}
@@ -52,9 +52,9 @@ public class RedTurtle extends BadGuy {
 
 	public void startSpinning(boolean rightOrLeft) {
 		//in this func turtle alternates between spinning on platform and falling until it dies or stopped
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				//keep spinning or falling until !alive or stopped
 				spinningOrFalling = true;
 				stopped = false;
@@ -95,13 +95,13 @@ public class RedTurtle extends BadGuy {
 					//if (!alive || stopped) break;
 
 					//if (!alive || stopped) break;
-				//	previousPointWorked = false;
+					//	previousPointWorked = false;
 					ArrayList<GObject> o1 = checkAtPositions(pointsBelow);
 					for (GObject x : o1) {
 						if (inContactWith(x, false)) break;
 						//if (previousPointWorked) break;
 					}
-				//	previousPointWorked = false;
+					//	previousPointWorked = false;
 					ArrayList<GObject> o2 = checkAtPositions(pointsSide);
 					for (GObject x : o2) {
 						if (inContactWith(x, true)) break;
@@ -114,16 +114,14 @@ public class RedTurtle extends BadGuy {
 						changeState();
 						spinningFrequency = 0;
 					}
-					try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
+					ThreadSleep.sleep(3);
 				}
 				if (!alive) {
 					kill();
 					System.out.println("Red turtle dead2");
 				}
 			}	
-		});
-		t1.setName("red turtle spinning/falling");
-		t1.start();
+		},"red turtle spinning/falling");
 	}
 
 	private void changeState() {
@@ -209,7 +207,7 @@ public class RedTurtle extends BadGuy {
 			//mario jumps on !shellMode turtle and sets it to shell mode
 			//this happens once per turtle max because a turtle never goes back from shell mode
 			shellMode = true;
-			System.out.println("big mario jumps on !shellMode turtle and sets it to shell mode");
+			System.out.println("mario jumps on !shellMode turtle and sets it to shell mode");
 			dx *= 4.0;//shell mode (spinning or falling turtle) is 4 times as fast as standing turtle
 			setTurtleToStoppedShellMode(mario);
 		}
@@ -243,52 +241,44 @@ public class RedTurtle extends BadGuy {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		//red turtle moves right and left on the same platform until he is stepped on or dies
 		//red turtle is added to same level parts as the platform he is on so this func just has to make him move right and left
 		//assume red turtle is placed at leftmost part of platform and is facing right
-		Thread t1 = new Thread(new Runnable() {
-			@Override
-			public void run() {
-				System.out.println("In red turtle move function");
-				while (alive) {
-					for (int i=0; i<numMovesToReachEdge && !shellMode; i++) {
-						//if (!mario.flashing && alive) {
-						if (alive) {
-							double newX = rightOrLeft?getX()+getWidth()+2*dx:getX()+4*dx;
-							Point p1  = new Point(newX,getY()+getHeight()*0.8);
-							Point p2  = new Point(newX,getY()+getHeight()*0.5);
-							Point p3  = new Point(newX,getY()+getHeight()*0.2);
-							Point[] arr = new Point[]{p1,p2,p3};
-							ArrayList<GObject> o = checkAtPositions(arr);
-							for (GObject x : o) {
-								
-								//super.inContactWith
-								if (x instanceof Mario) {
-									if (((Mario) x).flashing || !alive) break;
-									((Mario) x).marioHit();
-								}
-							}
-						} else break;
-						if (walkingFrequency==WALKING_FREQUENCY) toggleStandingOrWalking();
-						move(dx, 0);
+		System.out.println("In red turtle move function");
+		while (alive) {
+			for (int i=0; i<numMovesToReachEdge && !shellMode; i++) {
+				//if (!mario.flashing && alive) {
+				if (alive) {
+					double newX = rightOrLeft?getX()+getWidth()+2*dx:getX()+4*dx;
+					Point p1  = new Point(newX,getY()+getHeight()*0.8);
+					Point p2  = new Point(newX,getY()+getHeight()*0.5);
+					Point p3  = new Point(newX,getY()+getHeight()*0.2);
+					Point[] arr = new Point[]{p1,p2,p3};
+					ArrayList<GObject> o = checkAtPositions(arr);
+					for (GObject x : o) {
 
-						//TODO also need to check if turtle runs into a power up etc (maybe change that in incontact func of badguy)
-						walkingFrequency++;
-						try {Thread.sleep(30);} catch (Exception e) {e.printStackTrace();}
+						//super.inContactWith
+						if (x instanceof Mario) {
+							if (((Mario) x).flashing || !alive) break;
+							((Mario) x).marioHit();
+						}
 					}
-					if (shellMode) break;
-					changeDirection();
-				}
-				//alive is set to false by level controller when starting new level
-				if (!alive) {
-					kill();
-					System.out.println("Red turtle dead1");
-				}
+				} else break;
+				if (walkingFrequency==WALKING_FREQUENCY) toggleStandingOrWalking();
+				move(dx, 0);
+
+				//TODO also need to check if turtle runs into a power up etc (maybe change that in incontact func of badguy)
+				walkingFrequency++;
+				ThreadSleep.sleep(3);
 			}
-		});
-		t1.setName("red turtle moving NOT shell mode");
-		t1.start();	
+			if (shellMode) break;
+			changeDirection();
+		}
+		if (!shellMode) {
+			kill();
+			System.out.println("Red turtle dead1");
+		}
 	}
 
 	public static void setObjects(MyImage redTurtleSpinning1Image1,MyImage redTurtleSpinning2Image1, 

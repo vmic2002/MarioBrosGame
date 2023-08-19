@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
 //import java.util.ArrayList;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -20,8 +21,7 @@ import javax.swing.JFrame;
 import java.awt.GraphicsEnvironment;//to verify that headless mode is enabled (if run on server without displaying a window)
 import java.awt.HeadlessException;
 
-public class MarioBrosGame {//extends GraphicsProgram {
-
+public class MarioBrosGame {
 	/*General comments for Mario Game:
 	 * 
 	 * to use new images for GImages take a screenshot
@@ -32,7 +32,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 	 * big mario has height 160 pixels
 	 * 
 	 * TODO possible idea mario could have laser eyes (mario or firemario
-	 * pictures edited to a different color.) mario would be able to move while shooting his laser eyes
+	 * pictures edited to a different color.) mario would not be able to move while shooting his laser eyes
 	 * since the arrows will be needed to control where the laser beam goes
 	 * 
 	 * TODO could have campaign mode (worlds) AND mode with randomly generated levels!
@@ -41,9 +41,9 @@ public class MarioBrosGame {//extends GraphicsProgram {
 	private static final int WIDTH = 1000;//1200;
 	private static final int HEIGHT = 800;//800;
 
-	//public void run() {
-	//@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
+
+
 		System.out.println("RUNNING MAIN FUNCTION");
 		boolean runningOnTomcatServer = false;
 		if (args.length>0) {
@@ -219,8 +219,8 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String bigLuigiLeftCrouchingImagePath = prefix+imageDirectory+"/bigLuigiLeftCrouchingImage.png";
 		String bigLuigiRightCrouchingImagePath = prefix+imageDirectory+"/bigLuigiRightCrouchingImage.png";
 
-		
-		
+
+
 		String catLuigiLeftImagePath = prefix+imageDirectory+"/catLuigiLeftImage.png";
 		String catLuigiRightImagePath = prefix+imageDirectory+"/catLuigiRightImage.png";
 		String catLuigiLeftWalkingImagePath = prefix+imageDirectory+"/catLuigiLeftWalkingImage.png";
@@ -243,7 +243,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String smallLuigiPipePath = prefix+imageDirectory+"/smallLuigiPipe.png";
 		String bigLuigiPipePath = prefix+imageDirectory+"/bigLuigiPipe.png";		
 
-		
+
 		String leftFireBall1Path = prefix+imageDirectory+"/leftFireBall1.png";
 		String rightFireBall1Path = prefix+imageDirectory+"/rightFireBall1.png";
 		String leftFireBall2Path = prefix+imageDirectory+"/leftFireBall2.png";
@@ -253,7 +253,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String leftFireBall4Path = prefix+imageDirectory+"/leftFireBall4.png";
 		String rightFireBall4Path = prefix+imageDirectory+"/rightFireBall4.png";
 
-		
+
 		String mushroomImagePath = prefix+imageDirectory+"/mushroomImage.png";
 		String fireFlowerImagePath = prefix+imageDirectory+"/fireFlowerImage.png";
 		String leftLeafImagePath = prefix+imageDirectory+"/leftLeafImage.png";
@@ -266,7 +266,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String mysteryBox3Path = prefix+imageDirectory+"/mysteryBox3.png";
 		String mysteryBox4Path = prefix+imageDirectory+"/mysteryBox4.png";
 		String mysteryBoxFinalPath = prefix+imageDirectory+"/mysteryBoxFinal.png";
-		
+
 		String grassLeftTopImagePath = prefix+imageDirectory+"/grassLeftTopImage.png";
 		String grassRightTopImagePath = prefix+imageDirectory+"/grassRightTopImage.png";
 		String grassMiddleTopImagePath = prefix+imageDirectory+"/grassMiddleTopImage.png";
@@ -325,10 +325,10 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String coin1Path = prefix+imageDirectory+"/coin1.png";
 		String coin2Path = prefix+imageDirectory+"/coin2.png";
 		String coin3Path = prefix+imageDirectory+"/coin3.png";
-		
-		
-		
-		
+
+
+
+
 		String timedilatingsmallMarioLeftImagePath = prefix+imageDirectory+"/timedilatingsmallMarioLeftImage.png";
 		String timedilatingbigLuigiLeftJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftJumpingDownImage.png";
 		String timedilatingbigMarioLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftJumpingImage.png";
@@ -365,7 +365,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		String timedilatingbigMarioRightJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightJumpingDownImage.png";
 		String timedilatingsmallLuigiLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiLeftJumpingImage.png";
 		String timedilatingbigLuigiRightJumpingDownImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightJumpingDownImage.png";
-		
+
 		String timeDilationPowerupPath = prefix+imageDirectory+"/timeDilationPowerup.png";
 
 
@@ -428,9 +428,9 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage bigMarioLeftTail2 = null;
 		MyImage bigMarioRightTail2 = null;
 		MyImage bigMarioTail3 = null;
-		
-		
-		
+
+
+
 
 
 		MyImage leftTanookiMario = null;
@@ -456,7 +456,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage smallMarioPipe = null;
 		MyImage bigMarioPipe = null;
 		MyImage fireMarioPipe = null;
-		
+
 
 
 		MyImage smallLuigiLeftImage = null;
@@ -478,8 +478,8 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage bigLuigiLeftCrouchingImage = null;
 		MyImage bigLuigiRightCrouchingImage = null;
 
-		
-		
+
+
 		MyImage catLuigiLeftImage = null;
 		MyImage catLuigiRightImage = null;
 		MyImage catLuigiLeftWalkingImage = null;
@@ -511,9 +511,9 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage leftFireBall4 = null;
 		MyImage rightFireBall4 = null;
 
-	
-		
-		
+
+
+
 		MyImage mushroomImage = null;
 		MyImage fireFlowerImage = null;
 		MyImage leftLeafImage = null;
@@ -526,16 +526,16 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage mysteryBox4 = null;
 		MyImage mysteryBoxFinal = null;
 
-		
-		
+
+
 		MyImage grassLeftTopImage = null;
 		MyImage grassRightTopImage = null;
 		MyImage grassMidleTopImage = null;
 		MyImage grassLeftImage = null;
 		MyImage grassRightImage = null;
 		MyImage grassMiddleImage = null;
-		
-	
+
+
 
 		MyImage pipeUpTopLeft = null;
 		MyImage pipeUpTopRight = null;
@@ -587,9 +587,9 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage coin1 = null;
 		MyImage coin2 = null;
 		MyImage coin3 = null;
-		
-		
-		
+
+
+
 		MyImage timedilatingsmallMarioLeftImage = null;
 		MyImage timedilatingbigMarioLeftJumpingImage = null;
 		MyImage timedilatingsmallMarioLeftWalkingImage = null;
@@ -608,8 +608,8 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage timedilatingsmallMarioPipe = null;
 		MyImage timedilatingbigMarioLeftCrouchingImage = null;
 		MyImage timedilatingbigMarioRightJumpingDownImage = null;
-		
-		
+
+
 		MyImage timedilatingbigLuigiLeftJumpingDownImage = null;
 		MyImage timedilatingbigLuigiLeftImage = null;
 		MyImage timedilatingsmallLuigiLRightJumpingImage = null;
@@ -628,7 +628,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		MyImage timedilatingsmallLuigiRightImage = null;
 		MyImage timedilatingsmallLuigiLeftJumpingImage = null;
 		MyImage timedilatingbigLuigiRightJumpingDownImage = null;
-		
+
 		MyImage timeDilationPowerup = null;
 
 		try {
@@ -832,8 +832,8 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			coin1 = new MyImage(ImageIO.read(new File(coin1Path)), "coin1");
 			coin2 = new MyImage(ImageIO.read(new File(coin2Path)), "coin2");
 			coin3 = new MyImage(ImageIO.read(new File(coin3Path)), "coin3");
-			
-			
+
+
 			timedilatingsmallMarioLeftImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioLeftImagePath)), "timedilatingsmallMarioLeftImage");
 			timedilatingbigLuigiLeftJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftJumpingDownImagePath)), "timedilatingbigLuigiLeftJumpingDownImage");
 			timedilatingbigMarioLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftJumpingImagePath)), "timedilatingbigMarioLeftJumpingImage");
@@ -870,7 +870,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 			timedilatingbigMarioRightJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightJumpingDownImagePath)), "timedilatingbigMarioRightJumpingDownImage");
 			timedilatingsmallLuigiLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiLeftJumpingImagePath)), "timedilatingsmallLuigiLeftJumpingImage");
 			timedilatingbigLuigiRightJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightJumpingDownImagePath)), "timedilatingbigLuigiRightJumpingDownImage");
-			
+
 			timeDilationPowerup = new MyImage(ImageIO.read(new File(timeDilationPowerupPath)), "timeDilationPowerup");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -878,12 +878,12 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		}
 		System.out.println("IMAGES SUCCESSFULLY LOADED!");
 		ThreadSafeGImage.initializeIDGenerator();
-		
-		
-	
-		
+
+
+
+
 		GameStatsController.setPauses(10);//10 works well
-		
+
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
 				smallMarioRightJumpingImage, marioDeadImage,
@@ -922,7 +922,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 
 
 				smallMarioPipe, bigMarioPipe, fireMarioPipe, 
-				
+
 				timedilatingsmallMarioLeftImage,
 				timedilatingbigMarioLeftJumpingImage,
 				timedilatingsmallMarioLeftWalkingImage,
@@ -941,9 +941,9 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				timedilatingsmallMarioPipe,
 				timedilatingbigMarioLeftCrouchingImage,
 				timedilatingbigMarioRightJumpingDownImage,
-				
-				
-				
+
+
+
 				Mario.CHARACTER.MARIO
 				);	
 		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
@@ -964,7 +964,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				bigMarioLeftJumpingFireShooting1Image, bigMarioLeftJumpingFireShooting2Image,
 				bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
 				bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
-				
+
 
 				catLuigiLeftImage, catLuigiRightImage, catLuigiLeftWalkingImage, catLuigiRightWalkingImage,
 				catLuigiLeftJumpingImage, catLuigiRightJumpingImage, catLuigiRightJumpingDownImage,
@@ -973,8 +973,8 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				catLuigiRightJumpingTail2Image,
 				catLuigiPipeImage, catLuigiLeftTail2Image,
 				catLuigiRightTail2Image, catLuigiTail3,
-				
-			
+
+
 
 				leftTanookiMario, rightTanookiMario, leftTanookiMarioWalking, rightTanookiMarioWalking,
 				leftTanookiMarioJumpingUp, rightTanookiMarioJumpingUp, rightTanookiMarioJumpingDown,
@@ -985,7 +985,7 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				rightTanookiMarioTail2, tanookiTail3,
 
 				smallLuigiPipe, bigLuigiPipe, fireMarioPipe,
-				
+
 				timedilatingsmallLuigiLeftImage,
 				timedilatingbigLuigiLeftJumpingImage,
 				timedilatingsmallLuigiLeftWalkingImage,
@@ -1004,31 +1004,31 @@ public class MarioBrosGame {//extends GraphicsProgram {
 				timedilatingsmallLuigiPipe,
 				timedilatingbigLuigiLeftCrouchingImage,
 				timedilatingbigLuigiRightJumpingDownImage,
-				
+
 				Mario.CHARACTER.LUIGI);
 		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
 		characters[1] = mario;
-		
+
 		GameStatsController.setCharacters(mario, luigi);
-		
+
 		int fallDy = (int) (smallMarioLeftImage.getHeight(canvas)/(10.0));
 		GameStatsController.setMarioFallDy(fallDy);
 		GameStatsController.setMarioMoveDx(1.5*fallDy);
 		GameStatsController.setLuigiFallDy(fallDy);
 		GameStatsController.setLuigiMoveDx(1.5*fallDy);
-		
+
 		GameStatsController.setMovingObjectBaseLineXSpeed(1.5*fallDy);
-		
-		
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
+
+
 		CharacterStatsController.initializeStats(characters);
 		MovingObject.setObjects(canvas, characters);
 		Coin.setObjects(coin1, coin2, coin3, canvas);
@@ -1067,10 +1067,23 @@ public class MarioBrosGame {//extends GraphicsProgram {
 		BillBlasterController.setCanvas(canvas);
 		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
 		else VirtualClientKeyboard.setCharacters(characters);
-		
-		
-		mario.setToFire();
+
+
+		//mario.setToFire();
 		LevelController.playLevel("5");
+
 		//LevelController.playLevel2();
+
+
+		//canvas.add(mario, 10, 10);
+		//ServerToClientMessenger.sendAddImageToScreenMessage(mario);
+
+
+
+		
+
+
+
+
 	}
 }

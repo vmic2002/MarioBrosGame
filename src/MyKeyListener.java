@@ -27,18 +27,18 @@ public class MyKeyListener implements KeyListener {
 		if (keyCode == KeyEvent.VK_0) {
 			//CharacterStatsController.printAllStats();
 			//System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
-			Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
-			//System.out.println("Number of threads: "+threads.keySet().size());
+			GameThread.interruptAllMarioThreads();
+			
 			//GameStatsController.setToLongPause();
-			System.out.print("Time dilating: ");
-			for (Mario m:characters) System.out.print(m.isTimeDilating+ " ");
-			System.out.println();
+		//	System.out.print("Time dilating: ");
+			//for (Mario m:characters) System.out.println(m.isTimeDilating+ " ");
+		//	System.out.println();
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads
 			System.out.println("\n\nPrinting all threads:");
 			Map<Thread, StackTraceElement[]> threads = Thread.getAllStackTraces();
-			System.out.println("Number of threads: "+threads.keySet().size());
+			//System.out.println("Number of threads: "+threads.keySet().size());
 			System.out.printf("\t%-15s \t %-15s \t %-15s \t %s\n", "Name", "State", "Priority", "isDaemon");
 			for (Thread t : threads.keySet()) {
 				System.out.printf("\t%-15s \t %-15s \t %-15d \t %s\n", t.getName(), t.getState(), t.getPriority(), t.isDaemon());

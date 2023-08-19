@@ -31,15 +31,16 @@ public class SoundController {
 	private static void playSound(File f) {
 		if (runningOnTomcatServer) {
 			//send message to client to play sound on client side
-			ServerToClientMessenger.sendMessage("{\"type\": \"playSound\", \"soundName\": \""+f.getName()+"\" }");
+			ServerToClientMessenger.sendPlaySoundMessage(f.getName());
 			//{ "type": "playSound", "soundName": "Coin.wav" }
 		} else {
 			try{
 				Clip clip = AudioSystem.getClip();
 				clip.open(AudioSystem.getAudioInputStream(f));
 				clip.start();
-				Thread t1 = new Thread(new Runnable() {
-					public void run() {
+				GameThread t1 = new GameThread(new MyRunnable() {
+					@Override
+					public void doWork() throws InterruptedException {
 						while (clip.isRunning()) {}
 						//sound is done playing after while loop
 						clip.close();
@@ -49,9 +50,7 @@ public class SoundController {
 						//and throughout the game they accumulate
 						//THIS LOOKS LIKE IT WORKS
 					}
-				});
-				t1.setName("close DirectClip thread");
-				t1.start();
+				},"close DirectClip thread");
 			} catch (Exception e){
 				e.printStackTrace();
 			}

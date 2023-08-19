@@ -1,9 +1,6 @@
-import acm.graphics.GCanvas;
-import acm.graphics.GImage;
 import acm.graphics.GObject;
-
-import java.awt.Image;
 import java.util.ArrayList;
+
 public class Mushroom extends PowerUp {
 	private static MyImage mushroomImage;
 	//images for Mushroom, MysteryBox, FireBall, FireFlower, Leaf etc are static
@@ -23,19 +20,17 @@ public class Mushroom extends PowerUp {
 		dx = rightOrLeft?DX:-DX;
 		dy = DY;
 	}
-	
+
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
-		//TODO there is bug where if mario jumps so high that the level moves up and down,
-		//the mushroom moves weird (goes down into a platform or changes direction)
-		
-			ThreadSleep.sleep(25);
-			//to wait for mysterybox to stop moving up/down
-		
-		
+
+		ThreadSleep.sleep(25);
+		//to wait for mysterybox to stop moving up/down
+
+
 		System.out.println("ADDED MUSHROOM");
-		
+
 		boolean stillOnMysteryBox = true;
 		while (alive && stillOnMysteryBox) {
 			double x = rightOrLeft?this.getX()-DX:this.getX()+this.getWidth()+DX;
@@ -47,9 +42,9 @@ public class Mushroom extends PowerUp {
 				//mushroom is still on top of mysterybox
 				//System.out.println("MUSHROOM ON TOP OF MYSTERYBOX");
 				move(dx, 0);
-				
-					ThreadSleep.sleep(pauseTime);
-				
+
+				ThreadSleep.sleep(pauseTime);
+
 			} else {
 				//mushroom is no longer on top of mysterybox
 				stillOnMysteryBox = false;
@@ -107,9 +102,9 @@ public class Mushroom extends PowerUp {
 					if (inContactWith(x, false)) break;
 				}
 			}
-			
-				ThreadSleep.sleep(pauseTime);
-		
+
+			ThreadSleep.sleep(pauseTime);
+
 
 		}
 		kill();
@@ -124,7 +119,7 @@ public class Mushroom extends PowerUp {
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean inContactWith(GObject x, boolean sideOrBelow) {
 		if (!alive) {
@@ -165,7 +160,7 @@ public class Mushroom extends PowerUp {
 				m.stopTimeDilationForAllCharacters(m);
 				m.setToBig();
 			}
-			
+
 			alive = false;
 			System.out.println("MUSHROOM HIT MARIO");
 			return true;

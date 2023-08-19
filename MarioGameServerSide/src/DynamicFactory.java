@@ -12,80 +12,45 @@ public class DynamicFactory {
 		canvas = canvas1;
 	}
 
-	private static void addMovingObject(MovingObject movingObject) {
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {
-				//code here runs concurrently
-				movingObject.move();
-			}
-		});
-		t1.setName("moving object");//TODO movingObjects should have better thread name for move function
-		t1.start();
-	}
-
-	private static void addPowerUp(double x, double y, double mysteryBoxWidth, MovingObject powerUp) {
+	private static void addPowerUp(double x, double y, double mysteryBoxWidth, PowerUp powerUp) {
 		//adds power up behing mystery box and makes it move up
 		//so it looks like power up is coming out of mysteryBox
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {
+		GameThread t1 = new GameThread(new MyRunnable() {
+			@Override
+			public void doWork() throws InterruptedException {
 				LevelController.currLevel.addLevelPartDynamically(powerUp);
 				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
-				sendMessageToClient(powerUp);
+				ServerToClientMessenger.sendAddImageToScreenMessage(powerUp);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
-					powerUp.move(0, -MovingObject.scalingFactor/2.0);
-					try {
-						Thread.sleep(15);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					powerUp.move(0, -MovingObject.getBaseLineSpeed()/2.0);
+
+					ThreadSleep.sleep(2);
+
 				}
 				powerUp.setLocation(powerUp.getX(), y-powerUp.getHeight());
-				powerUp.move();
+				powerUp.move();//instead of calling powerUp.startMove(), 
+				//to call move func in new thread, call move func in current thread
 			}
-		});
-		t1.setName("power up");
-		t1.start();
-	}
-
-
-
-
-
-	public static void sendMessageToClient(ThreadSafeGImage i) {
-		String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+i.getMyImageName()+"\", \"id\":\""+i.getImageID()+"\", \"x\":\""+i.getX()+"\", \"y\":\""+i.getY()+"\" }";
-		ServerToClientMessenger.sendMessage(messageToClient);
-		//System.out.println("DYNAMIC FAACTORY CREATED NEW IMAGE WITH ID: "+i.getImageID());
-	}
-
-	public static void addCoin(double x, double y) {
-		//TODO call this addCoin function when Mario jumps into mysterybox or brick
-		Coin coin = new Coin();
-		canvas.add(coin, x, y);
-		sendMessageToClient(coin);
-		LevelController.currLevel.addLevelPartDynamically(coin);
-		addMovingObject(coin);
+		},"power up move function");
 	}
 
 	public static void addMushroom(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		Mushroom mushroom = new Mushroom();
 		addPowerUp(x, y, mysteryBoxWidth, mushroom);
-		//return mushroom;
 	}
 
 	public static void addFireFlower(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		FireFlower fireFlower = new FireFlower();
 		addPowerUp(x, y, mysteryBoxWidth, fireFlower);
-		//return fireFlower;
 	}
 
 	public static void addLeaf(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
 		Leaf leaf = new Leaf(Math.random()>0.5);
 		addPowerUp(x, y, mysteryBoxWidth, leaf);
-		//return leaf;
 	}
 
 	public static void addTanooki(double x, double y, double mysteryBoxWidth) {
@@ -95,43 +60,60 @@ public class DynamicFactory {
 	}
 
 
+	public static void addHourglass(double x, double y, double mysteryBoxWidth) {
+		//x, y are coordinates of MysteryBox
+		Hourglass hourglass = new Hourglass();
+		addPowerUp(x, y, mysteryBoxWidth, hourglass);
+	}
 
+	public static void addCoin(double x, double y) {
+		//TODO call this addCoin function when Mario jumps into mysterybox or brick
+		Coin coin = new Coin();
+		canvas.add(coin, x, y);
+		ServerToClientMessenger.sendAddImageToScreenMessage(coin);
+		LevelController.currLevel.addLevelPartDynamically(coin);
+		coin.startMove();
+	}
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		sendMessageToClient(fireBall);
+		ServerToClientMessenger.sendAddImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
-		addMovingObject(fireBall);
+		fireBall.startMove();
 	}
 
 	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
 		//called when flower in pipe shoots a fireball at mario
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		sendMessageToClient(fireBall);
+		ServerToClientMessenger.sendAddImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
-		Thread t1 = new Thread(new Runnable() {
-			public void run() {
+		GameThread t1 = new GameThread(new MyRunnable() {
+			@Override
+			public void doWork() throws InterruptedException{
 				fireBall.shootAtMario(mario);
 			}
-		});
-		t1.setName("fireflower fireball");
-		t1.start();
+		},"shootingflower fireball");
 	}
 
 	public static void addBulletBill(double x, double y, boolean rightOrLeft) {
 		//called when BillBlaster shoots a BulletBill
 		BulletBill bulletBill = new BulletBill(rightOrLeft);
 		canvas.add(bulletBill, x, y);
-		sendMessageToClient(bulletBill);
+		ServerToClientMessenger.sendAddImageToScreenMessage(bulletBill);
 		bulletBill.sendToBack();//spawns behind BillBlaster
 		LevelController.currLevel.addLevelPartDynamically(bulletBill);
-		addMovingObject(bulletBill);
+		bulletBill.startMove();
 	}
 
+	
+	//!!!!!
+	//functions below are called at level creation time (in LevelController.playLevelX func) 
+	//and add levelparts to temp hashmap
+	//!!!!!
+
 	public static void addGoomba(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
-		//called at level creation time (in LevelController.playLevelX func)
 		Goomba goomba = new Goomba();
 		canvas.add(goomba, x, y-goomba.getHeight());
 		Level.addLevelPartDynamically(goomba, dynamicLevelParts);
@@ -142,7 +124,7 @@ public class DynamicFactory {
 		canvas.add(turtle, x, y-turtle.getHeight());
 		Level.addLevelPartDynamically(turtle, dynamicLevelParts);
 	}
-	
+
 	public static void addUpShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		ShootingFlower flower = new UpShootingFlower(timeOffset);
 		double width = flower.getWidth();
@@ -150,7 +132,7 @@ public class DynamicFactory {
 		flower.sendToBack();
 		Level.addLevelPartDynamically(flower, dynamicLevelParts);
 	}
-	
+
 	public static void addDownShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		ShootingFlower flower = new DownShootingFlower(timeOffset);
 		double width = flower.getWidth();
@@ -159,7 +141,7 @@ public class DynamicFactory {
 		flower.sendToBack();
 		Level.addLevelPartDynamically(flower, dynamicLevelParts);
 	}
-	
+
 
 	public static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
@@ -212,6 +194,4 @@ public class DynamicFactory {
 			newI--;
 		}
 	}
-
 }
-//TODO also maybe if user holds fireball key then the fireball could charge until it is really big  

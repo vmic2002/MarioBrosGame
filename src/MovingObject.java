@@ -22,7 +22,16 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	public static double getBaseLineSpeed() {return baseLineSpeed;}
 	public static void setBaseLineSpeed(double d) {baseLineSpeed = d;}
 	
-	public abstract void move();//called by factory class once added to canvas
+	public final void startMove() {
+		GameThread t1 = new GameThread(new MyRunnable() {
+			@Override
+			public void doWork() throws InterruptedException {
+				move();
+			}
+		}, "moving object move function");
+	}
+	
+	public abstract void move() throws InterruptedException;//should not start new thread to run, call startMove instead
 
 	public abstract boolean inContactWith(GObject x, boolean horizontalOrVertical);
 	//returns true if in contact with object and action taken (no need to check other points)

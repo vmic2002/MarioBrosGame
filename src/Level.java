@@ -31,18 +31,6 @@ public class Level {
 		//this.background = background;
 
 		for (StaticLevelPart l : this.staticLevelParts) {
-			if (l.platforms.size()==1 && l.platforms.get(0) instanceof MysteryBox)
-				((MysteryBox) l.platforms.get(0)).startChangingState();//START CHANGING STATES FOR MYSTERYBOXES
-			else {
-				//in StaticFactory.spawnBillBlaster, BillBlasterTop is added at end of platforms arraylist
-				//for staticlevelpart.platforms, so need to check if last platforms in list is BillBlasterTop
-				//to "activate" billblasters when level is instantiated
-				Platform p = l.platforms.get(l.platforms.size()-1);
-				if (p instanceof BillBlasterTop) {
-					BillBlasterController.startShooting((BillBlasterTop) p);
-				}
-			}
-
 			for (Platform platform : l.platforms)
 				ServerToClientMessenger.sendAddImageToScreenMessage(platform);
 		}
@@ -50,12 +38,6 @@ public class Level {
 		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
 			ThreadSafeGImage image = (ThreadSafeGImage) l.part;
 			ServerToClientMessenger.sendAddImageToScreenMessage(image);
-			if (image instanceof Coin)//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
-				((Coin) image).startSpinning();
-			else if (image instanceof BadGuy)
-				((BadGuy) image).move();//TODO calling move func in level constructor can cause null pointer bug when moving objects try to access currlevel.ybaseline! (since level is instantiated yet!)
-			else if (image instanceof PowerUp)
-				((PowerUp) image).move();
 		}
 	}
 
@@ -80,16 +62,14 @@ public class Level {
 	public void moveLevel(double dx, double dy, Mario mario) {
 		//this function works but does not scale when a level is long need to only move the level parts that are visible on screen
 		//this level could "scale" using pipes to connect different sub levels so each level doesnt become too long to move at once
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				//if (xBaseLine+dx<=0.0 && yBaseLine+dy>=0.0) {
 				moveLevelAsynchronously(dx, dy, mario);
 				//} else {System.out.println("MOVELEVEL");System.exit(1);}
 			}
-		});
-		t1.setName("moving level");
-		t1.start();
+		},"moving level");
 	}
 
 	private synchronized void moveLevelAsynchronously(double dx, double dy, Mario mario) {

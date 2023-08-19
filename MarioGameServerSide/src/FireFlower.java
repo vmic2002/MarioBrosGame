@@ -10,8 +10,8 @@ public class FireFlower extends PowerUp {
 	}
 	
 	@Override
-	public void move() {
-		System.out.println("ADDED A FIRE FLOWER");
+	public void move() throws InterruptedException {
+		//System.out.println("ADDED A FIRE FLOWER");
 	}
 	
 	public static void setObjects(MyImage fireFlowerImage1) {

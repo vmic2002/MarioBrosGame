@@ -38,7 +38,7 @@ public class Tanooki extends PowerUp {
 	}
 
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 
 		ThreadSleep.sleep(30);
 

@@ -27,9 +27,9 @@ public class BulletBill extends BadGuy {
 		CharacterStatsController.killBulletBillByJumpingOnIt(mario);
 		jumpedOn = true;
 		this.sendToFront();
-		Thread t1 = new Thread(new Runnable() {
+		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
-			public void run() {
+			public void doWork() throws InterruptedException{
 				while (alive && getY()<=canvas.getHeight()+LevelController.currLevel.yBaseLine){
 					move(dx, 0.5*MAX_DX);
 					checkIfRunIntoSomething();
@@ -38,9 +38,7 @@ public class BulletBill extends BadGuy {
 				}
 				kill();
 			}
-		});
-		t1.setName("BulletBill Falling");
-		t1.start();	
+		}, "BulletBill Falling");
 	}
 	
 	private void checkIfRunIntoSomething() {
@@ -57,7 +55,7 @@ public class BulletBill extends BadGuy {
 	}
 	
 	@Override
-	public void move() {
+	public void move() throws InterruptedException {
 		System.out.println("Added BulletBill!!");
 		while (gasLeft>0 && alive && !jumpedOn) {
 			move(dx, 0);
