@@ -1,4 +1,3 @@
-//TODO WILL PROBS HAVE TO DO MULTITHREADING FOR MOVING IMAGES ETC IN JS
 
 const gameContainer = document.getElementById('game-container');
 const imagesOnScreen = {};
@@ -18,6 +17,9 @@ function addImageToScreen(imageName, id, x, y) {
     gameContainer.appendChild(imageElement);
     imageElement.style.left = `${x}px`;
     imageElement.style.top = `${y}px`;
+   /* note about moving images: set .left and .top when adding the image to screen at first
+    then when modifying the position, use the transform property as it is faster    
+*/
     imageElement.onload = function() {
         // Get the actual width and height of the loaded image
         const imageWidth = this.width;
@@ -26,6 +28,7 @@ function addImageToScreen(imageName, id, x, y) {
         // Set the width and height of the image element to match the loaded image
         this.style.width = `${imageWidth}px`;
         this.style.height = `${imageHeight}px`;
+        
     };
 }
 
@@ -42,29 +45,44 @@ function removeImageFromScreen(id) {
 
 
 function moveImage(id, dx, dy) {
-    const image = imagesOnScreen[id];
-    if (image) {
-        // Get the current position of the image
-        const currentPosition = image.getBoundingClientRect();
-        
-        const currentX = currentPosition.left;
-        const currentY = currentPosition.top;
-        
-        //console.log(`${currentX} is currentX`);
-        // Calculate the new position
-        const newX = currentX + parseFloat(dx);
-        const newY = currentY + parseFloat(dy);
-        //console.log(`${newX} is newX`);
-        // Set the new position of the image
-        //console.log(`${image.style.left}`);
-        image.style.left = `${newX}px`;
-        image.style.top = `${newY}px`;
-        //console.log(` new pos: ${image.style.left}`);
-        //console.log('MOVING IMAGE');
+   /*moveImage works by changing the transform value. see css for transform val. .top and .left is only used for initial position
+    ChatGPT: Using the transform property to move elements is generally more efficient than directly modifying the top and left properties. The reason is that changes to the transform property trigger GPU-based transformations, which can be hardware-accelerated and are generally more efficient for moving and transforming elements, especially when there are many elements involved.
+
+On the other hand, modifying top and left directly can trigger layout reflows and repaints, which can be more resource-intensive and slower, especially when dealing with a large number of elements.
+
+So, using transform for movement is often recommended for performance reasons.*/
+    //TODO TODO WILL HAVE TO MOVE LEVEL IN ONE WEBSOCKET CALL: {TYPE:MOVELEVEL, DX:10, DY:15} INSTEAD OF A MOVE IMAGE WEBSOCKET MESSAGE FOR EACH IMAGE (for now long levels lag a lot when moving level) -> MAKE SURE NOT TO MOVE THE MARIO CHARACTER THAT CAUSED THE LEVEL TO MOVE
+     const image = imagesOnScreen[id];
+    if (image) {            
+        const currentTransform = getComputedStyle(image).getPropertyValue('transform');
+        const matrixValues = currentTransform.slice(7, -1).split(', ');
+
+        const currentDX = parseFloat(matrixValues[4]);
+        const currentDY = parseFloat(matrixValues[5]);
+
+        const newDX = currentDX + parseFloat(dx);
+        const newDY = currentDY + parseFloat(dy);
+
+        image.style.transform = `translate(${newDX}px, ${newDY}px)`;
     } else {
         console.log(`NO IMAGE WITH ID ${id}`);
     }   
 }
+
+
+
+function moveAllImages(dx, dy) { 
+    for (const id in imagesOnScreen) {
+        moveImage(id, dx, dy);
+    }
+}
+
+
+
+
+
+
+
 
 function changeVisibility(imageId, bool) {
     const image = imagesOnScreen[imageId];
@@ -250,7 +268,7 @@ testButton.addEventListener('click', () => {
     //everytime button is clicked, message is sent to server
    // const data = { imageName: 'bigLuigiSomething', otherData: 30 };
     //sendJsonMessage(data);
-    playSound('Item Box.wav');
+    //playSound('Death.wav');
     //const width = window.innerWidth;
     //const height = window.innerHeight;
     //console.log(`The viewport's width is ${width} and the height is ${height}.`);
@@ -263,7 +281,7 @@ testButton.addEventListener('click', () => {
     //printAllImagesOnScreen();
     //moveImage(0, 10, 0);
     //console.log('END OF CLICKED');
-    if (bo) {
+    /*if (bo) {
         changeVisibility(1, "false");
         changeVisibility(0, "false");
         bo = false;
@@ -271,7 +289,9 @@ testButton.addEventListener('click', () => {
         changeVisibility(1, "true");
         changeVisibility(0, "true");
         bo = true;
-    }
+    }*/
+    console.log('Moving all images');
+    moveAllImages(10, 10);
 });
 
 
@@ -296,7 +316,7 @@ socket.onmessage = function(event) {
         if (parsedMessage.type === 'moveImage') {
             // Example: { "type": "moveImage", "imageId": "imageId", "dx":"10", "dy":"20" }
             const {type, imageId, dx, dy} = parsedMessage;
-            //console.log('Received moveImage data:', `${type}, ${imageId}, ${dx}, ${dy}`);
+            console.log('Received moveImage data:', `${type}, ${imageId}, ${dx}, ${dy}`);
             //this works!!!!!!, json is received and parsed correctly
             moveImage(imageId, dx, dy);
         } else if (parsedMessage.type === 'replaceImage') {
