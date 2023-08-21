@@ -8,7 +8,7 @@ public class DynamicLevelPart {
 
 	public void move(double dx , double dy) {
 		ThreadSafeGImage image = (ThreadSafeGImage) part;
-		image.move(dx, dy);
+		image.moveAsPartOfLevel(dx, dy);
 		if (image instanceof FireBall) {
 			((FireBall) image).hoppingX+=dx;
 			((FireBall) image).hoppingY+=dy;

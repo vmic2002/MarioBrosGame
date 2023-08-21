@@ -20,6 +20,18 @@ public abstract class ThreadSafeGImage extends GImage {
 		ID_GENERATOR = new AtomicLong(0);
 	}
 	
+	public synchronized void moveMario(double dx, double dy) {
+		super.move(dx, dy);
+		ServerToClientMessenger.sendMoveMarioMessage(getImageID(), dx, dy);
+	}
+	
+	
+	public synchronized void moveAsPartOfLevel(double dx, double dy) {
+		//see DynamicLevelPart and StaticLevelPart move functions, they call this func
+		//one websocket message to move entire level by dx, dy (except other mario characters) 
+		//instead of one websocket message PER image when moving level
+		super.move(dx, dy);
+	}
 	
 	//TODO still bugs ThreadSafeGImage
 	@Override
@@ -38,7 +50,7 @@ public abstract class ThreadSafeGImage extends GImage {
 	}
 
 	@Override
-	public void setImage(Image i) {
+	public synchronized void setImage(Image i) {
 		if (this.getImage()!=null) {
 			//this.getImage is null when a ThreadSafeGImage is instantiated. I am assuming that the super constructor calls the setImage function
 			//when a GImage is instantiated. so when a GImage is instantiated, setImage is called for the first time and this.getImage() is null.
@@ -53,7 +65,7 @@ public abstract class ThreadSafeGImage extends GImage {
 	}
 	
 	@Override
-	public void setVisible(boolean b) {
+	public synchronized void setVisible(boolean b) {
 		super.setVisible(b);
 		
 		//System.out.println(messageToClient);

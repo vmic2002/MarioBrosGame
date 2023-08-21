@@ -60,9 +60,9 @@ public class MysteryBox extends Platform {
 		double x  = this.getX();
 		double y = this.getY();
 		
-		DynamicFactory.addHourglass(x, y, this.getWidth());
+		//DynamicFactory.addHourglass(x, y, this.getWidth());
 		
-		/*if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
+		if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
 			if (Math.random()>0.25)
 				DynamicFactory.addMushroom(x, y, this.getWidth());
 			else
@@ -78,7 +78,7 @@ public class MysteryBox extends Platform {
 				DynamicFactory.addLeaf(x, y, this.getWidth());
 			else
 				DynamicFactory.addTanooki(x, y, this.getWidth());
-		}*/
+		}
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException {

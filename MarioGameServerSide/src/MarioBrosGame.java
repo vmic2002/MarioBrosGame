@@ -368,8 +368,8 @@ public class MarioBrosGame {
 
 		String timeDilationPowerupPath = prefix+imageDirectory+"/timeDilationPowerup.png";
 
-		
-		
+
+
 		String greenMushroomPlatformLeftPath = prefix+imageDirectory+"/greenMushroomPlatformLeft.png";
 		String redMushroomPlatformLeftPath = prefix+imageDirectory+"/redMushroomPlatformLeft.png";
 		String greenMushroomPlatformMiddlePath = prefix+imageDirectory+"/greenMushroomPlatformMiddle.png";
@@ -380,7 +380,7 @@ public class MarioBrosGame {
 		String yellowMushroomPlatformRightPath = prefix+imageDirectory+"/yellowMushroomPlatformRight.png";
 		String greenMushroomPlatformRightPath = prefix+imageDirectory+"/greenMushroomPlatformRight.png";
 		String redMushroomPlatformMiddlePath = prefix+imageDirectory+"/redMushroomPlatformMiddle.png";
-		
+
 
 
 		MyImage smallMarioLeftImage = null;
@@ -643,8 +643,8 @@ public class MarioBrosGame {
 		MyImage timedilatingbigLuigiRightJumpingDownImage = null;
 
 		MyImage timeDilationPowerup = null;
-		
-		
+
+
 		MyImage greenMushroomPlatformLeft = null;
 		MyImage redMushroomPlatformLeft = null;
 		MyImage greenMushroomPlatformMiddle = null;
@@ -897,10 +897,10 @@ public class MarioBrosGame {
 			timedilatingbigLuigiRightJumpingDownImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightJumpingDownImagePath)), "timedilatingbigLuigiRightJumpingDownImage");
 
 			timeDilationPowerup = new MyImage(ImageIO.read(new File(timeDilationPowerupPath)), "timeDilationPowerup");
-			
-			
-			
-			
+
+
+
+
 			greenMushroomPlatformLeft = new MyImage(ImageIO.read(new File(greenMushroomPlatformLeftPath)), "greenMushroomPlatformLeft");
 			redMushroomPlatformLeft = new MyImage(ImageIO.read(new File(redMushroomPlatformLeftPath)), "redMushroomPlatformLeft");
 			greenMushroomPlatformMiddle = new MyImage(ImageIO.read(new File(greenMushroomPlatformMiddlePath)), "greenMushroomPlatformMiddle");
@@ -1118,21 +1118,7 @@ public class MarioBrosGame {
 		else VirtualClientKeyboard.setCharacters(characters);
 
 
-		//mario.setToFire();
+
 		LevelController.playLevel("5");
-
-		//LevelController.playLevel2();
-
-
-		//canvas.add(mario, 10, 10);
-		//ServerToClientMessenger.sendAddImageToScreenMessage(mario);
-
-
-
-		
-
-
-
-
 	}
 }

@@ -270,7 +270,7 @@ public class LevelController {
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3*space, canvas.getHeight()/3, 4, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 6, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		//StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnMysteryBox(xCounter.v-1.0*space, 6, staticLevelParts);
+		//StaticFactory.spawnMysteryBox(xCounter.v-1.0*space, 6, staticLevelParts);
 		StaticFactory.spawnUpPipe(xCounter, 5, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnMushroomPlatform(xCounter, 2, 3, MUSHROOM_PLATFORM_TYPE.YELLOW, staticLevelParts);
@@ -282,7 +282,7 @@ public class LevelController {
 		StaticFactory.spawnMushroomPlatform(xCounter, 6, 2, MUSHROOM_PLATFORM_TYPE.YELLOW, staticLevelParts);
 		Level level5 = new Level("5", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
+		addCharactersAtStartOfLevel(new double[] {3*MovingObject.characters[0].getWidth(), 5*MovingObject.characters[1].getWidth()});
 	}
 
 
@@ -294,7 +294,7 @@ public class LevelController {
 			Mario m = MovingObject.characters[i];
 			canvas.add(m, xPositions[i], 40);
 			//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
-			ServerToClientMessenger.sendAddImageToScreenMessage(m);
+			ServerToClientMessenger.sendAddCharacterImageToScreenMessage(m);
 			GameThread t1 = new GameThread(new MyRunnable() {
 				@Override
 				public void doWork() throws InterruptedException{

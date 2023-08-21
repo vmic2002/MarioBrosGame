@@ -7,6 +7,6 @@ public class StaticLevelPart {
 		this.platforms = platforms; 
 	}
 	public void move(double dx , double dy) {
-		for (ThreadSafeGImage image: platforms) image.move(dx, dy);		
+		for (ThreadSafeGImage image: platforms) image.moveAsPartOfLevel(dx, dy);		
 	}
 }

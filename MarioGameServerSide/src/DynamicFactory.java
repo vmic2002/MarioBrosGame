@@ -20,7 +20,7 @@ public class DynamicFactory {
 			public void doWork() throws InterruptedException {
 				LevelController.currLevel.addLevelPartDynamically(powerUp);
 				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
-				ServerToClientMessenger.sendAddImageToScreenMessage(powerUp);
+				ServerToClientMessenger.sendAddLevelImageToScreenMessage(powerUp);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
 					powerUp.move(0, -MovingObject.getBaseLineSpeed()/2.0);
@@ -70,7 +70,7 @@ public class DynamicFactory {
 		//TODO call this addCoin function when Mario jumps into mysterybox or brick
 		Coin coin = new Coin();
 		canvas.add(coin, x, y);
-		ServerToClientMessenger.sendAddImageToScreenMessage(coin);
+		ServerToClientMessenger.sendAddLevelImageToScreenMessage(coin);
 		LevelController.currLevel.addLevelPartDynamically(coin);
 		coin.startMove();
 	}
@@ -78,7 +78,7 @@ public class DynamicFactory {
 		//called when fire mario launches a fireball
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		ServerToClientMessenger.sendAddImageToScreenMessage(fireBall);
+		ServerToClientMessenger.sendAddLevelImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		fireBall.startMove();
 	}
@@ -87,7 +87,7 @@ public class DynamicFactory {
 		//called when flower in pipe shoots a fireball at mario
 		FireBall fireBall = new FireBall(rightOrLeft);
 		canvas.add(fireBall, x, y);
-		ServerToClientMessenger.sendAddImageToScreenMessage(fireBall);
+		ServerToClientMessenger.sendAddLevelImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
@@ -101,7 +101,7 @@ public class DynamicFactory {
 		//called when BillBlaster shoots a BulletBill
 		BulletBill bulletBill = new BulletBill(rightOrLeft);
 		canvas.add(bulletBill, x, y);
-		ServerToClientMessenger.sendAddImageToScreenMessage(bulletBill);
+		ServerToClientMessenger.sendAddLevelImageToScreenMessage(bulletBill);
 		bulletBill.sendToBack();//spawns behind BillBlaster
 		LevelController.currLevel.addLevelPartDynamically(bulletBill);
 		bulletBill.startMove();

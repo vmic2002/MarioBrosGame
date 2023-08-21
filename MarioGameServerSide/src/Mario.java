@@ -329,7 +329,7 @@ public class Mario extends MovingObject {
 	public void moveOnlyMario(double dx, double dy) {
 		//moves only mario, not the level
 		//used when mario swings his tail for example
-		super.move(dx, dy);
+		super.moveMario(dx, dy);
 	}
 
 	@Override
@@ -348,12 +348,12 @@ public class Mario extends MovingObject {
 				//System.out.println("XXXXX");
 				return;
 			}
-			super.move(dx, dy);
+			moveOnlyMario(dx, dy);
 		} else {
 			//if (dx<0 && LevelController.currLevel.xBaseLine==0) {
 			if (dx<0 && (LevelController.currLevel.xBaseLine==0 || getX()<0 && Math.abs(getX()-LevelController.currLevel.xBaseLine)<15)) {
 				//mario can't move left if he is at the leftmost position in level
-				if (getX()+dx>=0) super.move(dx, dy);
+				if (getX()+dx>=0) moveOnlyMario(dx, dy);
 				return;
 			}
 			//if (dx>0 && LevelController.currLevel.xBaseLine==canvas.getWidth()-LevelController.currLevel.width) {
@@ -362,12 +362,12 @@ public class Mario extends MovingObject {
 					<15)) {
 				//mario is at right mort portion of level
 				//if xbaseline == canvas width-level width then mario is at right most portion of level AND not to the right of the canvas
-				if (getX()+getWidth()+dx<=canvas.getWidth()) super.move(dx, dy);
+				if (getX()+getWidth()+dx<=canvas.getWidth()) moveOnlyMario(dx, dy);
 				return;
 			}
 			if (dy > 0 && LevelController.currLevel.yBaseLine<=0) {
 				if (getY()+getHeight()<=canvas.getHeight()) {
-					super.move(dx, dy);
+					moveOnlyMario(dx, dy);
 					return;
 				}
 				//mario touched bottom of screen 
@@ -380,7 +380,7 @@ public class Mario extends MovingObject {
 			}
 			if (getX()<0 || getX()>canvas.getWidth()) {
 				//mario is off screen but not at the complete beginning or end of the level
-				super.move(dx, dy);
+				moveOnlyMario(dx, dy);
 			} else LevelController.currLevel.moveLevel(-dx, -dy, this);
 		}
 	}
@@ -413,14 +413,14 @@ public class Mario extends MovingObject {
 		//because mario1's death will end the current level
 		for (int i=0; i<30; i++) {
 			if (alive) return;
-			super.move(0,-fallDy);
+			moveOnlyMario(0,-fallDy);
 			sleep(1.5);
 		}
 		sleep(25);
 		double maxTimeFallDown = 1500;
 		while (maxTimeFallDown>0 && getY()+getHeight()+fallDy<=canvas.getHeight()) {
 			if (alive) return;
-			super.move(0,fallDy);
+			moveOnlyMario(0,fallDy);
 			sleep(1.5);
 			maxTimeFallDown -= 15;
 		}

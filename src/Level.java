@@ -32,12 +32,12 @@ public class Level {
 
 		for (StaticLevelPart l : this.staticLevelParts) {
 			for (Platform platform : l.platforms)
-				ServerToClientMessenger.sendAddImageToScreenMessage(platform);
+				ServerToClientMessenger.sendAddLevelImageToScreenMessage(platform);
 		}
 
 		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
 			ThreadSafeGImage image = (ThreadSafeGImage) l.part;
-			ServerToClientMessenger.sendAddImageToScreenMessage(image);
+			ServerToClientMessenger.sendAddLevelImageToScreenMessage(image);
 		}
 	}
 
@@ -73,6 +73,7 @@ public class Level {
 	}
 
 	private synchronized void moveLevelAsynchronously(double dx, double dy, Mario mario) {
+		ServerToClientMessenger.sendMoveLevelMessage(dx, dy);
 		for (int i=0; i<staticLevelParts.size(); i++) {
 			staticLevelParts.get(i).move(dx, dy);
 		}
