@@ -38,8 +38,8 @@ public class MarioBrosGame {
 	 * TODO could have campaign mode (worlds) AND mode with randomly generated levels!
 	 */
 
-	private static final int WIDTH = 1000;//1200;
-	private static final int HEIGHT = 800;//800;
+	private static final int WIDTH = 1300;//1200;
+	private static final int HEIGHT = 900;//800;
 
 	public static void main(String[] args) {
 
@@ -1119,6 +1119,9 @@ public class MarioBrosGame {
 
 
 
-		LevelController.playLevel("5");
+		LevelController.playLevel("1");
+		
+		
+
 	}
 }
