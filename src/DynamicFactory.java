@@ -7,7 +7,6 @@ public class DynamicFactory {
 	//dynamically while a level is being played and calls their move function
 	//powerups, fireballs, bulletbill etc
 	private static MyGCanvas canvas;
-
 	public static void setCanvas(MyGCanvas canvas1) {
 		canvas = canvas1;
 	}

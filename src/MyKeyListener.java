@@ -27,12 +27,24 @@ public class MyKeyListener implements KeyListener {
 		if (keyCode == KeyEvent.VK_0) {
 			//CharacterStatsController.printAllStats();
 			//System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
-			GameThread.interruptAllMarioThreads();
+			//GameThread.interruptAllMarioThreads();
 			
 			//GameStatsController.setToLongPause();
 		//	System.out.print("Time dilating: ");
 			//for (Mario m:characters) System.out.println(m.isTimeDilating+ " ");
 		//	System.out.println();
+			/*for (int i=0; i<LevelController.currLevel.staticLevelParts.size(); i++) {
+				StaticLevelPart l = LevelController.currLevel.staticLevelParts.get(i);
+				System.out.println("STATIC LEVEL PARTS #"+i);
+				for (int j=0; j<l.platforms.size(); j++) {
+					System.out.println("\tX: "+l.platforms.get(j).getX()+" Y: "+l.platforms.get(j).getY());
+				}
+			}*/
+			System.out.println(MoveLevelRunnable.getNumMoveLevelRunnables());
+			System.out.println("y baseline: "+LevelController.currLevel.yBaseLine);
+			System.out.println("x baseline: "+LevelController.currLevel.xBaseLine);
+			System.out.println("max num threads moving level"+MoveLevelRunnable.maxNumMoveLevelRunnable);
+			
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads

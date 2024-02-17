@@ -8,7 +8,7 @@ $CATALINA_HOME/bin/shutdown.sh
 
 
  * 
- * In ~/Desktop, MarioGameClientSide is used to run python command to see website client side (where video game will be played and seen)
+ * MarioGameClientSide is used to run python command to see website client side (where video game will be played and seen)
  * and MarioGameServerSide is used to create the .war file
  * 
  * 
@@ -28,7 +28,10 @@ $CATALINA_HOME/bin/shutdown.sh
 	!!!!Sending messages from client side works! Server responds back!!!!!
 	
 	TODO NEED TO DO ONLINE MULTIPLAYER each new window that connects to the server has its own session ID, for online multiplayer (one plays mario one plays luigi)
- *  
+	
+	
+	
+ * 
  *  
  */
 import java.util.Collections;

@@ -70,6 +70,8 @@ public class Mario extends MovingObject {
 	public boolean isTanooki = false;
 	public boolean isTimeDilating = false;//time dilating mario can be big or small! all mario characters are timeDilating if one of them is
 	//TODO for now time dilation is until you lose it. kind of OP maybe make it temporary
+	//TODO bug where small timedilated mario turns into big non dilated mario when in contact with a red mushroom,
+	//TODO should become big dilated mario instead
 	//IF MARIO CHARACTERS ARE FIRE, CAT, OR TANOOKI AND BECOME TIME DILATING,
 	//they become big automatically and that powerup was lost. makes sense
 	//because fire mario loses fire power when he becomes tanooki

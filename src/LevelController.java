@@ -80,6 +80,7 @@ public class LevelController {
 		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
 		//by now currLevel = new Level and need to start moving all the moving objects
 		startMovingObjects();
+
 	}
 
 	private static void startMovingObjects() {
@@ -125,6 +126,7 @@ public class LevelController {
 		//smallest left index where a new LevelPart could be spawned
 		//to have white space in between level parts need to increment xCounter by width of whitespace
 		//at the end of function XCounter will be the width of the level
+		//list of staticlevelparts is ordered, smallest indices corresponding to leftmost level parts
 
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 
@@ -132,7 +134,7 @@ public class LevelController {
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 3, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 1);
-		DynamicFactory.addFloatingCoinsRectangle(xCounter.v+3.0*space, canvas.getHeight()/5, 3, 3, dynamicLevelParts);
+		DynamicFactory.addFloatingCoinsRectangle(xCounter.v+3.0*space, canvas.getHeight()/5, 2, 2, dynamicLevelParts);
 		StaticFactory.spawnBillBlaster(xCounter, 6, staticLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 4);
@@ -141,12 +143,12 @@ public class LevelController {
 		spawnWhiteSpace(xCounter, 1);
 		StaticFactory.spawnBillBlaster(xCounter, 9, staticLevelParts);
 		spawnWhiteSpace(xCounter, 2);
-		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1a", staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "5", staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 1000, "", staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.SHOOTING, 0, "1b", staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 2, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
-		DynamicFactory.addFloatingCoinsTriangle(xCounter.v-3.0*space, canvas.getHeight()/4-space, 5, dynamicLevelParts);
+		DynamicFactory.addFloatingCoinsTriangle(xCounter.v-3.0*space, canvas.getHeight()/4-space, 2, dynamicLevelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 6, staticLevelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 6, staticLevelParts);
 		spawnWhiteSpace(xCounter, 2);
@@ -177,14 +179,15 @@ public class LevelController {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
-		for (int i=0; i<4; i++) {
+		int x = 10;
+		for (int i=0; i<x; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "2", staticLevelParts, dynamicLevelParts);
 			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, staticLevelParts);
 			StaticFactory.spawnGrassMountain(xCounter, 10, 4, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "3", staticLevelParts, dynamicLevelParts);
-			if (i!=3) spawnWhiteSpace(xCounter, 2);
+			if (i!=x-1) spawnWhiteSpace(xCounter, 2);
 		}
-
+		System.out.println(staticLevelParts.size());
 		Level level1a = new Level("1b", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level1a;//set currLevel
 		//mario.fall(5);
@@ -280,8 +283,12 @@ public class LevelController {
 		StaticFactory.spawnMushroomPlatform(xCounter, 3, 1, MUSHROOM_PLATFORM_TYPE.GREEN, staticLevelParts);
 		spawnWhiteSpace(xCounter, 1);
 		StaticFactory.spawnMushroomPlatform(xCounter, 6, 2, MUSHROOM_PLATFORM_TYPE.YELLOW, staticLevelParts);
+
+
 		Level level5 = new Level("5", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level5;//set currLevel
+
+
 		addCharactersAtStartOfLevel(new double[] {3*MovingObject.characters[0].getWidth(), 5*MovingObject.characters[1].getWidth()});
 	}
 

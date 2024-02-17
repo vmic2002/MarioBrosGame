@@ -46,12 +46,16 @@ public class Level {
 	}
 
 	public void removeDynamic(Dynamic d) {
-		//removes Object that implement Dynamic from dynamicLevelParts, 	
-		if (dynamicLevelParts.get(d.getID())==null) {
-			//System.out.println("Tried to remove "+f.getID()+" from dynamicLevelParts");
-			return;
+		//removes Object that implement Dynamic from dynamicLevelParts, 
+		synchronized (dynamicLevelParts) {
+			//to fix bug of dynamic level parts being looped through to move level
+			//while this func is removing a dynamic levelpart
+			if (dynamicLevelParts.get(d.getID())==null) {
+				//System.out.println("Tried to remove "+f.getID()+" from dynamicLevelParts");
+				return;
+			}
+			dynamicLevelParts.remove(d.getID());
 		}
-		dynamicLevelParts.remove(d.getID());
 		//System.out.println("Successfully removed "+f.getID()+" from dynmiacLevelParts");
 		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
 		//TODO bug where dynamic level parts is -1 at some point, maybe concurrency bug
@@ -62,17 +66,27 @@ public class Level {
 	public void moveLevel(double dx, double dy, Mario mario) {
 		//this function works but does not scale when a level is long need to only move the level parts that are visible on screen
 		//this level could "scale" using pipes to connect different sub levels so each level doesnt become too long to move at once
-		GameThread t1 = new GameThread(new MyRunnable() {
+		/*	GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException{
 				//if (xBaseLine+dx<=0.0 && yBaseLine+dy>=0.0) {
 				moveLevelAsynchronously(dx, dy, mario);
 				//} else {System.out.println("MOVELEVEL");System.exit(1);}
 			}
-		},"moving level");
+		},"moving level");*/
+
+		GameThread t1 = new GameThread(new MoveLevelRunnable(this, dx, dy, mario),mario.character.name()+" moving level by dx:"+dx+", dy: "+dy);
+		//new thread is created to move entire level by dx, dy
 	}
 
-	private synchronized void moveLevelAsynchronously(double dx, double dy, Mario mario) {
+	/*private void moveLevelAsynchronously(double dx, double dy, Mario mario) {
+		//TODO need to try to move images on screen before images off screen to reduce lag
+		//multiple threads should move the level at a time just not the same parts of level
+		//one thread could have already moved staticlevelpart #0 and is now moving #1 while a newer thread is now moving part #0
+		//static levelparts are already in order because of how the level is constructed in levelController
+		//list of staticlevelparts is ordered, smallest indices corresponding to leftmost level parts
+		
+
 		ServerToClientMessenger.sendMoveLevelMessage(dx, dy);
 		for (int i=0; i<staticLevelParts.size(); i++) {
 			staticLevelParts.get(i).move(dx, dy);
@@ -86,32 +100,28 @@ public class Level {
 		}
 		xBaseLine+=dx;
 		yBaseLine+=dy;
-	}
+	}*/
 
 
 
 	public static void addLevelPartDynamically(Dynamic d, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		//THIS FUNCTION IS USED IN LEVELCONTROLLER AT LEVEL CREATION TIME (IN PLAYLEVELX FUNCTION)
 		//TO ADD DYNAMICLEVEL PARTS LIKE COINS FOR EXAMPLE TO A TEMP HASHMAP BEFORE LEVEL IS INSTANTIATED
-		//if (!(i instanceof Dynamic)) {
-		//System.out.println("CAN ONLY ADD Objects who implement Dynamic");
-		//System.exit(1);
-		//}
-		//ArrayList<ThreadSafeGImage> l = new ArrayList<ThreadSafeGImage>();
-		//l.add(i);
-		//long newID = ID_GENERATOR.getAndIncrement();
+		//which is why we dont need to do syncrhonized (dynamicLevelParts), level is created (=dynamic/staticLevelParts being populated) only in one thread
 		if (dynamicLevelParts.get(d.getID())!=null){
-			//System.out.println("ID for dynamic level part already used!");
 			System.exit(1);
 		}
 		dynamicLevelParts.put(d.getID(), new DynamicLevelPart(d));//, newID));
-		//i.setID(newID);
-		//System.out.println("\ndynamicLevelParts size: "+dynamicLevelParts.size()+"\n");
+
 	}
 
 	public void addLevelPartDynamically(Dynamic i) {
 		//to add level parts dynamically (power ups or fireballs) to level
 		//while level is being played
-		Level.addLevelPartDynamically(i, dynamicLevelParts);
+		synchronized (dynamicLevelParts) {
+			//to fix bug of dynamic level parts being looped through to move level
+			//while this func is adding a new dynamic levelpart
+			Level.addLevelPartDynamically(i, dynamicLevelParts);
+		}
 	}
 }
