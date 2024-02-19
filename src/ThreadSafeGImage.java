@@ -22,6 +22,7 @@ public abstract class ThreadSafeGImage extends GImage {
 	
 	public synchronized void moveMario(double dx, double dy) {
 		super.move(dx, dy);
+		
 		ServerToClientMessenger.sendMoveMarioMessage(getImageID(), dx, dy);
 	}
 	
@@ -70,6 +71,17 @@ public abstract class ThreadSafeGImage extends GImage {
 		
 		//System.out.println(messageToClient);
 		ServerToClientMessenger.sendSetVisibilityMessage(getImageID(), b);
+	}
+	
+	
+	public synchronized void sendToBack() {
+		super.sendToBack();
+		ServerToClientMessenger.sendImageFrontOrBack(getImageID(), false);
+	}
+	
+	public synchronized void sendToFront() {
+		super.sendToFront();
+		ServerToClientMessenger.sendImageFrontOrBack(getImageID(), true);
 	}
 	
 

@@ -164,11 +164,12 @@ public class LevelController {
 		//	canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
-		StaticFactory.spawnGrassMountain(xCounter, 5, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 6, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		//StaticFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 3);
-		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1b", FLOWER_TYPE.SHOOTING, 3, "2", FLOWER_TYPE.NO_FLOWER, staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1b", FLOWER_TYPE.NO_FLOWER, 3, "2", FLOWER_TYPE.NO_FLOWER, staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 8, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		Level level1a = new Level("1a", staticLevelParts, dynamicLevelParts, xCounter.v);
 		currLevel = level1a;//set currLevel
 		//	mario.fall(5);
@@ -179,11 +180,11 @@ public class LevelController {
 		//canvas.add(mario, 0, 0);//canvas.getHeight()-4*mario.getHeight());
 		ArrayList<StaticLevelPart> staticLevelParts = new ArrayList<StaticLevelPart>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
-		int x = 10;
+		int x = 2;
 		for (int i=0; i<x; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "2", staticLevelParts, dynamicLevelParts);
 			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, staticLevelParts);
-			StaticFactory.spawnGrassMountain(xCounter, 10, 4, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
+			StaticFactory.spawnGrassMountain(xCounter, 10, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "3", staticLevelParts, dynamicLevelParts);
 			if (i!=x-1) spawnWhiteSpace(xCounter, 2);
 		}

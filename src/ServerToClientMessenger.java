@@ -7,10 +7,10 @@ public class ServerToClientMessenger {
 		sessionId = id;
 		session = MyWebSocketServer.getSession(id);
 	}
-	//10 types of messages that server sends to client:
+	//11 types of messages that server sends to client:
 	//1. moveImage, 2. playSound, 3. replaceImage 
 	//4. addLevelImageToScreen, and 5. removeImageFromScreen, 6. setVisibility
-	//7. moveLevel, 8. moveMarioCharacter, 9. addCharacterImageToScreen, 10. removeAllImagesFromScreen
+	//7. moveLevel, 8. moveMarioCharacter, 9. addCharacterImageToScreen, 10. removeAllImagesFromScreen, 11. sendImageFrontOrBack
 	//Message 1 is sent in ThreadSafeGImage.move 
 	//-> called when moving object (NOT mario characters) calls the ThreadSafeGImage.move func and NOT when moving whole level (=moving static level parts and dynamic level parts)
 	//-> see Message 7 to moveLevel and Message 8 to move mario character
@@ -25,6 +25,7 @@ public class ServerToClientMessenger {
 	//Message 8 is sent in ThreadSafeGImage.moveMario
 	//Message 9 is sent in LevelController.addCharactersAtStartOfLevel (to add mario/luigi at beginning of level)
 	//Message 10 is sent in MyGCanvas.removeAll()
+	//Message 11 is sent in ThreadSafeGImage
 
 	//we differentiate between levelimages and characterimages because on the client side (javascript)
 	//client keeps track of images in two hashmaps: one for levelimages and one for characterimages (mario, luigi, etc)
@@ -82,6 +83,11 @@ public class ServerToClientMessenger {
 	
 	public static void sendRemoveAllImagesFromScreenMessage() {
 		String messageToClient = "{ \"type\": \"removeAllImagesFromScreen\"}";
+		sendMessage(messageToClient);
+	}
+	
+	public static void sendImageFrontOrBack(long imageID, boolean frontOrBack) {
+		String messageToClient = "{ \"type\": \"setFrontOrBack\", \"imageId\": \""+imageID+"\", \"bool\":\""+frontOrBack+"\" }";
 		sendMessage(messageToClient);
 	}
 	

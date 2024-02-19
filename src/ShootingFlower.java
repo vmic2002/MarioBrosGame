@@ -44,7 +44,7 @@ public abstract class ShootingFlower extends BadGuy {
 	public Mario getClosestMario() {
 		int index = 0;
 		double smallestDistance = MovingObject.canvas.getWidth()*2;
-		System.out.println("smallestDistance: "+smallestDistance);
+		//System.out.println("smallestDistance: "+smallestDistance);
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
 			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));
@@ -84,7 +84,7 @@ public abstract class ShootingFlower extends BadGuy {
 			return;
 		};
 		if  (getX()<=canvas.getWidth() && getX()+getWidth()>=0
-				&& getY()<=canvas.getHeight() && getY()+getHeight()>=0) {
+				&& getY()<=canvas.getHeight() && getY()+getHeight()>=0) {	
 			DynamicFactory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
 			//only flowers on screen shoot at mario
 			//flower still comes out of pipe when off screen to preserve timeOffset
@@ -98,8 +98,10 @@ public abstract class ShootingFlower extends BadGuy {
 	public void move() throws InterruptedException {
 		//this func makes the flower move out of the pipe, shoot a fireball at mario,
 		//and come back into the pipe depending on if is a up/down shootingflower		
+		sendToBack();//to fix bugs on client side
 		ThreadSleep.sleep(timeOffset);
 		while (alive) {
+			sendToBack();
 			for (int i=0; i<numMoves; i++) {
 				ArrayList<GObject> o1 = checkAtPositions(getPoints());
 				for (GObject x : o1) {
@@ -113,6 +115,7 @@ public abstract class ShootingFlower extends BadGuy {
 			if (!alive) break;
 			shootMario();
 			if (!alive) break;
+			sendToBack();//to fix bugs on client side
 			for (int i=0; i<numMoves; i++) {
 				ArrayList<GObject> o1 = checkAtPositions(getPoints());
 				for (GObject x : o1) {

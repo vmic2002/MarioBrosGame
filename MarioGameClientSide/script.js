@@ -100,6 +100,7 @@ function moveImage(image, dx, dy) {
 On the other hand, modifying top and left directly can trigger layout reflows and repaints, which can be more resource-intensive and slower, especially when dealing with a large number of elements.
 
 So, using transform for movement is often recommended for performance reasons.*/ 
+//TODO TODO NEED TO USE TRANSLATE3D IT USES GPU SO MUCH FASTER RENDERING
     
     const currentTransform = getComputedStyle(image).getPropertyValue('transform');
     const matrixValues = currentTransform.slice(7, -1).split(', ');
@@ -124,7 +125,20 @@ function moveLevel(dx, dy) {
 
 
 
-
+function setImageToFrontOrBack(imageId, frontOrBack) {
+    //frontOrBack == true if we want to set image to the front and false if we want to send it to back
+    //console.log("params: "+imageId+" "+frontOrBack);
+    const image = getImage(imageId);
+    if (image) {
+       if (frontOrBack == "true") {
+            image.style.zIndex = "9999"; // Set a high z-index value to send it to the front
+            //console.log("front");
+        } else {
+            image.style.zIndex = "-9999"; // Set a low z-index value to send it to the back
+            //console.log("back");
+        } 
+    } 
+}
 
 
 
@@ -134,11 +148,11 @@ function changeVisibility(imageId, bool) {
         if (bool==="true") {
             //to make image visible
             image.style.display = 'block';
-            console.log("MAKE IMAGE VISIBLE");
+            //console.log("MAKE IMAGE VISIBLE");
         } else {
             //to make image not visible
             image.style.display = 'none';
-            console.log("HIDE IMAGE");
+            //console.log("HIDE IMAGE");
         }
     }
 }
@@ -399,54 +413,58 @@ socket.onmessage = function(event) {
         if (parsedMessage.type === 'moveImage') {
             // Example: { "type": "moveImage", "imageId": "imageId", "dx":"10", "dy":"20" }
             const {type, imageId, dx, dy} = parsedMessage;
-            console.log('Received moveImage data:', `${type}, ${imageId}, ${dx}, ${dy}`);
+            //console.log('Received moveImage data:', `${type}, ${imageId}, ${dx}, ${dy}`);
             //this works!!!!!!, json is received and parsed correctly
             moveLevelImage(imageId, dx, dy);
         } else if (parsedMessage.type === 'replaceImage') {
             // Example: { "type": "replaceImage", "oldImageId":"id", "newImageName":"luigiWalking" }
             const {type, oldImageId, newImageName} = parsedMessage;
             //oldImageId is used to find which image to replace and newImageName is used to find image in Images directory to replace it with
-            console.log('Received replaceImage data:', `${type}, ${oldImageId}, ${newImageName}`);
+            //console.log('Received replaceImage data:', `${type}, ${oldImageId}, ${newImageName}`);
             //this works!!! json is received and parsed correctly
             replaceImage(oldImageId, newImageName);
         } else if (parsedMessage.type === 'playSound') {
             // Example: { "type": "playSound", "soundName": "Coin.wav" }
-            console.log('Received playSound data:', parsedMessage.soundName);
+            //console.log('Received playSound data:', parsedMessage.soundName);
             playSound(parsedMessage.soundName);
         } else if (parsedMessage.type === 'addLevelImageToScreen') {
             // Example: { "type": "addLevelImageToScreen", "imageName": "platform", "id":"25", "x":"10", "y":"10" }
             const {type, imageName, id, x, y} = parsedMessage;
-            console.log('Received addLevelImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
+            //console.log('Received addLevelImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
             addLevelImageToScreen(imageName, id, x, y);
         } else if (parsedMessage.type === 'removeImageFromScreen') {
             // Example: { "type": "removeImageFromScreen", "id": "i" }
-            console.log('Received removeImageFromScreen data:', parsedMessage.id);
+            //console.log('Received removeImageFromScreen data:', parsedMessage.id);
             removeImageFromScreen(parsedMessage.id);
         } else if (parsedMessage.type === 'setVisible') { 
            //Example { "type": "setVisible", "imageId": "12", "bool":"true" } 
             const {type, imageId, bool} = parsedMessage;
-            console.log('Received setVisible data:', `${imageId}, ${bool}`);
+            //console.log('Received setVisible data:', `${imageId}, ${bool}`);
             changeVisibility(imageId, bool);
         } else if (parsedMessage.type === 'moveLevel') {
             //Example { "type": "moveLevel", "dx": "12", "dy":"true" }
              const {type, dx, dy} = parsedMessage;
-             console.log('Received moveLevel data:', `${dx}, ${dy}`);
+             //console.log('Received moveLevel data:', `${dx}, ${dy}`);
              moveLevel(dx, dy);
         } else if (parsedMessage.type === 'moveMarioCharacter') {
             // Example: { "type": "moveMarioCharacter", "imageId": "imageId", "dx":"10", "dy":"20" }
             const {type, imageId, dx, dy} = parsedMessage;
-            console.log('Received moveMarioCharacter data:', `${type}, ${imageId}, ${dx}, ${dy}`);
+            //console.log('Received moveMarioCharacter data:', `${type}, ${imageId}, ${dx}, ${dy}`);
             moveCharacterImage(imageId, dx, dy);
         } else if (parsedMessage.type === 'addCharacterImageToScreen') {
              // Example: { "type": "addCharacterImageToScreen", "imageName": "luigiBigLeft", "id":"25", "x":"10", "y":    "10" }
             const {type, imageName, id, x, y} = parsedMessage;
-            console.log('Received addCHARACTERImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
+            //console.log('Received addCHARACTERImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
             addCharacterImageToScreen(imageName, id, x, y); 
         } else if (parsedMessage.type === 'removeAllImagesFromScreen') {
               // Example: { "type": "removeAllImagesFromScreen"}
-            console.log('Received removeAllImagesFromScreen data');
+            //console.log('Received removeAllImagesFromScreen data');
             removeAllImagesFromScreen();
-         } else {
+        } else if (parsedMessage.type === 'setFrontOrBack') {
+            //console.log('moving image to front or back');
+            const {imageId, bool} = parsedMessage;
+            setImageToFrontOrBack(imageId, bool);
+        } else {
             // Handle other JSON data structures or handle unknown types
             console.log('Received unknown JSON data:', parsedMessage);
         }
@@ -478,7 +496,7 @@ socket.onerror = function(event) {
 function sendJsonMessage(data) {
   if (socket.readyState === WebSocket.OPEN) {
     const message = JSON.stringify(data);
-    console.log(`Sending message to server: ${message}`);
+    //console.log(`Sending message to server: ${message}`);
     socket.send(message);  
   } else {
     console.log('WebSocket connection is not open.');
