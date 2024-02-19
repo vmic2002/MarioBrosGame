@@ -10,7 +10,7 @@ public abstract class ThreadSafeGImage extends GImage {
 	//by multiple different marios
 
 	private final long id;//for JavaScript on client side to know which image to move etc
-	public static AtomicLong ID_GENERATOR;//Atomic for concurrency
+	private static AtomicLong ID_GENERATOR;//Atomic for concurrency
 	public ThreadSafeGImage(MyImage arg0) {
 		super(arg0);
 		id =  ID_GENERATOR.getAndIncrement();

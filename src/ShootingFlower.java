@@ -42,20 +42,19 @@ public abstract class ShootingFlower extends BadGuy {
 	public abstract Point[] getPoints();
 
 	public Mario getClosestMario() {
-		//TODO for some reason getClosestMario doesnt work anymore
 		int index = 0;
-		double smallestDistance = 10^9;//SHOULD BE DOUBLE.MAX_VALUE
+		double smallestDistance = MovingObject.canvas.getWidth()*2;
+		System.out.println("smallestDistance: "+smallestDistance);
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
-			//	System.out.println("!!!!!!!!LOOp AT: "+m.character);
 			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));
-			//	System.out.println(d);
+			//System.out.println("!!!!!!!!LOOp AT: "+m.character+"   "+d);
 			if (d<smallestDistance) {
 				index = i;
 				smallestDistance = d;
-
 			}
 		}
+		//System.out.println("shooting at:" +MovingObject.characters[index].character.name()+ " smallest distance; "+smallestDistance);
 		return MovingObject.characters[index];
 	}
 

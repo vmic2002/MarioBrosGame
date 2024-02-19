@@ -11,9 +11,8 @@ public class ServerToClientMessenger {
 	//1. moveImage, 2. playSound, 3. replaceImage 
 	//4. addLevelImageToScreen, and 5. removeImageFromScreen, 6. setVisibility
 	//7. moveLevel, 8. moveMarioCharacter, 9. addCharacterImageToScreen, 10. removeAllImagesFromScreen
-	//all 5 messages are correctly sent and received by the client
 	//Message 1 is sent in ThreadSafeGImage.move 
-	//-> called when moving object (NOT mario characters) calls the ThreadSafeGImage.move func and NOT when moving static level part and dynamic level part
+	//-> called when moving object (NOT mario characters) calls the ThreadSafeGImage.move func and NOT when moving whole level (=moving static level parts and dynamic level parts)
 	//-> see Message 7 to moveLevel and Message 8 to move mario character
 	//Message 2 is sent in SoundController.playSound
 	//Message 3 is sent in ThreadSafeGImage.setImage
