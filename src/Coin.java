@@ -5,11 +5,12 @@ import acm.graphics.GObject;
 public class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
+	//floating coins moved in FloatingCoinsBlock.startSpinningBlock(), see FloatingCoinsBlock.java
 	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
 	//public long dynamicId;
 	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
-	private static int pauseBetweenStates = 15;
+	public final static int pauseBetweenStates = 15;
 	private enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
 	//"collected" state means Mario collected the coin and it should be removed from the canvas as well as the dynamicLevelParts
 	COIN_STATE coinState;
@@ -39,23 +40,6 @@ public class Coin extends MovingObject implements Dynamic{
 
 	public boolean collected() {return coinState==COIN_STATE.COLLECTED;}
 
-	public void startSpinning() {
-		//each floating coin changes its pictures (changes state) in its own thread
-		//TODO maybe when level will have lots of coins it will be worth it to have one thread doing spinning block of coins
-		GameThread t1 = new GameThread(new MyRunnable() {
-			@Override
-			public void doWork() throws InterruptedException{changeState();}
-		},"floating coin changing state");
-	}
-
-	public void changeState() throws InterruptedException{
-		while (!collected() && alive) {
-			ThreadSleep.sleep(pauseBetweenStates);
-			toggleState();
-		}	
-		kill();
-		System.out.println("END OF CHANGING STATE FOR FLOATING COIN");
-	}
 
 	public void collectedByMario(Mario mario) {
 		//THIS IS FOR FLOATING COINS

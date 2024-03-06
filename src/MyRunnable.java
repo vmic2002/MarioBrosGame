@@ -8,6 +8,7 @@ public class MyRunnable implements Runnable {
 			System.out.println("THREAD INTERRUPTED -> threads stops");
 			return;//stops thread when interrupted
 		}
+		//THREAD DIES WHEN RUN FUNCTION RETURNS
 		//System.out.println("THREAD STOPS");
 	}
 

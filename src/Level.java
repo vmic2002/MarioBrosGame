@@ -14,6 +14,8 @@ public class Level {
 	//inefficient to keep them in static levelParts (like coins for example)
 	//public static AtomicLong ID_GENERATOR = new AtomicLong(0);//Atomic for concurrency, id of dynamic level parts, used for key of hashmap
 
+	public ArrayList<FloatingCoinsBlock> floatingCoinsBlocks;//see FloatingCoinsBlock.java
+	
 	public double yBaseLine;//changes when mario jumps up or down too close to edges
 	//if yBaseLine > 0 then some of the levelParts are below their initial position (and may be off screen)
 	public double xBaseLine;//if xBaseLine == 0 then mario is at leftmost spot in the level so can't move the level more left
@@ -21,13 +23,15 @@ public class Level {
 	//private GImage background;
 	public double width;
 
-	public Level(String id, ArrayList<StaticLevelPart> staticLevelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts, double width){//, GImage background) {
+	public Level(String id, ArrayList<StaticLevelPart> staticLevelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts, double width, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks){//, GImage background) {
 		this.id = id;
 		this.staticLevelParts = staticLevelParts;
 		yBaseLine = 0.0;
 		xBaseLine = 0.0;
 		this.width = width;
 		this.dynamicLevelParts = dynamicLevelParts;
+		this.floatingCoinsBlocks = floatingCoinsBlocks;
+		
 		//this.background = background;
 
 		for (StaticLevelPart l : this.staticLevelParts) {
@@ -39,6 +43,8 @@ public class Level {
 			ThreadSafeGImage image = (ThreadSafeGImage) l.part;
 			ServerToClientMessenger.sendAddLevelImageToScreenMessage(image);
 		}
+		
+		
 	}
 
 	public String getID() {

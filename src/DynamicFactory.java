@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import acm.graphics.GCanvas;
@@ -106,7 +107,7 @@ public class DynamicFactory {
 		bulletBill.startMove();
 	}
 
-	
+
 	//!!!!!
 	//functions below are called at level creation time (in LevelController.playLevelX func) 
 	//and add levelparts to temp hashmap
@@ -142,55 +143,69 @@ public class DynamicFactory {
 	}
 
 
-	public static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+	public static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts, FloatingCoinsBlock floatingCoinsBlock) {
 		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
+		//a floating coin is part of a FloatingCoinsBlock
 		Coin coin = new Coin();
 		double height = coin.getHeight();//this is height of coin in stage 1 (when it is tallest)
 		canvas.add(coin, x, y);
 		Level.addLevelPartDynamically(coin, dynamicLevelParts);
-		//addMovingObject(coin); THIS LINE IS COMMENTED BECAUSE FLOATING COINS DONT CALL MOVE FUNCTION (SEE COIN.JAVA FOR MORE DETAILS)
-		//coins start spinning once level is instantiated (in Level() constructor)
+		//coins start spinning in LevelController.startMovingObjects()
+		//1 thread per FloatingCoinsBlock
+
+		floatingCoinsBlock.addCoin(coin);
 		return height;
 	}
 
-	public static void addFloatingCoinsRectangle(double x, double y, int w, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+	public static void addFloatingCoinsRectangle(double x, double y, int w, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks) {
 		//called at level creation time
 		//adds a 2D array of floating coins of width w (num coins wide) and height h (num coins high)
 		//to dynamicLevelParts
-		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts);
+		//1 FloatingCoinsBlock per floating coins rectangle
+		FloatingCoinsBlock floatingCoinsBlock = new FloatingCoinsBlock();
+
+		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts, floatingCoinsBlock);
 		double space = coinHeight/4;
 		//assuming coinWidth is equal to coinHeight (it basically is, coin1.png is very close to being a square)
 		if (w<2) w=2;
 		if (h<2) h=2;
 		for (int i=0; i<w; i++) {
 			for (int j=1; j<h; j++) {
-				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y+j*(coinHeight+space), dynamicLevelParts);
+				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y+j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
 			}
 		}
 		for (int i=1; i<w; i++) {
-			DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y, dynamicLevelParts);
+			DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y, dynamicLevelParts, floatingCoinsBlock);
 		}
+
+		floatingCoinsBlocks.add(floatingCoinsBlock);
+
 	}
 
-	public static void addFloatingCoinsTriangle(double x, double y, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+	public static void addFloatingCoinsTriangle(double x, double y, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks) {
 		//called at level creation time
 		//adds floating coins in triangle pattern
 		//if h=2, 4 coins total, if h=3, 9 coins total...
 		//there are h^2 coins total!!!
+		//1 FloatingCoinsBlock per floating coins triangle
+		FloatingCoinsBlock floatingCoinsBlock = new FloatingCoinsBlock();
+
 		if (h<2) h=2;
-		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts);
+		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts, floatingCoinsBlock);
 		double space = coinHeight/4;
 		int i;
 		for (i=1; i<h; i++) {
 			for (int j=i; j>=0; j--) {
-				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts);
+				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
 			}
 		}
 		for (int newI=h-2; i<2*h; i++) {
 			for (int j=newI; j>=0; j--) {
-				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts);
+				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
 			}
 			newI--;
 		}
+
+		floatingCoinsBlocks.add(floatingCoinsBlock);
 	}
 }

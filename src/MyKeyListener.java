@@ -45,6 +45,11 @@ public class MyKeyListener implements KeyListener {
 			System.out.println("x baseline: "+LevelController.currLevel.xBaseLine);
 			System.out.println("max num threads moving level"+MoveLevelRunnable.maxNumMoveLevelRunnable);
 			
+			
+			//System.out.println("\n\nnumber of floatingcoins blocks: "+LevelController.currLevel.floatingCoinsBlocks.size());
+			//for (int i=0; i<LevelController.currLevel.floatingCoinsBlocks.size(); i++) {
+			//	System.out.println("floating coins block "+i+" has "+LevelController.currLevel.floatingCoinsBlocks.get(i).coins.size()+ " coins");
+			//}
 		}
 		if (keyCode == KeyEvent.VK_9) {
 			//print all threads
