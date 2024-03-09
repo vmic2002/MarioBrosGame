@@ -1,3 +1,5 @@
+
+
 public class MysteryBox extends Platform {
 	//extends Platform means that this is something mario would not be able
 	//to walk/jump into. if he does, it will halt him
@@ -6,9 +8,14 @@ public class MysteryBox extends Platform {
 	private enum MYSTERYBOX_STATE {STATE_1, STATE_2, STATE_3, STATE_4, FINAL};
 	MYSTERYBOX_STATE mysteryBoxState;
 
-	public MysteryBox() {
+
+	// a mystery box either spawns a power up, a coin, or RANDOM
+	public enum SPAWN {Leaf, Mushroom, Tanooki, FireFlower, Hourglass, Coin, RANDOM};
+	private SPAWN spawn;
+	public MysteryBox(SPAWN s) {
 		super(mysteryBox1Image);
 		mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
+		spawn = s;
 	}
 
 	public void toggleState() {
@@ -53,36 +60,52 @@ public class MysteryBox extends Platform {
 		mysteryBoxState = MYSTERYBOX_STATE.FINAL;
 	}
 
-	public void hitByMario(boolean marioBigOrSmall) {
+	public void hitByMario(boolean marioBigOrSmall, Mario m) {
+		//only called once, mystery box only spawns something once
 		setToFinalState();
 		SoundController.playItemOutOfBoxSound();
 		setImage(mysteryBoxFinalImage);
 		double x  = this.getX();
 		double y = this.getY();
-		
-		//DynamicFactory.addHourglass(x, y, this.getWidth());
-		
-		if (!marioBigOrSmall) {//small mario gets mushroom or (less probable) hourglass
-			if (Math.random()>0.25)
-				DynamicFactory.addMushroom(x, y, this.getWidth());
-			else
-				DynamicFactory.addHourglass(x, y, this.getWidth());
-		} else {
-			//if mario is big, he has equal change of getting fireflower,
-			//hourglass, leaf, or tanooki
-			if (Math.random()>0.75)
-				DynamicFactory.addFireFlower(x, y, this.getWidth());
-			else if (Math.random()>0.5)
-				DynamicFactory.addHourglass(x, y, this.getWidth());
-			else if (Math.random()>0.25)
-				DynamicFactory.addLeaf(x, y, this.getWidth());
-			else
-				DynamicFactory.addTanooki(x, y, this.getWidth());
+
+		if (spawn.equals(SPAWN.RANDOM)) {
+			double rand = Math.random();
+			if (!marioBigOrSmall) {//small mario gets mushroom, hourglass, or coin
+				if (rand<0.6)
+					DynamicFactory.addMushroom(x, y, this.getWidth());
+				else if (rand<0.7)
+					DynamicFactory.addHourglass(x, y, this.getWidth());
+				else DynamicFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
+			} else {
+				//if mario is big, he has equal change of getting fireflower,
+				//hourglass, leaf, tanooki, or coin
+				if (rand>0.8)
+					DynamicFactory.addFireFlower(x, y, this.getWidth());
+				else if (rand>0.6)
+					DynamicFactory.addHourglass(x, y, this.getWidth());
+				else if (rand>0.4)
+					DynamicFactory.addLeaf(x, y, this.getWidth());
+				else if (rand>0.2)
+					DynamicFactory.addTanooki(x, y, this.getWidth());
+				else DynamicFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
+			}
+		} else if (spawn.equals(SPAWN.FireFlower)) {
+			DynamicFactory.addFireFlower(x, y, this.getWidth());
+		} else if (spawn.equals(SPAWN.Hourglass)) {
+			DynamicFactory.addHourglass(x, y, this.getWidth());
+		} else if (spawn.equals(SPAWN.Leaf)) {
+			DynamicFactory.addLeaf(x, y, this.getWidth());
+		} else if (spawn.equals(SPAWN.Mushroom)) {
+			DynamicFactory.addMushroom(x, y, this.getWidth());
+		} else if (spawn.equals(SPAWN.Tanooki)) {
+			DynamicFactory.addTanooki(x, y, this.getWidth());
+		} else if (spawn.equals(SPAWN.Coin)) {
+			DynamicFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
 		}
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException {
-				double dy = -MovingObject.getBaseLineSpeed();
+				double dy = 0.8*MysteryBoxCoin.dy;//so that mysterybox does not catch up to mysteryboxcoin
 				move(dy);//move up
 				dy = -dy;
 				move(dy);//move down

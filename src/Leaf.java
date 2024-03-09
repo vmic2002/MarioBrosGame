@@ -26,10 +26,10 @@ public class Leaf extends PowerUp {
 		setImageAndRelocate(newImage);
 		rightOrLeft = !rightOrLeft;
 		dx = rightOrLeft?DX:-DX;
-		
-			ThreadSleep.sleep(5*pauseTime);
-			//leaf pauses while changing direction
-		
+
+		ThreadSleep.sleep(5*pauseTime);
+		//leaf pauses while changing direction
+
 	}
 
 	@Override
@@ -37,9 +37,9 @@ public class Leaf extends PowerUp {
 		this.sendToFront();
 		for (int i=0; i<15 && alive; i++) {
 			move(0, -MovingObject.getBaseLineSpeed());
-			
-				ThreadSleep.sleep(1.5);
-			
+
+			ThreadSleep.sleep(1.5);
+
 		}
 		System.out.println("ADDED LEAF");
 		while (alive && getY()<=canvas.getHeight()+LevelController.currLevel.yBaseLine) {
@@ -54,9 +54,9 @@ public class Leaf extends PowerUp {
 			else dx-=2;
 			toggle++;
 			move(dx, dy);
-			
-				ThreadSleep.sleep(pauseTime);
-			
+
+			ThreadSleep.sleep(pauseTime);
+
 			double newX = rightOrLeft?getX()+getWidth()+dx:getX()+dx;//+dx because dx == -10
 			Point[] points = new Point[] {
 					new Point(newX, getY()),
@@ -90,13 +90,13 @@ public class Leaf extends PowerUp {
 
 			if (m.isTimeDilating)
 				m.stopTimeDilationForAllCharacters(m);
-			
-			
+
+
 			m.setToCat();
-			
-			
-			
-			
+
+
+
+
 			SoundController.playPowerUpSound();
 		} else {
 			//System.out.println("LEAF ONLY CHANGES WHEN in contact with mario");

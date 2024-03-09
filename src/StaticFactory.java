@@ -329,9 +329,11 @@ public class StaticFactory {
 
 	//this func does not increase xCounter.v by the width of the mysterybox
 	//since usually mysterybox is on top of platform (like grass mountain)
-	public static double spawnMysteryBox(double x, double y, ArrayList<StaticLevelPart> staticLevelParts) {
+	//POWERUP PARAM SO A MYSTERY BOX OF A CERTAIN LEVEL ALWAYS OUTPUTS SAME POWERUP (or random)
+	//y param in units of mysterybox height
+	public static double spawnMysteryBox(double x, double y, ArrayList<StaticLevelPart> staticLevelParts, MysteryBox.SPAWN s) {
 		ArrayList<Platform> platforms = new ArrayList<Platform>();
-		MysteryBox b = new MysteryBox();
+		MysteryBox b = new MysteryBox(s);
 		canvas.add(b, x, canvas.getHeight()-y*b.getHeight());
 		platforms.add(b);
 		staticLevelParts.add(new StaticLevelPart(platforms));

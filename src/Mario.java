@@ -1356,7 +1356,7 @@ public class Mario extends MovingObject {
 					System.out.println("MARIO HIT MYSTERYBOX FROM UNDER");
 					if (Math.abs(getY()-o.getY()-o.getHeight())>20) return false;
 					if (!((MysteryBox) o).stateIsFinal()) {
-						((MysteryBox) o).hitByMario(this.bigOrSmall);
+						((MysteryBox) o).hitByMario(this.bigOrSmall, this);
 					}
 				} else if (o instanceof PipePart) {
 					//mario jumped into a pipe part, need to make him go into pipe

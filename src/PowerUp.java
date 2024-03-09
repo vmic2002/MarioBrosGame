@@ -1,5 +1,5 @@
 public abstract class PowerUp extends MovingObject implements Dynamic{
-	//Leaf, Mushroom, FireFlower, Hourglass extend PowerUp
+	//Leaf, Mushroom, Tanooki, FireFlower, Hourglass extend PowerUp 
 	public PowerUp(MyImage arg0) {
 		super(arg0);
 	}

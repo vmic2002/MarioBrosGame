@@ -66,12 +66,14 @@ public class DynamicFactory {
 		addPowerUp(x, y, mysteryBoxWidth, hourglass);
 	}
 
-	public static void addCoin(double x, double y) {
-		//TODO call this addCoin function when Mario jumps into mysterybox or brick
-		Coin coin = new Coin();
-		canvas.add(coin, x, y);
+	public static void addMysteryBoxCoin(double x, double y, double mysteryBoxWidth, Mario m) {
+		//called when Mario jumps into mysterybox or brick
+		Coin coin = new MysteryBoxCoin();
+		canvas.add(coin, x+(mysteryBoxWidth-coin.getWidth())/2, y-coin.getHeight());
 		ServerToClientMessenger.sendAddLevelImageToScreenMessage(coin);
 		LevelController.currLevel.addLevelPartDynamically(coin);
+		CharacterStatsController.collectCoin(m);
+		SoundController.playCoinSound();
 		coin.startMove();
 	}
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {
@@ -143,10 +145,10 @@ public class DynamicFactory {
 	}
 
 
-	public static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts, FloatingCoinsBlock floatingCoinsBlock) {
+	private static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts, FloatingCoinsBlock floatingCoinsBlock) {
 		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
 		//a floating coin is part of a FloatingCoinsBlock
-		Coin coin = new Coin();
+		FloatingCoin coin = new FloatingCoin();
 		double height = coin.getHeight();//this is height of coin in stage 1 (when it is tallest)
 		canvas.add(coin, x, y);
 		Level.addLevelPartDynamically(coin, dynamicLevelParts);

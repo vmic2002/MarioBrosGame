@@ -58,6 +58,7 @@ public abstract class ThreadSafeGImage extends GImage {
 			//in this case we dont want to send message to client to replace image
 			
 			//System.out.println(messageToClient);
+			
 			ServerToClientMessenger.sendReplaceImageMessage(getImageID(), ((MyImage) i).getName());
 			//need to use ServerToClientMessenger.sendMessage to notify JS to change image when setImage is called
 		}

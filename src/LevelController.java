@@ -132,11 +132,14 @@ public class LevelController {
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 3, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 1);
-		DynamicFactory.addFloatingCoinsRectangle(xCounter.v, canvas.getHeight()/4, 10, 4, dynamicLevelParts, floatingCoinsBlocks);
-		DynamicFactory.addFloatingCoinsTriangle(xCounter.v+5.0*space, canvas.getHeight()/2-space, 8, dynamicLevelParts, floatingCoinsBlocks);
+	//	DynamicFactory.addFloatingCoinsRectangle(xCounter.v, canvas.getHeight()/4, 10, 4, dynamicLevelParts, floatingCoinsBlocks);
+		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3.0*space, canvas.getHeight()/2-space, 3, dynamicLevelParts, floatingCoinsBlocks);
+		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "1", staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
+		StaticFactory.spawnMysteryBox(xCounter.v-3.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
+		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.FireFlower);
 		
-		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "4", staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnGrassMountain(xCounter, 12, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		Level level0 = new Level("0", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level0;//set currLevel
 		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
@@ -161,7 +164,7 @@ public class LevelController {
 		StaticFactory.spawnBillBlaster(xCounter, 6, staticLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 4, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 4);
-		StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 8, staticLevelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.RANDOM);
 		StaticFactory.spawnGrassMountain(xCounter, 4, 5, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 1);
 		StaticFactory.spawnBillBlaster(xCounter, 9, staticLevelParts);
@@ -172,8 +175,8 @@ public class LevelController {
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnGrassMountain(xCounter, 8, 2, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
 		DynamicFactory.addFloatingCoinsTriangle(xCounter.v-3.0*space, canvas.getHeight()/4-space, 4, dynamicLevelParts, floatingCoinsBlocks);
-		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 6, staticLevelParts);
-		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 6, staticLevelParts);
+		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 6, staticLevelParts, MysteryBox.SPAWN.Coin);
+		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 6, staticLevelParts, MysteryBox.SPAWN.FireFlower);//FIRE FLOWERS ITS FUN TO SHOOT AT SHOOTING FLOWERS
 		spawnWhiteSpace(xCounter, 2);
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "4", staticLevelParts, dynamicLevelParts);
 		Level level1 = new Level("1", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
@@ -208,7 +211,7 @@ public class LevelController {
 		int x = 2;
 		for (int i=0; i<x; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "2", staticLevelParts, dynamicLevelParts);
-			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, staticLevelParts);
+			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, staticLevelParts, MysteryBox.SPAWN.Tanooki);
 			StaticFactory.spawnGrassMountain(xCounter, 10, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "3", staticLevelParts, dynamicLevelParts);
 			if (i!=x-1) spawnWhiteSpace(xCounter, 2);
@@ -226,7 +229,7 @@ public class LevelController {
 		ArrayList<FloatingCoinsBlock> floatingCoinsBlocks = new ArrayList<FloatingCoinsBlock>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 4, 2, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnMysteryBox(2.0*space, 5, staticLevelParts);
+		StaticFactory.spawnMysteryBox(2.0*space, 5, staticLevelParts, MysteryBox.SPAWN.RANDOM);
 		spawnWhiteSpace(xCounter, 2);
 		double xCounterTemp = xCounter.v;
 		for (int i=0; i<3; i++) {

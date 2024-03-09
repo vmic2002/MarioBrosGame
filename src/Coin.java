@@ -2,7 +2,7 @@
 //import acm.graphics.GCanvas;
 import acm.graphics.GObject;
 
-public class Coin extends MovingObject implements Dynamic{
+public abstract class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//floating coins moved in FloatingCoinsBlock.startSpinningBlock(), see FloatingCoinsBlock.java
@@ -11,10 +11,10 @@ public class Coin extends MovingObject implements Dynamic{
 	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
 	public final static int pauseBetweenStates = 15;
-	private enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
+	public enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
 	//"collected" state means Mario collected the coin and it should be removed from the canvas as well as the dynamicLevelParts
 	COIN_STATE coinState;
-
+	
 
 	public Coin() {
 		super(coin1Image);
@@ -41,13 +41,7 @@ public class Coin extends MovingObject implements Dynamic{
 	public boolean collected() {return coinState==COIN_STATE.COLLECTED;}
 
 
-	public void collectedByMario(Mario mario) {
-		//THIS IS FOR FLOATING COINS
-		if (collected()) return;
-		CharacterStatsController.collectCoin(mario);
-		coinState = COIN_STATE.COLLECTED;
-		SoundController.playCoinSound();
-	}
+	public abstract void collectedByMario(Mario mario);
 
 	public static void setObjects(MyImage image1, MyImage image2, MyImage image3, MyGCanvas canvas1) {
 		coin1Image = image1;
@@ -72,11 +66,7 @@ public class Coin extends MovingObject implements Dynamic{
 		}
 	}
 
-	@Override
-	public void move() throws InterruptedException {
-		//TODO the move function will be for coins retrieved from mysteryboxes+bricks (NOT floating coins)
-		//since they have a small animation of moving out of the box
-	}
+	
 
 	@Override
 	public boolean inContactWith(GObject x, boolean horizontalOrVertical) {
