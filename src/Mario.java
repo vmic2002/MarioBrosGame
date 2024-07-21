@@ -435,6 +435,7 @@ public class Mario extends MovingObject {
 		if (alive) return;
 		
 		if (!anotherMarioAlreadyDied) {
+			//this works
 			for (Mario m: MovingObject.characters) m.setToAlive(true);//all marios start level small when a mario died
 			LevelController.restartCurrentLevel();//when mario dies restart the level
 		}

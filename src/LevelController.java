@@ -332,8 +332,9 @@ public class LevelController {
 
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
-			m.setToAlive(false);
-			m.lookInCorrectDirection(true);
+			//m.setToAlive(false);
+			m.lookingRightOrLeft = true;
+			m.lookInCorrectDirection(true);//sets back to standing sprite looking in correct direction
 			canvas.add(m, 2*i*m.getWidth(), startY-m.getHeight());
 			//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
 			ServerToClientMessenger.sendAddCharacterImageToScreenMessage(m);
