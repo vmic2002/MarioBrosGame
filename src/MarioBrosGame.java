@@ -92,7 +92,7 @@ public class MarioBrosGame {
 		//when running from eclipse, prefix = ""
 		//before pushing to github make sure prefix = "../"
 
-		boolean runningFromCommandLine = true;//set to false to run from eclipse, true from command line
+		boolean runningFromCommandLine = false;//set to false to run from eclipse, true from command line
 		//TO RUN FROM TOMCAT SERVER, runningFromCommandLine NEEDS TO BE SET TO FALSE (still need to test this not sure)
 
 		String prefix;

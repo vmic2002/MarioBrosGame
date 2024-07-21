@@ -433,9 +433,11 @@ public class Mario extends MovingObject {
 		}
 
 		if (alive) return;
-
-		setToAlive(true);
-		if (!anotherMarioAlreadyDied) LevelController.restartCurrentLevel();//when mario dies restart the level
+		
+		if (!anotherMarioAlreadyDied) {
+			for (Mario m: MovingObject.characters) m.setToAlive(true);//all marios start level small when a mario died
+			LevelController.restartCurrentLevel();//when mario dies restart the level
+		}
 	}
 
 	public void setToAlive(boolean small) {
@@ -1509,7 +1511,7 @@ public class Mario extends MovingObject {
 		double x = 15.0;
 		double dy = getHeight()/x;
 		if (upOrDown) dy = -dy;
-		for (int i=0; i<x; i++) {
+		for (int i=0; i<2*x; i++) {//i<2*x to go deeper into pipe, i<x is just enough to make mario disappear into pipe
 			sleep(4);
 			moveOnlyMario(0, dy);
 		}
@@ -1518,8 +1520,10 @@ public class Mario extends MovingObject {
 		goingIntoPipe = false;
 
 		if (!upOrDown) isCrouching = false;
-		lookInCorrectDirection(lookingRightOrLeft);
+
 		LevelController.playLevel(o.subLevelID);
+
+		//lookInCorrectDirection(lookingRightOrLeft);
 	}
 
 	public void lookCorrectWayShootingFire(boolean rightOrLeft) {

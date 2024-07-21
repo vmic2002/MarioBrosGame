@@ -6,8 +6,6 @@ public abstract class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//floating coins moved in FloatingCoinsBlock.startSpinningBlock(), see FloatingCoinsBlock.java
-	//TODO make coin come out of mysterybox, brick, etc, for now only "floating" coins in level
-	//public long dynamicId;
 	private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
 	public final static int pauseBetweenStates = 15;

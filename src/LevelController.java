@@ -71,6 +71,13 @@ public class LevelController {
 	public static void playLevel(String subLevelID) {
 		System.out.println("STARTING LEVEL "+subLevelID);
 		canvas.removeAll();
+
+		//FOR TESTING
+		//try {Thread.sleep(2000);} catch (InterruptedException e) {e.printStackTrace();}
+		//FOR TESTING
+
+
+
 		if (currLevel!=null) endCurrentLevel();
 		xCounter.initialize();//need to re initialize xCounter.v to 0 at the beginning of each level
 		BillBlasterController.startOfLevel();
@@ -83,9 +90,9 @@ public class LevelController {
 		else if (subLevelID.equals("4")) playLevel4();
 		else if (subLevelID.equals("5")) playLevel5();
 		else {System.out.println("NO SUBLEVEL WITH ID "+subLevelID);return;}
-		//by now currLevel = new Level and need to start moving all the moving objects
+		//by now currLevel = new Level and need to add characters to level and start moving all the moving objects
+		addCharactersAtStartOfLevel();
 		startMovingObjects();
-
 	}
 
 	private static void startMovingObjects() {
@@ -132,17 +139,16 @@ public class LevelController {
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 3, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 1);
-	//	DynamicFactory.addFloatingCoinsRectangle(xCounter.v, canvas.getHeight()/4, 10, 4, dynamicLevelParts, floatingCoinsBlocks);
+		//	DynamicFactory.addFloatingCoinsRectangle(xCounter.v, canvas.getHeight()/4, 10, 4, dynamicLevelParts, floatingCoinsBlocks);
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3.0*space, canvas.getHeight()/2-space, 3, dynamicLevelParts, floatingCoinsBlocks);
-		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "1", staticLevelParts, dynamicLevelParts);
+		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
 		StaticFactory.spawnMysteryBox(xCounter.v-3.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
 		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.FireFlower);
-		
+
 		Level level0 = new Level("0", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level0;//set currLevel
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 	private static void playLevel1() {
@@ -181,8 +187,6 @@ public class LevelController {
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "4", staticLevelParts, dynamicLevelParts);
 		Level level1 = new Level("1", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level1;//set currLevel
-		//mario.fall(5);
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 
@@ -199,8 +203,6 @@ public class LevelController {
 		StaticFactory.spawnGrassMountain(xCounter, 8, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		Level level1a = new Level("1a", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level1a;//set currLevel
-		//	mario.fall(5);
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 	private static void playLevel1b() {
@@ -219,8 +221,6 @@ public class LevelController {
 		System.out.println(staticLevelParts.size());
 		Level level1a = new Level("1b", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level1a;//set currLevel
-		//mario.fall(5);
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 	private static void playLevel2() {
@@ -255,8 +255,6 @@ public class LevelController {
 		spawnWhiteSpace(xCounter, 1);
 		Level level2 = new Level("2", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level2;//set currLevel
-		//mario.fall(5);
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 
@@ -273,7 +271,6 @@ public class LevelController {
 		StaticFactory.spawnGrassMountain(xCounter, 5, 5, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		Level level3 = new Level("3", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level3;//set currLevel
-		addCharactersAtStartOfLevel(new double[] {0.0, canvas.getWidth()-MovingObject.characters[1].getWidth()});
 	}
 
 	private static void playLevel4() {
@@ -288,7 +285,6 @@ public class LevelController {
 		StaticFactory.spawnGrassMountain(xCounter, 5, 3, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		Level level4 = new Level("4", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level4;//set currLevel
-		addCharactersAtStartOfLevel(new double[] {0.0, 2*MovingObject.characters[1].getWidth()});
 	}
 
 	private static void playLevel5() {
@@ -320,34 +316,27 @@ public class LevelController {
 
 		Level level5 = new Level("5", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level5;//set currLevel
-
-
-		addCharactersAtStartOfLevel(new double[] {3*MovingObject.characters[0].getWidth(), 5*MovingObject.characters[1].getWidth()});
 	}
 
 
-	private static void addCharactersAtStartOfLevel(double[] xPositions) {
-		//xPositions.length expected to be equal to MovingObject.characters.length
-		//for now this function drops all characters at top left of level
-		//and makes them fall at the same time
+	private static void addCharactersAtStartOfLevel() {
+		//GET THE HEIGHT OF THE 0TH ELEMENT OF STATICLEVELPARTS AND START THE CHARACTERS
+		//ON THE GROUND OF THE 0TH PLATFORM, this is also how it is done on the NES
+		double startY = canvas.getHeight();
+		for (Platform p : currLevel.staticLevelParts.get(0).platforms) {
+			if (p.getY()<startY) startY = p.getY();
+		}
+		//now startY is the highest Y coordinate of the 0th element of staticlevelparts
+		//so marios start on top of first staticlevelparts
+
+
 		for (int i=0; i<MovingObject.characters.length; i++) {
 			Mario m = MovingObject.characters[i];
-			canvas.add(m, xPositions[i], 40);
+			m.setToAlive(false);
+			m.lookInCorrectDirection(true);
+			canvas.add(m, 2*i*m.getWidth(), startY-m.getHeight());
 			//String messageToClient = "{ \"type\": \"addImageToScreen\", \"imageName\": \""+m.getMyImageName()+"\", \"id\":\""+m.getImageID()+"\", \"x\":\""+m.getX()+"\", \"y\":\""+m.getY()+"\" }";
 			ServerToClientMessenger.sendAddCharacterImageToScreenMessage(m);
-			GameThread t1 = new GameThread(new MyRunnable() {
-				@Override
-				public void doWork() throws InterruptedException{
-					m.setToAlive(false);//this is in case another mario died after the first mario who died and is still going up/down in dead sprite 
-					if (m.bigOrSmall) m.setToJumpingDown(true);
-					m.fall(5);
-					if (!m.isCrouching ) {
-						m.lookingRightOrLeft = true;
-						m.lookInCorrectDirection(true);//sets back to standing sprite looking in correct direction
-					}
-					m.isJumping = false;
-				}
-			},"adding characters at start of level");
 		}
 	}
 }

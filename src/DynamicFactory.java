@@ -112,7 +112,7 @@ public class DynamicFactory {
 
 	//!!!!!
 	//functions below are called at level creation time (in LevelController.playLevelX func) 
-	//and add levelparts to temp hashmap
+	//add levelparts to temp hashmap
 	//!!!!!
 
 	public static void addGoomba(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {

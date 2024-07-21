@@ -29,6 +29,8 @@ public class SoundController {
 	public static void setRunningOnTomcatServer(boolean b) {runningOnTomcatServer=b;}
 
 	private static void playSound(File f) {
+        //should stop playing current sound when a new sound needs to be played
+        //this needs to be done for both destkop and online game
 		if (runningOnTomcatServer) {
 			//send message to client to play sound on client side
 			ServerToClientMessenger.sendPlaySoundMessage(f.getName());

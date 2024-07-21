@@ -1,7 +1,7 @@
 public class MysteryBoxCoin extends Coin {
-	//coin spawned by mystery box (TODO should also be spwaned from brick)
+	//coin spawned by mystery box (TODO should also be spwaned from brick or anything really (like a flow of coins or something))
 	public static double dy = -0.2*MovingObject.getBaseLineSpeed();
-	@Override 
+	@Override
 	public void collectedByMario(Mario mario){
 		if (collected()) return;
 		//CharacterStatsController.collectCoin(mario); and SoundController.playCoinSound();

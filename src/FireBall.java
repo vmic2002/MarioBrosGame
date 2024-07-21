@@ -30,7 +30,7 @@ public class FireBall extends MovingObject implements Dynamic {
 	public FireBall(boolean rightOrLeft) {
 		super((rightOrLeft?rightFireBall1:leftFireBall1));
 		this.rightOrLeft = rightOrLeft;
-		dx = rightOrLeft?MovingObject.getBaseLineSpeed()*1.1:-MovingObject.getBaseLineSpeed()*1.1;
+		dx = rightOrLeft?MovingObject.getBaseLineSpeed()*0.8:-MovingObject.getBaseLineSpeed()*0.8;
 		dy = Math.abs(dx);
 		fireBallStage = FIREBALL_STAGE.STAGE_1;
 		fallingOrHopping = true;

@@ -13,6 +13,9 @@ This game is coded in Java using the Eclipse IDE and [Stanford's acm library](ht
 
 This is an ongoing project from Feb 5th, 2023 - Now
 
+The desktop game is written entirely in Java and uses an open source graphics library from ACM. In order to play the game online, some HTML, CSS, and JS was required. Essentially, the Java game is played in headless mode on an Apache Tomcat Java container and communicates with the client(s) using websockets for real time data transfer. This means that the game is being played twice simultaneously, once at the client side and once at the server side. The client side handles the graphics and calls the server to deal with the game logic.
+
+
 ## How to play the game on your computer
 *might not work on windows*
 1. Open up your Terminal App.
