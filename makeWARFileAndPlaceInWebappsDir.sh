@@ -1,7 +1,23 @@
 #!/bin/bash
 #to automate process of making .war file and putting it in webapps directory (script works!)
 #this script removes all .java and .class files from MarioGameServerSide/src and MarioGameServerSide/WEB-INF/classes and replaces them with .java and .class files from src and bin. Then a .war file is created in the MarioGameServerSide directory which replaces the previous .war file. The new .war file replaces the one in the webapps directory of apache tomcat (if one exists)
+#MarioGameServerSide is used to create the .war file
 WEBAPPS_DIR="/Users/victormicha/Desktop/apache-tomcat-10.1.11/webapps"
+
+
+echo "Making sure that MarioGameServerSide dir has the same number of images and sound effects as MarioBrosGame dir..."
+x1=$(ls SoundEffects | wc -l)
+x2=$(ls MarioGameServerSide/SoundEffects | wc -l)
+
+y1=$(ls Images | wc -l)
+y2=$(ls MarioGameServerSide/Images | wc -l)
+
+if [ "$x1" != "$x2" ] || [ "$y1" != "$y2" ]; then
+    echo "Please make sure that MarioGameServerSide dir has the same number of images and sound effects as MarioBrosGame dir!"
+    exit
+fi
+echo "All good!"
+
 rm MarioGameServerSide/src/*
 rm MarioGameServerSide/WEB-INF/classes/*
 cp src/* MarioGameServerSide/src

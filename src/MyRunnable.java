@@ -43,3 +43,25 @@ public class MyRunnable implements Runnable {
  
 		
  */
+
+
+/*
+ * Many methods that throw InterruptedException, such as sleep, are designed to cancel their current operation and return immediately when an interrupt is received.
+
+What if a thread goes a long time without invoking a method that throws InterruptedException? Then it must periodically invoke Thread.interrupted, which returns true if an interrupt has been received. For example:
+
+for (int i = 0; i < inputs.length; i++) {
+    heavyCrunch(inputs[i]);
+    if (Thread.interrupted()) {
+        // We've been interrupted: no more crunching.
+        return;
+    }
+}
+In this simple example, the code simply tests for the interrupt and exits the thread if one has been received. In more complex applications, it might make more sense to throw an InterruptedException:
+
+if (Thread.interrupted()) {
+    throw new InterruptedException();
+}
+ * 
+ */
+

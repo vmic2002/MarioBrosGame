@@ -14,8 +14,10 @@ public class GameThread extends Thread {
 	}
 
 	public static void interruptAllMarioThreads() {
-		for (GameThread t:gameThreads)
+		for (GameThread t:gameThreads) {
 			t.interrupt();
+			
+		}
 		gameThreads.clear();
 	}
 }

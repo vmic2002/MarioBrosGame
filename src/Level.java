@@ -98,7 +98,7 @@ public class Level {
 			staticLevelParts.get(i).move(dx, dy);
 		}
 		for (DynamicLevelPart d : dynamicLevelParts.values()){
-			//TODO fix bug where sometimes dynamic level parts is being looped through to move level as a new dynamic level part is being added
+		
 			d.move(dx, dy);
 		}
 		for (Mario m : MovingObject.characters) {

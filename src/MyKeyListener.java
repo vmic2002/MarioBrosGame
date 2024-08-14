@@ -30,11 +30,11 @@ public class MyKeyListener implements KeyListener {
 			System.out.println("-------------------------------");
 			//System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
 			//GameThread.interruptAllMarioThreads();
-			
+
 			//GameStatsController.setToLongPause();
-		//	System.out.print("Time dilating: ");
+			//	System.out.print("Time dilating: ");
 			//for (Mario m:characters) System.out.println(m.isTimeDilating+ " ");
-		//	System.out.println();
+			//	System.out.println();
 			/*for (int i=0; i<LevelController.currLevel.staticLevelParts.size(); i++) {
 				StaticLevelPart l = LevelController.currLevel.staticLevelParts.get(i);
 				System.out.println("STATIC LEVEL PARTS #"+i);
@@ -46,8 +46,8 @@ public class MyKeyListener implements KeyListener {
 			//System.out.println("y baseline: "+LevelController.currLevel.yBaseLine);
 			//System.out.println("x baseline: "+LevelController.currLevel.xBaseLine);
 			//System.out.println("max num threads moving level"+MoveLevelRunnable.maxNumMoveLevelRunnable);
-			
-			
+
+
 			//System.out.println("\n\nnumber of floatingcoins blocks: "+LevelController.currLevel.floatingCoinsBlocks.size());
 			//for (int i=0; i<LevelController.currLevel.floatingCoinsBlocks.size(); i++) {
 			//	System.out.println("floating coins block "+i+" has "+LevelController.currLevel.floatingCoinsBlocks.get(i).coins.size()+ " coins");

@@ -26,11 +26,11 @@ $CATALINA_HOME/bin/shutdown.sh
 	.class and .java files in bin and src directories and place .war file in webapps dir automatically!
 
 	!!!!Sending messages from client side works! Server responds back!!!!!
-	
+
 	TODO NEED TO DO ONLINE MULTIPLAYER each new window that connects to the server has its own session ID, for online multiplayer (one plays mario one plays luigi)
-	
-	
-	
+
+
+
  * 
  *  
  */
@@ -59,7 +59,7 @@ public class MyWebSocketServer {
 
 	//System.out.println can be seen from apache-tomcat-10.1.11/logs/catalina.out
 	//when application is running
-	
+
 
 	@OnOpen
 	public void onOpen(Session session, @PathParam("username") String username) {
@@ -68,7 +68,7 @@ public class MyWebSocketServer {
 		// Add the new session to the activeSessions set
 		activeSessions.add(session);
 		//System.out.println("CALLING MAIN FUNCTION");
-		
+
 		sendMessage("SESSION ID: "+session.getId(), session);
 		sendMessage("TOTAL OF "+activeSessions.size()+" sessions:", session);
 		String message = "IDs: ";
@@ -76,13 +76,13 @@ public class MyWebSocketServer {
 			message+=s.getId()+", ";
 		}
 		sendMessage(message, session);
-		
+
 		MarioBrosGame.main(new String[] {session.getId()});
 
-		
-		
-		
-	
+
+
+
+
 	}
 
 	@OnMessage
@@ -93,18 +93,19 @@ public class MyWebSocketServer {
 		//String response = "Server response: " + message;
 
 		processMessage(message, session);
-		
+
 		// Send the response back to the client
 		//sendMessage(response, session);
 	}
 
 	@OnClose
 	public void onClose(Session session) {
+		//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
 		System.out.println("<<<<<<<\t\tWebSocket connection closed: " + session.getId());
 		// Remove the closed session from the activeSessions set
 		activeSessions.remove(session);
 		System.out.println("INTERRUPTING ALL GAME THREADS");
-		//TODO MAYHBE TRY INTERRUPTING ALL THREADS NOT ONLY GAMETHREADS
+
 		GameThread.interruptAllMarioThreads();
 		//see MyRunnable.java and GameThread.java
 		//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
@@ -115,7 +116,7 @@ public class MyWebSocketServer {
 		 * application [MarioGameServerSide] appears to have started a thread named [mystery box changing states OR AWT-EventQueue-0 (FOR EXAMPLE)] 
 		 * but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread
 		 */
-		
+
 	}
 
 	@OnError
@@ -123,7 +124,7 @@ public class MyWebSocketServer {
 		System.out.println("WebSocket error occurred: " + session.getId());
 		error.printStackTrace();
 	}
-	
+
 	private void processMessage(String message, Session session) {
 		//expected JSON of form: { keyEvent: "keyEvent", key: "key", character: "character" }
 		//JSON format will probably change since no character field is needed if it can be determined by sessionID for multiplayer online play
@@ -131,7 +132,7 @@ public class MyWebSocketServer {
 		//key is either ArrowUp, ArrowDown, ArrowLeft, ArrowRight, q
 		//character is either Mario, Luigi
 		JSONObject json = (JSONObject) JSONValue.parse(message);
-		
+
 		//sendMessage("MESSAGE PROCESSED: "+json.get("keyEvent")+" " +json.get("key") + " "+ json.get("character"), session);
 		boolean keyPressedOrReleased = ((String) json.get("keyEvent")).equals("keyPressed");
 		VirtualClientKeyboard.keyPressed(keyPressedOrReleased, (String) json.get("key"), (String) json.get("character"));
@@ -142,10 +143,50 @@ public class MyWebSocketServer {
 
 	public synchronized static void sendMessage(String message, Session session) {
 		try {
+			//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
 			if (session.isOpen())
 				session.getBasicRemote().sendText(message);
-			else
-				System.exit(1);
+			else {
+				System.out.println("\t\t---------Trying to send message when session is closed!");
+				/*
+				 * 
+				 *
+
+		java.io.IOException: The transformer has been closed and may no longer be used
+	at org.apache.tomcat.websocket.PerMessageDeflate.sendMessagePart(PerMessageDeflate.java:354)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:283)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:250)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendString(WsRemoteEndpointImplBase.java:192)
+	at org.apache.tomcat.websocket.WsRemoteEndpointBasic.sendText(WsRemoteEndpointBasic.java:36)
+	at MyWebSocketServer.sendMessage(MyWebSocketServer.java:148)
+
+	  OR 
+
+	  java.io.IOException: The current thread was interrupted while waiting for a blocking send to complete
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:303)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:250)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendString(WsRemoteEndpointImplBase.java:192)
+	at org.apache.tomcat.websocket.WsRemoteEndpointBasic.sendText(WsRemoteEndpointBasic.java:36)
+	at MyWebSocketServer.sendMessage(MyWebSocketServer.java:148)
+
+	OR 
+	
+		java.lang.IllegalStateException: Message will not be sent because the WebSocket session has been closed
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.writeMessagePart(WsRemoteEndpointImplBase.java:450)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:308)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:250)
+	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendString(WsRemoteEndpointImplBase.java:192)
+	at org.apache.tomcat.websocket.WsRemoteEndpointBasic.sendText(WsRemoteEndpointBasic.java:36)
+	at MyWebSocketServer.sendMessage(MyWebSocketServer.java:148)
+				 */
+
+
+				//System.exit(1);
+				//INSTEAD OF EXITING when trying to send message on closed connection, JUST DONT SEND MESSAGE (can't anyways)! and keep playing
+				//message doesn't have to be sent anyways cause client reloaded page so new session will be started
+				
+				//Since a new WebSocket session will be established with the page reload, any unsent messages are no longer relevant.
+			}
 			//session.getAsyncRemote().sendText(message);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -22,13 +22,13 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	public static double getBaseLineSpeed() {return baseLineSpeed;}
 	public static void setBaseLineSpeed(double d) {baseLineSpeed = d;}
 	
-	public final void startMove() {
+	public final void startMove(String threadName) {
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException {
 				move();
 			}
-		}, "moving object move function");
+		}, threadName+" start move");//"moving object move function");
 	}
 	
 	public abstract void move() throws InterruptedException;//should not start new thread to run, call startMove instead

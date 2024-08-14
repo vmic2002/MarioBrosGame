@@ -116,9 +116,9 @@ public class LevelController {
 				for (DynamicLevelPart l : currLevel.dynamicLevelParts.values()) {
 					ThreadSafeGImage image = (ThreadSafeGImage) l.part;
 					if (image instanceof BadGuy)
-						((BadGuy) image).startMove();
+						((BadGuy) image).startMove("bad guy");
 					else if (image instanceof PowerUp)
-						((PowerUp) image).startMove();
+						((PowerUp) image).startMove("power up");
 				}
 				for (FloatingCoinsBlock f : currLevel.floatingCoinsBlocks) {
 					f.startSpinningBlock();//START SPINNING ALL COINS AT BEGINNING OF LEVEL SO THEY ALL SPIN AT SAME TIME
@@ -145,8 +145,11 @@ public class LevelController {
 		StaticFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
 		StaticFactory.spawnMysteryBox(xCounter.v-3.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
-		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.FireFlower);
+		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Mushroom);//FireFlower);
 
+		
+		
+		
 		Level level0 = new Level("0", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);
 		currLevel = level0;//set currLevel
 	}
@@ -213,7 +216,7 @@ public class LevelController {
 		int x = 2;
 		for (int i=0; i<x; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "2", staticLevelParts, dynamicLevelParts);
-			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, staticLevelParts, MysteryBox.SPAWN.Tanooki);
+			StaticFactory.spawnMysteryBox(xCounter.v+2.0*space, 7, staticLevelParts, MysteryBox.SPAWN.Mushroom);//Tanooki);
 			StaticFactory.spawnGrassMountain(xCounter, 10, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
 			StaticFactory.spawnUpPipe(xCounter, 7, FLOWER_TYPE.NO_FLOWER, 0, "3", staticLevelParts, dynamicLevelParts);
 			if (i!=x-1) spawnWhiteSpace(xCounter, 2);

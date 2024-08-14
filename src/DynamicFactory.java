@@ -74,7 +74,7 @@ public class DynamicFactory {
 		LevelController.currLevel.addLevelPartDynamically(coin);
 		CharacterStatsController.collectCoin(m);
 		SoundController.playCoinSound();
-		coin.startMove();
+		coin.startMove("mysterybox coin");
 	}
 	public static void addFireBall(double x, double y, boolean rightOrLeft) {
 		//called when fire mario launches a fireball
@@ -82,7 +82,7 @@ public class DynamicFactory {
 		canvas.add(fireBall, x, y);
 		ServerToClientMessenger.sendAddLevelImageToScreenMessage(fireBall);
 		LevelController.currLevel.addLevelPartDynamically(fireBall);
-		fireBall.startMove();
+		fireBall.startMove("mario fireball");
 	}
 
 	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
@@ -106,7 +106,7 @@ public class DynamicFactory {
 		ServerToClientMessenger.sendAddLevelImageToScreenMessage(bulletBill);
 		bulletBill.sendToBack();//spawns behind BillBlaster
 		LevelController.currLevel.addLevelPartDynamically(bulletBill);
-		bulletBill.startMove();
+		bulletBill.startMove("bullet bill");
 	}
 
 

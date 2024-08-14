@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import acm.graphics.GObject;
 
 public class FireBall extends MovingObject implements Dynamic {
-	//TODO fix bug where fireball moves weirdly when the level is moving (sometimes it moves too much when mario jumps/walks close to edges)
-	//TODO bug could be due to fireball being added/removed from levelParts while level is being moved (levelParts being looped through)
 	private static MyImage leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
 	private static final int maxDistance = canvas.getWidth()*3;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between

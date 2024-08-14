@@ -318,7 +318,7 @@ public class Mario extends MovingObject {
 	}
 
 	public void sleep(double t) throws InterruptedException {
-		//TODO IN MARIO SLEEP FUNCTION MAKE FAST MODE
+		//TODO IN MARIO SLEEP FUNCTION MAKE FAST MODE (flash powerup)
 		//if fast mode
 		//ThreadSleep.sleepMarioFastMode(t);
 		//else
@@ -778,6 +778,8 @@ public class Mario extends MovingObject {
 
 				while (jumpAgain) {
 					jumpAgain = false;
+					
+					
 					SoundController.playMarioJumpSound();
 
 					wayUpOrWayDown = true;
@@ -816,7 +818,7 @@ public class Mario extends MovingObject {
 
 					if (goingIntoPipe) {
 						isJumping = false;
-						return;//in case mario jumps into a pipe he shouldnt fall back down
+						return;//in case mario jumps into an up pipe he shouldnt fall back down
 					}
 					wayUpOrWayDown = false;
 					if (bigOrSmall && !isCrouching) {
@@ -1894,7 +1896,7 @@ public class Mario extends MovingObject {
 	public void hop() {
 		//TODO bug where mario walks off platform and falls on something to hop off but doenst actually jump
 		//called when mario jumps on a badguy or other Mario or bouncy platform and has to jump up
-		//TODO if mario needs to hopp off a trampoline-like platform this function could be called 
+		//when mario needs to hopp off a trampoline-like platform (BouncyPlatform) this function is called 
 		hitPlatformVertical = true;//mario should treat red turtle (or anything it hops off) like platform at first, this will make him stop falling
 		jumpAgain = true;//this will make mario jump again because of while loop in jump() function 
 	}

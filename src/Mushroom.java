@@ -7,7 +7,7 @@ public class Mushroom extends PowerUp {
 	//so we don't have to keep on providing them each time we want a new leaf, mushroom etc
 	private static final double DY = MovingObject.getBaseLineSpeed();
 	private static final double DX = MovingObject.getBaseLineSpeed()*0.5;
-	private static final int pauseTime = 1;
+	private static final int pauseTime = 2;//1;
 	private double dx;
 	private double dy;
 	private boolean rightOrLeft;
@@ -18,14 +18,14 @@ public class Mushroom extends PowerUp {
 		super(mushroomImage);
 		rightOrLeft = Math.random()>0.5;
 		dx = rightOrLeft?DX:-DX;
-		dy = DY;
+		dy = 0;//DY;
 	}
 
 	@Override
 	public void move() throws InterruptedException {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
 
-		ThreadSleep.sleep(25);
+		ThreadSleep.sleep(50);
 		//to wait for mysterybox to stop moving up/down
 
 
@@ -36,7 +36,7 @@ public class Mushroom extends PowerUp {
 			double x = rightOrLeft?this.getX()-DX:this.getX()+this.getWidth()+DX;
 			//depending on if the mushroom goes right or left to glide of the mysterybox,
 			//there is only one point to check to know if the mushroom is still on the mystery box
-			double y = this.getY()+this.getHeight()+dy;
+			double y = this.getY()+this.getHeight()+DY;
 			GObject o = canvas.getElementAt(x, y);
 			if (o!=null && o instanceof MysteryBox) {
 				//mushroom is still on top of mysterybox
@@ -68,11 +68,11 @@ public class Mushroom extends PowerUp {
 				//alive = false;
 				//break;
 			}
-			double newX = rightOrLeft?getX()+getWidth()+10:getX()-10;
+			double newX = rightOrLeft?getX()+getWidth()+DX:getX()-DX;
 			Point[] pointsSide = new Point[] {
-					new Point(newX, getY()+10),
+					new Point(newX, getY()+DY),
 					new Point(newX, getY()+getHeight()/2),
-					new Point(newX, getY()+getHeight()-10)
+					new Point(newX, getY()+getHeight()-DY)
 			};
 			Point[] pointsBelow = new Point[] {
 					new Point(getX(), getY()+getHeight()+DY),

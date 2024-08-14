@@ -43,10 +43,7 @@ public class ServerToClientMessenger {
 
 	public static void sendPlaySoundMessage(String soundName) {
 		String messageToClient = "{\"type\": \"playSound\", \"soundName\": \""+soundName+"\" }";
-		//TODO MAUYBE TRY PLAYING GAME ON SERVER WIHTHOUT SENDING 
-		//SOUNDS MAYBE THIS SLOWS DOWN CLIENT TOO MUCH AND CAUSES LAG
-		
-		//TODO UNCOMMENTsendMessage(messageToClient);
+		sendMessage(messageToClient);
 	}
 
 	public static void sendReplaceImageMessage(long oldImageID, String newImageName) {
