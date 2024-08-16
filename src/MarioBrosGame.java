@@ -136,7 +136,7 @@ public class MarioBrosGame {
 
 		String bigMarioLeftFireImagePath = prefix+imageDirectory+"/bigMarioLeftFireImage.png";
 		String bigMarioRightFireImagePath = prefix+imageDirectory+"/bigMarioRightFireImage.png";
-		String bigMarioLeftWakingFireImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingFireImage.png";
+		String bigMarioLeftWalkingFireImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingFireImage.png";
 		String bigMarioRightWalkingFireImagePath = prefix+imageDirectory+"/bigMarioRightWalkingFireImage.png";
 		String bigMarioLeftJumpingFireImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingFireImage.png";
 		String bigMarioRightJumpingFireImagePath = prefix+imageDirectory+"/bigMarioRightJumpingFireImage.png";
@@ -157,7 +157,7 @@ public class MarioBrosGame {
 
 		String bigMarioLeftCatImagePath = prefix+imageDirectory+"/bigMarioLeftCatImage.png";
 		String bigMarioRightCatImagePath = prefix+imageDirectory+"/bigMarioRightCatImage.png";
-		String bigMarioLeftWakingCatImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingCatImage.png";
+		String bigMarioLeftWalkingCatImagePath = prefix+imageDirectory+"/bigMarioLeftWalkingCatImage.png";
 		String bigMarioRightWalkingCatImagePath = prefix+imageDirectory+"/bigMarioRightWalkingCatImage.png";
 		String bigMarioLeftJumpingCatImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingCatImage.png";
 		String bigMarioRightJumpingCatImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatImage.png";
@@ -166,7 +166,7 @@ public class MarioBrosGame {
 		String bigMarioLeftCrouchingCatImagePath = prefix+imageDirectory+"/bigMarioLeftCrouchingCatImage.png";
 		String bigMarioRightCrouchingCatImagePath = prefix+imageDirectory+"/bigMarioRightCrouchingCatImage.png";
 		String bigMarioLeftJumpingCatTail1ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingCatTail1Image.png";
-		String bigMarioRightJumpingCatTal1ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatTail1Image.png";
+		String bigMarioRightJumpingCatTail1ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatTail1Image.png";
 		String bigMarioLeftJumpingCatTail2ImagePath = prefix+imageDirectory+"/bigMarioLeftJumpingCatTail2Image.png";
 		String bigMarioRightJumpingCatTail2ImagePath = prefix+imageDirectory+"/bigMarioRightJumpingCatTail2Image.png";
 		String bigMarioTail1Path = prefix+imageDirectory+"/bigMarioTail1.png";
@@ -425,7 +425,7 @@ public class MarioBrosGame {
 
 		MyImage bigMarioLeftCatImage = null;
 		MyImage bigMarioRightCatImage = null;
-		MyImage bigMarioLeftWakingCatImage = null;
+		MyImage bigMarioLeftWalkingCatImage = null;
 		MyImage bigMarioRightWalkingCatImage = null;
 		MyImage bigMarioLeftJumpingCatImage = null;
 		MyImage bigMarioRightJumpingCatImage = null;
@@ -434,9 +434,9 @@ public class MarioBrosGame {
 		MyImage bigMarioLeftCrouchingCatImage = null;
 		MyImage bigMarioRightCrouchingCatImage = null;
 		MyImage bigMarioLeftJumpingCatTail1Image = null;
-		MyImage bigMarioRightJumpingCatTal1Image = null;
+		MyImage bigMarioRightJumpingCatTail1Image = null;
 		MyImage bigMarioLeftJumpingCatTail2Image = null;
-		MyImage bigMarioRightJumpingCatTal2Image = null;
+		MyImage bigMarioRightJumpingCatTail2Image = null;
 		MyImage bigMarioTail1 = null;
 		MyImage bigMarioLeftTail2 = null;
 		MyImage bigMarioRightTail2 = null;
@@ -677,7 +677,7 @@ public class MarioBrosGame {
 			bigMarioRightCrouchingImage = new MyImage(ImageIO.read(new File(bigMarioRightCrouchingImagePath)), "bigMarioRightCrouchingImage");
 			bigMarioLeftFireImage = new MyImage(ImageIO.read(new File(bigMarioLeftFireImagePath)), "bigMarioLeftFireImage");
 			bigMarioRightFireImage = new MyImage(ImageIO.read(new File(bigMarioRightFireImagePath)), "bigMarioRightFireImage");
-			bigMarioLeftWalkingFireImage = new MyImage(ImageIO.read(new File(bigMarioLeftWakingFireImagePath)), "bigMarioLeftWalkingFireImage");
+			bigMarioLeftWalkingFireImage = new MyImage(ImageIO.read(new File(bigMarioLeftWalkingFireImagePath)), "bigMarioLeftWalkingFireImage");
 			bigMarioRightWalkingFireImage = new MyImage(ImageIO.read(new File(bigMarioRightWalkingFireImagePath)), "bigMarioRightWalkingFireImage");
 			bigMarioLeftJumpingFireImage = new MyImage(ImageIO.read(new File(bigMarioLeftJumpingFireImagePath)), "bigMarioLeftJumpingFireImage");
 			bigMarioRightJumpingFireImage = new MyImage(ImageIO.read(new File(bigMarioRightJumpingFireImagePath)), "bigMarioRightJumpingFireImage");
@@ -698,7 +698,7 @@ public class MarioBrosGame {
 
 			bigMarioLeftCatImage = new MyImage(ImageIO.read(new File(bigMarioLeftCatImagePath)), "bigMarioLeftCatImage");
 			bigMarioRightCatImage = new MyImage(ImageIO.read(new File(bigMarioRightCatImagePath)), "bigMarioRightCatImage");
-			bigMarioLeftWakingCatImage = new MyImage(ImageIO.read(new File(bigMarioLeftWakingCatImagePath)), "bigMarioLeftWakingCatImage");
+			bigMarioLeftWalkingCatImage = new MyImage(ImageIO.read(new File(bigMarioLeftWalkingCatImagePath)), "bigMarioLeftWalkingCatImage");
 			bigMarioRightWalkingCatImage = new MyImage(ImageIO.read(new File(bigMarioRightWalkingCatImagePath)), "bigMarioRightWalkingCatImage");
 			bigMarioLeftJumpingCatImage = new MyImage(ImageIO.read(new File(bigMarioLeftJumpingCatImagePath)), "bigMarioLeftJumpingCatImage");
 			bigMarioRightJumpingCatImage = new MyImage(ImageIO.read(new File(bigMarioRightJumpingCatImagePath)), "bigMarioRightJumpingCatImage");
@@ -707,9 +707,9 @@ public class MarioBrosGame {
 			bigMarioLeftCrouchingCatImage = new MyImage(ImageIO.read(new File(bigMarioLeftCrouchingCatImagePath)), "bigMarioLeftCrouchingCatImage");
 			bigMarioRightCrouchingCatImage = new MyImage(ImageIO.read(new File(bigMarioRightCrouchingCatImagePath)), "bigMarioRightCrouchingCatImage");
 			bigMarioLeftJumpingCatTail1Image = new MyImage(ImageIO.read(new File(bigMarioLeftJumpingCatTail1ImagePath)), "bigMarioLeftJumpingCatTail1Image");
-			bigMarioRightJumpingCatTal1Image = new MyImage(ImageIO.read(new File(bigMarioRightJumpingCatTal1ImagePath)), "bigMarioRightJumpingCatTal1Image");
+			bigMarioRightJumpingCatTail1Image = new MyImage(ImageIO.read(new File(bigMarioRightJumpingCatTail1ImagePath)), "bigMarioRightJumpingCatTail1Image");
 			bigMarioLeftJumpingCatTail2Image = new MyImage(ImageIO.read(new File(bigMarioLeftJumpingCatTail2ImagePath)), "bigMarioLeftJumpingCatTail2Image");
-			bigMarioRightJumpingCatTal2Image = new MyImage(ImageIO.read(new File(bigMarioRightJumpingCatTail2ImagePath)), "bigMarioRightJumpingCatTal2Image");
+			bigMarioRightJumpingCatTail2Image = new MyImage(ImageIO.read(new File(bigMarioRightJumpingCatTail2ImagePath)), "bigMarioRightJumpingCatTail2Image");
 			bigMarioTail1 = new MyImage(ImageIO.read(new File(bigMarioTail1Path)), "bigMarioTail1");
 			bigMarioLeftTail2 = new MyImage(ImageIO.read(new File(bigMarioLeftTail2Path)), "bigMarioLeftTail2");
 			bigMarioRightTail2 = new MyImage(ImageIO.read(new File(bigMarioRightTail2Path)), "bigMarioRightTail2");
@@ -942,11 +942,11 @@ public class MarioBrosGame {
 				bigMarioLeftJumpingFireShooting3Image, bigMarioRightJumpingFireShooting1Image,
 				bigMarioRightJumpingFireShooting2Image, bigMarioRightJumpingFireShooting3Image,
 
-				bigMarioLeftCatImage, bigMarioRightCatImage, bigMarioLeftWakingCatImage, bigMarioRightWalkingCatImage,
+				bigMarioLeftCatImage, bigMarioRightCatImage, bigMarioLeftWalkingCatImage, bigMarioRightWalkingCatImage,
 				bigMarioLeftJumpingCatImage, bigMarioRightJumpingCatImage, bigMarioRightJumpingDownCatImage,
 				bigMarioLeftJumpingDownCatImage, bigMarioLeftCrouchingCatImage, bigMarioRightCrouchingCatImage,
-				bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTal1Image, bigMarioLeftJumpingCatTail2Image,
-				bigMarioRightJumpingCatTal2Image,
+				bigMarioLeftJumpingCatTail1Image, bigMarioRightJumpingCatTail1Image, bigMarioLeftJumpingCatTail2Image,
+				bigMarioRightJumpingCatTail2Image,
 				bigMarioTail1, bigMarioLeftTail2,
 				bigMarioRightTail2, bigMarioTail3,
 
@@ -1119,9 +1119,7 @@ public class MarioBrosGame {
 
 
 
-		LevelController.playLevel("0");
-		
-		
+		LevelController.playLevel("0");		
 
 	}
 }

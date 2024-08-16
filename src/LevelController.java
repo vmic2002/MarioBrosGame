@@ -143,9 +143,9 @@ public class LevelController {
 		//DynamicFactory.addFloatingCoinsTriangle(xCounter.v+3.0*space, canvas.getHeight()/2-space, 3, dynamicLevelParts, floatingCoinsBlocks);
 		StaticFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
-		StaticFactory.spawnMysteryBox(xCounter.v-3.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
-		StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Mushroom);//FireFlower);
+		StaticFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts, MysteryBox.SPAWN.FireFlower);
+		///StaticFactory.spawnMysteryBox(xCounter.v-3.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
+		///StaticFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Mushroom);//FireFlower);
 
 		
 		
@@ -232,28 +232,29 @@ public class LevelController {
 		ArrayList<FloatingCoinsBlock> floatingCoinsBlocks = new ArrayList<FloatingCoinsBlock>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		StaticFactory.spawnGrassMountain(xCounter, 4, 2, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
-		StaticFactory.spawnMysteryBox(2.0*space, 5, staticLevelParts, MysteryBox.SPAWN.RANDOM);
+		StaticFactory.spawnMysteryBox(2.0*space, 5, staticLevelParts, MysteryBox.SPAWN.Leaf);
 		spawnWhiteSpace(xCounter, 2);
 		double xCounterTemp = xCounter.v;
-		for (int i=0; i<3; i++) {
+		for (int i=0; i<2; i++) {
 			StaticFactory.spawnUpPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, 200*i, "", staticLevelParts, dynamicLevelParts);
 			spawnWhiteSpace(xCounter, 2);
 			StaticFactory.spawnGrassMountain(xCounter, 3, 2, BADGUY_TYPE.RED_TURTLE, staticLevelParts, dynamicLevelParts);
 			spawnWhiteSpace(xCounter, 2);
 		}
 		xCounter.v -= xCounter.v-xCounterTemp;
-		for (int i=0; i<5; i++) {
+		for (int i=0; i<2; i++) {
 			spawnWhiteSpace(xCounter, 3);
 			StaticFactory.spawnDownPipe(xCounter, 3, FLOWER_TYPE.SHOOTING, 200*i, "", staticLevelParts, dynamicLevelParts);
 		}
 		spawnWhiteSpace(xCounter, 2);
 		xCounterTemp = xCounter.v;
-		for (int i=0; i<4; i++) {
+		for (int i=0; i<2; i++) {
 			spawnWhiteSpace(xCounter, 2);
 			StaticFactory.spawnDownPipe(xCounter, 2, FLOWER_TYPE.SHOOTING, i%2==0?0:100, "", staticLevelParts, dynamicLevelParts);
 		}
 		xCounter.v -= xCounter.v-xCounterTemp;
-		StaticFactory.spawnGrassMountain(xCounter, 17, 2, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
+		spawnWhiteSpace(xCounter, 4);
+		StaticFactory.spawnGrassMountain(xCounter, 6, 2, BADGUY_TYPE.GOOMBA, staticLevelParts, dynamicLevelParts);
 		StaticFactory.spawnUpAndDownPipes(xCounter, 4, "1", FLOWER_TYPE.NO_FLOWER, 4, "2", FLOWER_TYPE.NO_FLOWER,  staticLevelParts, dynamicLevelParts);
 		spawnWhiteSpace(xCounter, 1);
 		Level level2 = new Level("2", staticLevelParts, dynamicLevelParts, xCounter.v, floatingCoinsBlocks);

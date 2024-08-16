@@ -100,6 +100,7 @@ public class Goomba extends BadGuy {
 			}
 
 			if (dy==0 && nothingOnSides(pointsSide) && Math.random()<0.05) {
+				//TODO MAKE GOOMBA SMARTER INSTEAD OF RANDOMLY CHECKING DIRECTIONS COULD GO TO NEAREST MARIO
 				dx = -dx;//goomba randomly changes directions if nothing prevents him from doing so (nothingOnSides makes sure he can change directions)
 			}
 

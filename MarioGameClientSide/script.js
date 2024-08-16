@@ -29,16 +29,16 @@ function addImageToScreen(imageName, id, x, y) {
     //console.log(imageElement.alt);
     imageElement.id = id;
     gameContainer.appendChild(imageElement);
-    imageElement.style.left = `0px`;
-    imageElement.style.top = `0px`;
-    //image.style.transform = `translate(${x}px, ${y}px)`;
-    setTransform(imageElement, x, y)
+    imageElement.style.left = `${x}px`;
+    imageElement.style.top = `${y}px`;
+    //image.style.transform = `translate(0px, 0px)`;
+    setTransform(imageElement, 0, 0);
     /* 
-    NOW: style.left and style.top always set to 0, so x, y coordinate of every image is simply the transform property. Transform is modified when moving image, and style.top and style.left is never changed from 0
-    
-    BEFORE:note about moving images: set .left and .top when adding the image to screen at first
-    then when modifying the position, use the transform property as it is faster    
-*/
+    note about moving images: 
+    1. set .left and .top to be coordinate with transformation 0,0 when adding the image to screen at first
+    2. then when moving image, modify the transform property as it is faster
+    3. when replacing image, take old image .top and .left + transform values and make that the new .top and .left with transformation 0,0 
+    */
     return imageElement;
 }
 
@@ -125,6 +125,7 @@ So, using transform for movement is often recommended for performance reasons.*/
     const newDY = currentDY + parseFloat(dy);
     
     //TO MAKE SURE THAT the move always happens, call setTransform (can play around with this...)
+    
     //image.style.transform = `translate(${newDX}px, ${newDY}px)`; 
     setTransform(image, newDX, newDY);
 }
@@ -162,11 +163,13 @@ function changeVisibility(imageId, bool) {
     if (image) {
         if (bool==="true") {
             //to make image visible
-            image.style.display = 'block';
+            //image.style.display = 'block';
+            image.style.visibility = 'visible';
             //console.log("MAKE IMAGE VISIBLE");
         } else {
             //to make image not visible
-            image.style.display = 'none';
+            //image.style.display = 'none';
+            image.style.visibility = 'hidden';
             //console.log("HIDE IMAGE");
         }
     }
@@ -189,31 +192,15 @@ function replaceImage(oldImageId, newImageName) {
     const image = getImage(oldImageId);
     if (image) {
         const oldImageName = image.alt;
-        
-        // Get the current position of the image
-        //const currentPosition = image.getBoundingClientRect();
-        //const oldX = currentPosition.left;
-        //const oldY = currentPosition.top;
-        
-        //const oldWidth = currentPosition.width;
-        //const oldHeight = currentPosition.height;
-        
-        
+                
         const currentTransform = getComputedStyle(image).getPropertyValue('transform');
    	    const matrixValues = currentTransform.slice(7, -1).split(', ');
-   
-   	    const oldX = parseFloat(matrixValues[4]);
-   	    const oldY = parseFloat(matrixValues[5]);
-   
+        //matrixValues[4] is x transform, matrixValues[5] is y transform 
+   	    const oldX = parseFloat(image.style.left) + parseFloat(matrixValues[4]);
+   	    const oldY = parseFloat(image.style.top) + parseFloat(matrixValues[5]);
    	    const oldWidth = imageDimensions[oldImageName].width;
         const oldHeight = imageDimensions[oldImageName].height;
    	    
-
-
-
-
-
-
         var levelOrCharacter;
         if (levelImages[oldImageId]){
             levelOrCharacter = true;
@@ -225,40 +212,27 @@ function replaceImage(oldImageId, newImageName) {
         }
 
         removeImageFromScreen(oldImageId); 
-       //TODO might have to consider transform translate not just .left and .top
-        const newImage = addImageToScreen(newImageName, oldImageId, oldX, oldY);
+
+        const newWidth = imageDimensions[newImageName].width;
+        const newHeight = imageDimensions[newImageName].height;
+        //console.log(`${oldImageName} has width: ${oldWidth} and height: ${oldHeight}`);
+        //console.log(`${newImage.alt} has width: ${newWidth} and height: ${newHeight}`);
+        const dx = (parseFloat(oldWidth) - parseFloat(newWidth))/2;
+        const dy = parseFloat(oldHeight) - parseFloat(newHeight);
+        //console.log(`Old position is ${oldX}, ${oldY}`);
+        //dx, dy are to relocate the image like in setImageAndRelocate method of MovingObject.java
+
+        const newX = oldX + dx;
+        const newY = oldY + dy;
+        //console.log(`DX: ${dx}, DY: ${dy}`);
+        //console.log(`New position is ${newX}, ${newY}`);
+
+        const newImage = addImageToScreen(newImageName, oldImageId, newX, newY);
         if (levelOrCharacter) {
             levelImages[oldImageId] = newImage;
         } else {
             characterImages[oldImageId] = newImage;
         }
-               
-         
-        //CHANGE POSITION OF NEW IMAGE LIKE IN SETIMAGEANDRELOCATE IN JAVA
-        //TODO TODO TODO TODO BIGGEST BUGS OF PLAYING ON BROWSER IS BECAUSE THIS FUNCTION DOESNT WORK AS EXPECTED, NEED TO SETIMAGEANDRELOCATE EVERYTIME IMAGE IS CHANGED, FOR SOME REASON SOMETIMES IT DOESNT HAPPEN
-        if (newImage) {
-            //console.log("---------------------------");
-            //console.log(`Replacing ${oldImageName} with ${newImage.alt}`);
-            //need to relocate the image like in setImageAndRelocate method of MovingObject.java
-            //TODO might have to check that image loaded properly before getting width/height
-           ///////////////////
-
-            const newWidth = imageDimensions[newImageName].width;
-            const newHeight = imageDimensions[newImageName].height;
-            console.log(`${oldImageName} has width: ${oldWidth} and height: ${oldHeight}`);
-            console.log(`${newImage.alt} has width: ${newWidth} and height: ${newHeight}`);
-            const dx = (parseFloat(oldWidth) - parseFloat(newWidth))/2;
-            const dy = parseFloat(oldHeight) - parseFloat(newHeight);
-            console.log(`Old position is ${oldX}, ${oldY}`);
-            const newX = oldX + dx;
-            const newY = oldY + dy;
-            console.log(`DX: ${dx}, DY: ${dy}`);
-            console.log(`New position is ${newX}, ${newY}`);
-            setTransform(newImage, newX, newY);
-                    
-        } else {
-            console.log("BIG PROBLEM");
-        }   
     }
 }
 
@@ -326,14 +300,6 @@ window.addEventListener('resize', () => {
     previousHeight = window.innerHeight;
 });
 */
-
-
-
-
-
-
-
-
 
 
 
@@ -416,9 +382,16 @@ testButton.addEventListener('click', () => {
         changeVisibility(0, "true");
         bo = true;
     }*/
-    console.log('CLICK');
-    console.log(`${imageDimensions["smallMarioRightImage"].width}`);
-    console.log(`${imageDimensions["smallMarioRightImage"].height}`);
+    console.log('CLICK!');
+    //console.log(`${imageDimensions["smallMarioRightImage"].width}`);
+    //console.log(`${imageDimensions["smallMarioRightImage"].height}`);
+    
+    // Play the jump and coin sounds simultaneously
+    playSound('Mario Jump.wav');
+    playSound('Coin.wav');
+
+
+
     //moveAllImages(10, 10);
     //removeAllImagesFromScreen();
     //console.log(Object.keys(levelImages).length);
@@ -454,7 +427,7 @@ socket.onmessage = function(event) {
             // Example: { "type": "replaceImage", "oldImageId":"id", "newImageName":"luigiWalking" }
             const {type, oldImageId, newImageName} = parsedMessage;
             //oldImageId is used to find which image to replace and newImageName is used to find image in Images directory to replace it with
-            console.log('Received replaceImage data:', `${type}, ${oldImageId}, ${newImageName}`);
+            //console.log('Received replaceImage data:', `${type}, ${oldImageId}, ${newImageName}`);
             //this works!!! json is received and parsed correctly
             replaceImage(oldImageId, newImageName);
         } else if (parsedMessage.type === 'playSound') {
@@ -483,7 +456,7 @@ socket.onmessage = function(event) {
         } else if (parsedMessage.type === 'moveMarioCharacter') {
             // Example: { "type": "moveMarioCharacter", "imageId": "imageId", "dx":"10", "dy":"20" }
             const {type, imageId, dx, dy} = parsedMessage;
-            console.log('Received moveMarioCharacter data:', `${type}, ${imageId}, ${dx}, ${dy}`);
+            //console.log('Received moveMarioCharacter data:', `${type}, ${imageId}, ${dx}, ${dy}`);
             moveCharacterImage(imageId, dx, dy);
         } else if (parsedMessage.type === 'addCharacterImageToScreen') {
              // Example: { "type": "addCharacterImageToScreen", "imageName": "luigiBigLeft", "id":"25", "x":"10", "y":    "10" }
