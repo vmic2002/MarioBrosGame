@@ -34,7 +34,7 @@ public class SoundController {
         //this needs to be done for both destkop and online game
 		if (runningOnTomcatServer) {
 			//send message to client to play sound on client side
-			//on server side, playing wav files
+			//on server side, playing wav files (not really playing them when running on server, but when playing on desktop wav files are used)
 			//on client side, playing mp3 files because they have smaller file sizes, less loading time
 			ServerToClientMessenger.sendPlaySoundMessage(f.getName().substring(0, f.getName().length()-3)+"mp3");
 			//{ "type": "playSound", "soundName": "Coin.mp3" }
