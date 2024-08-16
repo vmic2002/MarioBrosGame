@@ -310,18 +310,18 @@ const sounds = {};
 
 // Define the list of sound files and their paths
 const soundList = [
-    { name: 'Bump.wav', path: 'Sounds/Bump.wav' },
-    { name: 'Fireball.wav', path: 'Sounds/Fireball.wav' },
-    { name: 'Kick.wav', path: 'Sounds/Kick.wav' },
-    { name: 'Pipe.wav', path: 'Sounds/Pipe.wav' },
-    { name: 'Squish.wav', path: 'Sounds/Squish.wav' },
-    { name: 'tail.wav', path: 'Sounds/tail.wav' },
-    { name: 'Death.wav', path: 'Sounds/Death.wav' },
-    { name: 'Item Box.wav', path: 'Sounds/Item Box.wav' },
-    { name: 'Mario Jump.wav', path: 'Sounds/Mario Jump.wav' },
-    { name: 'Powerup.wav', path: 'Sounds/Powerup.wav' },
-    { name: 'Transformation.wav', path: 'Sounds/Transformation.wav' },
-    { name: 'Coin.wav', path: 'Sounds/Coin.wav' },
+    { name: 'Bump.mp3', path: 'Sounds/Bump.mp3' },
+    { name: 'Fireball.mp3', path: 'Sounds/Fireball.mp3' },
+    { name: 'Kick.mp3', path: 'Sounds/Kick.mp3' },
+    { name: 'Pipe.mp3', path: 'Sounds/Pipe.mp3' },
+    { name: 'Squish.mp3', path: 'Sounds/Squish.mp3' },
+    { name: 'tail.mp3', path: 'Sounds/tail.mp3' },
+    { name: 'Death.mp3', path: 'Sounds/Death.mp3' },
+    { name: 'Item Box.mp3', path: 'Sounds/Item Box.mp3' },
+    { name: 'Mario Jump.mp3', path: 'Sounds/Mario Jump.mp3' },
+    { name: 'Powerup.mp3', path: 'Sounds/Powerup.mp3' },
+    { name: 'Transformation.mp3', path: 'Sounds/Transformation.mp3' },
+    { name: 'Coin.mp3', path: 'Sounds/Coin.mp3' },
     // Add more sound objects as needed
 ];
 
@@ -387,8 +387,8 @@ testButton.addEventListener('click', () => {
     //console.log(`${imageDimensions["smallMarioRightImage"].height}`);
     
     // Play the jump and coin sounds simultaneously
-    playSound('Mario Jump.wav');
-    playSound('Coin.wav');
+    playSound('Mario Jump.mp3');
+    playSound('Coin.mp3');
 
 
 

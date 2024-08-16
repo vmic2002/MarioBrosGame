@@ -3,6 +3,7 @@ import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 
+
 public class SoundController {
 	private static File jumpSoundFile,powerUpSoundFile,
 	marioGetsHitSoundFile,itemOutOfBoxSoundFile, fireBallSoundFile,
@@ -33,8 +34,10 @@ public class SoundController {
         //this needs to be done for both destkop and online game
 		if (runningOnTomcatServer) {
 			//send message to client to play sound on client side
-			ServerToClientMessenger.sendPlaySoundMessage(f.getName());
-			//{ "type": "playSound", "soundName": "Coin.wav" }
+			//on server side, playing wav files
+			//on client side, playing mp3 files because they have smaller file sizes, less loading time
+			ServerToClientMessenger.sendPlaySoundMessage(f.getName().substring(0, f.getName().length()-3)+"mp3");
+			//{ "type": "playSound", "soundName": "Coin.mp3" }
 		} else {
 			try{
 				Clip clip = AudioSystem.getClip();
