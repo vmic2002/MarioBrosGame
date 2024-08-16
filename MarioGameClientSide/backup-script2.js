@@ -43,7 +43,6 @@ function addImageToScreen(imageName, id, x, y) {
 }
 
 function setTransform(imageElement, x, y) {
-    //the if else makes sure that the setTransform will happen, whether the image is already loaded or not
     if (imageElement.complete) {
         //if image is already loaded (complete is true once image is loaded), no need for onload function
         //THIS IF STATEMENT MAKES GAME WAY SMOOTHER :)
@@ -123,8 +122,7 @@ So, using transform for movement is often recommended for performance reasons.*/
 
     const newDX = currentDX + parseFloat(dx);
     const newDY = currentDY + parseFloat(dy);
-    
-    //TO MAKE SURE THAT the move always happens, call setTransform (can play around with this...)
+    //TODO TODO TODO NEED TO MAKE SURE THAT THE IMAGE IS LOADED SUCCESSFULLY OR THE MOVE WILL NOT HAPPEN
     //image.style.transform = `translate(${newDX}px, ${newDY}px)`; 
     setTransform(image, newDX, newDY);
 }
