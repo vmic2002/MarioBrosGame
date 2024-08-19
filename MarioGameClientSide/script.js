@@ -307,6 +307,9 @@ window.addEventListener('resize', () => {
 //ALL 12 sounds are correctly imported and the playSound func works with all 12 sounds
 // Create an object to hold references to the loaded sound files
 const sounds = {};
+//max of 2 sounds to be played at the same time
+let currentSound1 = null;
+let currentSound2 = null;
 
 // Define the list of sound files and their paths
 const soundList = [
@@ -321,7 +324,7 @@ const soundList = [
     { name: 'Mario Jump.mp3', path: 'Sounds/Mario Jump.mp3' },
     { name: 'Powerup.mp3', path: 'Sounds/Powerup.mp3' },
     { name: 'Transformation.mp3', path: 'Sounds/Transformation.mp3' },
-    { name: 'Coin.mp3', path: 'Sounds/Coin.mp3' },
+    { name: 'Coin.mp3', path: 'Sounds/Coin.mp3' }
     // Add more sound objects as needed
 ];
 
@@ -336,13 +339,78 @@ function loadSounds() {
 }
 
 // Function to play a sound by its name
-function playSound(soundName) {
+/*function playSound(soundName) {
     const sound = sounds[soundName];
     if (sound) {
         sound.currentTime = 0;
         sound.play();
     }
+}*/
+function playSound(soundName) {
+    const sound = sounds[soundName];
+    if (sound) {
+        //MAX OF 2 SOUNDS TO BE PLAYED AT THE SAME TIME
+        //first two if statements is in case currentSound1 or 2 is not set to null by 'onended' function
+        // Ensure currentSound1 is actually null if it should be
+        if (currentSound1 && currentSound1.ended) {
+            currentSound1 = null;
+        }
+        // Ensure currentSound2 is actually null if it should be
+        if (currentSound2 && currentSound2.ended) {
+            currentSound2 = null;
+        }
+        if (!currentSound1) {
+            // Play in the first slot if it's available
+            currentSound1 = sound;
+            currentSound1.currentTime = 0;
+            currentSound1.play();
+            // Set currentSound1 to null when the sound finishes
+            currentSound1.onended = function() {
+                currentSound1 = null;
+            };
+        } else if (!currentSound2) {
+            // Play in the second slot if the first is occupied
+            currentSound2 = sound;
+            currentSound2.currentTime = 0;
+            currentSound2.play();
+            // Set currentSound2 to null when the sound finishes
+            currentSound2.onended = function() {
+                currentSound2 = null;
+            };
+        } else {
+            // If both slots are occupied, replace the sound that is almost done
+            const remainingTime1 = currentSound1.duration - currentSound1.currentTime;
+            const remainingTime2 = currentSound2.duration - currentSound2.currentTime;
+
+            if (remainingTime1 < remainingTime2) {
+                // Replace the sound in the first slot
+                currentSound1.pause();
+                currentSound1.currentTime = 0;
+                currentSound1 = sound;
+                currentSound1.currentTime = 0;
+                currentSound1.play();
+                // Set currentSound1 to null when the sound finishes
+                currentSound1.onended = function() {
+                    currentSound1 = null;
+                };
+            } else {
+                // Replace the sound in the second slot
+                currentSound2.pause();
+                currentSound2.currentTime = 0;
+                currentSound2 = sound;
+                currentSound2.currentTime = 0;
+                currentSound2.play();
+                // Set currentSound2 to null when the sound finishes
+                currentSound2.onended = function() {
+                    currentSound2 = null;
+                };
+            }
+        }
+    }
 }
+
+
+
 
 // Load the sounds
 loadSounds();
@@ -387,11 +455,18 @@ testButton.addEventListener('click', () => {
     //console.log(`${imageDimensions["smallMarioRightImage"].height}`);
     
     // Play the jump and coin sounds simultaneously
-    playSound('Mario Jump.mp3');
-    playSound('Coin.mp3');
-
-
-
+    //playSound('Mario Jump.mp3');
+    //playSound('Coin.mp3');
+    if (!currentSound1) {
+        console.log("null");
+    } else {
+        console.log(`${currentSound1.src}`);
+    }
+    if (!currentSound2) {
+        console.log("null");
+    } else {
+        console.log(`${currentSound2.src}`);
+    }
     //moveAllImages(10, 10);
     //removeAllImagesFromScreen();
     //console.log(Object.keys(levelImages).length);
