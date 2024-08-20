@@ -37,6 +37,8 @@ $CATALINA_HOME/bin/shutdown.sh
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 
 import jakarta.websocket.OnClose;
 import jakarta.websocket.OnError;
@@ -50,11 +52,15 @@ import jakarta.websocket.server.ServerEndpoint;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-@ServerEndpoint("/websocket/{username}")
+//@ServerEndpoint("/websocket/{username}")
+@ServerEndpoint("/websocket/{lobbyId}/{numCharacters}/{username}")
 public class MyWebSocketServer {
 
 	// Store all active WebSocket sessions
-	private static final Set<Session> activeSessions = Collections.synchronizedSet(new HashSet<>());
+	//private static final Set<Session> activeSessions = Collections.synchronizedSet(new HashSet<>());
+
+	//Store all active lobbies
+	private static final Map<String, Lobby> lobbies = Collections.synchronizedMap(new HashMap<>());
 
 
 	//System.out.println can be seen from apache-tomcat-10.1.11/logs/catalina.out
@@ -62,9 +68,75 @@ public class MyWebSocketServer {
 
 
 	@OnOpen
-	public void onOpen(Session session, @PathParam("username") String username) {
-		//System.out.println("WebSocket connection opened: " + session.getId());
-		//System.out.println("Username: "+username);
+	public void onOpen(Session session, @PathParam("lobbyId") String lobbyId, @PathParam("numCharacters") String numCharacters, @PathParam("username") String username) {
+
+		
+
+
+		Lobby lobby = lobbies.computeIfAbsent(lobbyId, id -> new Lobby(id));
+		/*
+		 * This method is a convenience method introduced in Java 8. It checks if the specified key (lobbyId) is already present in the map (lobbies).
+If the key is present, it returns the corresponding value (the existing Lobby object).
+If the key is not present, it computes a new value using the given mapping function (in this case, id -> new Lobby(id)), inserts the new key-value pair into the map, and returns the newly created value.
+		 */
+
+		// Store the lobbyid in the session's user properties for later use
+		session.getUserProperties().put("lobbyId", lobbyId);
+
+
+		lobby.addSession(session);
+
+		//TODO NEED TO MAKE SURE THAT two (or more) people who join the same lobby inputed the same number of numCharacteers and different usernames
+
+
+
+		sendMessage("Lobby ID: "+lobbyId, session);
+		sendMessage("TOTAL OF "+lobbies.size()+" lobies:", session);
+
+		// Notify all players in the lobby
+		for (Session s : lobby.getSessions()) {
+			sendMessage(username + " has joined the lobby.", s);
+		}
+
+		// Start the game for the lobby, if needed
+		int numPlayers;
+		try {
+			numPlayers = Integer.parseInt(numCharacters);
+			if (numPlayers < 1 || numPlayers > Lobby.getMaxNumCharacters()) {
+				numPlayers = 1;
+				//if client gives numPlayers that is out of range, such as 0 or 100,
+				//then default value of 1 numPlayer is used
+			}
+		} catch (Exception e) {
+			//NumberFormatException
+			numPlayers = 1;
+		}
+	
+		if (lobby.getSessions().size() == numPlayers) {
+			// Start the game, e.g., start a new thread to handle game logic
+			//TODO UNCOMMENT MarioBrosGame.main(new String[] {lobbyId});
+			//TODO NEED TO FIGURE OUT WHICH PLAYER IS MARIO AND WHICH IS LUIGI
+			sendMessage("can start playing!", session);
+		} else {
+			//NOT ENOUGH PLAYERS, NEED TO WAIT FOR MORE
+			//DONT DO ANYTHING
+			sendMessage("not enough players yet! Waiting on " + ( numPlayers - lobby.getSessions().size())+ " more players...", session);
+		}
+
+
+
+
+		///////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+		/*
 		// Add the new session to the activeSessions set
 		activeSessions.add(session);
 		//System.out.println("CALLING MAIN FUNCTION");
@@ -78,7 +150,7 @@ public class MyWebSocketServer {
 		sendMessage(message, session);
 
 		MarioBrosGame.main(new String[] {session.getId()});
-
+		 */
 
 
 
@@ -89,24 +161,60 @@ public class MyWebSocketServer {
 	public void onMessage(String message, Session session) {
 		//System.out.println("Received message from client: " + message);
 
-		// Process the received message
-		//String response = "Server response: " + message;
+		//String lobbyId = (String) session.getUserProperties().get("lobbyId");
+		//Lobby lobby = lobbies.get(lobbyId);
+		//
+		//if (lobby != null) {
+	//UNCOMMENT TODO TODO TODO	processMessage(message, session);
+		//}
 
-		processMessage(message, session);
+
+//TODO TODO BUGS COULD BE COMING FROM HERE, DEADLING WITH SESSION NOT LOBBY
+
+
+
+
+
 
 		// Send the response back to the client
-		//sendMessage(response, session);
+		sendMessage("received message: "+message, session);
 	}
 
 	@OnClose
 	public void onClose(Session session) {
+
 		//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
 		System.out.println("<<<<<<<\t\tWebSocket connection closed: " + session.getId());
-		// Remove the closed session from the activeSessions set
-		activeSessions.remove(session);
-		System.out.println("INTERRUPTING ALL GAME THREADS");
 
-		GameThread.interruptAllMarioThreads();
+		String lobbyId = (String) session.getUserProperties().get("lobbyId");
+		Lobby lobby = lobbies.get(lobbyId);
+
+		if (lobby != null) {
+			lobby.removeSession(session);
+
+			// Notify remaining players in the lobby
+			for (Session s : lobby.getSessions()) {
+				sendMessage("A player has left the lobby.", s);
+			}
+
+			// Remove the lobby if it's empty
+			if (lobby.getSessions().isEmpty()) {
+				lobbies.remove(lobbyId);
+				//UNCOMMENT TODO TODO GameThread.interruptAllMarioThreads();//TODO TODO BUGS COULD BE COMING FROM HERE
+			}
+		}
+
+
+
+
+
+		//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
+		//	System.out.println("<<<<<<<\t\tWebSocket connection closed: " + session.getId());
+		// Remove the closed session from the activeSessions set
+		//activeSessions.remove(session);
+		//System.out.println("INTERRUPTING ALL GAME THREADS");
+
+		//GameThread.interruptAllMarioThreads();
 		//see MyRunnable.java and GameThread.java
 		//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
 		//calling System.exit doesnt work
@@ -141,6 +249,13 @@ public class MyWebSocketServer {
 		//String technology = json.getString("technology");  
 	}
 
+	public synchronized static void sendMessage(String message, Lobby lobby) {
+		//send message to every session in the lobby
+		for (Session s : lobby.getSessions()) {
+			sendMessage(message, s);
+		}
+	}
+
 	public synchronized static void sendMessage(String message, Session session) {
 		try {
 			//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
@@ -170,7 +285,7 @@ public class MyWebSocketServer {
 	at MyWebSocketServer.sendMessage(MyWebSocketServer.java:148)
 
 	OR 
-	
+
 		java.lang.IllegalStateException: Message will not be sent because the WebSocket session has been closed
 	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.writeMessagePart(WsRemoteEndpointImplBase.java:450)
 	at org.apache.tomcat.websocket.WsRemoteEndpointImplBase.sendMessageBlock(WsRemoteEndpointImplBase.java:308)
@@ -184,7 +299,7 @@ public class MyWebSocketServer {
 				//System.exit(1);
 				//INSTEAD OF EXITING when trying to send message on closed connection, JUST DONT SEND MESSAGE (can't anyways)! and keep playing
 				//message doesn't have to be sent anyways cause client reloaded page so new session will be started
-				
+
 				//Since a new WebSocket session will be established with the page reload, any unsent messages are no longer relevant.
 			}
 			//session.getAsyncRemote().sendText(message);
@@ -193,10 +308,8 @@ public class MyWebSocketServer {
 		}
 	}
 
-	public static Session getSession(String sessionId) {
-		for (Session s: activeSessions)
-			if (s.getId().equals(sessionId))
-				return s;
-		return null;
+	public static Lobby getLobby(String lobbyId) {
+		Lobby lobby = lobbies.get(lobbyId);
+		return lobby;
 	}
 }

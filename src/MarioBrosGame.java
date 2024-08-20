@@ -40,6 +40,7 @@ public class MarioBrosGame {
 
 	private static final int WIDTH = 1300;//1200;
 	private static final int HEIGHT = 900;//800;
+	public static final int numPlayers = 2;//TODO CHANGE WHEN PEACH, TOAD, OR OTHER CHARACTERS ARE ADDED
 
 	public static void main(String[] args) {
 
@@ -47,9 +48,9 @@ public class MarioBrosGame {
 		System.out.println("RUNNING MAIN FUNCTION");
 		boolean runningOnTomcatServer = false;
 		if (args.length>0) {
-			System.out.println("Session id: "+args[0]);
+			System.out.println("Lobby id: "+args[0]);
 
-			ServerToClientMessenger.setSessionId(args[0]);
+			ServerToClientMessenger.setLobbyId(args[0]);
 			runningOnTomcatServer = true;
 		}
 
@@ -1045,11 +1046,18 @@ public class MarioBrosGame {
 				timedilatingbigLuigiRightJumpingDownImage,
 
 				Mario.CHARACTER.LUIGI);
-		int numCharacters = 2;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
+		int numCharacters = numPlayers;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = luigi;
 		characters[1] = mario;
 
+		
+		
+		
+		
+		
+		
+		
 		GameStatsController.setCharacters(mario, luigi);
 
 		int fallDy = (int) (smallMarioLeftImage.getHeight(canvas)/(10.0));

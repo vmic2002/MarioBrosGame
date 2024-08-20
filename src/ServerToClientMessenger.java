@@ -1,11 +1,11 @@
 import jakarta.websocket.Session;
 public class ServerToClientMessenger {
-	//this class will hanle sending messages to the client: when to play sound, when to move images, when to switch images, showImageAndSetlocation, and hideImage
-	private static String sessionId;
-	private static Session session;
-	public static void setSessionId(String id) {
-		sessionId = id;
-		session = MyWebSocketServer.getSession(id);
+	//this class will hanle sending messages to the client: when to play sound, when to move images, when to switch images, showImageAndSetlocation, and hideImage (etc)
+	private static String lobbyId;
+	private static Lobby lobby;
+	public static void setLobbyId(String id) {
+		lobbyId = id;
+		lobby = MyWebSocketServer.getLobby(id);
 	}
 	//11 types of messages that server sends to client:
 	//1. moveImage, 2. playSound, 3. replaceImage 
@@ -31,8 +31,8 @@ public class ServerToClientMessenger {
 	//client keeps track of images in two hashmaps: one for levelimages and one for characterimages (mario, luigi, etc)
 
 	private static void sendMessage(String message) {
-		if (session!=null)
-			MyWebSocketServer.sendMessage(message, session);
+		if (lobby!=null)
+			MyWebSocketServer.sendMessage(message, lobby);
 		//else System.out.println("SESSION NULLL");
 	}
 
