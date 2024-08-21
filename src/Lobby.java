@@ -8,7 +8,7 @@ public class Lobby {
 	
 	
 	//each Lobby cannot have more than "MarioBrosGame.numPlayers" players, but only 1 player can still play on his own
-    //so a Lobby can have in between [1 and "MarioBrosGame.numPlayers"] players in one session, inclusive
+    //so a Lobby can have in between [1 and "MarioBrosGame.numPlayers"] players, inclusive
 	//(player = character)
 	
 	private String lobbyId;

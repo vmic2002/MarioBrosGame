@@ -34,9 +34,10 @@ $CATALINA_HOME/bin/shutdown.sh
  * 
  *  
  */
+import java.io.IOException;
 import java.util.Collections;
-import java.util.Set;
-import java.util.HashSet;
+//import java.util.Set;
+//import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -49,11 +50,14 @@ import jakarta.websocket.server.PathParam;
 import jakarta.websocket.server.ServerEndpoint;
 
 
+
+
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-//@ServerEndpoint("/websocket/{username}")
-@ServerEndpoint("/websocket/{lobbyId}/{numCharacters}/{username}")
+//@ServerEndpoint("/websocket/{lobbyId}/{numCharacters}/{username}")
+@ServerEndpoint("/websocket/{lobbyId}/{username}")
 public class MyWebSocketServer {
 
 	// Store all active WebSocket sessions
@@ -68,163 +72,117 @@ public class MyWebSocketServer {
 
 
 	@OnOpen
-	public void onOpen(Session session, @PathParam("lobbyId") String lobbyId, @PathParam("numCharacters") String numCharacters, @PathParam("username") String username) {
+	public void onOpen(Session session, @PathParam("lobbyId") String lobbyId, @PathParam("username") String username) {
+		//int numPlayersInLobby;
+		//int numPlayersWantedToPlay;
+		synchronized (lobbies) { 		
+			//USE SYNCHRONIZE {} BLOCK IN ONOPEN AND ONCLOSE ON LOBBIES for thread safety
 
-		
-
-
-		Lobby lobby = lobbies.computeIfAbsent(lobbyId, id -> new Lobby(id));
-		/*
-		 * This method is a convenience method introduced in Java 8. It checks if the specified key (lobbyId) is already present in the map (lobbies).
+			Lobby lobby = lobbies.computeIfAbsent(lobbyId, id -> new Lobby(id));
+			/*
+			 * This method is a convenience method introduced in Java 8. It checks if the specified key (lobbyId) is already present in the map (lobbies).
 If the key is present, it returns the corresponding value (the existing Lobby object).
 If the key is not present, it computes a new value using the given mapping function (in this case, id -> new Lobby(id)), inserts the new key-value pair into the map, and returns the newly created value.
-		 */
+			 */
 
-		// Store the lobbyid in the session's user properties for later use
-		session.getUserProperties().put("lobbyId", lobbyId);
-
-
-		lobby.addSession(session);
-
-		//TODO NEED TO MAKE SURE THAT two (or more) people who join the same lobby inputed the same number of numCharacteers and different usernames
-
-
-
-		sendMessage("Lobby ID: "+lobbyId, session);
-		sendMessage("TOTAL OF "+lobbies.size()+" lobies:", session);
-
-		// Notify all players in the lobby
-		for (Session s : lobby.getSessions()) {
-			sendMessage(username + " has joined the lobby.", s);
-		}
-
-		// Start the game for the lobby, if needed
-		int numPlayers;
-		try {
-			numPlayers = Integer.parseInt(numCharacters);
-			if (numPlayers < 1 || numPlayers > Lobby.getMaxNumCharacters()) {
-				numPlayers = 1;
-				//if client gives numPlayers that is out of range, such as 0 or 100,
-				//then default value of 1 numPlayer is used
+			if (lobby.getSessions().size()  == Lobby.getMaxNumCharacters()) {
+				//lobby already has max number of characters
+				//cannot accept a new session, so just close the session
+				//
+				sendMessage("{ \"type\": \"lobbyAlreadyFull\"}", session);
+				try {
+					session.close();
+				} catch (IOException e) {
+					System.out.println("Error encountered when trying to close session.");
+					e.printStackTrace();
+				}
+				return;
 			}
-		} catch (Exception e) {
-			//NumberFormatException
-			numPlayers = 1;
+
+			lobby.addSession(session);
+			// Store the lobbyid and username in the session's user properties for later use
+			session.getUserProperties().put("lobbyId", lobbyId);
+			session.getUserProperties().put("username", username);
+
+
+
+			sendMessage("Lobby ID: "+lobbyId, session);//FOR TESTING TODO comment
+			sendMessage("TOTAL OF "+lobbies.size()+" lobies:", session);//FOR TESTING TODO comment
+			// Notify all players in the lobby
+			for (Session s : lobby.getSessions()) {
+				sendMessage(username + " has joined the lobby!", s);
+			}
+
+
+
+
+			//TODO NEED TO MAKE SURE THAT two (or more) people who join the same lobby inputed different usernames
 		}
-	
-		if (lobby.getSessions().size() == numPlayers) {
-			// Start the game, e.g., start a new thread to handle game logic
-			//TODO UNCOMMENT MarioBrosGame.main(new String[] {lobbyId});
-			//TODO NEED TO FIGURE OUT WHICH PLAYER IS MARIO AND WHICH IS LUIGI
-			sendMessage("can start playing!", session);
-		} else {
-			//NOT ENOUGH PLAYERS, NEED TO WAIT FOR MORE
-			//DONT DO ANYTHING
-			sendMessage("not enough players yet! Waiting on " + ( numPlayers - lobby.getSessions().size())+ " more players...", session);
-		}
-
-
-
-
-		///////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-		/*
-		// Add the new session to the activeSessions set
-		activeSessions.add(session);
-		//System.out.println("CALLING MAIN FUNCTION");
-
-		sendMessage("SESSION ID: "+session.getId(), session);
-		sendMessage("TOTAL OF "+activeSessions.size()+" sessions:", session);
-		String message = "IDs: ";
-		for (Session s:activeSessions) {
-			message+=s.getId()+", ";
-		}
-		sendMessage(message, session);
-
-		MarioBrosGame.main(new String[] {session.getId()});
-		 */
-
-
-
-
 	}
 
 	@OnMessage
 	public void onMessage(String message, Session session) {
 		//System.out.println("Received message from client: " + message);
-
-		//String lobbyId = (String) session.getUserProperties().get("lobbyId");
-		//Lobby lobby = lobbies.get(lobbyId);
-		//
-		//if (lobby != null) {
-	//UNCOMMENT TODO TODO TODO	processMessage(message, session);
-		//}
-
-
-//TODO TODO BUGS COULD BE COMING FROM HERE, DEADLING WITH SESSION NOT LOBBY
+		synchronized (lobbies) {
+			String lobbyId = (String) session.getUserProperties().get("lobbyId");
+			Lobby lobby = lobbies.get(lobbyId);
 
 
 
 
+			if (message.equals("ready")) {
+				Mario.CHARACTER[] characters = Mario.CHARACTER.values();
+				int i = 0;
+				for (Session s : lobby.getSessions()) {
+					//tell each session what their character will be
+					sendMessage("{ \"type\": \"yourCharacter\", \"character\": \""+characters[i++]+"\"}", s);
+				}
 
+				//start game!
+				MarioBrosGame.main(new String[] {lobbyId});
+			} else {
+				processMessage(message, session);
+			}
+		}
 
-		// Send the response back to the client
-		sendMessage("received message: "+message, session);
+		//TODO TODO BUGS COULD BE COMING FROM HERE, DEADLING WITH SESSION NOT LOBBY
+
 	}
 
 	@OnClose
 	public void onClose(Session session) {
-
 		//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
 		System.out.println("<<<<<<<\t\tWebSocket connection closed: " + session.getId());
 
-		String lobbyId = (String) session.getUserProperties().get("lobbyId");
-		Lobby lobby = lobbies.get(lobbyId);
+		synchronized (lobbies) {
+			//USE SYNCHRONIZE {} BLOCK IN ONOPEN AND ONCLOSE ON LOBBIES for thread safety
+			String lobbyId = (String) session.getUserProperties().get("lobbyId");
+			Lobby lobby = lobbies.get(lobbyId);
 
-		if (lobby != null) {
-			lobby.removeSession(session);
+			if (lobby != null) {
+				lobby.removeSession(session);
 
-			// Notify remaining players in the lobby
-			for (Session s : lobby.getSessions()) {
-				sendMessage("A player has left the lobby.", s);
-			}
+				// Notify remaining players in the lobby
+				for (Session s : lobby.getSessions()) {
+					sendMessage(session.getUserProperties().get("username")+" has left the lobby.", s);
+				}
 
-			// Remove the lobby if it's empty
-			if (lobby.getSessions().isEmpty()) {
-				lobbies.remove(lobbyId);
-				//UNCOMMENT TODO TODO GameThread.interruptAllMarioThreads();//TODO TODO BUGS COULD BE COMING FROM HERE
+				// Remove the lobby if it's empty
+				if (lobby.getSessions().isEmpty()) {
+					lobbies.remove(lobbyId);
+					GameThread.interruptAllMarioThreads();//TODO TODO BUGS COULD BE COMING FROM HERE, make sure to interrupt only threads from this lobby
+					//see MyRunnable.java and GameThread.java
+					//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
+					//calling System.exit doesnt work
+					//OR ELSE WILL GET ERROR MESSAGE: 
+					/*
+					 * WARNING [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web     
+					 * application [MarioGameServerSide] appears to have started a thread named [mystery box changing states OR AWT-EventQueue-0 (FOR EXAMPLE)] 
+					 * but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread
+					 */
+				}
 			}
 		}
-
-
-
-
-
-		//WEBSOCKET CONNECTION CLOSES WHEN CLIENT RELOADS THE PAGE
-		//	System.out.println("<<<<<<<\t\tWebSocket connection closed: " + session.getId());
-		// Remove the closed session from the activeSessions set
-		//activeSessions.remove(session);
-		//System.out.println("INTERRUPTING ALL GAME THREADS");
-
-		//GameThread.interruptAllMarioThreads();
-		//see MyRunnable.java and GameThread.java
-		//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
-		//calling System.exit doesnt work
-		//OR ELSE WILL GET ERROR MESSAGE: 
-		/*
-		 * WARNING [Thread-1] org.apache.catalina.loader.WebappClassLoaderBase.clearReferencesThreads The web     
-		 * application [MarioGameServerSide] appears to have started a thread named [mystery box changing states OR AWT-EventQueue-0 (FOR EXAMPLE)] 
-		 * but has failed to stop it. This is very likely to create a memory leak. Stack trace of thread
-		 */
-
 	}
 
 	@OnError
@@ -251,9 +209,11 @@ If the key is not present, it computes a new value using the given mapping funct
 
 	public synchronized static void sendMessage(String message, Lobby lobby) {
 		//send message to every session in the lobby
+
 		for (Session s : lobby.getSessions()) {
 			sendMessage(message, s);
 		}
+
 	}
 
 	public synchronized static void sendMessage(String message, Session session) {
@@ -309,7 +269,9 @@ If the key is not present, it computes a new value using the given mapping funct
 	}
 
 	public static Lobby getLobby(String lobbyId) {
-		Lobby lobby = lobbies.get(lobbyId);
-		return lobby;
+		synchronized (lobbies) {
+			Lobby lobby = lobbies.get(lobbyId);
+			return lobby;
+		}
 	}
 }

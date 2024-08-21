@@ -5,8 +5,8 @@ import jakarta.websocket.Session;
 public class VirtualClientKeyboard {
 	//replaces MyKeyListener when playing game on tomcat server instead of from eclipse or terminal
 	private static Mario[] characters;
-	//characters[0] = luigi;
-	//characters[1] = mario;
+	//characters[0] = mario;
+	//characters[1] = luigi;
 	public static void setCharacters(Mario[] characters1) {
 		characters = characters1;
 	}
@@ -16,8 +16,9 @@ public class VirtualClientKeyboard {
 
 	public static void keyPressed(boolean keyPressedOrKeyReleased, String key, String character) {
 		//key is either ArrowUp, ArrowDown, ArrowLeft, ArrowRight, q
-		//character is either Mario, Luigi
-		Mario mario = characters[character.equals("Mario")?1:0];
+		//character is either MARIO, LUIGI, etc	
+		
+		Mario mario = characters[character.equals("MARIO")?0:1];
 		//ServerToClientMessenger.sendMessage("VIRTUALKEYBOARD: key: "+key+ " character: "+character+ " on server");
 		if (keyPressedOrKeyReleased) {
 			if (!mario.alive) return;

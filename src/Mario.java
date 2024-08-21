@@ -137,6 +137,7 @@ public class Mario extends MovingObject {
 
 
 	public enum CHARACTER {MARIO, LUIGI};//for now only mario and luigi, could add peach toad, etc as along as they move like mario and have same skins (fire, cat etc)
+	//TODO CHANGE WHEN PEACH, TOAD, OR OTHER CHARACTERS ARE ADDED
 	CHARACTER character;//to know if this (instance) is Mario, Luigi, etc
 	public Mario(MyImage smallMarioLeftImage, MyImage smallMarioRightImage, MyImage smallMarioLeftWalkingImage,
 			MyImage smallMarioRightWalkingImage,MyImage smallMarioLeftJumpingImage,

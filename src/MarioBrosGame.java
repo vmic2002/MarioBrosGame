@@ -40,7 +40,7 @@ public class MarioBrosGame {
 
 	private static final int WIDTH = 1300;//1200;
 	private static final int HEIGHT = 900;//800;
-	public static final int numPlayers = 2;//TODO CHANGE WHEN PEACH, TOAD, OR OTHER CHARACTERS ARE ADDED
+	public static final int numPlayers = Mario.CHARACTER.values().length;
 
 	public static void main(String[] args) {
 
@@ -206,7 +206,7 @@ public class MarioBrosGame {
 		String smallLuigiRightWalkingImagePath = prefix+imageDirectory+"/smallLuigiRightWalkingImage.png";
 		String smallLuigiLeftWalkingImagePath = prefix+imageDirectory+"/smallLuigiLeftWalkingImage.png";
 		String smallLuigiLeftJumpingImagePath = prefix+imageDirectory+"/smallLuigiLeftJumpingImage.png";
-		String smallLuigiRightJumpingImagePath = prefix+imageDirectory+"/smallLuigiLRightJumpingImage.png";
+		String smallLuigiRightJumpingImagePath = prefix+imageDirectory+"/smallLuigiRightJumpingImage.png";
 		String luigiDeadImagePath = prefix+imageDirectory+"/luigiDeadImage.png";
 
 		String bigLuigiLeftImagePath = prefix+imageDirectory+"/bigLuigiLeftImage.png";
@@ -335,7 +335,7 @@ public class MarioBrosGame {
 		String timedilatingbigMarioLeftJumpingImagePath = prefix+imageDirectory+"/timedilatingbigMarioLeftJumpingImage.png";
 		String timedilatingsmallMarioLeftWalkingImagePath = prefix+imageDirectory+"/timedilatingsmallMarioLeftWalkingImage.png";
 		String timedilatingbigLuigiLeftImagePath = prefix+imageDirectory+"/timedilatingbigLuigiLeftImage.png";
-		String timedilatingsmallLuigiLRightJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiLRightJumpingImage.png";
+		String timedilatingsmallLuigiRightJumpingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiRightJumpingImage.png";
 		String timedilatingbigLuigiRightJumpingImagePath = prefix+imageDirectory+"/timedilatingbigLuigiRightJumpingImage.png";
 		String timedilatingbigMarioRightWalkingImagePath = prefix+imageDirectory+"/timedilatingbigMarioRightWalkingImage.png";
 		String timedilatingsmallLuigiRightWalkingImagePath = prefix+imageDirectory+"/timedilatingsmallLuigiRightWalkingImage.png";
@@ -626,7 +626,7 @@ public class MarioBrosGame {
 
 		MyImage timedilatingbigLuigiLeftJumpingDownImage = null;
 		MyImage timedilatingbigLuigiLeftImage = null;
-		MyImage timedilatingsmallLuigiLRightJumpingImage = null;
+		MyImage timedilatingsmallLuigiRightJumpingImage = null;
 		MyImage timedilatingbigLuigiRightJumpingImage = null;
 		MyImage timedilatingsmallLuigiRightWalkingImage = null;
 		MyImage timedilatingbigLuigiLeftJumpingImage = null;
@@ -865,7 +865,7 @@ public class MarioBrosGame {
 			timedilatingbigMarioLeftJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioLeftJumpingImagePath)), "timedilatingbigMarioLeftJumpingImage");
 			timedilatingsmallMarioLeftWalkingImage = new MyImage(ImageIO.read(new File(timedilatingsmallMarioLeftWalkingImagePath)), "timedilatingsmallMarioLeftWalkingImage");
 			timedilatingbigLuigiLeftImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiLeftImagePath)), "timedilatingbigLuigiLeftImage");
-			timedilatingsmallLuigiLRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiLRightJumpingImagePath)), "timedilatingsmallLuigiLRightJumpingImage");
+			timedilatingsmallLuigiRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiRightJumpingImagePath)), "timedilatingsmallLuigiRightJumpingImage");
 			timedilatingbigLuigiRightJumpingImage = new MyImage(ImageIO.read(new File(timedilatingbigLuigiRightJumpingImagePath)), "timedilatingbigLuigiRightJumpingImage");
 			timedilatingbigMarioRightWalkingImage = new MyImage(ImageIO.read(new File(timedilatingbigMarioRightWalkingImagePath)), "timedilatingbigMarioRightWalkingImage");
 			timedilatingsmallLuigiRightWalkingImage = new MyImage(ImageIO.read(new File(timedilatingsmallLuigiRightWalkingImagePath)), "timedilatingsmallLuigiRightWalkingImage");
@@ -1030,7 +1030,7 @@ public class MarioBrosGame {
 				timedilatingbigLuigiLeftJumpingImage,
 				timedilatingsmallLuigiLeftWalkingImage,
 				timedilatingbigLuigiRightWalkingImage,
-				timedilatingsmallLuigiLRightJumpingImage,
+				timedilatingsmallLuigiRightJumpingImage,
 				timedilatingsmallLuigiRightImage,
 				timedilatingbigLuigiRightCrouchingImage,
 				timedilatingbigLuigiLeftWalkingImage,
@@ -1048,8 +1048,8 @@ public class MarioBrosGame {
 				Mario.CHARACTER.LUIGI);
 		int numCharacters = numPlayers;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
-		characters[0] = luigi;
-		characters[1] = mario;
+		characters[0] = mario;
+		characters[1] = luigi;
 
 		
 		

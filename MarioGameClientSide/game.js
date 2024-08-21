@@ -14,7 +14,7 @@ function getQueryParams() {
     const params = new URLSearchParams(window.location.search);
     return {
         lobbyId: params.get('lobbyId'),
-        numCharacters: params.get('numCharacters'),
+//        numCharacters: params.get('numCharacters'),
         username: params.get('username')
     };
 }
@@ -432,6 +432,13 @@ loadSounds();
 
 //addImageToScreen('bigLuigiLeftCrouchingImage', '1', 50,110);    
 
+
+
+
+
+
+
+
 //BUTTON IS ONLY for testing
 // Get a reference to the play button
 const testButton = document.getElementById('test');
@@ -453,17 +460,29 @@ testButton.addEventListener('click', () => {
 
 
     console.log(queryParams.lobbyId);
-    console.log(queryParams.numCharacters);
+   // console.log(queryParams.numCharacters);
     console.log(queryParams.username);
 
     
 });
 
 
-const websocketurl =`ws://localhost:8080/MarioGameServerSide/websocket/${queryParams.lobbyId}/${queryParams.numCharacters}/${queryParams.username}`
+
+
+const readyButton = document.getElementById('ready');
+
+readyButton.addEventListener('click', () => {
+    //console.log("TELL SERVER WE ARE READY TO START GAME!");
+    socket.send("ready");
+});
+
+let character = null;//server will send message to update this val to MARIO, or LUIGI, etc
+
+
+const websocketurl =`ws://localhost:8080/MarioGameServerSide/websocket/${queryParams.lobbyId}/${queryParams.username}`
 console.log(websocketurl)
 const socket = new WebSocket(websocketurl); // Replace with your server address
-///websocket/{lobbyId}/{numCharacters}/{username}
+///websocket/{lobbyId}/{username}
 //tomcat runs java websocket server on port 8080 and @ServerEndpoint in MyWebSocketServer.java is /websocket
 
 
@@ -473,8 +492,6 @@ socket.onmessage = function(event) {
     const message = event.data;
     //console.log('Received message from server:', message);
     
-    //ALL POSSIBLE MESSAGES TO RECEIVE: MOVE AN IMAGE, PLAY A SOUND, REPLACE AN IMAGE WITH ANOTHER (SETIMAGEANDRELOCATE, showImageAndSetlocation, and hideImage
-
     try {
         const parsedMessage = JSON.parse(message);
 
@@ -494,7 +511,7 @@ socket.onmessage = function(event) {
         } else if (parsedMessage.type === 'playSound') {
             // Example: { "type": "playSound", "soundName": "Coin.wav" }
             //console.log('Received playSound data:', parsedMessage.soundName);
-            playSound(parsedMessage.soundName);
+            //TODO UNCOMMENT TO PLAY SOUND playSound(parsedMessage.soundName);
         } else if (parsedMessage.type === 'addLevelImageToScreen') {
             // Example: { "type": "addLevelImageToScreen", "imageName": "platform", "id":"25", "x":"10", "y":"10" }
             const {type, imageName, id, x, y} = parsedMessage;
@@ -520,7 +537,7 @@ socket.onmessage = function(event) {
             //console.log('Received moveMarioCharacter data:', `${type}, ${imageId}, ${dx}, ${dy}`);
             moveCharacterImage(imageId, dx, dy);
         } else if (parsedMessage.type === 'addCharacterImageToScreen') {
-             // Example: { "type": "addCharacterImageToScreen", "imageName": "luigiBigLeft", "id":"25", "x":"10", "y":    "10" }
+             // Example: { "type": "addCharacterImageToScreen", "imageName": "luigiBigLeft", "id":"25", "x":"10", "y": "10" }
             const {type, imageName, id, x, y} = parsedMessage;
             //console.log('Received addCHARACTERImageToScreen data:', `${type}, ${imageName}, ${id}, ${x}, ${y}`);
             addCharacterImageToScreen(imageName, id, x, y); 
@@ -532,6 +549,18 @@ socket.onmessage = function(event) {
             //console.log('moving image to front or back');
             const {imageId, bool} = parsedMessage;
             setImageToFrontOrBack(imageId, bool);
+        } else if (parsedMessage.type === 'yourCharacter') {
+            // Example: { "type": "yourCharacter", "character": "MARIO" }
+            character = parsedMessage.character;
+            console.log(`character: ${character}`);
+            if (readyButton) {
+                readyButton.remove();
+            } 
+        } else if (parsedMessage.type == 'lobbyAlreadyFull') {
+            // GO BACK TO INDEX.HTML to try joining another lobby, one that isn't full
+            const queryString = `errMsg=${encodeURIComponent(queryParams.lobbyId)}`;
+            const url = `index.html?${queryString}`;
+            window.location.href = url;
         } else {
             // Handle other JSON data structures or handle unknown types
             console.log('Received unknown JSON data:', parsedMessage);
@@ -580,7 +609,7 @@ document.addEventListener('keydown', (event) => {
     }
     if (keys.includes(event.key)) {
         //console.log(`key pressed: ${event.key}`);
-        const data = { keyEvent: "keyPressed", key: `${event.key}`, character: "Mario" };
+        const data = { keyEvent: "keyPressed", key: `${event.key}`, character: `${character}` };
         sendJsonMessage(data); 
     }
 });
@@ -588,7 +617,11 @@ document.addEventListener('keydown', (event) => {
 document.addEventListener('keyup', (event) => {
     if (keys.includes(event.key)) {
         //console.log(`Arrow key released: ${event.key}`);
-        const data = { keyEvent: "keyReleased", key: `${event.key}`, character: "Mario" };
+        const data = { keyEvent: "keyReleased", key: `${event.key}`, character: `${character}` };
         sendJsonMessage(data);
     }
 });
+
+
+
+
