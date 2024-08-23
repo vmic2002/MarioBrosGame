@@ -1,3 +1,5 @@
+
+
 import acm.graphics.GImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +24,11 @@ public class Level {
 	//if xbaseline == canvas width-level width then mario is at right most portion of level
 	//private GImage background;
 	public double width;
+	
+	private Lobby lobby;
 
-	public Level(String id, ArrayList<StaticLevelPart> staticLevelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts, double width, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks){//, GImage background) {
+	public Level(String id, ArrayList<StaticLevelPart> staticLevelParts, HashMap<Long, DynamicLevelPart> dynamicLevelParts, double width, 
+			ArrayList<FloatingCoinsBlock> floatingCoinsBlocks, Lobby lobby){//, GImage background) {
 		this.id = id;
 		this.staticLevelParts = staticLevelParts;
 		yBaseLine = 0.0;
@@ -33,15 +38,15 @@ public class Level {
 		this.floatingCoinsBlocks = floatingCoinsBlocks;
 		
 		//this.background = background;
-
+		this.lobby = lobby;
 		for (StaticLevelPart l : this.staticLevelParts) {
 			for (Platform platform : l.platforms)
-				ServerToClientMessenger.sendAddLevelImageToScreenMessage(platform);
+				lobby.messenger.sendAddLevelImageToScreenMessage(platform);
 		}
 
 		for (DynamicLevelPart l : this.dynamicLevelParts.values()) {
 			ThreadSafeGImage image = (ThreadSafeGImage) l.part;
-			ServerToClientMessenger.sendAddLevelImageToScreenMessage(image);
+			lobby.messenger.sendAddLevelImageToScreenMessage(image);
 		}
 		
 		
@@ -81,7 +86,7 @@ public class Level {
 			}
 		},"moving level");*/
 
-		GameThread t1 = new GameThread(new MoveLevelRunnable(this, dx, dy, mario),mario.character.name()+" moving level by dx:"+dx+", dy: "+dy);
+		GameThread t1 = new GameThread(new MoveLevelRunnable(this, dx, dy, mario, lobby),mario.character.name()+" moving level by dx:"+dx+", dy: "+dy, lobby.getLobbyId());
 		//new thread is created to move entire level by dx, dy
 	}
 

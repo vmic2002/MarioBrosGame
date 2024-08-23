@@ -1,3 +1,5 @@
+
+
 import java.awt.Image;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -15,25 +17,25 @@ public abstract class ThreadSafeGImage extends GImage {
 		super(arg0);
 		id =  ID_GENERATOR.getAndIncrement();
 	}
-	
+
 	public static void initializeIDGenerator() {
 		ID_GENERATOR = new AtomicLong(0);
 	}
-	
+
 	public synchronized void moveMario(double dx, double dy) {
 		super.move(dx, dy);
-		
-		ServerToClientMessenger.sendMoveMarioMessage(getImageID(), dx, dy);
+		MovingObject o = ((MovingObject) this);
+		o.lobby.messenger.sendMoveMarioMessage(getImageID(), dx, dy);
 	}
-	
-	
+
+
 	public synchronized void moveAsPartOfLevel(double dx, double dy) {
 		//see DynamicLevelPart and StaticLevelPart move functions, they call this func
 		//one websocket message to move entire level by dx, dy (except other mario characters) 
 		//instead of one websocket message PER image when moving level
 		super.move(dx, dy);
 	}
-	
+
 	//TODO still bugs ThreadSafeGImage
 	@Override
 	public synchronized void move(double dx, double dy) {
@@ -44,7 +46,13 @@ public abstract class ThreadSafeGImage extends GImage {
 
 		//String messageToClient = "{ \"type\": \"moveImage\", \"imageId\": \""+getImageID()+"\", \"dx\":\""+dx+"\", \"dy\":\""+dy+"\" }";
 		//System.out.println(messageToClient);
-		ServerToClientMessenger.sendMoveImageMessage(getImageID(), dx, dy);
+		if (this instanceof MovingObject) {
+			MovingObject o = ((MovingObject) this);
+			o.lobby.messenger.sendMoveImageMessage(getImageID(), dx, dy);
+		}  else {
+			MysteryBox o = ((MysteryBox) this);
+			o.lobby.messenger.sendMoveImageMessage(getImageID(), dx, dy);
+		}
 		//need to tell client by how much to move image
 		//ServerToClientMessenger.sendMessage("<<<<<<IMAGE MOVING: "+this.getImage().toString());
 		//{ "type": "moveImage", "imageId": "123", "dx":"10", "dy":"20" }
@@ -56,35 +64,44 @@ public abstract class ThreadSafeGImage extends GImage {
 			//this.getImage is null when a ThreadSafeGImage is instantiated. I am assuming that the super constructor calls the setImage function
 			//when a GImage is instantiated. so when a GImage is instantiated, setImage is called for the first time and this.getImage() is null.
 			//in this case we dont want to send message to client to replace image
-			
+
 			//System.out.println(messageToClient);
-			
-			ServerToClientMessenger.sendReplaceImageMessage(getImageID(), ((MyImage) i).getName());
+
+			if (this instanceof MovingObject) {
+				MovingObject o = ((MovingObject) this);
+				o.lobby.messenger.sendReplaceImageMessage(getImageID(), ((MyImage) i).getName());
+			} else {
+				MysteryBox o = ((MysteryBox) this);
+				o.lobby.messenger.sendReplaceImageMessage(getImageID(), ((MyImage) i).getName());
+			}
 			//need to use ServerToClientMessenger.sendMessage to notify JS to change image when setImage is called
 		}
 		super.setImage(i);
 		//{ "type": "replaceImage", "oldImageId":"luigiStanding", "newImageName":"luigiWalking" }
 	}
-	
+
 	@Override
 	public synchronized void setVisible(boolean b) {
 		super.setVisible(b);
-		
+
 		//System.out.println(messageToClient);
-		ServerToClientMessenger.sendSetVisibilityMessage(getImageID(), b);
+		MovingObject o = ((MovingObject) this);
+		o.lobby.messenger.sendSetVisibilityMessage(getImageID(), b);
 	}
-	
-	
+
+
 	public synchronized void sendToBack() {
 		super.sendToBack();
-		ServerToClientMessenger.sendImageFrontOrBack(getImageID(), false);
+		MovingObject o = ((MovingObject) this);
+		o.lobby.messenger.sendImageFrontOrBack(getImageID(), false);
 	}
-	
+
 	public synchronized void sendToFront() {
 		super.sendToFront();
-		ServerToClientMessenger.sendImageFrontOrBack(getImageID(), true);
+		MovingObject o = ((MovingObject) this);
+		o.lobby.messenger.sendImageFrontOrBack(getImageID(), true);
 	}
-	
+
 
 	public String getMyImageName() {
 		//this works as long as all ThreadSafeGImage use MyImage instead of Image

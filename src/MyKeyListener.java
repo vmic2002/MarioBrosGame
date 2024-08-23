@@ -1,3 +1,5 @@
+
+
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Map;
@@ -64,6 +66,7 @@ public class MyKeyListener implements KeyListener {
 			}
 			System.out.println("Number of threads: "+threads.keySet().size());
 			System.out.println("\n\n");
+			//Thread.getAllStackTraces().keySet().size();
 		}
 
 		if (keyCode == KeyEvent.VK_1) {
@@ -77,7 +80,7 @@ public class MyKeyListener implements KeyListener {
 		} else if (keyCode == KeyEvent.VK_5) {
 			for (Mario m : characters) m.setToTanooki();
 		}  else if (keyCode == KeyEvent.VK_6) {
-			for (Mario m:MovingObject.characters)
+			for (Mario m:characters)
 				m.setToTimeDilating();//every mario character luigi, peach etc is set to time dilating as well	
 			GameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
 
@@ -152,7 +155,9 @@ public class MyKeyListener implements KeyListener {
 			} else if (keyCode == KeyEvent.VK_UP) {
 				mario.wayUpOrWayDown = false;
 			} else if (keyCode == KeyEvent.VK_K) {
-				if (mario.isFire) {mario.isShooting = false;System.out.println("\n\n1111111111111isSHootingsetto false for character[0]\n\n");}
+				if (mario.isFire) {mario.isShooting = false;
+				//System.out.println("\n\n1111111111111isSHootingsetto false for character[0]\n\n");
+				}
 				else if (mario.isCat || mario.isTanooki) mario.isSwinging = false;	
 			}
 		} else if (keyCode == KeyEvent.VK_H || keyCode == KeyEvent.VK_F ||

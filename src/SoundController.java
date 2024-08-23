@@ -1,3 +1,5 @@
+
+
 import java.io.File;
 
 import javax.sound.sampled.AudioSystem;
@@ -11,6 +13,11 @@ public class SoundController {
 	bumpSoundFile, kickSoundFile, coinSoundFile;
 
 	private static boolean runningOnTomcatServer;
+	private ServerToClientMessenger messenger;
+	public SoundController(ServerToClientMessenger messenger) {
+		this.messenger = messenger;
+	}
+	
 	public static void setPrefix(String prefix) {
 		//when running from command line, prefix = "../"
 		//when running from eclipse, prefix = ""
@@ -29,14 +36,14 @@ public class SoundController {
 	}
 	public static void setRunningOnTomcatServer(boolean b) {runningOnTomcatServer=b;}
 
-	private static void playSound(File f) {
+	private void playSound(File f) {
         //should stop playing current sound when a new sound needs to be played
         //this needs to be done for both destkop and online game
 		if (runningOnTomcatServer) {
 			//send message to client to play sound on client side
 			//on server side, playing wav files (not really playing them when running on server, but when playing on desktop wav files are used)
 			//on client side, playing mp3 files because they have smaller file sizes, less loading time
-			ServerToClientMessenger.sendPlaySoundMessage(f.getName().substring(0, f.getName().length()-3)+"mp3");
+			messenger.sendPlaySoundMessage(f.getName().substring(0, f.getName().length()-3)+"mp3");
 			//{ "type": "playSound", "soundName": "Coin.mp3" }
 		} else {
 			try{
@@ -55,67 +62,67 @@ public class SoundController {
 						//and throughout the game they accumulate
 						//THIS LOOKS LIKE IT WORKS
 					}
-				},"close DirectClip thread");
+				},"close DirectClip thread", "");
 			} catch (Exception e){
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public static void playCoinSound() {
+	public void playCoinSound() {
 		//plays when mario collects floating coin or jumps in mysterybox/brick that had coin inside
 		playSound(coinSoundFile);
 	}
 
-	public static void playKickSound() {
+	public void playKickSound() {
 		//plays when mario kicks a turtle in shell mode and stopped so it starts spinning
 		playSound(kickSoundFile);
 	}
 
-	public static void playBumpSound(){
+	public void playBumpSound(){
 		//plays when spinning turtle (in shell mode) bumps into a platform
 		playSound(bumpSoundFile);
 	}
 
 
-	public static void playMarioGoesIntoPipeSound(){
+	public void playMarioGoesIntoPipeSound(){
 		//plays when mario goes into pipe
 		playSound(pipeSoundFile);
 	}
 
-	public static void playMarioDeathSound(){
+	public void playMarioDeathSound(){
 		//plays when mario dies
 		playSound(deathSoundFile);
 	}
 
-	public static void playMarioJumpSound(){
+	public void playMarioJumpSound(){
 		//plays when mario jumps
 		playSound(jumpSoundFile);
 	}
 
-	public static void playPowerUpSound(){
+	public void playPowerUpSound(){
 		//plays when mario comes into contact with mushroom, flower, leaf, etc
 		playSound(powerUpSoundFile);
 	}
-	public static void playMarioHitSound(){
+	public void playMarioHitSound(){
 		//plays when mario gets hit by BadGuy and becomes smaller or loses flower or cat etc
 		playSound(marioGetsHitSoundFile);
 	}
-	public static void playItemOutOfBoxSound() {
+	public void playItemOutOfBoxSound() {
 		playSound(itemOutOfBoxSoundFile);
 	}
 
-	public static void playFireballSound() {
+	public void playFireballSound() {
 		//plays when mario shoots a fireball
 		playSound(fireBallSoundFile);
 	}
 
-	public static void playTailSound() {
+	public void playTailSound() {
 		//plays when mario swings his tail
 		playSound(tailSoundFile);
 	}
 
-	public static void playSquishSound() {
+	public void playSquishSound() {
 		//plays when mario jumps on turtle or goomba
 		playSound(squishSoundFile);
 	}

@@ -1,3 +1,5 @@
+
+
 import java.awt.Image;
 import java.util.ArrayList;
 
@@ -14,13 +16,15 @@ public class Goomba extends BadGuy {
 	private double dx;
 	private double dy;
 	//private boolean previousPointWorked;
-
-	public Goomba() {
-		super(goombaRight);
+	
+	
+	public Goomba(Lobby lobby) {
+		super(goombaRight, lobby);
 		leftOrRightImage = false;
 		leftOrRightFrequency = 0;
 		dx = DX;
 		dy = 0.0;
+		
 	}
 
 	private void toggleRightOrLeft() {
@@ -40,7 +44,7 @@ public class Goomba extends BadGuy {
 		CharacterStatsController.killGoombaByJumpingOnIt(mario);
 		this.alive = false;
 		setImageAndRelocate(goombaSquished);
-		SoundController.playSquishSound();
+		lobby.soundController.playSquishSound();
 		mario.hop();
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
@@ -49,13 +53,13 @@ public class Goomba extends BadGuy {
 				//thread sleeps to let goomba stay squished for a little bit before being removed from canvas
 				kill();
 			}
-		},"goomba kill");
+		},"goomba kill", lobby.getLobbyId());
 	}
 
 	@Override
 	public void move() throws InterruptedException {
 		while (alive) {
-			if (getY()+dy>=canvas.getHeight()+LevelController.currLevel.yBaseLine){//!spinningOrFalling && 
+			if (getY()+dy>=MarioBrosGame.HEIGHT+lobby.levelController.currLevel.yBaseLine){//!spinningOrFalling && 
 				//turtle dies if reaches bottom of screen
 				System.out.println("goomba at bottom of screen ");
 				kill();
@@ -142,7 +146,7 @@ public class Goomba extends BadGuy {
 
 	private boolean nothingThere(Point[] p) {
 		for (int i=0; i<p.length; i++) {
-			if (canvas.getElementAt(p[i].x, p[i].y)!=null){
+			if (lobby.canvas.getElementAt(p[i].x, p[i].y)!=null){
 				return false;
 			}
 		}

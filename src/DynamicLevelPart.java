@@ -1,3 +1,5 @@
+
+
 public class DynamicLevelPart {
 	//for level parts that are added dynamically (while level is playing) to a Level's dynamicLevelParts
 	//see Dynamic.java

@@ -1,12 +1,14 @@
-import acm.graphics.GCanvas;
-import acm.graphics.GImage;
+
+
+//import acm.graphics.GCanvas;
+//import acm.graphics.GImage;
 import acm.graphics.GObject;
 
-import java.awt.Image;
+//import java.awt.Image;
 public class FireFlower extends PowerUp {
 	private static MyImage fireFlowerImage;
-	public FireFlower() {
-		super(fireFlowerImage);
+	public FireFlower(Lobby lobby) {
+		super(fireFlowerImage, lobby);
 	}
 	
 	@Override

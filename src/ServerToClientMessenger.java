@@ -1,12 +1,18 @@
-import jakarta.websocket.Session;
+//import jakarta.websocket.Session;
 public class ServerToClientMessenger {
 	//this class will hanle sending messages to the client: when to play sound, when to move images, when to switch images, showImageAndSetlocation, and hideImage (etc)
-	private static String lobbyId;
-	private static Lobby lobby;
-	public static void setLobbyId(String id) {
-		lobbyId = id;
-		lobby = MyWebSocketServer.getLobby(id);
+	//private static String lobbyId;
+	private Lobby lobby;
+	
+	public ServerToClientMessenger(String lobbyId) {
+		lobby = MyWebSocketServer.getLobby(lobbyId);
 	}
+	//public void setLobbyId(String id) {
+		//lobbyId = id;
+		//lobby = MyWebSocketServer.getLobby(id);
+	//}
+	
+	
 	//13 types of messages that server sends to client:
 	//1. moveImage, 2. playSound, 3. replaceImage 
 	//4. addLevelImageToScreen, and 5. removeImageFromScreen, 6. setVisibility
@@ -38,63 +44,63 @@ public class ServerToClientMessenger {
 	//we differentiate between levelimages and characterimages because on the client side (javascript)
 	//client keeps track of images in two hashmaps: one for levelimages and one for characterimages (mario, luigi, etc)
 
-	private static void sendMessage(String message) {
+	private void sendMessage(String message) {
 		if (lobby!=null)
 			MyWebSocketServer.sendMessage(message, lobby);
 		//else System.out.println("SESSION NULLL");
 	}
 
-	public static void sendMoveImageMessage(long imageID, double dx, double dy) {
+	public  void sendMoveImageMessage(long imageID, double dx, double dy) {
 		String messageToClient = "{ \"type\": \"moveImage\", \"imageId\": \""+imageID+"\", \"dx\":\""+dx+"\", \"dy\":\""+dy+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendPlaySoundMessage(String soundName) {
+	public void sendPlaySoundMessage(String soundName) {
 		String messageToClient = "{\"type\": \"playSound\", \"soundName\": \""+soundName+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendReplaceImageMessage(long oldImageID, String newImageName) {
+	public void sendReplaceImageMessage(long oldImageID, String newImageName) {
 		String messageToClient = "{ \"type\": \"replaceImage\", \"oldImageId\":\""+oldImageID+"\", \"newImageName\":\""+newImageName+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendAddLevelImageToScreenMessage(ThreadSafeGImage image) {
+	public void sendAddLevelImageToScreenMessage(ThreadSafeGImage image) {
 		String messageToClient = "{ \"type\": \"addLevelImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendRemoveImageFromScreenMessage(long imageID) {
+	public void sendRemoveImageFromScreenMessage(long imageID) {
 		String messageToClient = "{ \"type\": \"removeImageFromScreen\", \"id\": \""+imageID+"\"}";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendSetVisibilityMessage(long imageID, boolean visibility) {
+	public void sendSetVisibilityMessage(long imageID, boolean visibility) {
 		String messageToClient = "{ \"type\": \"setVisible\", \"imageId\": \""+imageID+"\", \"bool\":\""+visibility+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendMoveLevelMessage(double dx, double dy) {
+	public void sendMoveLevelMessage(double dx, double dy) {
 		String messageToClient = "{ \"type\": \"moveLevel\", \"dx\": \""+dx+"\", \"dy\":\""+dy+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendMoveMarioMessage(long imageID, double dx, double dy) {
+	public void sendMoveMarioMessage(long imageID, double dx, double dy) {
 		String messageToClient = "{ \"type\": \"moveMarioCharacter\", \"imageId\": \""+imageID+"\", \"dx\":\""+dx+"\", \"dy\":\""+dy+"\" }";
 		sendMessage(messageToClient);
 	}
 
-	public static void sendAddCharacterImageToScreenMessage(ThreadSafeGImage image) {
+	public void sendAddCharacterImageToScreenMessage(ThreadSafeGImage image) {
 		String messageToClient = "{ \"type\": \"addCharacterImageToScreen\", \"imageName\": \""+image.getMyImageName()+"\", \"id\":\""+image.getImageID()+"\", \"x\":\""+image.getX()+"\", \"y\":\""+image.getY()+"\" }";
 		sendMessage(messageToClient);
 	}
 	
-	public static void sendRemoveAllImagesFromScreenMessage() {
+	public void sendRemoveAllImagesFromScreenMessage() {
 		String messageToClient = "{ \"type\": \"removeAllImagesFromScreen\"}";
 		sendMessage(messageToClient);
 	}
 	
-	public static void sendImageFrontOrBack(long imageID, boolean frontOrBack) {
+	public void sendImageFrontOrBack(long imageID, boolean frontOrBack) {
 		String messageToClient = "{ \"type\": \"setFrontOrBack\", \"imageId\": \""+imageID+"\", \"bool\":\""+frontOrBack+"\" }";
 		sendMessage(messageToClient);
 	}

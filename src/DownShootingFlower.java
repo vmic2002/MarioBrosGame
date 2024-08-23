@@ -1,3 +1,5 @@
+
+
 import java.awt.Image;
 
 import acm.graphics.GObject;
@@ -8,8 +10,8 @@ public class DownShootingFlower extends ShootingFlower{
 	downShootingFlowerLeftUpClosedImage, downShootingFlowerLeftUpOpenImage,
 	downShootingFlowerRightDownClosedImage, downShootingFlowerRightDownOpenImage,
 	downShootingFlowerRightUpClosedImage, downShootingFlowerRightUpOpenImage;
-	public DownShootingFlower(int timeOffset) {
-		super(downShootingFlowerLeftDownClosedImage, timeOffset);
+	public DownShootingFlower(int timeOffset, Lobby lobby) {
+		super(downShootingFlowerLeftDownClosedImage, timeOffset, lobby);
 	}
 	
 	public Point[] getPoints() {

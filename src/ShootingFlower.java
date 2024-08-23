@@ -14,8 +14,8 @@ public abstract class ShootingFlower extends BadGuy {
 	public int timeOffset;
 	//timeOffset is so that not all flowers in a level come in/out of pipe at the same time
 	//can use timeOffset to coordinate flowers to come out at same time
-	public ShootingFlower(MyImage arg0, int timeOffset) {
-		super(arg0);
+	public ShootingFlower(MyImage arg0, int timeOffset, Lobby lobby) {
+		super(arg0, lobby);
 		if (this instanceof UpShootingFlower) dy = -DY;
 		else dy = DY;//(this instanceof DownShootingFlower)
 		numMoves = (int) (getHeight()/DY);
@@ -43,10 +43,10 @@ public abstract class ShootingFlower extends BadGuy {
 
 	public Mario getClosestMario() {
 		int index = 0;
-		double smallestDistance = MovingObject.canvas.getWidth()*2;
+		double smallestDistance = MarioBrosGame.WIDTH*2;
 		//System.out.println("smallestDistance: "+smallestDistance);
-		for (int i=0; i<MovingObject.characters.length; i++) {
-			Mario m = MovingObject.characters[i];
+		for (int i=0; i<lobby.characters.length; i++) {
+			Mario m = lobby.characters[i];
 			double d = Math.sqrt(Math.pow(m.getX()+m.getWidth()/2-this.getX()-this.getWidth()/2, 2)+Math.pow(m.getY()+m.getHeight()/2-this.getY()-this.getHeight()/2, 2));
 			//System.out.println("!!!!!!!!LOOp AT: "+m.character+"   "+d);
 			if (d<smallestDistance) {
@@ -55,7 +55,7 @@ public abstract class ShootingFlower extends BadGuy {
 			}
 		}
 		//System.out.println("shooting at:" +MovingObject.characters[index].character.name()+ " smallest distance; "+smallestDistance);
-		return MovingObject.characters[index];
+		return lobby.characters[index];
 	}
 
 	public void shootMario() throws InterruptedException {
@@ -83,9 +83,9 @@ public abstract class ShootingFlower extends BadGuy {
 			closeMouth(upOrDown, rightOrLeft);
 			return;
 		};
-		if  (getX()<=canvas.getWidth() && getX()+getWidth()>=0
-				&& getY()<=canvas.getHeight() && getY()+getHeight()>=0) {	
-			DynamicFactory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
+		if  (getX()<=MarioBrosGame.WIDTH && getX()+getWidth()>=0
+				&& getY()<=MarioBrosGame.HEIGHT && getY()+getHeight()>=0) {	
+			lobby.dFactory.addFlowerFireBall(fireBallX, fireBallY, rightOrLeft, mario);
 			//only flowers on screen shoot at mario
 			//flower still comes out of pipe when off screen to preserve timeOffset
 		}

@@ -1,3 +1,5 @@
+
+
 public class Platform extends ThreadSafeGImage {
 	//a Platform is something mario cannot run through or jump through
 	//MysteryBox, WoodBox, Pipe, ground, etc basically anything that if mario tries to walk into,

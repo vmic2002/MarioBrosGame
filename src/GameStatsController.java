@@ -1,4 +1,6 @@
 
+
+
 public class GameStatsController {
 	//sets baseline speeds of MovingObjects + baseline TIME between move function calls (Thread.sleep(TIME))	
 	private static Mario mario;

@@ -1,3 +1,4 @@
+
 import java.util.ArrayList;
 
 public class BillBlasterController{
@@ -6,18 +7,19 @@ public class BillBlasterController{
 	//out of the BillBlaster (Platform p is to keep track of current position of BillBlaster)
 	//at start of level, LevelController calls startOfLevel()
 	//at end of level, LevelControlelr calls endOfLevel() to stop all threads from shooting more BulletBills
-	private static long pause = 100;
-	private static ArrayList<Thread> threads;
-	private static MyGCanvas canvas;
-	public static void setCanvas(MyGCanvas canvas1) {canvas=canvas1;}
-	public static void startOfLevel() {threads = new ArrayList<Thread>();}
+	private static final long pause = 100;
+	private ArrayList<Thread> threads;
+	//private MyGCanvas canvas;
+	private Lobby lobby;
+	public BillBlasterController(Lobby lobby) {this.lobby = lobby;}
+	public void startOfLevel() {threads = new ArrayList<Thread>();}
 	@SuppressWarnings("deprecation")
-	public static void endOfLevel() {for (Thread t: threads) t.interrupt();
+	public void endOfLevel() {for (Thread t: threads) t.interrupt();
 	System.out.println("\tTOTAL OF "+threads.size()+ " threads");}
 	
 	//number of threads == number of BillBlaster in currLevel
 
-	public static void startShooting(BillBlasterTop p) {
+	public void startShooting(BillBlasterTop p) {
 		//p is top of bill blaster (where BulletBill needs to be shot from)
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
@@ -27,16 +29,16 @@ public class BillBlasterController{
 				while (true) {
 					boolean rightOrLeft = Math.random()>0.5;
 					//TODO to shoot from both sides call addBulletBill twice, once with true and once with false (rightOrLeft)
-					if (p.getX()<=canvas.getWidth() && p.getX()+p.getWidth()>=0
-							&& p.getY()<=canvas.getHeight() && p.getY()+p.getHeight()>=0) {
+					if (p.getX()<=MarioBrosGame.WIDTH && p.getX()+p.getWidth()>=0
+							&& p.getY()<=MarioBrosGame.HEIGHT && p.getY()+p.getHeight()>=0) {
 						//only BillBlasters on screen shoot a BulletBill
-						DynamicFactory.addBulletBill(p.getX(), p.getY(), rightOrLeft);
+						lobby.dFactory.addBulletBill(p.getX(), p.getY(), rightOrLeft);
 					}
 					//System.out.println("\n\nSHOOTING BULLET BILL\n\n\n");
 					ThreadSleep.sleep(5*pause);
 				}
 			}
-		},"Bill Blaster");
+		},"Bill Blaster", lobby.getLobbyId());
 		threads.add(t1);
 	}
 }

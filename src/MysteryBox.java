@@ -1,5 +1,7 @@
 
 
+
+
 public class MysteryBox extends Platform {
 	//extends Platform means that this is something mario would not be able
 	//to walk/jump into. if he does, it will halt him
@@ -12,10 +14,12 @@ public class MysteryBox extends Platform {
 	// a mystery box either spawns a power up, a coin, or RANDOM
 	public enum SPAWN {Leaf, Mushroom, Tanooki, FireFlower, Hourglass, Coin, RANDOM};
 	private SPAWN spawn;
-	public MysteryBox(SPAWN s) {
+	protected Lobby lobby;
+	public MysteryBox(SPAWN s, Lobby lobby) {
 		super(mysteryBox1Image);
 		mysteryBoxState = MYSTERYBOX_STATE.STATE_1;
 		spawn = s;
+		this.lobby = lobby;
 	}
 
 	public void toggleState() {
@@ -49,7 +53,7 @@ public class MysteryBox extends Platform {
 				}
 				System.out.println("END OF CHANGING STATE FOR MYSTERYBOX");
 			}
-		},"mystery box changing states");
+		},"mystery box changing states", lobby.getLobbyId());
 	}
 
 	public boolean stateIsFinal() {
@@ -63,7 +67,7 @@ public class MysteryBox extends Platform {
 	public void hitByMario(boolean marioBigOrSmall, Mario m) {
 		//only called once, mystery box only spawns something once
 		setToFinalState();
-		SoundController.playItemOutOfBoxSound();
+		lobby.soundController.playItemOutOfBoxSound();
 		setImage(mysteryBoxFinalImage);
 		double x  = this.getX();
 		double y = this.getY();
@@ -72,35 +76,35 @@ public class MysteryBox extends Platform {
 			double rand = Math.random();
 			if (!marioBigOrSmall) {//small mario gets mushroom, hourglass, or coin
 				if (rand<0.6)
-					DynamicFactory.addMushroom(x, y, this.getWidth());
+					lobby.dFactory.addMushroom(x, y, this.getWidth());
 				else if (rand<0.7)
-					DynamicFactory.addHourglass(x, y, this.getWidth());
-				else DynamicFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
+					lobby.dFactory.addHourglass(x, y, this.getWidth());
+				else lobby.dFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
 			} else {
 				//if mario is big, he has equal change of getting fireflower,
 				//hourglass, leaf, tanooki, or coin
 				if (rand>0.8)
-					DynamicFactory.addFireFlower(x, y, this.getWidth());
+					lobby.dFactory.addFireFlower(x, y, this.getWidth());
 				else if (rand>0.6)
-					DynamicFactory.addHourglass(x, y, this.getWidth());
+					lobby.dFactory.addHourglass(x, y, this.getWidth());
 				else if (rand>0.4)
-					DynamicFactory.addLeaf(x, y, this.getWidth());
+					lobby.dFactory.addLeaf(x, y, this.getWidth());
 				else if (rand>0.2)
-					DynamicFactory.addTanooki(x, y, this.getWidth());
-				else DynamicFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
+					lobby.dFactory.addTanooki(x, y, this.getWidth());
+				else lobby.dFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
 			}
 		} else if (spawn.equals(SPAWN.FireFlower)) {
-			DynamicFactory.addFireFlower(x, y, this.getWidth());
+			lobby.dFactory.addFireFlower(x, y, this.getWidth());
 		} else if (spawn.equals(SPAWN.Hourglass)) {
-			DynamicFactory.addHourglass(x, y, this.getWidth());
+			lobby.dFactory.addHourglass(x, y, this.getWidth());
 		} else if (spawn.equals(SPAWN.Leaf)) {
-			DynamicFactory.addLeaf(x, y, this.getWidth());
+			lobby.dFactory.addLeaf(x, y, this.getWidth());
 		} else if (spawn.equals(SPAWN.Mushroom)) {
-			DynamicFactory.addMushroom(x, y, this.getWidth());
+			lobby.dFactory.addMushroom(x, y, this.getWidth());
 		} else if (spawn.equals(SPAWN.Tanooki)) {
-			DynamicFactory.addTanooki(x, y, this.getWidth());
+			lobby.dFactory.addTanooki(x, y, this.getWidth());
 		} else if (spawn.equals(SPAWN.Coin)) {
-			DynamicFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
+			lobby.dFactory.addMysteryBoxCoin(x, y, this.getWidth(), m);
 		}
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
@@ -110,7 +114,7 @@ public class MysteryBox extends Platform {
 				dy = -dy;
 				move(dy);//move down
 			}
-		},"mysterybox hit by mario");
+		},"mysterybox hit by mario", lobby.getLobbyId());
 	}
 
 	public void move(double dy) throws InterruptedException {

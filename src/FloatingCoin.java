@@ -1,11 +1,17 @@
 
+
+
 public class FloatingCoin extends Coin {
-//COIN PART OF TRIANGLE OR RECTANGLE COIN GRIDS, NOT SPAWNED FROM MYSTERYBOX OR BRICK
+	public FloatingCoin(Lobby lobby) {
+		super(lobby);
+	}
+
+	//COIN PART OF TRIANGLE OR RECTANGLE COIN GRIDS, NOT SPAWNED FROM MYSTERYBOX OR BRICK
 	@Override 
 	public void collectedByMario(Mario mario){
 		if (collected()) return;
 		CharacterStatsController.collectCoin(mario);
-		SoundController.playCoinSound();
+		lobby.soundController.playCoinSound();
 		coinState = Coin.COIN_STATE.COLLECTED;
 		kill();
 	}

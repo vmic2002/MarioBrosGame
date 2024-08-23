@@ -1,3 +1,5 @@
+
+
 //import java.awt.Image;
 //import acm.graphics.GCanvas;
 import acm.graphics.GObject;
@@ -6,7 +8,7 @@ public abstract class Coin extends MovingObject implements Dynamic{
 	//coin extend MovingObject because it is added to level by DynamicFactory
 	//2 types of coins -> floating coins (in level) and coins that come out of mysterybox, bricks etc
 	//floating coins moved in FloatingCoinsBlock.startSpinningBlock(), see FloatingCoinsBlock.java
-	private static MyGCanvas canvas;
+	//private static MyGCanvas canvas;
 	private static MyImage coin1Image, coin2Image, coin3Image;
 	public final static int pauseBetweenStates = 15;
 	public enum COIN_STATE {STATE_1, STATE_2, STATE_3, COLLECTED};
@@ -14,8 +16,8 @@ public abstract class Coin extends MovingObject implements Dynamic{
 	COIN_STATE coinState;
 	
 
-	public Coin() {
-		super(coin1Image);
+	public Coin(Lobby lobby) {
+		super(coin1Image, lobby);
 		coinState = COIN_STATE.STATE_1;
 	}
 
@@ -41,11 +43,11 @@ public abstract class Coin extends MovingObject implements Dynamic{
 
 	public abstract void collectedByMario(Mario mario);
 
-	public static void setObjects(MyImage image1, MyImage image2, MyImage image3, MyGCanvas canvas1) {
+	public static void setObjects(MyImage image1, MyImage image2, MyImage image3) {//, MyGCanvas canvas1) {
 		coin1Image = image1;
 		coin2Image = image2;
 		coin3Image = image3;
-		canvas = canvas1;
+		//canvas = canvas1;
 	}
 
 
@@ -57,10 +59,10 @@ public abstract class Coin extends MovingObject implements Dynamic{
 
 	@Override
 	public void kill() {
-		if (!LevelController.endingLevel()) {
-			canvas.remove(this);
+		if (!lobby.levelController.endingLevel()) {
+			lobby.canvas.remove(this);
 			alive = false;
-			LevelController.currLevel.removeDynamic(this);
+			lobby.levelController.currLevel.removeDynamic(this);
 		}
 	}
 

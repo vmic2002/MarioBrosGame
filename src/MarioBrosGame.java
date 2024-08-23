@@ -1,3 +1,5 @@
+
+
 //import java.awt.image.BufferedImage;
 import java.awt.Color;
 //import java.awt.Image;
@@ -38,20 +40,26 @@ public class MarioBrosGame {
 	 * TODO could have campaign mode (worlds) AND mode with randomly generated levels!
 	 */
 
-	private static final int WIDTH = 1300;//1200;
-	private static final int HEIGHT = 900;//800;
+	public static final int WIDTH = 1300;//1200;
+	public static final int HEIGHT = 900;//800;
 	public static final int numPlayers = Mario.CHARACTER.values().length;
 
+
+
 	public static void main(String[] args) {
-
-
+		String lobbyId = "";
+		Lobby lobby = new Lobby("");//if runningOnTomcatServer, lobby will be modified to the lobby object with the correct lobbyId
+		//when playing on desktop, Lobby class will still be used but it will be meaningless, will be used only to have reference to its fields
 		System.out.println("RUNNING MAIN FUNCTION");
 		boolean runningOnTomcatServer = false;
 		if (args.length>0) {
-			System.out.println("Lobby id: "+args[0]);
+			lobbyId = args[0];
+			System.out.println("Lobby id: "+lobbyId);
 
-			ServerToClientMessenger.setLobbyId(args[0]);
+
+
 			runningOnTomcatServer = true;
+			lobby = MyWebSocketServer.getLobby(lobbyId);
 		}
 
 		// If running game on java web server and connecting to client site (website) via javascript using websockets,
@@ -984,7 +992,7 @@ public class MarioBrosGame {
 
 
 
-				Mario.CHARACTER.MARIO
+				Mario.CHARACTER.MARIO, lobby
 				);	
 		Luigi luigi = new Luigi(smallLuigiLeftImage,smallLuigiRightImage,
 				smallLuigiLeftWalkingImage, smallLuigiRightWalkingImage, smallLuigiLeftJumpingImage, 
@@ -1045,19 +1053,19 @@ public class MarioBrosGame {
 				timedilatingbigLuigiLeftCrouchingImage,
 				timedilatingbigLuigiRightJumpingDownImage,
 
-				Mario.CHARACTER.LUIGI);
+				Mario.CHARACTER.LUIGI, lobby);
 		int numCharacters = numPlayers;//number of players in game. could add toad peach etc for more characters (all playing at the same time in same level!)
 		Mario[] characters = new Mario[numCharacters];
 		characters[0] = mario;
 		characters[1] = luigi;
 
-		
-		
-		
-		
-		
-		
-		
+
+
+
+
+
+
+
 		GameStatsController.setCharacters(mario, luigi);
 
 		int fallDy = (int) (smallMarioLeftImage.getHeight(canvas)/(10.0));
@@ -1077,8 +1085,8 @@ public class MarioBrosGame {
 
 
 		CharacterStatsController.initializeStats(characters);
-		MovingObject.setObjects(canvas, characters);
-		Coin.setObjects(coin1, coin2, coin3, canvas);
+		//MovingObject.setObjects(canvas, characters);
+		Coin.setObjects(coin1, coin2, coin3);
 		Goomba.setObjects(goombaRight, goombaLeft, goombaSquished);
 		BulletBill.setObjects(leftBulletBill, rightBulletBill);
 		RedTurtle.setObjects(redTurtleSpinning1, redTurtleSpinning2, 
@@ -1102,32 +1110,67 @@ public class MarioBrosGame {
 		FireFlower.setObjects(fireFlowerImage);
 		Leaf.setObjects(rightLeafImage, leftLeafImage);
 		Hourglass.setObject(timeDilationPowerup);
-		DynamicFactory.setCanvas(canvas);
-		StaticFactory.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
-				grassRightImage,grassMiddleImage, 
-				pipeUpTopLeft, pipeUpTopRight, pipeDownMiddleLeft, pipeDownMiddleRight,
-				pipeDownTopLeft, pipeDownTopRight, pipeUpMiddleLeft, 
-				pipeUpMiddleRight, billBlasterMiddle, billBlasterBottom,
-				greenMushroomPlatformLeft,
-				redMushroomPlatformLeft,
-				greenMushroomPlatformMiddle,
-				yellowMushroomPlatformMiddle,
-				redMushroomPlatformRight,
-				mushroomPlatformBottom,
-				yellowMushroomPlatformLeft,
-				yellowMushroomPlatformRight,
-				greenMushroomPlatformRight,
-				redMushroomPlatformMiddle,
-				canvas);
+		DynamicFactory dFactory = new DynamicFactory(lobby);
+		StaticFactory sFactory = new StaticFactory(lobby);
+		if (!StaticFactory.imagesSet()) {
+			StaticFactory.setObjects(grassLeftTopImage,grassRightTopImage, grassMidleTopImage, grassLeftImage, 
+					grassRightImage,grassMiddleImage, 
+					pipeUpTopLeft, pipeUpTopRight, pipeDownMiddleLeft, pipeDownMiddleRight,
+					pipeDownTopLeft, pipeDownTopRight, pipeUpMiddleLeft, 
+					pipeUpMiddleRight, billBlasterMiddle, billBlasterBottom,
+					greenMushroomPlatformLeft,
+					redMushroomPlatformLeft,
+					greenMushroomPlatformMiddle,
+					yellowMushroomPlatformMiddle,
+					redMushroomPlatformRight,
+					mushroomPlatformBottom,
+					yellowMushroomPlatformLeft,
+					yellowMushroomPlatformRight,
+					greenMushroomPlatformRight,
+					redMushroomPlatformMiddle
+					);
+			//canvas);
+		}
 		BillBlasterTop.setImage(billBlasterTop);
-		LevelController.setObjects(canvas);
-		BillBlasterController.setCanvas(canvas);
+
+
+		LevelController levelController = new LevelController(lobby);
+		BillBlasterController billBlasterController = new BillBlasterController(lobby);
+		VirtualClientKeyboard virtualClientKeyboard = null;
 		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
-		else VirtualClientKeyboard.setCharacters(characters);
+		else {
+			virtualClientKeyboard = new VirtualClientKeyboard(characters);
+		}
 
 
 
-		LevelController.playLevel("0");		
+
+
+
+
+
+
+		ServerToClientMessenger messenger = new ServerToClientMessenger(lobbyId);
+		SoundController soundController = new SoundController(messenger);
+
+		lobby.setObjects(messenger, dFactory, sFactory, levelController, canvas, billBlasterController, characters, soundController, virtualClientKeyboard);
+
+
+
+		canvas.setMessenger(messenger);
+
+
+
+
+		levelController.playLevel("0");
+
+
+
+
+
+
+
+
 
 	}
 }

@@ -1,26 +1,32 @@
+
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import acm.graphics.GCanvas;
+//import acm.graphics.GCanvas;
 
 public class DynamicFactory {
 	//this class spawns MovingObjects that implement Dynamic and adds them to dynamicLevelParts
 	//dynamically while a level is being played and calls their move function
 	//powerups, fireballs, bulletbill etc
-	private static MyGCanvas canvas;
-	public static void setCanvas(MyGCanvas canvas1) {
-		canvas = canvas1;
+	//private MyGCanvas canvas;
+	//private LevelController levelController;
+	//private ServerToClientMessenger messenger;
+	private Lobby lobby;
+	public DynamicFactory(Lobby lobby) {
+
+		this.lobby = lobby;
 	}
 
-	private static void addPowerUp(double x, double y, double mysteryBoxWidth, PowerUp powerUp) {
+	private void addPowerUp(double x, double y, double mysteryBoxWidth, PowerUp powerUp) {
 		//adds power up behing mystery box and makes it move up
 		//so it looks like power up is coming out of mysteryBox
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException {
-				LevelController.currLevel.addLevelPartDynamically(powerUp);
-				canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
-				ServerToClientMessenger.sendAddLevelImageToScreenMessage(powerUp);
+				lobby.levelController.currLevel.addLevelPartDynamically(powerUp);
+				lobby.canvas.add(powerUp, x+(mysteryBoxWidth-powerUp.getWidth())/2, y);
+				lobby.messenger.sendAddLevelImageToScreenMessage(powerUp);
 				powerUp.sendToBack();
 				while (powerUp.getY()>y-powerUp.getHeight()) {
 					powerUp.move(0, -MovingObject.getBaseLineSpeed()/2.0);
@@ -32,80 +38,80 @@ public class DynamicFactory {
 				powerUp.move();//instead of calling powerUp.startMove(), 
 				//to call move func in new thread, call move func in current thread
 			}
-		},"power up move function");
+		},"power up move function", lobby.getLobbyId());
 	}
 
-	public static void addMushroom(double x, double y, double mysteryBoxWidth) {
+	public void addMushroom(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
-		Mushroom mushroom = new Mushroom();
+		Mushroom mushroom = new Mushroom(lobby);
 		addPowerUp(x, y, mysteryBoxWidth, mushroom);
 	}
 
-	public static void addFireFlower(double x, double y, double mysteryBoxWidth) {
+	public void addFireFlower(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
-		FireFlower fireFlower = new FireFlower();
+		FireFlower fireFlower = new FireFlower(lobby);
 		addPowerUp(x, y, mysteryBoxWidth, fireFlower);
 	}
 
-	public static void addLeaf(double x, double y, double mysteryBoxWidth) {
+	public void addLeaf(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
-		Leaf leaf = new Leaf(Math.random()>0.5);
+		Leaf leaf = new Leaf(Math.random()>0.5, lobby);
 		addPowerUp(x, y, mysteryBoxWidth, leaf);
 	}
 
-	public static void addTanooki(double x, double y, double mysteryBoxWidth) {
+	public void addTanooki(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
-		Tanooki tanooki = new Tanooki();
+		Tanooki tanooki = new Tanooki(lobby);
 		addPowerUp(x, y, mysteryBoxWidth, tanooki);
 	}
 
 
-	public static void addHourglass(double x, double y, double mysteryBoxWidth) {
+	public void addHourglass(double x, double y, double mysteryBoxWidth) {
 		//x, y are coordinates of MysteryBox
-		Hourglass hourglass = new Hourglass();
+		Hourglass hourglass = new Hourglass(lobby);
 		addPowerUp(x, y, mysteryBoxWidth, hourglass);
 	}
 
-	public static void addMysteryBoxCoin(double x, double y, double mysteryBoxWidth, Mario m) {
+	public void addMysteryBoxCoin(double x, double y, double mysteryBoxWidth, Mario m) {
 		//called when Mario jumps into mysterybox or brick
-		Coin coin = new MysteryBoxCoin();
-		canvas.add(coin, x+(mysteryBoxWidth-coin.getWidth())/2, y-coin.getHeight());
-		ServerToClientMessenger.sendAddLevelImageToScreenMessage(coin);
-		LevelController.currLevel.addLevelPartDynamically(coin);
+		Coin coin = new MysteryBoxCoin(lobby);
+		lobby.canvas.add(coin, x+(mysteryBoxWidth-coin.getWidth())/2, y-coin.getHeight());
+		lobby.messenger.sendAddLevelImageToScreenMessage(coin);
+		lobby.levelController.currLevel.addLevelPartDynamically(coin);
 		CharacterStatsController.collectCoin(m);
-		SoundController.playCoinSound();
+		lobby.soundController.playCoinSound();
 		coin.startMove("mysterybox coin");
 	}
-	public static void addFireBall(double x, double y, boolean rightOrLeft) {
+	public void addFireBall(double x, double y, boolean rightOrLeft) {
 		//called when fire mario launches a fireball
-		FireBall fireBall = new FireBall(rightOrLeft);
-		canvas.add(fireBall, x, y);
-		ServerToClientMessenger.sendAddLevelImageToScreenMessage(fireBall);
-		LevelController.currLevel.addLevelPartDynamically(fireBall);
+		FireBall fireBall = new FireBall(rightOrLeft, lobby);
+		lobby.canvas.add(fireBall, x, y);
+		lobby.messenger.sendAddLevelImageToScreenMessage(fireBall);
+		lobby.levelController.currLevel.addLevelPartDynamically(fireBall);
 		fireBall.startMove("mario fireball");
 	}
 
-	public static void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
+	public void addFlowerFireBall(double x, double y, boolean rightOrLeft, Mario mario) {
 		//called when flower in pipe shoots a fireball at mario
-		FireBall fireBall = new FireBall(rightOrLeft);
-		canvas.add(fireBall, x, y);
-		ServerToClientMessenger.sendAddLevelImageToScreenMessage(fireBall);
-		LevelController.currLevel.addLevelPartDynamically(fireBall);
+		FireBall fireBall = new FireBall(rightOrLeft, lobby);
+		lobby.canvas.add(fireBall, x, y);
+		lobby.messenger.sendAddLevelImageToScreenMessage(fireBall);
+		lobby.levelController.currLevel.addLevelPartDynamically(fireBall);
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException{
 				fireBall.shootAtMario(mario);
 			}
-		},"shootingflower fireball");
+		},"shootingflower fireball", lobby.getLobbyId());
 	}
 
-	public static void addBulletBill(double x, double y, boolean rightOrLeft) {
+	public void addBulletBill(double x, double y, boolean rightOrLeft) {
 		//called when BillBlaster shoots a BulletBill
-		BulletBill bulletBill = new BulletBill(rightOrLeft);
-		canvas.add(bulletBill, x, y);
-		ServerToClientMessenger.sendAddLevelImageToScreenMessage(bulletBill);
+		BulletBill bulletBill = new BulletBill(rightOrLeft, lobby);
+		lobby.canvas.add(bulletBill, x, y);
+		lobby.messenger.sendAddLevelImageToScreenMessage(bulletBill);
 		bulletBill.sendToBack();//spawns behind BillBlaster
-		LevelController.currLevel.addLevelPartDynamically(bulletBill);
+		lobby.levelController.currLevel.addLevelPartDynamically(bulletBill);
 		bulletBill.startMove("bullet bill");
 	}
 
@@ -115,42 +121,42 @@ public class DynamicFactory {
 	//add levelparts to temp hashmap
 	//!!!!!
 
-	public static void addGoomba(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
-		Goomba goomba = new Goomba();
-		canvas.add(goomba, x, y-goomba.getHeight());
+	public void addGoomba(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		Goomba goomba = new Goomba(lobby);
+		lobby.canvas.add(goomba, x, y-goomba.getHeight());
 		Level.addLevelPartDynamically(goomba, dynamicLevelParts);
 	}
 
-	public static void addRedTurtle(double x, double y, double width, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
-		RedTurtle turtle = new RedTurtle(width);
-		canvas.add(turtle, x, y-turtle.getHeight());
+	public void addRedTurtle(double x, double y, double width, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		RedTurtle turtle = new RedTurtle(width, lobby);
+		lobby.canvas.add(turtle, x, y-turtle.getHeight());
 		Level.addLevelPartDynamically(turtle, dynamicLevelParts);
 	}
 
-	public static void addUpShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
-		ShootingFlower flower = new UpShootingFlower(timeOffset);
+	public void addUpShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		ShootingFlower flower = new UpShootingFlower(timeOffset, lobby);
 		double width = flower.getWidth();
-		canvas.add(flower, x-width/2, y);
+		lobby.canvas.add(flower, x-width/2, y);
 		flower.sendToBack();
 		Level.addLevelPartDynamically(flower, dynamicLevelParts);
 	}
 
-	public static void addDownShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
-		ShootingFlower flower = new DownShootingFlower(timeOffset);
+	public void addDownShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		ShootingFlower flower = new DownShootingFlower(timeOffset, lobby);
 		double width = flower.getWidth();
 		double height = flower.getHeight();
-		canvas.add(flower, x-width/2, y-height);
+		lobby.canvas.add(flower, x-width/2, y-height);
 		flower.sendToBack();
 		Level.addLevelPartDynamically(flower, dynamicLevelParts);
 	}
 
 
-	private static double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts, FloatingCoinsBlock floatingCoinsBlock) {
+	private double addFloatingCoin(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts, FloatingCoinsBlock floatingCoinsBlock) {
 		//called at level creation time (in LevelController.playLevelX func) for coins that float in air
 		//a floating coin is part of a FloatingCoinsBlock
-		FloatingCoin coin = new FloatingCoin();
+		FloatingCoin coin = new FloatingCoin(lobby);
 		double height = coin.getHeight();//this is height of coin in stage 1 (when it is tallest)
-		canvas.add(coin, x, y);
+		lobby.canvas.add(coin, x, y);
 		Level.addLevelPartDynamically(coin, dynamicLevelParts);
 		//coins start spinning in LevelController.startMovingObjects()
 		//1 thread per FloatingCoinsBlock
@@ -159,32 +165,32 @@ public class DynamicFactory {
 		return height;
 	}
 
-	public static void addFloatingCoinsRectangle(double x, double y, int w, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks) {
+	public void addFloatingCoinsRectangle(double x, double y, int w, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks) {
 		//called at level creation time
 		//adds a 2D array of floating coins of width w (num coins wide) and height h (num coins high)
 		//to dynamicLevelParts
 		//1 FloatingCoinsBlock per floating coins rectangle
 		FloatingCoinsBlock floatingCoinsBlock = new FloatingCoinsBlock();
 
-		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts, floatingCoinsBlock);
+		double coinHeight = addFloatingCoin(x, y, dynamicLevelParts, floatingCoinsBlock);
 		double space = coinHeight/4;
 		//assuming coinWidth is equal to coinHeight (it basically is, coin1.png is very close to being a square)
 		if (w<2) w=2;
 		if (h<2) h=2;
 		for (int i=0; i<w; i++) {
 			for (int j=1; j<h; j++) {
-				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y+j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
+				addFloatingCoin(x+i*(coinHeight+space), y+j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
 			}
 		}
 		for (int i=1; i<w; i++) {
-			DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y, dynamicLevelParts, floatingCoinsBlock);
+			addFloatingCoin(x+i*(coinHeight+space), y, dynamicLevelParts, floatingCoinsBlock);
 		}
 
 		floatingCoinsBlocks.add(floatingCoinsBlock);
 
 	}
 
-	public static void addFloatingCoinsTriangle(double x, double y, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks) {
+	public void addFloatingCoinsTriangle(double x, double y, int h, HashMap<Long, DynamicLevelPart> dynamicLevelParts, ArrayList<FloatingCoinsBlock> floatingCoinsBlocks) {
 		//called at level creation time
 		//adds floating coins in triangle pattern
 		//if h=2, 4 coins total, if h=3, 9 coins total...
@@ -193,17 +199,17 @@ public class DynamicFactory {
 		FloatingCoinsBlock floatingCoinsBlock = new FloatingCoinsBlock();
 
 		if (h<2) h=2;
-		double coinHeight = DynamicFactory.addFloatingCoin(x, y, dynamicLevelParts, floatingCoinsBlock);
+		double coinHeight = addFloatingCoin(x, y, dynamicLevelParts, floatingCoinsBlock);
 		double space = coinHeight/4;
 		int i;
 		for (i=1; i<h; i++) {
 			for (int j=i; j>=0; j--) {
-				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
+				addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
 			}
 		}
 		for (int newI=h-2; i<2*h; i++) {
 			for (int j=newI; j>=0; j--) {
-				DynamicFactory.addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
+				addFloatingCoin(x+i*(coinHeight+space), y-j*(coinHeight+space), dynamicLevelParts, floatingCoinsBlock);
 			}
 			newI--;
 		}

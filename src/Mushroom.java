@@ -1,3 +1,5 @@
+
+
 import acm.graphics.GObject;
 import java.util.ArrayList;
 
@@ -14,11 +16,13 @@ public class Mushroom extends PowerUp {
 	//private boolean previousPointWorked;
 	//previousPointWorked: for collision detection, multiple points are used, if one already worked, 
 	//no need to use the other ones 
-	public Mushroom() {
-		super(mushroomImage);
+	
+	public Mushroom(Lobby lobby) {
+		super(mushroomImage, lobby);
 		rightOrLeft = Math.random()>0.5;
 		dx = rightOrLeft?DX:-DX;
-		dy = 0;//DY;
+		dy = 0;
+	
 	}
 
 	@Override
@@ -37,7 +41,7 @@ public class Mushroom extends PowerUp {
 			//depending on if the mushroom goes right or left to glide of the mysterybox,
 			//there is only one point to check to know if the mushroom is still on the mystery box
 			double y = this.getY()+this.getHeight()+DY;
-			GObject o = canvas.getElementAt(x, y);
+			GObject o = lobby.canvas.getElementAt(x, y);
 			if (o!=null && o instanceof MysteryBox) {
 				//mushroom is still on top of mysterybox
 				//System.out.println("MUSHROOM ON TOP OF MYSTERYBOX");
@@ -54,13 +58,13 @@ public class Mushroom extends PowerUp {
 		//by now mushroom is no longer on mysterybox
 		//need to make it fall until it hits mario or platform
 		while (alive) {			
-			if (getY()>=canvas.getHeight()+LevelController.currLevel.yBaseLine){
+			if (getY()>=MarioBrosGame.HEIGHT+lobby.levelController.currLevel.yBaseLine){
 				//mushroom keeps on moving until mario eats it
 				//OR if it reaches bottom of screen
 				alive = false;
 				break;
 			}
-			if (getX()+dx<=0||getX()+getWidth()+dx>=canvas.getWidth()) {
+			if (getX()+dx<=0||getX()+getWidth()+dx>=MarioBrosGame.WIDTH) {
 				//for mushroom to bounce off edge of screen: (for testing)
 				//dx = -dx;
 				//rightOrLeft = !rightOrLeft;
@@ -113,7 +117,7 @@ public class Mushroom extends PowerUp {
 
 	private boolean nothingUnder(Point[] pointsBelow) {
 		for (int i=0; i<pointsBelow.length; i++) {
-			if (canvas.getElementAt(pointsBelow[i].x, pointsBelow[i].y)!=null){
+			if (lobby.canvas.getElementAt(pointsBelow[i].x, pointsBelow[i].y)!=null){
 				return false;
 			}
 		}
@@ -150,8 +154,8 @@ public class Mushroom extends PowerUp {
 			if (!m.alive) {
 				return true;
 			}
-			canvas.remove(this);
-			SoundController.playPowerUpSound();
+			lobby.canvas.remove(this);
+			lobby.soundController.playPowerUpSound();
 			if (!m.bigOrSmall){
 				if (m.isTimeDilating)
 					m.stopTimeDilationForAllCharacters(m);

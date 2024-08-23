@@ -1,3 +1,5 @@
+
+
 import java.awt.Image;
 
 public final class Luigi extends Mario {
@@ -53,7 +55,7 @@ public final class Luigi extends Mario {
 			MyImage timedilatingsmallMarioPipe,
 			MyImage timedilatingbigMarioLeftCrouchingImage,
 			MyImage timedilatingbigMarioRightJumpingDownImage,
-			CHARACTER character) {
+			CHARACTER character, Lobby lobby) {
 		super(smallMarioLeftImage, smallMarioRightImage, smallMarioLeftWalkingImage, smallMarioRightWalkingImage,
 				smallMarioLeftJumpingImage, smallMarioRightJumpingImage, marioDeadImage, bigMarioLeftImage, bigMarioRightImage,
 				bigMarioLeftWalkingImage, bigMarioRightWalkingImage, bigMarioLeftJumpingImage, bigMarioRightJumpingImage,
@@ -98,6 +100,6 @@ public final class Luigi extends Mario {
 				timedilatingsmallMarioPipe,
 				timedilatingbigMarioLeftCrouchingImage,
 				timedilatingbigMarioRightJumpingDownImage,
-				character);
+				character, lobby);
 	}
 }

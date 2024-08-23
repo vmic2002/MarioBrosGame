@@ -1,4 +1,6 @@
 
+
+
 public class XCounter {
 	public double v;
 	//used for adding images to a level and keeping track of the level's width

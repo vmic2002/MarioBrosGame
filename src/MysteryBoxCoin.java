@@ -1,4 +1,10 @@
+
+
 public class MysteryBoxCoin extends Coin {
+	public MysteryBoxCoin(Lobby lobby) {
+		super(lobby);
+	}
+
 	//coin spawned by mystery box (TODO should also be spwaned from brick or anything really (like a flow of coins or something))
 	public static double dy = -0.2*MovingObject.getBaseLineSpeed();
 	@Override

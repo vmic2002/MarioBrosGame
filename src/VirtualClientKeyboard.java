@@ -1,20 +1,25 @@
-import java.awt.event.KeyEvent;
 
-import jakarta.websocket.Session;
+
+//import java.awt.event.KeyEvent;
+
+//import jakarta.websocket.Session;
 
 public class VirtualClientKeyboard {
 	//replaces MyKeyListener when playing game on tomcat server instead of from eclipse or terminal
-	private static Mario[] characters;
+	private Mario[] characters;
 	//characters[0] = mario;
 	//characters[1] = luigi;
-	public static void setCharacters(Mario[] characters1) {
-		characters = characters1;
+	
+	public VirtualClientKeyboard(Mario[] characters) {
+		this.characters = characters;
 	}
+	
+	
 
 
 	//up/down/left/right arrows and q to shoot/swing tail...
 
-	public static void keyPressed(boolean keyPressedOrKeyReleased, String key, String character) {
+	public void keyPressed(boolean keyPressedOrKeyReleased, String key, String character) {
 		//key is either ArrowUp, ArrowDown, ArrowLeft, ArrowRight, q
 		//character is either MARIO, LUIGI, etc	
 		
@@ -57,7 +62,9 @@ public class VirtualClientKeyboard {
 			} else if (key.equals("ArrowUp")) {
 				mario.wayUpOrWayDown = false;
 			} else if (key.equals("q")) {
-				if (mario.isFire) {mario.isShooting = false;System.out.println("\n\n1111111111111isSHootingsetto false for character[0]\n\n");}
+				if (mario.isFire) {mario.isShooting = false;
+				//System.out.println("\n\n1111111111111isSHootingsetto false for character[0]\n\n");
+				}
 				else if (mario.isCat || mario.isTanooki) mario.isSwinging = false;	
 			}
 		}

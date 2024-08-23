@@ -1,3 +1,5 @@
+
+
 //import java.awt.Image;
 //import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -31,8 +33,8 @@ public class RedTurtle extends BadGuy {
 	 * 
 	 * @param width of platform red turtle stays on
 	 */
-	public RedTurtle(double width) {
-		super(redTurtleStandingRightImage);
+	public RedTurtle(double width, Lobby lobby) {
+		super(redTurtleStandingRightImage, lobby);
 		rightOrLeft = true;
 		standingOrWalking = true;
 		walkingFrequency = 0;
@@ -43,7 +45,7 @@ public class RedTurtle extends BadGuy {
 	//TODO have to make turtle go upside down when cat mario flicks it with tail
 	private boolean nothingUnder(Point[] pointsBelow) {
 		for (int i=0; i<pointsBelow.length; i++) {
-			if (canvas.getElementAt(pointsBelow[i].x, pointsBelow[i].y)!=null){
+			if (lobby.canvas.getElementAt(pointsBelow[i].x, pointsBelow[i].y)!=null){
 				return false;
 			}
 		}
@@ -63,10 +65,10 @@ public class RedTurtle extends BadGuy {
 				spinningFrequency = 0;
 				dy = 0;
 				while (alive && !stopped) {
-					System.out.println("SPINNINGORFalling(not stopped)");
-					if (getY()+dy>=canvas.getHeight()+LevelController.currLevel.yBaseLine){//!spinningOrFalling && 
+					//System.out.println("SPINNINGORFalling(not stopped)");
+					if (getY()+dy>=MarioBrosGame.HEIGHT+lobby.levelController.currLevel.yBaseLine){//!spinningOrFalling && 
 						//turtle dies if reaches bottom of screen
-						System.out.println("turtle at bottom of screen ");
+						//System.out.println("turtle at bottom of screen ");
 						alive = false;
 						break;
 					}
@@ -86,7 +88,7 @@ public class RedTurtle extends BadGuy {
 						if (nothingUnder(pointsBelow)) {
 							//if here then turtle was on a platform and spinning but is no longer on top of one,
 							//so it should fall again
-							System.out.println("NO LONGER ON PLATFORM TIME TO FALL AGIAN");
+							//System.out.println("NO LONGER ON PLATFORM TIME TO FALL AGIAN");
 							spinningOrFalling = false;
 							dy = DY;
 						}
@@ -118,10 +120,10 @@ public class RedTurtle extends BadGuy {
 				}
 				if (!alive) {
 					kill();
-					System.out.println("Red turtle dead2");
+					//System.out.println("Red turtle dead2");
 				}
 			}	
-		},"red turtle spinning/falling");
+		},"red turtle spinning/falling", lobby.getLobbyId());
 	}
 
 	private void changeState() {
@@ -146,14 +148,14 @@ public class RedTurtle extends BadGuy {
 		if ((x instanceof Platform || x instanceof BadGuy) && horizontalOrVertical) {
 			//red turtles bounce off BadGuys and platforms
 			dx = -dx;
-			System.out.println("CHANGE DIRECTIONS\n\n\n\n");
+			//System.out.println("CHANGE DIRECTIONS\n\n\n\n");
 			this.sendToFront();//FOR TESTING
 			//previousPointWorked = true;
-			SoundController.playBumpSound();
+			lobby.soundController.playBumpSound();
 			return true;
 		} else if (x instanceof Platform && !horizontalOrVertical) {
 			//turtle fell on platform
-			System.out.println("setting dy to 0\n\n\n");
+			//System.out.println("setting dy to 0\n\n\n");
 			spinningOrFalling = true;
 			dy = 0.0;
 			//previousPointWorked = true;
@@ -179,7 +181,7 @@ public class RedTurtle extends BadGuy {
 		//System.out.println("\n"+mario.character.name()+" ran into RED TURTLE\n");
 		if (shellMode && stopped) {
 			//TODO could add animation for mario to kick turtle
-			SoundController.playKickSound();
+			lobby.soundController.playKickSound();
 			startSpinning(mario.getX()<this.getX());//mario walking into a stopped turtle in shell mode will make the shell start spinning (like mario kicked the turtle)
 		} else {
 			mario.marioHit();
@@ -192,14 +194,14 @@ public class RedTurtle extends BadGuy {
 			if (!stopped) {
 				//mario jumps in spinning turtle, turtle should stop if not falling
 				if (spinningOrFalling) {
-					System.out.println("mario jumps in spinning turtle, turtle should stop");
+					//System.out.println("mario jumps in spinning turtle, turtle should stop");
 					setTurtleToStoppedShellMode(mario);
 				} else {
 					//mario jumps on falling turtle, he hops/jumps off but turtle keeps moving
 					mario.hop();
 				}
 			} else {
-				System.out.println("turtle start spinning...");
+				//System.out.println("turtle start spinning...");
 				startSpinning(mario.getX()+mario.getWidth()/2<this.getX()+this.getWidth()/2);
 				mario.hop();
 			}
@@ -207,11 +209,11 @@ public class RedTurtle extends BadGuy {
 			//mario jumps on !shellMode turtle and sets it to shell mode
 			//this happens once per turtle max because a turtle never goes back from shell mode
 			shellMode = true;
-			System.out.println("mario jumps on !shellMode turtle and sets it to shell mode");
+			//System.out.println("mario jumps on !shellMode turtle and sets it to shell mode");
 			dx *= 4.0;//shell mode (spinning or falling turtle) is 4 times as fast as standing turtle
 			setTurtleToStoppedShellMode(mario);
 		}
-		SoundController.playSquishSound();
+		lobby.soundController.playSquishSound();
 	}
 
 	private void toggleStandingOrWalking() {

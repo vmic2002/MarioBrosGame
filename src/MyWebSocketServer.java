@@ -1,3 +1,5 @@
+
+
 /*export CATALINA_HOME=/Users/victormicha/Desktop/apache-tomcat-10.1.11
 
 export JRE_HOME=/Library/Java/JavaVirtualMachines/jdk-15.0.1.jdk/Contents/Home
@@ -129,19 +131,19 @@ If the key is not present, it computes a new value using the given mapping funct
 
 
 			if (message.equals("ready")) {
-				
+
 				//need to wait for all sessions in a lobby to be ready
 				session.getUserProperties().put("ready", true);
-				
+
 				for (Session s : lobby.getSessions()) {
 					if (s.getUserProperties().get("ready") == null) {
 						//a session isn't ready yet, so return
 						return;
 					}
 				}
-				
+
 				//every session is ready!
-				
+
 				Mario.CHARACTER[] characters = Mario.CHARACTER.values();
 				int i = 0;
 				for (Session s : lobby.getSessions()) {
@@ -151,11 +153,9 @@ If the key is not present, it computes a new value using the given mapping funct
 
 				//start game!
 				MarioBrosGame.main(new String[] {lobbyId});
-				
-				//TODO CAN EACH LOBBY HAVE ITS OWN SEPERATE MAIN? OR DO WE HAVE TO CREATE NEW CONTAINER? IDK
+
 			} else {
-				processMessage(message, session);
-				//TODO TODO BUGS COULD BE COMING FROM HERE, DEADLING WITH SESSION NOT LOBBY
+				processMessage(message, lobby);
 			}
 		}
 
@@ -183,9 +183,8 @@ If the key is not present, it computes a new value using the given mapping funct
 
 				// Remove the lobby if it's empty
 				if (lobby.getSessions().isEmpty()) {
+					GameThread.interruptAllMarioThreads(lobbyId);//interrupt only threads from this lobby
 					lobbies.remove(lobbyId);
-					//TODO FREE UP THE LOBBY AND ASSOCIATED THREADS, CHARACTERS, CANVAS ETC
-					GameThread.interruptAllMarioThreads();//TODO TODO BUGS COULD BE COMING FROM HERE, make sure to interrupt only threads from this lobby
 					//see MyRunnable.java and GameThread.java
 					//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
 					//calling System.exit doesnt work
@@ -206,7 +205,7 @@ If the key is not present, it computes a new value using the given mapping funct
 		error.printStackTrace();
 	}
 
-	private void processMessage(String message, Session session) {
+	private void processMessage(String message, Lobby lobby) {
 		//expected JSON of form: { keyEvent: "keyEvent", key: "key", character: "character" }
 		//JSON format will probably change since no character field is needed if it can be determined by sessionID for multiplayer online play
 		//keyEvent is keyPressed or keyReleased
@@ -216,7 +215,9 @@ If the key is not present, it computes a new value using the given mapping funct
 
 		//sendMessage("MESSAGE PROCESSED: "+json.get("keyEvent")+" " +json.get("key") + " "+ json.get("character"), session);
 		boolean keyPressedOrReleased = ((String) json.get("keyEvent")).equals("keyPressed");
-		VirtualClientKeyboard.keyPressed(keyPressedOrReleased, (String) json.get("key"), (String) json.get("character"));
+		if (lobby.virtualClientKeyboard != null) {
+			lobby.virtualClientKeyboard.keyPressed(keyPressedOrReleased, (String) json.get("key"), (String) json.get("character"));
+		}
 		//sendMessage("AFTERKEYABORD", session);
 		//System.out.println(json.toString());  
 		//String technology = json.getString("technology");  
@@ -224,10 +225,11 @@ If the key is not present, it computes a new value using the given mapping funct
 
 	public synchronized static void sendMessage(String message, Lobby lobby) {
 		//send message to every session in the lobby
-
+		//synchronized (lobby) {
 		for (Session s : lobby.getSessions()) {
 			sendMessage(message, s);
 		}
+		//}
 
 	}
 

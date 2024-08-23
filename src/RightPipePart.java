@@ -1,3 +1,5 @@
+
+
 import java.awt.Image;
 
 public class RightPipePart extends PipePart{

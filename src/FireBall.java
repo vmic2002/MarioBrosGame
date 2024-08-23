@@ -1,10 +1,12 @@
+
+
 import java.util.ArrayList;
 
 import acm.graphics.GObject;
 
 public class FireBall extends MovingObject implements Dynamic {
 	private static MyImage leftFireBall1, rightFireBall1, leftFireBall2, rightFireBall2, leftFireBall3, rightFireBall3, leftFireBall4, rightFireBall4;
-	private static final int maxDistance = canvas.getWidth()*3;//max distance until it disappears
+	private static final int maxDistance = MarioBrosGame.WIDTH*3;//max distance until it disappears
 	private static final int frequencyChangeToNextStage = 10;//number of times move function is called in between
 	//changing fireball sprite image to next stage (1->2, ..., 4->1), low number -> high frequency
 	private static final double sizeOfHops = MovingObject.getBaseLineSpeed()*20;//fireball hops once it moves on the ground
@@ -25,8 +27,8 @@ public class FireBall extends MovingObject implements Dynamic {
 
 	public double speedFactor = 3.5;//(needs to be >0) the higher the number the faster the fire ball will go towards mario (when shooting flower shoots fireball)
 	//private long dynamicId;//to add/remove from dynamicLevelParts
-	public FireBall(boolean rightOrLeft) {
-		super((rightOrLeft?rightFireBall1:leftFireBall1));
+	public FireBall(boolean rightOrLeft, Lobby lobby) {
+		super((rightOrLeft?rightFireBall1:leftFireBall1), lobby);
 		this.rightOrLeft = rightOrLeft;
 		dx = rightOrLeft?MovingObject.getBaseLineSpeed()*0.8:-MovingObject.getBaseLineSpeed()*0.8;
 		dy = Math.abs(dx);
@@ -64,7 +66,7 @@ public class FireBall extends MovingObject implements Dynamic {
 			for (GObject x : o) {
 				if (x instanceof Mario) {
 					if (!alive) break;
-					System.out.println("Shooting Flower hit mario with fireball!");
+					//System.out.println("Shooting Flower hit mario with fireball!");
 					((Mario) x).marioHit();
 					alive = false;
 					break;
@@ -80,7 +82,7 @@ public class FireBall extends MovingObject implements Dynamic {
 				} else if (x instanceof BadGuy && !(x instanceof ShootingFlower)) {
 					//shooting flower can kill bad guys (but not other shooting flowers) so mario can stand behind bad guy
 					//to make shooting flower kill other bad guys
-					System.out.println("Fireball shot from shooting flower hit badguy");
+					//System.out.println("Fireball shot from shooting flower hit badguy");
 					if (!(x instanceof BulletBill)) ((BadGuy) x).kill();
 					alive = false;
 					break;
@@ -97,7 +99,7 @@ public class FireBall extends MovingObject implements Dynamic {
 			frequencyChangeStage--;
 		}
 		kill();
-		System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
+		//System.out.println("FIREBALL DEAD     GASLEFT: "+gasLeft);
 	}
 
 	public void changeToNextStage() {
@@ -121,15 +123,15 @@ public class FireBall extends MovingObject implements Dynamic {
 
 	private void checkIfShouldFall() {
 		double x  = getX()+getWidth()/2;
-		GObject o = canvas.getElementAt(x, hoppingY+getHeight()+dy);
+		GObject o = lobby.canvas.getElementAt(x, hoppingY+getHeight()+dy);
 		if (Math.abs(getY()-hoppingY)<5*dy) {
 			if (o==null) {
 				fallingOrHopping = true;
-				System.out.println("FIREBALL SHOULD FALL11111111");
+				//System.out.println("FIREBALL SHOULD FALL11111111");
 
 			} else if (!(o instanceof Platform)) {
 				fallingOrHopping = true;
-				System.out.println("FIREBALL SHOULD FALL222222222");
+				//System.out.println("FIREBALL SHOULD FALL222222222");
 			}	
 		}
 	}
@@ -181,16 +183,16 @@ public class FireBall extends MovingObject implements Dynamic {
 			ThreadSleep.sleep(pauseTime);
 			
 		}
-		System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);
+		//System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);
 		kill();
 	}
 
 	@Override
 	public void kill() {
-		if (!LevelController.endingLevel()) {
-			canvas.remove(this);
+		if (!lobby.levelController.endingLevel()) {
+			lobby.canvas.remove(this);
 			alive = false;
-			LevelController.currLevel.removeDynamic(this);
+			lobby.levelController.currLevel.removeDynamic(this);
 		}
 	}
 
@@ -225,7 +227,7 @@ public class FireBall extends MovingObject implements Dynamic {
 		if (horizontalOrVertical && x instanceof Platform) {
 			//fireball dies if it runs into a platform from the side
 			alive = false;
-			System.out.println("fireball run into platform from side");
+			//System.out.println("fireball run into platform from side");
 			return true;
 		} else if (!horizontalOrVertical && x instanceof Platform){
 			if (fallingOrHopping) {
@@ -233,7 +235,7 @@ public class FireBall extends MovingObject implements Dynamic {
 				fallingOrHopping = false;
 				hoppingY = getY();
 				hoppingX = getX();
-				System.out.println("fireball fall on platform starts hopping");
+				//System.out.println("fireball fall on platform starts hopping");
 				return true;
 			}
 		} else if (x instanceof BadGuy) {

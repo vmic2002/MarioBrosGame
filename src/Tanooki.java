@@ -1,3 +1,5 @@
+
+
 import java.awt.Image;
 import java.util.ArrayList;
 
@@ -15,21 +17,24 @@ public class Tanooki extends PowerUp {
 	private static final double maxHeightOfJump = MovingObject.getBaseLineSpeed()*20.0;
 	private static final double lengthOfJumpFactor = 0.01;//>0, closer to 0 means quadratic will be wider (wider hops)
 	private static final double xOffset = Math.sqrt(maxHeightOfJump/lengthOfJumpFactor);
-	//Tanooki bounces in quadratic motion, x/yBaseline to keep track of where he started hopping
-	public Tanooki() {
-		super(tanookiImage);
+	//Tanooki bounces in quadratic motion, x/yBaseline to keep track of where he started hopping\
+	
+	public Tanooki(Lobby lobby) {
+		super(tanookiImage, lobby);
 		dx =  Math.random()>0.5?DX:-DX;
+		
 	}
 
 	private void hop() {
+		
 		double newX = getX()+dx;
 		double oldY = getY();
-		//imagine x,y coordinate with quadratic equation y=-a(x-(xBaseline-W))^2+maxHeightOfJump+(canvas.getHeight()-yBaseline)
+		//imagine x,y coordinate with quadratic equation y=-a(x-(xBaseline-W))^2+maxHeightOfJump+(MarioBrosGame.HEIGHT-yBaseline)
 		//find W s.t. y(xBaseline)=yBaseLine -> W = +or- sqrt(H/a) depending on if going right or left
 
 		double W = (dx>0)?-xOffset:xOffset;
 
-		double newY = canvas.getHeight()-(-lengthOfJumpFactor*Math.pow(newX-(xBaseline-W), 2)+maxHeightOfJump+(canvas.getHeight()-yBaseline));
+		double newY = MarioBrosGame.HEIGHT-(-lengthOfJumpFactor*Math.pow(newX-(xBaseline-W), 2)+maxHeightOfJump+(MarioBrosGame.HEIGHT-yBaseline));
 		//oldY-newY is how much tanooki needs to move in the y to stay on quadratic path
 		//however needs to be negated since positive oldY-newY would mean moving up, which is negative y displacement
 		//for GCanvas
@@ -47,7 +52,7 @@ public class Tanooki extends PowerUp {
 		setBaselines();
 
 		while (alive) {
-			if (getY()>=canvas.getHeight()+LevelController.currLevel.yBaseLine){
+			if (getY()>=MarioBrosGame.HEIGHT+lobby.levelController.currLevel.yBaseLine){
 				//tanooki keeps on moving until mario eats it
 				//OR if it reaches bottom of screen
 				alive = false;
@@ -145,8 +150,8 @@ public class Tanooki extends PowerUp {
 			if (!m.alive) {
 				return true;
 			}
-			canvas.remove(this);
-			SoundController.playPowerUpSound();
+			lobby.canvas.remove(this);
+			lobby.soundController.playPowerUpSound();
 
 
 			if (m.isTimeDilating)

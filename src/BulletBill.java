@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 import acm.graphics.GObject;
 
@@ -9,8 +11,8 @@ public class BulletBill extends BadGuy {
 	private int gasLeft;
 	private double dx;
 	private boolean jumpedOn;//true when jumped on by mario
-	public BulletBill(boolean rightOrLeft) {
-		super(rightOrLeft?rightBulletBill:leftBulletBill);
+	public BulletBill(boolean rightOrLeft, Lobby lobby) {
+		super(rightOrLeft?rightBulletBill:leftBulletBill, lobby);
 		gasLeft = MAX_GAS_LEFT;
 		dx = rightOrLeft?MAX_DX:-MAX_DX;
 		jumpedOn = false;
@@ -30,7 +32,7 @@ public class BulletBill extends BadGuy {
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException{
-				while (alive && getY()<=canvas.getHeight()+LevelController.currLevel.yBaseLine){
+				while (alive && getY()<=MarioBrosGame.HEIGHT+lobby.levelController.currLevel.yBaseLine){
 					move(dx, 0.5*MAX_DX);
 					checkIfRunIntoSomething();
 					//TODO falling bulletbill doesnt check below when falling
@@ -38,7 +40,7 @@ public class BulletBill extends BadGuy {
 				}
 				kill();
 			}
-		}, "BulletBill Falling");
+		}, "BulletBill Falling", lobby.getLobbyId());
 	}
 	
 	private void checkIfRunIntoSomething() {

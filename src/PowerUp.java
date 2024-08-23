@@ -1,7 +1,9 @@
+
+
 public abstract class PowerUp extends MovingObject implements Dynamic{
 	//Leaf, Mushroom, Tanooki, FireFlower, Hourglass extend PowerUp 
-	public PowerUp(MyImage arg0) {
-		super(arg0);
+	public PowerUp(MyImage arg0, Lobby lobby) {
+		super(arg0, lobby);
 	}
 	
 	@Override
@@ -11,10 +13,10 @@ public abstract class PowerUp extends MovingObject implements Dynamic{
 	
 	@Override
 	public void kill() {
-		if (!LevelController.endingLevel()) {
-			canvas.remove(this);
+		if (!lobby.levelController.endingLevel()) {
+			lobby.canvas.remove(this);
 			alive = false;
-			LevelController.currLevel.removeDynamic(this);
+			lobby.levelController.currLevel.removeDynamic(this);
 		}
 	}
 }

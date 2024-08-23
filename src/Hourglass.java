@@ -1,9 +1,11 @@
+
+
 import acm.graphics.GObject;
 
 public class Hourglass extends PowerUp {
 	private static MyImage hourGlassImage;
-	public Hourglass() {
-		super(hourGlassImage);
+	public Hourglass(Lobby lobby) {
+		super(hourGlassImage, lobby);
 	}
 
 	@Override

@@ -1,23 +1,27 @@
 
+
+
 import acm.graphics.GObject;
 
 
 import java.util.ArrayList;
 public class Leaf extends PowerUp {
 	private static MyImage leftLeafImage, rightLeafImage;
-	private static double DX = MovingObject.getBaseLineSpeed()*0.8;
-	private static double DY = MovingObject.getBaseLineSpeed()*0.6;
-	private static double pauseTime = 3.5;
-	private static int toggleCounter = 14;//every <toggleCounter> times leaf moves it toggles direction
+	private static final double DX = MovingObject.getBaseLineSpeed()*0.8;
+	private static final double DY = MovingObject.getBaseLineSpeed()*0.6;
+	private static final double pauseTime = 3.5;
+	private static final int toggleCounter = 14;//every <toggleCounter> times leaf moves it toggles direction
 	private boolean rightOrLeft;
 	private double dx, dy;
 	private int toggle;
-	public Leaf(boolean rightOrLeft) {
-		super(rightOrLeft?rightLeafImage:leftLeafImage);
+	
+	public Leaf(boolean rightOrLeft, Lobby lobby) {
+		super(rightOrLeft?rightLeafImage:leftLeafImage, lobby);
 		this.rightOrLeft = rightOrLeft;
 		dx = rightOrLeft?DX:-DX;
 		dy = DY;
 		toggle = 0;
+	
 	}
 
 	private void toggleState() throws InterruptedException {
@@ -42,7 +46,7 @@ public class Leaf extends PowerUp {
 
 		}
 		System.out.println("ADDED LEAF");
-		while (alive && getY()<=canvas.getHeight()+LevelController.currLevel.yBaseLine) {
+		while (alive && getY()<=MarioBrosGame.HEIGHT+lobby.levelController.currLevel.yBaseLine) {
 			if (toggle==toggleCounter) {
 				toggle = 0;
 				toggleState();
@@ -85,7 +89,7 @@ public class Leaf extends PowerUp {
 			if (!m.alive) {
 				return true;
 			}
-			canvas.remove(this);
+			lobby.canvas.remove(this);
 			alive = false;
 
 			if (m.isTimeDilating)
@@ -97,7 +101,7 @@ public class Leaf extends PowerUp {
 
 
 
-			SoundController.playPowerUpSound();
+			lobby.soundController.playPowerUpSound();
 		} else {
 			//System.out.println("LEAF ONLY CHANGES WHEN in contact with mario");
 		}

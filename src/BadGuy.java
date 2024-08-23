@@ -1,10 +1,12 @@
+
+
 import acm.graphics.GObject;
 
 public abstract class BadGuy extends MovingObject implements Dynamic {
 	//class BadGuy: ShootingFlower, BitingFlower, Turtle, BulletBill, Goomba and
 	//any other characters in this game that hurt mario will extend BadGuy
-	public BadGuy(MyImage arg0) {
-		super(arg0);
+	public BadGuy(MyImage arg0, Lobby lobby) {
+		super(arg0, lobby);
 	}
 
 	public abstract void jumpedOnByMario(Mario mario);//if mario jumps on badguy
@@ -28,10 +30,10 @@ public abstract class BadGuy extends MovingObject implements Dynamic {
 		//TODO then he could override this kill() function to do nothing (therefore the bad guy is unkillable)
 
 
-		if (!LevelController.endingLevel()) {
-			canvas.remove(this);
+		if (!lobby.levelController.endingLevel()) {
+			lobby.canvas.remove(this);
 			alive = false;
-			LevelController.currLevel.removeDynamic(this);
+			lobby.levelController.currLevel.removeDynamic(this);
 		}
 
 	}

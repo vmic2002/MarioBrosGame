@@ -1,3 +1,5 @@
+
+
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -6,10 +8,10 @@ public class MoveLevelRunnable extends MyRunnable {
 	private Level l;
 	private double dx, dy;
 	private Mario mario;
-	private int id;
+	//private int id;
 
 	//	FOR TESTING:
-	public static int maxNumMoveLevelRunnable = 0;//THIS NUMBER HAS EVER ONLY REACHED 2 EVEN FOR PRETTY LONG LEVEL (WHEN TESTES ON ECLIPSE NOT ON APACHE SERVER)
+	//public static int maxNumMoveLevelRunnable = 0;//THIS NUMBER HAS EVER ONLY REACHED 2 EVEN FOR PRETTY LONG LEVEL (WHEN TESTES ON ECLIPSE NOT ON APACHE SERVER)
 	//TESTING
 	
 	
@@ -35,49 +37,57 @@ public class MoveLevelRunnable extends MyRunnable {
 
 
 
-	private static AtomicInteger numMoveLevelRunnables = new AtomicInteger(0);
+	/*private static AtomicInteger numMoveLevelRunnables = new AtomicInteger(0);
 	private static AtomicInteger moveLevelIDGenerator = new AtomicInteger(-1);
 
 
 	private static final int MAX_MOVE_LEVEL_RUNNABLE_ID = 1000;
 	private static int[] currentLevelPartForMoveLevelRunnables = new int[MAX_MOVE_LEVEL_RUNNABLE_ID];
+	*/
 	//array of zeroes by default which is what we want
 	//currentLevelPartForMoveLevelRunnables[i] = movelevelrunnable with id "i"'s current static level part index its moving
 	//reset to all zeroes when numMoveLevelRunnables.get()==0
 	//example: movelevelrunnable with id 2 is currently moving staticlevel part with index currentLevelPartForMoveLevelRunnables[2]
 
-	public MoveLevelRunnable(Level l, double dx, double dy, Mario mario) {
+	
+	
+	
+	
+	private Lobby lobby;
+	public MoveLevelRunnable(Level l, double dx, double dy, Mario mario, Lobby lobby) {
 		this.l = l;
 		this.dx = dx;
 		this.dy = dy;
 		this.mario = mario;
-		if (numMoveLevelRunnables.get()==0) {
+		/*if (numMoveLevelRunnables.get()==0) {
 			moveLevelIDGenerator.set(-1);
 			currentLevelPartForMoveLevelRunnables = new int[MAX_MOVE_LEVEL_RUNNABLE_ID];
 		}
 		this.id = moveLevelIDGenerator.incrementAndGet();
 		numMoveLevelRunnables.incrementAndGet();
-
+*/
+		this.lobby = lobby;
+		
 		//FOR TESTING:
-		if (numMoveLevelRunnables.get()>maxNumMoveLevelRunnable) maxNumMoveLevelRunnable = numMoveLevelRunnables.get();
+//		if (numMoveLevelRunnables.get()>maxNumMoveLevelRunnable) maxNumMoveLevelRunnable = numMoveLevelRunnables.get();
 	}
 
-	public static int getNumMoveLevelRunnables() {
+	//public static int getNumMoveLevelRunnables() {
 		//FUNC IS FOR TESTING
-		return numMoveLevelRunnables.get();
-	}
+	//	return numMoveLevelRunnables.get();
+	//}
 
 
 
 	@Override
 	public final void doWork() throws InterruptedException {
 		moveLevel();
-		numMoveLevelRunnables.decrementAndGet();
+		////////numMoveLevelRunnables.decrementAndGet();
 	}
 
 	public void moveStaticLevelPart(StaticLevelPart staticLevelPart, int staticLevelPartIndex) {
 		synchronized (staticLevelPart) {
-			if (id==0 || id>0 && currentLevelPartForMoveLevelRunnables[id-1]>currentLevelPartForMoveLevelRunnables[id]) {
+		//	if (id==0 || id>0 && currentLevelPartForMoveLevelRunnables[id-1]>currentLevelPartForMoveLevelRunnables[id]) {
 				//if statement is to make sure that new thread doesnt catch to old thread in terms of looping throguh
 				//static level parts in right order to move them
 				//wE DONT WANT A NEWER THREAD (bigger ID) TO
@@ -107,8 +117,8 @@ public class MoveLevelRunnable extends MyRunnable {
 				staticLevelPart.move(dx, dy);
 				//System.out.println("ID: "+id+", ending move staticlevelpart #"+staticLevelPartIndex);
 
-				currentLevelPartForMoveLevelRunnables[id] = staticLevelPartIndex+1;
-			}
+			//	currentLevelPartForMoveLevelRunnables[id] = staticLevelPartIndex+1;
+			//}
 
 
 
@@ -150,7 +160,7 @@ public class MoveLevelRunnable extends MyRunnable {
 			}
 		}
 		//}
-		for (Mario m : MovingObject.characters) {
+		for (Mario m : lobby.characters) {
 			if (m!=mario) m.moveOnlyMario(dx, dy);
 		}
 
@@ -178,7 +188,7 @@ public class MoveLevelRunnable extends MyRunnable {
 		//MAKE EVERYTHING REALLY SLOW WITH GAMESTATSCONTOLLER LONGER PAUSE
 		//System.out.println("num move level runnables: "+numMoveLevelRunnables.get()+" id: "+id+ " numStaticLevelPart: "+l.staticLevelParts.size());
 
-		ServerToClientMessenger.sendMoveLevelMessage(dx, dy);
+		lobby.messenger.sendMoveLevelMessage(dx, dy);
 		//TODO WILL NEED TO NOT SEND MOVELEVELMESSAGE OR ELSE JAVASCRIPT WILL HAVE TO DO SAME LOGIC AS THIS CLASS
 		//SEND MOVEIMAGE MESSAGE FOR EACH IMAGE ORRRRRRR MAKE SURE JS KEEPS TRACK OF EACH STATIC LEVEL PART
 		//JAVASCRIPT COULD HAVE a list of static level part (which is itself of list of images)
@@ -194,7 +204,5 @@ public class MoveLevelRunnable extends MyRunnable {
 
 	}
 
-	/*
-	 * GameThread t1 = new GameThread(new MoveLevelRunnable(),"movelevellll");
-	 */
+	
 }

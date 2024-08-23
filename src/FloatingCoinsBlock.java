@@ -1,3 +1,5 @@
+
+
 import java.util.ArrayList;
 
 public class FloatingCoinsBlock {
@@ -18,7 +20,7 @@ public class FloatingCoinsBlock {
 
 	//START SPINNING ALL COINS IN THIS BLOCK (at start of level)
 	//called in LevelController.startMovingObjects()
-	public void startSpinningBlock() {
+	public void startSpinningBlock(Lobby lobby) {
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException{
@@ -37,6 +39,6 @@ public class FloatingCoinsBlock {
 				}
 				//THREAD DIES WHEN ALL COINS IN BLOCK ARE COLLECTED OR WHEN STOP THREAD SET TO TRUE WHEN ENDING CURRENT LEVEL IN LEVELCONTROLLER
 			}
-		},"floating coins block");
+		},"floating coins block", lobby.getLobbyId());
 	}
 }
