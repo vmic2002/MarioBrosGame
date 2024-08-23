@@ -60,8 +60,6 @@ import org.json.simple.JSONValue;
 @ServerEndpoint("/websocket/{lobbyId}/{username}")
 public class MyWebSocketServer {
 
-	// Store all active WebSocket sessions
-	//private static final Set<Session> activeSessions = Collections.synchronizedSet(new HashSet<>());
 
 	//Store all active lobbies
 	private static final Map<String, Lobby> lobbies = Collections.synchronizedMap(new HashMap<>());
@@ -131,6 +129,19 @@ If the key is not present, it computes a new value using the given mapping funct
 
 
 			if (message.equals("ready")) {
+				
+				//need to wait for all sessions in a lobby to be ready
+				session.getUserProperties().put("ready", true);
+				
+				for (Session s : lobby.getSessions()) {
+					if (s.getUserProperties().get("ready") == null) {
+						//a session isn't ready yet, so return
+						return;
+					}
+				}
+				
+				//every session is ready!
+				
 				Mario.CHARACTER[] characters = Mario.CHARACTER.values();
 				int i = 0;
 				for (Session s : lobby.getSessions()) {
@@ -140,12 +151,15 @@ If the key is not present, it computes a new value using the given mapping funct
 
 				//start game!
 				MarioBrosGame.main(new String[] {lobbyId});
+				
+				//TODO CAN EACH LOBBY HAVE ITS OWN SEPERATE MAIN? OR DO WE HAVE TO CREATE NEW CONTAINER? IDK
 			} else {
 				processMessage(message, session);
+				//TODO TODO BUGS COULD BE COMING FROM HERE, DEADLING WITH SESSION NOT LOBBY
 			}
 		}
 
-		//TODO TODO BUGS COULD BE COMING FROM HERE, DEADLING WITH SESSION NOT LOBBY
+
 
 	}
 
@@ -170,6 +184,7 @@ If the key is not present, it computes a new value using the given mapping funct
 				// Remove the lobby if it's empty
 				if (lobby.getSessions().isEmpty()) {
 					lobbies.remove(lobbyId);
+					//TODO FREE UP THE LOBBY AND ASSOCIATED THREADS, CHARACTERS, CANVAS ETC
 					GameThread.interruptAllMarioThreads();//TODO TODO BUGS COULD BE COMING FROM HERE, make sure to interrupt only threads from this lobby
 					//see MyRunnable.java and GameThread.java
 					//interrupting all game threads fixes bug when client reloads page, all threads from previous session have to be interrupted
