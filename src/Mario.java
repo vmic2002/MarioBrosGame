@@ -123,8 +123,11 @@ public class Mario extends MovingObject {
 	//need a hitPlatformVertical and hitPlatformHorizontal because if mario is falling leaning against a platform,
 	//hitPlatformHorizontal will be true while hitPlatformVertical should be false so mario keeps on falling
 	public boolean goingIntoPipe = false;
-	public double fallDy;
-	private double moveDx;
+	private static double fallDy;
+	private static double moveDx;
+	private static boolean fallDyMoveDxSet = false;
+
+
 	public boolean flashing = false;//true when mario is hit by BadGuy and becomes false after mario stops flashing
 	//while mario is flashing he cannot die from a bad guy, but he can still die by falling to bottom of screen
 	public static final int flashingTime = 300;//total duration in ms that mario flashes when he comes into contact with BadGuy
@@ -141,8 +144,8 @@ public class Mario extends MovingObject {
 	public enum CHARACTER {MARIO, LUIGI};//for now only mario and luigi, could add peach toad, etc as along as they move like mario and have same skins (fire, cat etc)
 	//TODO CHANGE WHEN PEACH, TOAD, OR OTHER CHARACTERS ARE ADDED
 	CHARACTER character;//to know if this (instance) is Mario, Luigi, etc
-	
-	
+
+
 	public Mario(MyImage smallMarioLeftImage, MyImage smallMarioRightImage, MyImage smallMarioLeftWalkingImage,
 			MyImage smallMarioRightWalkingImage,MyImage smallMarioLeftJumpingImage,
 			MyImage smallMarioRightJumpingImage, MyImage marioDeadImage,
@@ -328,8 +331,13 @@ public class Mario extends MovingObject {
 		ThreadSleep.sleepMarioNormal(t);
 	}
 
-	public void setFallDy(double dy) {fallDy = dy;}
-	public void setMoveDx(double dx) {moveDx=dx;}
+	public static void setFallDyMoveDx(double dy, double dx) {
+		//fallDyMoveDxSet ensures that this func is only called once by the first game/lobby
+		if (fallDyMoveDxSet) return;
+		fallDyMoveDxSet = true;
+		fallDy = dy;moveDx=dx;
+	}
+
 
 	public void moveOnlyMario(double dx, double dy) {
 		//moves only mario, not the level
@@ -436,7 +444,7 @@ public class Mario extends MovingObject {
 		}
 
 		if (alive) return;
-		
+
 		if (!anotherMarioAlreadyDied) {
 			//this works
 			for (Mario m: lobby.characters) m.setToAlive(true);//all marios start level small when a mario died
@@ -781,8 +789,8 @@ public class Mario extends MovingObject {
 
 				while (jumpAgain) {
 					jumpAgain = false;
-					
-					
+
+
 					lobby.soundController.playMarioJumpSound();
 
 					wayUpOrWayDown = true;
@@ -1288,7 +1296,7 @@ public class Mario extends MovingObject {
 					m.setToSmall();
 				//m.isTimeDilating=false;
 			}
-		GameStatsController.setToBaseLinePause();
+		lobby.gameStatsController.setToBaseLinePause();
 		//for (int i=0; i<3; i++) lobby.soundController.playCoinSound();
 	}
 
@@ -1338,7 +1346,7 @@ public class Mario extends MovingObject {
 			((Hourglass) o).kill();
 			for (Mario m:lobby.characters)
 				m.setToTimeDilating();//every mario character luigi, peach etc is set to time dilating as well	
-			GameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
+			lobby.gameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
 
 
 			lobby.soundController.playPowerUpSound();
@@ -1458,7 +1466,7 @@ public class Mario extends MovingObject {
 				}
 				lobby.soundController.playMarioHitSound();
 				if (isTimeDilating) {
-					GameStatsController.setToBaseLinePause();//stops time dilation if mario is hit or dies
+					lobby.gameStatsController.setToBaseLinePause();//stops time dilation if mario is hit or dies
 					for (Mario m:lobby.characters) {
 						//no need to check if fire, cat or tanooki
 						if (m.bigOrSmall) m.setToBig();

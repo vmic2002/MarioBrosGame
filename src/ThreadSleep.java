@@ -2,11 +2,11 @@
 
 public class ThreadSleep {
 	//see GameThread.java and MyRunnable.java to see how InterruptedException is handled
-	public static void sleep(double t) throws InterruptedException {
+	public static void sleep(double t, Lobby lobby) throws InterruptedException {
 		//sleeps thread by l*baselinePause
 		//to make everything move faster or slower depending on length of pause
 		//see GameStatsController.java
-		Thread.sleep((long) (t*GameStatsController.getPause()));
+		Thread.sleep((long) (t* lobby.gameStatsController.getPause()));
 	}
 
 	public static void sleepMarioNormal(double t) throws InterruptedException {

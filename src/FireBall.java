@@ -56,7 +56,7 @@ public class FireBall extends MovingObject implements Dynamic {
 		double gasUsagePerMove = Math.sqrt(dx*dx+dy*dy);
 
 		while (alive && gasLeft >0) {
-			ThreadSleep.sleep(pauseTime);
+			ThreadSleep.sleep(pauseTime, lobby);
 			Point p1  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()):new Point(getX()+dx,getY()+getHeight());
 			Point p2  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()+getHeight()/2):new Point(getX()+dx,getY()+getHeight()/2);
 			Point p3  = rightOrLeft?new Point(getX()+getWidth()+dx,getY()):new Point(getX()+dx,getY());
@@ -180,7 +180,7 @@ public class FireBall extends MovingObject implements Dynamic {
 			gasLeft -= Math.sqrt(dx*dx+dy*dy);
 			frequencyChangeStage--;
 			
-			ThreadSleep.sleep(pauseTime);
+			ThreadSleep.sleep(pauseTime, lobby);
 			
 		}
 		//System.out.println("END MOVE FUNCTION FIREBALL GAS: "+gasLeft);

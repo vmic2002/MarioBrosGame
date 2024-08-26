@@ -9,9 +9,11 @@ public class MyKeyListener implements KeyListener {
 	//MyKeyListener is for when game is played on eclipse or terminal, not on tomcat server
 	//this means that mario and luigi are playing on the same keyboard and computer
 	private Mario[] characters;
-	public MyKeyListener(Mario[] characters) {
+	private Lobby lobby;
+	public MyKeyListener(Mario[] characters, Lobby lobby) {
 		super();
 		this.characters = characters;
+		this.lobby = lobby;
 	}
 	@Override
 	public void keyTyped(KeyEvent e) {
@@ -28,7 +30,7 @@ public class MyKeyListener implements KeyListener {
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_0) {
 			System.out.println("-------------------------------");
-			CharacterStatsController.printAllStats();
+			lobby.characterStatsController.printAllStats();
 			System.out.println("-------------------------------");
 			//System.out.println("There are "+LevelController.currLevel.dynamicLevelParts.values().size()+" elements in dynamicLevelParts");
 			//GameThread.interruptAllMarioThreads();
@@ -82,7 +84,7 @@ public class MyKeyListener implements KeyListener {
 		}  else if (keyCode == KeyEvent.VK_6) {
 			for (Mario m:characters)
 				m.setToTimeDilating();//every mario character luigi, peach etc is set to time dilating as well	
-			GameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
+			lobby.gameStatsController.setToLongPause();//will make everything move slower except for mario (see Mario.sleep func)
 
 		}  else {
 			if (keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_LEFT ||

@@ -1,9 +1,4 @@
-
-
-import java.util.ArrayList;
 import java.util.HashMap;
-
-
 
 public class CharacterStatsController {
 	//keeps track of score, number of lives, powerups in reserve , num coins for each character
@@ -20,17 +15,17 @@ public class CharacterStatsController {
 
 
 	//mario, luigi, etc are characters
-	private static Mario[] characters;
-	private static HashMap<Mario, CharacterStat> characterStats;
+	private Mario[] characters;
+	private HashMap<Mario, CharacterStat> characterStats;
 
-	public static void initializeStats(Mario[] characters1) {
+	public CharacterStatsController(Mario[] characters1) {
 		characters = characters1;
 		characterStats = new HashMap<Mario, CharacterStat>();
 		for (int i=0; i<characters.length;i++)
 			characterStats.put(characters[i], new CharacterStat());
 	}
 	
-	public static void printAllStats() {
+	public void printAllStats() {
 		for (Mario m:characters) {
 			System.out.println(m.character.name());
 			CharacterStat c = characterStats.get(m); 
@@ -47,33 +42,33 @@ public class CharacterStatsController {
 	 
 	
 	//TODO call this func
-	public static void addPowerUpInReserve(Mario mario, String powerUp) {characterStats.get(mario).addPowerUp(powerUp);}
+	public void addPowerUpInReserve(Mario mario, String powerUp) {characterStats.get(mario).addPowerUp(powerUp);}
 
 	//TODO call this func
-	public static void killTurtleByFireball(Mario mario) {characterStats.get(mario).increaseScore(pointsKillTurtleByFireball);}
+	public void killTurtleByFireball(Mario mario) {characterStats.get(mario).increaseScore(pointsKillTurtleByFireball);}
 	
 	//TODO call this func
-	public static void killGoombaByFireball(Mario mario) {characterStats.get(mario).increaseScore(pointsKillGoombaByFireball);}
+	public void killGoombaByFireball(Mario mario) {characterStats.get(mario).increaseScore(pointsKillGoombaByFireball);}
 	
 	//this func is called :)
-	public static void killGoombaByJumpingOnIt(Mario mario) {characterStats.get(mario).increaseScore(pointsKillGoombaByJumpingOnIt);}
+	public void killGoombaByJumpingOnIt(Mario mario) {characterStats.get(mario).increaseScore(pointsKillGoombaByJumpingOnIt);}
 	
 	//TODO call this func
-	public static void killShootingFlowerByFireball(Mario mario) {characterStats.get(mario).increaseScore(pointsKillShootingFlowerByFireball);}
+	public void killShootingFlowerByFireball(Mario mario) {characterStats.get(mario).increaseScore(pointsKillShootingFlowerByFireball);}
 	
 	//this func is called :)
-	public static void killBulletBillByJumpingOnIt(Mario mario) {characterStats.get(mario).increaseScore(pointsKillBulletBillByJumpingOnIt);}
+	public void killBulletBillByJumpingOnIt(Mario mario) {characterStats.get(mario).increaseScore(pointsKillBulletBillByJumpingOnIt);}
 
 
 
 	//this func is called :)
-	public static void collectCoin(Mario mario) {
+	public void collectCoin(Mario mario) {
 		CharacterStat c = characterStats.get(mario); 
 		c.increaseScore(pointsCollectCoin);
 		c.incrementNumCoinsByOne();
 	}
 
 	//TODO call this func
-	public static void hitGreenLifeMushroom(Mario mario) {characterStats.get(mario).increaseNumLives(livesGainedByGreenMushroom);}
+	public void hitGreenLifeMushroom(Mario mario) {characterStats.get(mario).increaseNumLives(livesGainedByGreenMushroom);}
 
 }

@@ -45,7 +45,7 @@ public class Tanooki extends PowerUp {
 	@Override
 	public void move() throws InterruptedException {
 
-		ThreadSleep.sleep(30);
+		ThreadSleep.sleep(30, lobby);
 
 		System.out.println("Tanooki ADDED");
 
@@ -94,7 +94,7 @@ public class Tanooki extends PowerUp {
 			}
 			hop();
 
-			ThreadSleep.sleep(pauseTime);
+			ThreadSleep.sleep(pauseTime, lobby);
 
 
 		}

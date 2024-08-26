@@ -8,9 +8,9 @@ public class CharacterStat{
 	private int numLives;
 	private ArrayList<String> powerUps;//powerUps in reserve
 	private int numCoins;//at 100 coins numLives++
-	private static int maxScore = 2000000000;
-	private static int maxNumLives = 99;
-	private static int maxNumCoins = 100;
+	private static final int maxScore = 2000000000;
+	private static final int maxNumLives = 99;
+	private static final int maxNumCoins = 100;
 	public CharacterStat() {
 		score = 0;
 		numLives = 0;

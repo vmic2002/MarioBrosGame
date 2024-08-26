@@ -24,7 +24,7 @@ public class BillBlasterController{
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException {
-				ThreadSleep.sleep(pause);
+				ThreadSleep.sleep(pause, lobby);
 				//pause above is to wait for current level to be fully spawned
 				while (true) {
 					boolean rightOrLeft = Math.random()>0.5;
@@ -35,7 +35,7 @@ public class BillBlasterController{
 						lobby.dFactory.addBulletBill(p.getX(), p.getY(), rightOrLeft);
 					}
 					//System.out.println("\n\nSHOOTING BULLET BILL\n\n\n");
-					ThreadSleep.sleep(5*pause);
+					ThreadSleep.sleep(5*pause, lobby);
 				}
 			}
 		},"Bill Blaster", lobby.getLobbyId());

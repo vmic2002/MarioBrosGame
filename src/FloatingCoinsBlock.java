@@ -35,7 +35,7 @@ public class FloatingCoinsBlock {
 							i--;
 						}
 					}
-					ThreadSleep.sleep(Coin.pauseBetweenStates);
+					ThreadSleep.sleep(Coin.pauseBetweenStates, lobby);
 				}
 				//THREAD DIES WHEN ALL COINS IN BLOCK ARE COLLECTED OR WHEN STOP THREAD SET TO TRUE WHEN ENDING CURRENT LEVEL IN LEVELCONTROLLER
 			}

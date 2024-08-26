@@ -26,7 +26,7 @@ public class BulletBill extends BadGuy {
 		//called when mario jumps on BulletBill
 		mario.hop();
 		if (jumpedOn) return;
-		CharacterStatsController.killBulletBillByJumpingOnIt(mario);
+		lobby.characterStatsController.killBulletBillByJumpingOnIt(mario);
 		jumpedOn = true;
 		this.sendToFront();
 		GameThread t1 = new GameThread(new MyRunnable() {
@@ -36,7 +36,7 @@ public class BulletBill extends BadGuy {
 					move(dx, 0.5*MAX_DX);
 					checkIfRunIntoSomething();
 					//TODO falling bulletbill doesnt check below when falling
-					ThreadSleep.sleep(pause);
+					ThreadSleep.sleep(pause, lobby);
 				}
 				kill();
 			}
@@ -64,7 +64,7 @@ public class BulletBill extends BadGuy {
 			//System.out.println("\n\nBULLET BILL MOVING\n\n");
 			gasLeft--;
 			checkIfRunIntoSomething();
-			ThreadSleep.sleep(pause);
+			ThreadSleep.sleep(pause, lobby);
 		}
 		if (gasLeft<=0 || !alive) this.kill();
 		System.out.println("\n\nBulletBill END OF MOVE\n\n");

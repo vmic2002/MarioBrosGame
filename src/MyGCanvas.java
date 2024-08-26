@@ -2,7 +2,7 @@
 
 import acm.graphics.GCanvas;
 import acm.graphics.GObject;
-import java.util.Iterator;
+
 public class MyGCanvas extends GCanvas {
 	private ServerToClientMessenger messenger;
 	public MyGCanvas() {

@@ -10,7 +10,7 @@ public class FloatingCoin extends Coin {
 	@Override 
 	public void collectedByMario(Mario mario){
 		if (collected()) return;
-		CharacterStatsController.collectCoin(mario);
+		lobby.characterStatsController.collectCoin(mario);
 		lobby.soundController.playCoinSound();
 		coinState = Coin.COIN_STATE.COLLECTED;
 		kill();

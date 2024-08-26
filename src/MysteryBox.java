@@ -48,7 +48,7 @@ public class MysteryBox extends Platform {
 			@Override
 			public void doWork() throws InterruptedException{
 				while (!stateIsFinal()) {
-					ThreadSleep.sleep(15);
+					ThreadSleep.sleep(15, lobby);
 					toggleState();
 				}
 				System.out.println("END OF CHANGING STATE FOR MYSTERYBOX");
@@ -120,7 +120,7 @@ public class MysteryBox extends Platform {
 	public void move(double dy) throws InterruptedException {
 		for (int i=0; i<10; i++) {
 			super.move(0, dy);
-			ThreadSleep.sleep(3);
+			ThreadSleep.sleep(3, lobby);
 		}
 	}
 

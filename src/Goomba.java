@@ -41,7 +41,7 @@ public class Goomba extends BadGuy {
 	@Override
 	public void jumpedOnByMario(Mario mario) {
 		if (!this.alive) return;
-		CharacterStatsController.killGoombaByJumpingOnIt(mario);
+		lobby.characterStatsController.killGoombaByJumpingOnIt(mario);
 		this.alive = false;
 		setImageAndRelocate(goombaSquished);
 		lobby.soundController.playSquishSound();
@@ -49,7 +49,7 @@ public class Goomba extends BadGuy {
 		GameThread t1 = new GameThread(new MyRunnable() {
 			@Override
 			public void doWork() throws InterruptedException{
-				ThreadSleep.sleep(30);
+				ThreadSleep.sleep(30, lobby);
 				//thread sleeps to let goomba stay squished for a little bit before being removed from canvas
 				kill();
 			}
@@ -110,7 +110,7 @@ public class Goomba extends BadGuy {
 
 			if (leftOrRightFrequency==LEFT_OR_RIGHT_FREQUENCY) toggleRightOrLeft();
 			leftOrRightFrequency++;
-			ThreadSleep.sleep(3);
+			ThreadSleep.sleep(3, lobby);
 		}
 		//no need for kill() function here since only 3 ways goomba dies:
 		//1. falls off screen, at beginning of while loop, kill func already called

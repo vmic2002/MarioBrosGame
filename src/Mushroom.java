@@ -29,7 +29,7 @@ public class Mushroom extends PowerUp {
 	public void move() throws InterruptedException {
 		//mushroom move left or right and fall down from mystery box (assume is on top of mysteryBox)
 
-		ThreadSleep.sleep(50);
+		ThreadSleep.sleep(50, lobby);
 		//to wait for mysterybox to stop moving up/down
 
 
@@ -47,7 +47,7 @@ public class Mushroom extends PowerUp {
 				//System.out.println("MUSHROOM ON TOP OF MYSTERYBOX");
 				move(dx, 0);
 
-				ThreadSleep.sleep(pauseTime);
+				ThreadSleep.sleep(pauseTime, lobby);
 
 			} else {
 				//mushroom is no longer on top of mysterybox
@@ -107,7 +107,7 @@ public class Mushroom extends PowerUp {
 				}
 			}
 
-			ThreadSleep.sleep(pauseTime);
+			ThreadSleep.sleep(pauseTime, lobby);
 
 
 		}

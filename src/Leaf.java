@@ -31,7 +31,7 @@ public class Leaf extends PowerUp {
 		rightOrLeft = !rightOrLeft;
 		dx = rightOrLeft?DX:-DX;
 
-		ThreadSleep.sleep(5*pauseTime);
+		ThreadSleep.sleep(5*pauseTime, lobby);
 		//leaf pauses while changing direction
 
 	}
@@ -42,7 +42,7 @@ public class Leaf extends PowerUp {
 		for (int i=0; i<15 && alive; i++) {
 			move(0, -MovingObject.getBaseLineSpeed());
 
-			ThreadSleep.sleep(1.5);
+			ThreadSleep.sleep(1.5, lobby);
 
 		}
 		System.out.println("ADDED LEAF");
@@ -59,7 +59,7 @@ public class Leaf extends PowerUp {
 			toggle++;
 			move(dx, dy);
 
-			ThreadSleep.sleep(pauseTime);
+			ThreadSleep.sleep(pauseTime, lobby);
 
 			double newX = rightOrLeft?getX()+getWidth()+dx:getX()+dx;//+dx because dx == -10
 			Point[] points = new Point[] {

@@ -31,7 +31,7 @@ public class DynamicFactory {
 				while (powerUp.getY()>y-powerUp.getHeight()) {
 					powerUp.move(0, -MovingObject.getBaseLineSpeed()/2.0);
 
-					ThreadSleep.sleep(2);
+					ThreadSleep.sleep(2, lobby);
 
 				}
 				powerUp.setLocation(powerUp.getX(), y-powerUp.getHeight());
@@ -78,7 +78,7 @@ public class DynamicFactory {
 		lobby.canvas.add(coin, x+(mysteryBoxWidth-coin.getWidth())/2, y-coin.getHeight());
 		lobby.messenger.sendAddLevelImageToScreenMessage(coin);
 		lobby.levelController.currLevel.addLevelPartDynamically(coin);
-		CharacterStatsController.collectCoin(m);
+		lobby.characterStatsController.collectCoin(m);
 		lobby.soundController.playCoinSound();
 		coin.startMove("mysterybox coin");
 	}

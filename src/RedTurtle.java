@@ -116,7 +116,7 @@ public class RedTurtle extends BadGuy {
 						changeState();
 						spinningFrequency = 0;
 					}
-					ThreadSleep.sleep(3);
+					ThreadSleep.sleep(3, lobby);
 				}
 				if (!alive) {
 					kill();
@@ -272,7 +272,7 @@ public class RedTurtle extends BadGuy {
 
 				//TODO also need to check if turtle runs into a power up etc (maybe change that in incontact func of badguy)
 				walkingFrequency++;
-				ThreadSleep.sleep(3);
+				ThreadSleep.sleep(3, lobby);
 			}
 			if (shellMode) break;
 			changeDirection();

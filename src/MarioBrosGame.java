@@ -930,7 +930,7 @@ public class MarioBrosGame {
 
 
 
-		GameStatsController.setPauses(10);//10 works well
+		
 
 		Mario mario = new Mario(smallMarioLeftImage,smallMarioRightImage,
 				smallMarioLeftWalkingImage, smallMarioRightWalkingImage, smallMarioLeftJumpingImage, 
@@ -1065,27 +1065,17 @@ public class MarioBrosGame {
 
 
 
-
-		GameStatsController.setCharacters(mario, luigi);
+		
+		
 
 		int fallDy = (int) (smallMarioLeftImage.getHeight(canvas)/(10.0));
-		GameStatsController.setMarioFallDy(fallDy);
-		GameStatsController.setMarioMoveDx(1.5*fallDy);
-		GameStatsController.setLuigiFallDy(fallDy);
-		GameStatsController.setLuigiMoveDx(1.5*fallDy);
 
+		Mario.setFallDyMoveDx(fallDy, 1.5*fallDy);
+		
+		
 		GameStatsController.setMovingObjectBaseLineXSpeed(1.5*fallDy);
 
 
-
-
-
-
-
-
-
-		CharacterStatsController.initializeStats(characters);
-		//MovingObject.setObjects(canvas, characters);
 		Coin.setObjects(coin1, coin2, coin3);
 		Goomba.setObjects(goombaRight, goombaLeft, goombaSquished);
 		BulletBill.setObjects(leftBulletBill, rightBulletBill);
@@ -1137,7 +1127,7 @@ public class MarioBrosGame {
 		LevelController levelController = new LevelController(lobby);
 		BillBlasterController billBlasterController = new BillBlasterController(lobby);
 		VirtualClientKeyboard virtualClientKeyboard = null;
-		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters));
+		if (!runningOnTomcatServer) canvas.addKeyListener(new MyKeyListener(characters, lobby));
 		else {
 			virtualClientKeyboard = new VirtualClientKeyboard(characters);
 		}
@@ -1153,7 +1143,9 @@ public class MarioBrosGame {
 		ServerToClientMessenger messenger = new ServerToClientMessenger(lobbyId);
 		SoundController soundController = new SoundController(messenger);
 
-		lobby.setObjects(messenger, dFactory, sFactory, levelController, canvas, billBlasterController, characters, soundController, virtualClientKeyboard);
+		lobby.setObjects(messenger, dFactory, sFactory, levelController, 
+				canvas, billBlasterController, characters, soundController,
+				virtualClientKeyboard, new CharacterStatsController(characters), new GameStatsController());
 
 
 

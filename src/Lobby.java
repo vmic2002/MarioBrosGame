@@ -28,9 +28,9 @@ public class Lobby {
 	public Mario[] characters;
 	public SoundController soundController;
 	public VirtualClientKeyboard virtualClientKeyboard;
-
-	//TODO TODO ADD CHARACTERSTATSCONTROLLER
-	// TODO TODO ADD GameStatsController
+	public CharacterStatsController characterStatsController;
+	public GameStatsController gameStatsController;
+	
 	public Lobby(String lobbyId) {
 		this.lobbyId = lobbyId;
 		sessions = new HashSet<>();
@@ -58,7 +58,8 @@ public class Lobby {
 
 	public void setObjects(ServerToClientMessenger messenger, DynamicFactory dFactory,  
 			StaticFactory sFactory, LevelController levelController, MyGCanvas canvas, BillBlasterController billBlasterController
-			, Mario[] characters, SoundController soundController, VirtualClientKeyboard virtualClientKeyboard) {
+			, Mario[] characters, SoundController soundController, VirtualClientKeyboard virtualClientKeyboard,
+			CharacterStatsController characterStatsController, GameStatsController gameStatsController) {
 		this.messenger = messenger; 
 		this.dFactory = dFactory; 
 		this.sFactory = sFactory; 
@@ -68,5 +69,7 @@ public class Lobby {
 		this.characters = characters;
 		this.soundController = soundController;
 		this.virtualClientKeyboard = virtualClientKeyboard;
+		this.characterStatsController = characterStatsController;
+		this.gameStatsController = gameStatsController;
 	}
 }

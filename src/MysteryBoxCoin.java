@@ -25,7 +25,7 @@ public class MysteryBoxCoin extends Coin {
 			if (i%6==0) toggleState();
 			if (collected())
 				return;
-			ThreadSleep.sleep(2);
+			ThreadSleep.sleep(2, lobby);
 		}
 		coinState = COIN_STATE.COLLECTED;
 		kill();

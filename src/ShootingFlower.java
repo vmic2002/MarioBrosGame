@@ -73,7 +73,7 @@ public abstract class ShootingFlower extends BadGuy {
 		}
 		//need to make shooting flower look towards mario with a closed mouth
 		closeMouth(upOrDown, rightOrLeft);
-		ThreadSleep.sleep(50);
+		ThreadSleep.sleep(50, lobby);
 		//need to open the mouth of the shooting flower
 		openMouth(upOrDown, rightOrLeft);
 		double fireBallX = rightOrLeft?getX()+getWidth()+MovingObject.getBaseLineSpeed()*1.0:getX()-MovingObject.getBaseLineSpeed()*5.0;
@@ -90,7 +90,7 @@ public abstract class ShootingFlower extends BadGuy {
 			//flower still comes out of pipe when off screen to preserve timeOffset
 		}
 		//factory calls the fireball function to move the fireball towards mario (in a straight line)
-		ThreadSleep.sleep(50);
+		ThreadSleep.sleep(50, lobby);
 		closeMouth(upOrDown, rightOrLeft);		
 	}
 
@@ -99,7 +99,7 @@ public abstract class ShootingFlower extends BadGuy {
 		//this func makes the flower move out of the pipe, shoot a fireball at mario,
 		//and come back into the pipe depending on if is a up/down shootingflower		
 		sendToBack();//to fix bugs on client side
-		ThreadSleep.sleep(timeOffset);
+		ThreadSleep.sleep(timeOffset, lobby);
 		while (alive) {
 			sendToBack();
 			for (int i=0; i<numMoves; i++) {
@@ -109,9 +109,9 @@ public abstract class ShootingFlower extends BadGuy {
 				}
 				move(0, dy);
 				//flower comes out of pipe
-				ThreadSleep.sleep(4);
+				ThreadSleep.sleep(4, lobby);
 			}
-			ThreadSleep.sleep(50);
+			ThreadSleep.sleep(50, lobby);
 			if (!alive) break;
 			shootMario();
 			if (!alive) break;
@@ -123,9 +123,9 @@ public abstract class ShootingFlower extends BadGuy {
 				}
 				move(0, -dy);
 				//flower goes back into pipe
-				ThreadSleep.sleep(4);
+				ThreadSleep.sleep(4, lobby);
 			}
-			ThreadSleep.sleep(400);
+			ThreadSleep.sleep(400, lobby);
 		}
 		//alive is set to false by level controller when starting new level
 		kill();

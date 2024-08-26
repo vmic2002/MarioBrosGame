@@ -235,7 +235,7 @@ public class LevelController {
 		ArrayList<FloatingCoinsBlock> floatingCoinsBlocks = new ArrayList<FloatingCoinsBlock>();
 		HashMap<Long, DynamicLevelPart> dynamicLevelParts = new HashMap<Long, DynamicLevelPart>();
 		lobby.sFactory.spawnGrassMountain(xCounter, 4, 2, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
-		lobby.sFactory.spawnMysteryBox(2.0*space, 5, staticLevelParts, MysteryBox.SPAWN.Leaf);
+		lobby.sFactory.spawnMysteryBox(2.0*space, 5, staticLevelParts, MysteryBox.SPAWN.Hourglass);
 		spawnWhiteSpace(xCounter, 2);
 		double xCounterTemp = xCounter.v;
 		for (int i=0; i<2; i++) {
