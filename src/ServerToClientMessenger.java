@@ -13,11 +13,11 @@ public class ServerToClientMessenger {
 	//}
 	
 	
-	//13 types of messages that server sends to client:
+	//14 types of messages that server sends to client:
 	//1. moveImage, 2. playSound, 3. replaceImage 
 	//4. addLevelImageToScreen, and 5. removeImageFromScreen, 6. setVisibility
 	//7. moveLevel, 8. moveMarioCharacter, 9. addCharacterImageToScreen, 10. removeAllImagesFromScreen,
-	//11. sendImageFrontOrBack, 12. yourCharacter, 13. lobbyAlreadyFull
+	//11. sendImageFrontOrBack, 12. yourCharacter, 13. lobbyAlreadyFull, 14. lobbyAlreadyStarted
 	//Message 1 is sent in ThreadSafeGImage.move 
 	//-> called when moving object (NOT mario characters) calls the ThreadSafeGImage.move func and NOT when moving whole level (=moving static level parts and dynamic level parts)
 	//-> see Message 7 to moveLevel and Message 8 to move mario character
@@ -38,6 +38,9 @@ public class ServerToClientMessenger {
 	// -> it is to let the client know which character he will play as (mario, luigi, etc)
 	//Message 13 is sent in MyWebSocketServer onOpen() (no function in this class needed for it)
 	// -> it is to let client know that he has tried to join a lobby that is already full
+	// -> session will be closed and client will try joining another lobby
+	//Message 14 is sent in MyWebSocketServer onOpen() (no function in this class needed for it)
+	// -> it is to let client know that he has tried to join a lobby that has already started playing
 	// -> session will be closed and client will try joining another lobby
 	
 	

@@ -31,10 +31,37 @@ public class Lobby {
 	public CharacterStatsController characterStatsController;
 	public GameStatsController gameStatsController;
 	
+	
+	
+	private boolean started;
+	
+	
+	
 	public Lobby(String lobbyId) {
 		this.lobbyId = lobbyId;
 		sessions = new HashSet<>();
+		started = false;
 	}
+	
+	public void start() {
+		started = true;
+
+		//every session is ready!
+
+		Mario.CHARACTER[] characters = Mario.CHARACTER.values();
+		int i = 0;
+		for (Session s : this.getSessions()) {
+			//tell each session what their character will be
+			MyWebSocketServer.sendMessage("{ \"type\": \"yourCharacter\", \"character\": \""+characters[i++]+"\"}", s);
+		}
+		
+		
+		
+		//start game!
+		MarioBrosGame.main(new String[] {lobbyId});
+	}
+	
+	public boolean hasStarted() {return started;}
 
 	public void addSession(Session session) {
 		sessions.add(session);

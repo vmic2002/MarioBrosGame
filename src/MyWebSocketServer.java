@@ -97,6 +97,17 @@ If the key is not present, it computes a new value using the given mapping funct
 					e.printStackTrace();
 				}
 				return;
+			} else if (lobby.hasStarted()) {
+				//in case there are 2 or more players, and once the game already started, one user reloads
+				//we want to prevent this user from rejoining the lobby because it causes bugs
+				sendMessage("{ \"type\": \"lobbyAlreadyStarted\"}", session);
+				try {
+					session.close();
+				} catch (IOException e) {
+					System.out.println("Error encountered when trying to close session.");
+					e.printStackTrace();
+				}
+				return;
 			}
 
 			lobby.addSession(session);
@@ -141,18 +152,8 @@ If the key is not present, it computes a new value using the given mapping funct
 						return;
 					}
 				}
-
-				//every session is ready!
-
-				Mario.CHARACTER[] characters = Mario.CHARACTER.values();
-				int i = 0;
-				for (Session s : lobby.getSessions()) {
-					//tell each session what their character will be
-					sendMessage("{ \"type\": \"yourCharacter\", \"character\": \""+characters[i++]+"\"}", s);
-				}
-
-				//start game!
-				MarioBrosGame.main(new String[] {lobbyId});
+				
+				lobby.start();
 
 			} else {
 				processMessage(message, lobby);

@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>My Java WebSocket Game</title>
 </head>
 <body>
-    <h1>Hello, Victor's WebSocket server!</h1>
+    <p>Victor's Mario Game Website</p>
+   
+
+    <h1>Join Lobby</h1>
+
+        
+    <p id="errorMessage"></p>
+    
+    <form id="lobbyForm">
+        <label for="lobbyId">Lobby ID:</label>
+        <input type="text" id="lobbyId" name="lobbyId" required><br><br>
+ 
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <button type="submit">Join Lobby</button>
+    </form>
+
+
+
+
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>
 
