@@ -1,2 +1,0 @@
-for online multi player, the screen should follow the person who is playing on that screen, so 2 players can go in different parts of level but still be on screen, on their screen, or bublles but this might be more work idk
-also look at all //TODO in src code
