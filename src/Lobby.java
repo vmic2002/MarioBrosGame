@@ -28,7 +28,7 @@ public class Lobby {
 	public Mario[] characters;
 	public SoundController soundController;
 	public VirtualClientKeyboard virtualClientKeyboard;
-	public CharacterStatsController characterStatsController;
+	public CharacterStatsController characterStatsController;//TODO ACTUALLY USE THE STATS AND POWERUPS IN RESERVE ETC
 	public GameStatsController gameStatsController;
 	
 	

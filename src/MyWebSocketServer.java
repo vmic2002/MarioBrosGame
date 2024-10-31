@@ -10,26 +10,20 @@ $CATALINA_HOME/bin/shutdown.sh
 
 
  * 
- * MarioGameClientSide is used to run python command to see website client side (where video game will be played and seen)
- * and MarioGameServerSide is used to create the .war file
+ *  MarioGameServerSide is used to create the .war file
  * 
  * 
  *  Within ~/Desktop/apache-tomcat-10.1.11/webapps, putting a MarioGameServerSide.war file and then running $CATALINA_HOME/bin/startup.sh will 
  *  create a directory MarioGameServerSide within webapps and deploy the application.
 
-	Go to http://localhost:8080/MarioGameServerSide/ to see the website
+	Go to http://localhost:8080/MarioGameServerSide/ to see the website and play game
 
 	Use http://localhost:8080/manager/html to see if it is running and more details
 	for manager/html, use username="admin" password="victor1". can configure/change this in apache-tomcat-10.1.11/conf/tomcat-users.xml
 
-	Need to use python command to see website on port 8081 to send messages from client side
 
 	Can use makeWARFileAndPlaceInWebappsDir.sh in MarioBrosGame directory to create new .war file from
 	.class and .java files in bin and src directories and place .war file in webapps dir automatically!
-
-	!!!!Sending messages from client side works! Server responds back!!!!!
-
-	TODO NEED TO DO ONLINE MULTIPLAYER each new window that connects to the server has its own session ID, for online multiplayer (one plays mario one plays luigi)
 
 
 

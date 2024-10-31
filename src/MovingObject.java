@@ -13,6 +13,7 @@ public abstract class MovingObject extends ThreadSafeGImage {//GImage {
 	//private LevelController levelController;
 
 	protected Lobby lobby;
+	//each moving object in a lobby (game) has a reference to the lobby itself to access all the fields needed for a game (see Lobby.java)
 	
 	//moveDx is to ensure that the movement of images is scaled proportionally
 	//depending on their size
