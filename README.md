@@ -48,4 +48,6 @@ This video was recorded on April 12th, 2023 after the 65th commit:
 
 https://user-images.githubusercontent.com/89990471/231574900-150501af-47b7-4d54-91ab-eea96760c24b.mp4
 
+## Next steps: Making game playable online from browser!
+Ongoing...
 
