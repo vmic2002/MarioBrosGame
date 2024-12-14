@@ -425,29 +425,19 @@ function playSound(soundName) {
 }
 
 
-
-
 // Load the sounds
 loadSounds();
 
-//addImageToScreen('bigLuigiLeftCrouchingImage', '1', 50,110);    
 
-
-
-
-
-
-
-
+/*
 //BUTTON IS ONLY for testing
 // Get a reference to the play button
 const testButton = document.getElementById('test');
 // Add a click event listener to the play button
 //var bo = true;
-//addImageToScreen('smallLuigiLeftImage', 0, 100, 100);
 testButton.addEventListener('click', () => {
     console.log('CLICK!');
-    /*if (!currentSound1) {
+    if (!currentSound1) {
         console.log("null");
     } else {
         console.log(`${currentSound1.src}`);
@@ -456,18 +446,14 @@ testButton.addEventListener('click', () => {
         console.log("null");
     } else {
         console.log(`${currentSound2.src}`);
-    }*/
+    }
 
 
     console.log(queryParams.lobbyId);
    // console.log(queryParams.numCharacters);
     console.log(queryParams.username);
-
-    
 });
-
-
-
+*/
 
 const readyButton = document.getElementById('ready');
 
@@ -510,7 +496,7 @@ socket.onmessage = function(event) {
             replaceImage(oldImageId, newImageName);
         } else if (parsedMessage.type === 'playSound') {
             // Example: { "type": "playSound", "soundName": "Coin.wav" }
-            console.log('Received playSound data:', parsedMessage.soundName);
+            //console.log('Received playSound data:', parsedMessage.soundName);
             playSound(parsedMessage.soundName);
         } else if (parsedMessage.type === 'addLevelImageToScreen') {
             // Example: { "type": "addLevelImageToScreen", "imageName": "platform", "id":"25", "x":"10", "y":"10" }
@@ -571,7 +557,7 @@ socket.onmessage = function(event) {
             console.log('Received unknown JSON data:', parsedMessage);
         }
     } catch (error) {
-        //console.log('Error parsing JSON:', error);
+        //console.log('ERROR parsing JSON:', error);
         console.log(message);
     }      
 };
@@ -626,7 +612,3 @@ document.addEventListener('keyup', (event) => {
         sendJsonMessage(data);
     }
 });
-
-
-
-
