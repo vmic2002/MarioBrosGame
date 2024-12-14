@@ -145,7 +145,7 @@ public class LevelController {
 		spawnWhiteSpace(xCounter, 1);
 	
 		lobby.sFactory.spawnUpPipe(xCounter, 4, FLOWER_TYPE.NO_FLOWER, 0, "1a", staticLevelParts, dynamicLevelParts);
-		lobby.sFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.NO_BADGUY, staticLevelParts, dynamicLevelParts);
+		lobby.sFactory.spawnGrassMountain(xCounter, 4, 4, BADGUY_TYPE.GREEN_TURTLE, staticLevelParts, dynamicLevelParts);
 		lobby.sFactory.spawnMysteryBox(xCounter.v-4.0*space, 8, staticLevelParts, MysteryBox.SPAWN.FireFlower);
 		///lobby.sFactory.spawnMysteryBox(xCounter.v-3.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Coin);
 		///lobby.sFactory.spawnMysteryBox(xCounter.v-2.0*space, 8, staticLevelParts, MysteryBox.SPAWN.Mushroom);//FireFlower);

@@ -26,17 +26,17 @@ public class StaticFactory {
 	yellowMushroomPlatformRight,
 	greenMushroomPlatformRight,
 	redMushroomPlatformMiddle;
-	
+
 	private static boolean imagesSet = false; // so setObjects is not called everytime a new lobby starts a game
 
 	public StaticFactory(Lobby lobby) {
 		this.lobby = lobby;
 	}
-	
+
 	public static boolean imagesSet() {
 		return imagesSet;
 	}
-	
+
 	public static void setObjects(MyImage grassLeftTopImage1, MyImage grassRightTopImage1, MyImage grassMiddleTopImage1, 
 			MyImage grassLeftImage1, MyImage grassRightImage1, MyImage grassMiddleImage1,
 			MyImage pipeUpTopLeftImage1, MyImage pipeUpTopRightImage1, MyImage pipeDownMiddleLeftImage1, MyImage pipeDownMiddleRightImage1,
@@ -55,8 +55,8 @@ public class StaticFactory {
 			MyImage greenMushroomPlatformRight1,
 			MyImage redMushroomPlatformMiddle1)
 
-			{
-		
+	{
+
 		//MyGCanvas canvas1) {
 		imagesSet = true;
 		grassLeftTopImage = grassLeftTopImage1;
@@ -90,7 +90,7 @@ public class StaticFactory {
 		redMushroomPlatformMiddle = redMushroomPlatformMiddle1;
 
 		//canvas = canvas1;
-			}
+	}
 
 
 
@@ -238,8 +238,9 @@ public class StaticFactory {
 		double width = w*g1.getWidth(); 
 
 		if (type == LevelController.BADGUY_TYPE.RED_TURTLE) {
-			//TODO need to do green turtles too
 			lobby.dFactory.addRedTurtle(xCounter.v, MarioBrosGame.HEIGHT-g1.getHeight()*h, width, dynamicLevelParts);
+		} else if (type == LevelController.BADGUY_TYPE.GREEN_TURTLE) {
+			lobby.dFactory.addGreenTurtle(xCounter.v, MarioBrosGame.HEIGHT-g1.getHeight()*h, dynamicLevelParts);
 		} else if (type == LevelController.BADGUY_TYPE.GOOMBA) {
 			lobby.dFactory.addGoomba(xCounter.v+width/3, MarioBrosGame.HEIGHT-g1.getHeight()*h, dynamicLevelParts);
 		}

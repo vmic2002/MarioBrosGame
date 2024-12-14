@@ -391,6 +391,17 @@ public class MarioBrosGame {
 		String redMushroomPlatformMiddlePath = prefix+imageDirectory+"/redMushroomPlatformMiddle.png";
 
 
+		String greenTurtleStandingLeftPath = prefix+imageDirectory+"/greenTurtleStandingLeft.png";
+		String greenTurtleStandingRightPath = prefix+imageDirectory+"/greenTurtleStandingRight.png";
+		String greenTurtleSpinning4Path = prefix+imageDirectory+"/greenTurtleSpinning4.png";
+		String greenTurtleSpinning2Path = prefix+imageDirectory+"/greenTurtleSpinning2.png";
+		String greenTurtleSpinning3Path = prefix+imageDirectory+"/greenTurtleSpinning3.png";
+		String greenTurtleSpinning1Path = prefix+imageDirectory+"/greenTurtleSpinning1.png";
+		String greenTurtleWalkingLeftPath = prefix+imageDirectory+"/greenTurtleWalkingLeft.png";
+		String greenTurtleWalkingRightPath = prefix+imageDirectory+"/greenTurtleWalkingRight.png";
+		
+		
+		
 
 		MyImage smallMarioLeftImage = null;
 		MyImage smallMarioRightImage = null;
@@ -664,6 +675,15 @@ public class MarioBrosGame {
 		MyImage yellowMushroomPlatformRight = null;
 		MyImage greenMushroomPlatformRight = null;
 		MyImage redMushroomPlatformMiddle = null;
+		
+		MyImage greenTurtleStandingLeft = null;
+		MyImage greenTurtleStandingRight = null;
+		MyImage greenTurtleSpinning4 = null;
+		MyImage greenTurtleSpinning2 = null;
+		MyImage greenTurtleSpinning3 = null;
+		MyImage greenTurtleSpinning1 = null;
+		MyImage greenTurtleWalkingLeft = null;
+		MyImage greenTurtleWalkingRight = null;
 
 		try {
 			smallMarioLeftImage = new MyImage(ImageIO.read(new File(smallMarioLeftImagePath)), "smallMarioLeftImage");
@@ -920,6 +940,18 @@ public class MarioBrosGame {
 			yellowMushroomPlatformRight = new MyImage(ImageIO.read(new File(yellowMushroomPlatformRightPath)), "yellowMushroomPlatformRight");
 			greenMushroomPlatformRight = new MyImage(ImageIO.read(new File(greenMushroomPlatformRightPath)), "greenMushroomPlatformRight");
 			redMushroomPlatformMiddle = new MyImage(ImageIO.read(new File(redMushroomPlatformMiddlePath)), "redMushroomPlatformMiddle");
+			
+			
+			greenTurtleStandingLeft = new MyImage(ImageIO.read(new File(greenTurtleStandingLeftPath)), "greenTurtleStandingLeft");
+			greenTurtleStandingRight = new MyImage(ImageIO.read(new File(greenTurtleStandingRightPath)), "greenTurtleStandingRight");
+			greenTurtleSpinning4 = new MyImage(ImageIO.read(new File(greenTurtleSpinning4Path)), "greenTurtleSpinning4");
+			greenTurtleSpinning2 = new MyImage(ImageIO.read(new File(greenTurtleSpinning2Path)), "greenTurtleSpinning2");
+			greenTurtleSpinning3 = new MyImage(ImageIO.read(new File(greenTurtleSpinning3Path)), "greenTurtleSpinning3");
+			greenTurtleSpinning1 = new MyImage(ImageIO.read(new File(greenTurtleSpinning1Path)), "greenTurtleSpinning1");
+			greenTurtleWalkingLeft = new MyImage(ImageIO.read(new File(greenTurtleWalkingLeftPath)), "greenTurtleWalkingLeft");
+			greenTurtleWalkingRight = new MyImage(ImageIO.read(new File(greenTurtleWalkingRightPath)), "greenTurtleWalkingRight");
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -1082,6 +1114,9 @@ public class MarioBrosGame {
 		RedTurtle.setObjects(redTurtleSpinning1, redTurtleSpinning2, 
 				redTurtleSpinning3, redTurtleSpinning4, redTurtleStandingLeft,
 				redTurtleStandingRight, redTurtleWalkingLeft, redTurtleWalkingRight);
+		GreenTurtle.setObjects(greenTurtleSpinning1, greenTurtleSpinning2, 
+				greenTurtleSpinning3, greenTurtleSpinning4, greenTurtleStandingLeft,
+				greenTurtleStandingRight, greenTurtleWalkingLeft, greenTurtleWalkingRight);
 		UpShootingFlower.setObjects(shootingFlowerLeftDownClosed, shootingFlowerLeftDownOpen,
 				shootingFlowerLeftUpClosed, shootingFlowerLeftUpOpen,
 				shootingFlowerRightDownClosed, shootingFlowerRightDownOpen,

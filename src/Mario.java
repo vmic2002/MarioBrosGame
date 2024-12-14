@@ -134,7 +134,7 @@ public class Mario extends MovingObject {
 	public static final int numTimesToggleVisibility = 20;//number of times mario toggles his visibility to make it look like he is flashing (needs to be an even number)
 	public static final int flashingInterval = flashingTime/(numTimesToggleVisibility-1);
 	private static final int maxHeightOfJump = 50;//max num times move function is called on way up of jump (move(0, -2.0*fallDy)
-	//	public boolean jumpingOnTurtle = false;//so releasing a key while jumping on a turtle doesnt do anything
+	
 
 
 	private boolean jumpAgain;//set to true in hop() function if mario jumps off bad guy, other Mario, or bouncy platform
@@ -1423,20 +1423,7 @@ public class Mario extends MovingObject {
 				((BadGuy) o).contactFromSideByMario(this);
 				return true;
 			} else {marioHit();}
-			/*if (o instanceof RedTurtle) {
-					//need to MAKE TURTLE GO TO shell mode or start spinning if already in shell mode
-					//if (bigOrSmall && !wayUpOrWayDown) ((RedTurtle) o).jumpedOnByBigMario(this);
-					((RedTurtle) o).jumpedOnByMario(this);//big or small mario can jump on turtle
-				} else if (o instanceof BulletBill){
-					//mario jumps on BulletBill
-					this.hop();
-					((BulletBill) o).jumpedOnByMario(this);
-				} else if (o instanceof Goomba) {
-					((Goomba) o).jumpedOnByMario(this);
-				}
-			} else {
-				marioHit();
-			}*/
+			
 		} else if (o instanceof Mario && !o.equals(this)) {
 			//mario in contact with another mario (luigi for example)
 			//want mario to treat other marios as platforms from the side

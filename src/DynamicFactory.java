@@ -132,6 +132,12 @@ public class DynamicFactory {
 		lobby.canvas.add(turtle, x, y-turtle.getHeight());
 		Level.addLevelPartDynamically(turtle, dynamicLevelParts);
 	}
+	
+	public void addGreenTurtle(double x, double y, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
+		GreenTurtle turtle = new GreenTurtle(lobby);
+		lobby.canvas.add(turtle, x, y-turtle.getHeight());
+		Level.addLevelPartDynamically(turtle, dynamicLevelParts);
+	}
 
 	public void addUpShootingFlower(double x, double y, int timeOffset, HashMap<Long, DynamicLevelPart> dynamicLevelParts) {
 		ShootingFlower flower = new UpShootingFlower(timeOffset, lobby);
